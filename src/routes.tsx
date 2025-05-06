@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react";
 import MythosLayout from "./layout/mythos";
 import NotFound from "./components/NotFound";
 import Loader from "./components/loader/Loader";
+import Assessment from "./page/assessment";
 
 const MythosHome = lazy(() => import("./page/home"));
 const MythosAbout = lazy(() => import("./page/about"));
@@ -24,6 +25,7 @@ const AppRouter = () => {
             <Route path="*" element={<NotFound />} />
             <Route path="shop" element={<MythosShop />} />
             <Route path="quiz" element={<MythosQuiz />} />
+            <Route path="assessments" element={<Assessment />} />
           </Route>
         </Routes>
       </Suspense>

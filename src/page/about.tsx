@@ -3,7 +3,7 @@ import FAQ from "../components/about/FAQ";
 import HeroSection from "../components/about/HeroSection";
 import KnowMoreAboutUs from "../components/about/KnowMoreAboutUs";
 import Problems from "../components/about/Problems";
-import ProductDisplay from "../components/about/ProductDisplay";
+// import ProductDisplay from "../components/about/ProductDisplay";
 const MythosAbout = () => {
   const helps = {
     "Psychology assessment":
@@ -17,7 +17,7 @@ const MythosAbout = () => {
       <HeroSection />
       <Problems />
       <HelperList data={helps} label="HOW WE HELP YOU" />
-      <ProductDisplay />
+      {/* <ProductDisplay /> */}
       <KnowMoreAboutUs />
       <FAQ />
     </div>
