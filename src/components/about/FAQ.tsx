@@ -47,7 +47,7 @@ const FAQ = () => {
       initial="hidden"
       animate={faqInView ? "visible" : "hidden"}
       variants={fadeIn}
-      className="p-8 md:px-28 bg-[#1A1D3B] "
+      className="p-8 md:px-28 bg-black "
     >
       <motion.h2
         variants={fadeInUp}

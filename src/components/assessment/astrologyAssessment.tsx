@@ -36,7 +36,7 @@ const AstrologyAssessment = () => {
   ];
 
   return (
-    <div className="px-6 sm:px-10 md:px-15 lg:px-20 xl:px-25 py-10 xl:py-15 bg-[#FEEBD5]">
+    <div className="px-6 sm:px-10 md:px-15 lg:px-20 xl:px-25 py-10 xl:py-15 bg-white">
       <motion.h1
         ref={titleRef.ref}
         initial={{ opacity: 0, y: -20 }}

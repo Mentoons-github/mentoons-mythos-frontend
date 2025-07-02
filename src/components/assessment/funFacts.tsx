@@ -121,7 +121,7 @@ const FunFacts = () => {
   return (
     <motion.div
       ref={sectionRef}
-      className="relative w-full overflow-hidden"
+      className="relative w-full overflow-hidden bg-black"
       variants={sectionVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
