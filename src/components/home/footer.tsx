@@ -5,8 +5,9 @@ import FooterLinks from "./footerLinks";
 
 const MythosFooter = () => {
   return (
-    <footer className="w-full py-10 px-5 md:px-20 flex justify-center items-center bg-[#E39712]">
-      <div className="grid w-full grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4 md:gap-16 max-w-7xl">
+    <footer className="w-full py-10 px-5 md:px-20 flex justify-center items-center bg-black border-t border-t-[#FEE898]">
+      <div className="flex flex-col-reverse md:grid md:grid-cols-4 md:gap-16 w-full max-w-7xl gap-8">
+
         {[CONTACT_INFO, CAREER, PLANET].map((items, index) => (
           <FooterLinks
             key={index}
@@ -17,7 +18,7 @@ const MythosFooter = () => {
           />
         ))}
         <div className="w-full space-y-6 text-center sm:text-left">
-          <h1 className="font-forum text-[18px] sm:text-[20px] md:text-[24px] text-[#1A1D3B] tracking-wide">
+          <h1 className="font-forum text-[18px] sm:text-[20px] md:text-[24px] text-[#FEE898] tracking-wide">
             SIGN-UP FOR OUR NEWSLETTER
           </h1>
           <div className="flex flex-col items-center w-full gap-2 sm:items-start">
@@ -25,21 +26,21 @@ const MythosFooter = () => {
               <input
                 type="text"
                 placeholder="Email..."
-                className="w-full p-3 border border-gray-800 outline-none"
+                className="w-full p-3 border border-[#FEE898] outline-none text-[#FEE898]"
               />
-              <button className="flex items-center gap-2 px-4 py-3 bg-white border border-l-0">
-                <span>✦</span>
-                <span className="text-[#E39712] font-mulish text-[13px]">
+              <button className="flex items-center gap-2 px-4 py-3 bg-[#9FE9FF] border border-[#FEE898] border-l-0">
+                <span className="text-[#FEE898]">✦</span>
+                <span className="font-medium font-mulish text-[13px]">
                   SUBMIT
                 </span>
               </button>
             </div>
-            <span className="text-xs text-gray-500 sm:text-sm">
+            <span className="text-xs text-[#FEE898] sm:text-sm">
               We promise not to spam you
             </span>
           </div>
-          <div>
-            <h1 className="font-forum text-[18px] sm:text-[20px] md:text-[24px] text-[#1A1D3B] tracking-wide">
+          <div className="mt-10 md:mt-0">
+            <h1 className="font-forum text-[18px] sm:text-[20px] md:text-[24px] text-[#FEE898] tracking-wide ">
               SOCIAL MEDIA
             </h1>
             <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-start">

@@ -1,4 +1,4 @@
-import { IoAdd } from "react-icons/io5";
+import { RiArrowDropRightLine } from "react-icons/ri";
 
 export type TWORKSHOPFAQ = {
   id: string;
@@ -45,13 +45,13 @@ const FAQCard = ({
           }
           className={`p-1 rounded-full border-2 flex items-center transition-all duration-300 ease-in-out transform ${
             isExpanded
-              ? "rotate-45"
+              ? "rotate-90"
               : "hover:bg-[var(--hover-bg-color)] hover:border-[var(--hover-border-color)]"
           }`}
         >
-          <IoAdd
+          <RiArrowDropRightLine
             style={{ color: isExpanded ? color : "" }}
-            className={`text-xl transition-colors duration-300 ${
+            className={`text-4xl transition-colors duration-300 ${
               isExpanded ? "" : "text-neutral-800"
             }`}
           />

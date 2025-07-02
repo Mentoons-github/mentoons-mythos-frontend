@@ -4,6 +4,7 @@ import MythosLayout from "./layout/mythos";
 import NotFound from "./components/NotFound";
 import Loader from "./components/loader/Loader";
 import Assessment from "./page/assessment";
+import Details from "./page/details";
 
 const MythosHome = lazy(() => import("./page/home"));
 const MythosAbout = lazy(() => import("./page/about"));
@@ -28,6 +29,7 @@ const AppRouter = () => {
             <Route path="quiz" element={<MythosQuiz />} />
             <Route path="assessments" element={<Assessment />} />
             <Route path="cart" element={<MythosCart />} />
+            <Route path="details" element={<Details/>}/>
           </Route>
         </Routes>
       </Suspense>
