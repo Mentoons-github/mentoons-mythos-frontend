@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 const GroupsHeroSection = () => {
   return (
-    <div className="flex flex-col md:flex-row items-center justify-center gap-6 sm:gap-8 md:gap-10 bg-[#1A1D3B] bg-[url('/assets/background/section/stars_background.png')] bg-center p-4 sm:p-5 md:p-6 py-12 sm:py-16 md:py-20">
+    <div className="flex flex-col md:flex-row items-center justify-center gap-6 sm:gap-8 md:gap-10 bg-black bg-[url('/assets/background/section/stars_background.png')] bg-center p-4 sm:p-5 md:p-6 py-12 sm:py-16 md:py-20">
       <motion.div
         className="flex flex-col items-center md:items-start justify-center w-full md:flex-[0.6] px-4 sm:px-8 md:pl-12"
         initial={{ opacity: 0, x: -50 }}

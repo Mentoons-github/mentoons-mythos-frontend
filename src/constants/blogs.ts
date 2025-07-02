@@ -111,3 +111,22 @@ export const MYTHOS_NEWS: JoinCardsProps[] = [
     date: "Mar 25, 2019",
   },
 ];
+
+export const RECENT_POSTS = [
+    {
+      image:"/assets/recentPosts/recentpost1.jpg",
+      writere:"Phoenix Baker",
+      date:"1 Jan 2023",
+      title:"Career Guidance 101",
+      description:"Linear helps streamline software projects, sprints, tasks, and bug tracking. Here’s how to get...",
+      topics:["Career", "Research"]
+    },
+    {
+      image:'/assets/recentPosts/recentpost2.jpg',
+      writere:"Lana Steiner",
+      date:"1 Jan 2023",
+      title:"How to lead a Healthy Life?",
+      description:"The rise of RESTful APIs has been met by a rise in tools for creating, testing, and manag...",
+      topics:["Mental", "Health"]
+    }
+  ]

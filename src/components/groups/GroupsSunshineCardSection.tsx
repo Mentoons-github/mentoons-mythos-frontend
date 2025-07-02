@@ -4,7 +4,7 @@ import { SUNSHINE } from "../../constants";
 
 const GroupsSunshineCardSection = () => {
   return (
-    <div className="bg-[#1A1D3B] px-4 py-16 md:px-6">
+    <div className="bg-black px-4 py-16 md:px-6">
       <div className="">
         <motion.h2
           className="text-5xl font-semibold text-start text-[#e39712] mb-16 px-24"
@@ -17,7 +17,7 @@ const GroupsSunshineCardSection = () => {
           Reach out to individuals who share your BIRTH sign.
         </motion.h2>
         <motion.div
-          className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-[85%] mx-auto"
+          className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3  w-[85%] mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, staggerChildren: 0.1 }}
