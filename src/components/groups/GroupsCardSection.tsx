@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 const GroupsCardSection = () => {
   return (
-    <div className="relative bg-[#1A1D3B] px-4 py-16 overflow-hidden md:px-6">
+    <div className="relative bg-white px-4 py-16 overflow-hidden md:px-6">
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-0 left-0 w-64 h-64 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob"></div>
         <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-2000"></div>
@@ -20,7 +20,7 @@ const GroupsCardSection = () => {
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20"></div>
             <motion.h2
-              className="text-2xl font-bold text-transparent md:text-3xl bg-clip-text bg-gradient-to-r from-yellow-100 to-white"
+              className="text-2xl font-bold text-black md:text-3xl bg-clip-text bg-gradient-to-r from-yellow-100 to-white"
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.3 }}
@@ -28,7 +28,7 @@ const GroupsCardSection = () => {
               Astrologers
             </motion.h2>
             <motion.p
-              className="py-4 text-base md:text-lg text-yellow-50/90"
+              className="py-4 text-base md:text-lg text-black"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
@@ -63,7 +63,7 @@ const GroupsCardSection = () => {
               <div className="absolute top-0 right-0 w-32 h-32 bg-blue-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20"></div>
               <div className="flex flex-col flex-1">
                 <motion.h2
-                  className="text-2xl font-bold text-transparent md:text-3xl bg-clip-text bg-gradient-to-r from-blue-100 to-white"
+                  className="text-2xl font-bold text-black md:text-3xl bg-clip-text bg-gradient-to-r from-blue-100 to-white"
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.5 }}
@@ -71,7 +71,7 @@ const GroupsCardSection = () => {
                   Tarot Card Readers
                 </motion.h2>
                 <motion.p
-                  className="py-4 text-base md:text-lg text-blue-50/90"
+                  className="py-4 text-base md:text-lg text-black"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.6 }}
@@ -106,7 +106,7 @@ const GroupsCardSection = () => {
               <div className="absolute top-0 right-0 w-32 h-32 bg-green-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20"></div>
               <div className="flex flex-col flex-1">
                 <motion.h2
-                  className="text-2xl font-bold text-transparent md:text-3xl bg-clip-text bg-gradient-to-r from-green-100 to-white"
+                  className="text-2xl font-bold text-black md:text-3xl bg-clip-text bg-gradient-to-r from-green-100 to-white"
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.7 }}
@@ -114,7 +114,7 @@ const GroupsCardSection = () => {
                   Reiki Healers
                 </motion.h2>
                 <motion.p
-                  className="py-4 text-base md:text-lg text-green-50/90"
+                  className="py-4 text-base md:text-lg text-black"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.8 }}
