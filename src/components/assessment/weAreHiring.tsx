@@ -93,7 +93,7 @@ const WeAreHiring = () => {
   return (
     <motion.div
       ref={sectionRef}
-      className="relative px-4 sm:px-8 md:px-12 lg:px-20 py-8 sm:py-10 md:py-12 lg:py-15 bg-[#FEEBD5] flex flex-col justify-center items-start min-h-[500px] overflow-hidden"
+      className="relative px-4 sm:px-8 md:px-12 lg:px-20 py-8 sm:py-10 md:py-12 lg:py-15 bg-white flex flex-col justify-center items-start min-h-[500px] overflow-hidden"
       variants={containerVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}

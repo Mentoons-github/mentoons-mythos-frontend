@@ -12,6 +12,7 @@ const MythosGroups = lazy(() => import("./page/groups"));
 const MythosBlogs = lazy(() => import("./page/blogs"));
 const MythosShop = lazy(() => import("./page/shop"));
 const MythosQuiz = lazy(() => import("./page/quiz/quizHome"));
+const MythosCart = lazy(() => import("./page/cart"));
 
 const AppRouter = () => {
   return (
@@ -27,6 +28,7 @@ const AppRouter = () => {
             <Route path="shop" element={<MythosShop />} />
             <Route path="quiz" element={<MythosQuiz />} />
             <Route path="assessments" element={<Assessment />} />
+            <Route path="cart" element={<MythosCart />} />
             <Route path="details" element={<Details/>}/>
           </Route>
         </Routes>
