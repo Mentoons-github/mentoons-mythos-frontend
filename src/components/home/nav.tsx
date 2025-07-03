@@ -25,10 +25,10 @@ const MythosHeader = () => {
   const controls = useAnimation();
   const searchInputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const assessmentItems = [
-    { name: "Intellectual", path: "" },
+    { name: "Intelligence", path: "" },
     { name: "Astrology", path: "/assessments/planet" },
   ];
 
