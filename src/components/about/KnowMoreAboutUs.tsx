@@ -92,7 +92,7 @@ const KnowMoreAboutUs = () => {
           >
             <textarea
               placeholder="Your Comment"
-              className="w-full p-4 pr-12 active:ring-2 focus:ring-2 focus:ring-[#E39712] focus:outline-none"
+              className="w-full p-4 pr-12 active:ring-2 border border-[#E39712] text-[#E39712] focus:ring-2 focus:ring-[#E39712] focus:outline-none"
               rows={5}
               name="comment"
               value={formData.comment}
@@ -109,7 +109,7 @@ const KnowMoreAboutUs = () => {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full p-4 pr-12 active:ring-2 focus:ring-2 focus:ring-[#E39712] focus:outline-none"
+                  className="w-full p-4 pr-12 active:ring-2 border border-[#E39712]  text-[#E39712] focus:ring-2 focus:ring-[#E39712] focus:outline-none"
                 />
                 <FaRegUser className="absolute w-6 transform -translate-y-1/2 right-4 top-1/2 text-[#E39712]" />
               </div>
@@ -120,7 +120,7 @@ const KnowMoreAboutUs = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full p-4 pr-12 active:ring-2 focus:ring-2 focus:ring-[#E39712] focus:outline-none"
+                  className="w-full p-4 pr-12 border border-[#E39712] text-[#E39712] active:ring-2 focus:ring-2 focus:ring-[#E39712] focus:outline-none"
                 />
                 <FaRegEnvelope className="absolute w-6 transform -translate-y-1/2 right-4 top-1/2 text-[#E39712]" />
               </div>

@@ -127,7 +127,7 @@ const Shop = () => {
         initial={{ opacity: 0 }}
         animate={heroInView ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 0.8 }}
-        className="p-4 md:p-10 lg:p-20 bg-black bg-[url('/assets/background/section/stars_background.png')] min-h-[50vh] flex flex-col justify-center items-center"
+        className="p-2 md:p-10 lg:p-20 bg-black bg-[url('/assets/background/section/stars_background.png')] py-10 flex flex-col justify-center items-center"
       >
         <motion.h1
           initial={{ x: "100%", opacity: 0 }}
@@ -135,7 +135,7 @@ const Shop = () => {
             heroInView ? { x: 0, opacity: 1 } : { x: "100%", opacity: 0 }
           }
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-[#E39712] font-semibold text-xl sm:text-2xl md:text-3xl lg:text-4xl tracking-wider text-center"
+          className="text-[#E39712] font-semibold text-xl sm:text-2xl md:text-3xl lg:text-4xl tracking-wider md:text-center"
         >
           REPRESENT YOURSELF BY WEARING <br className="hidden md:block" />
           OUR RANGE OF MERCHANDISE
@@ -145,7 +145,7 @@ const Shop = () => {
           initial={{ y: 30, opacity: 0 }}
           animate={heroInView ? { y: 0, opacity: 1 } : { y: 30, opacity: 0 }}
           transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-          className="text-sm sm:text-base md:text-lg lg:text-xl text-[#FBF9F9] text-center mt-4 md:mt-7 max-w-3xl px-2"
+          className="text-sm sm:text-base md:text-lg lg:text-xl text-[#FBF9F9] md:text-center mt-4 md:mt-7 max-w-3xl md:px-2"
         >
           Wear your planets, rising stars, birth signs, your favorite
           mythological characters and let that do all the talking!
@@ -186,7 +186,7 @@ const Shop = () => {
         initial={{ opacity: 0 }}
         animate={productsInView ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 0.8 }}
-        className="py-8 md:py-12 px-4 md:px-10 lg:px-20 bg-[#FEEBD5]"
+        className="py-8 md:py-12 px-2 md:px-10 lg:px-20 bg-[#FEEBD5]"
       >
         <div className="flex justify-between items-center flex-wrap gap-3">
           <motion.h2
@@ -217,7 +217,7 @@ const Shop = () => {
           variants={containerVariants}
           initial="hidden"
           animate={productsInView ? "visible" : "hidden"}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6"
+          className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-6"
         >
           {products.map((product) => (
             <motion.div
@@ -232,7 +232,7 @@ const Shop = () => {
               <motion.img
                 src={product.image}
                 alt={product.name}
-                className="w-full h-48 sm:h-56 md:h-64 object-cover object-center"
+                className="w-full h-36 sm:h-56 md:h-64 object-cover object-center"
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.3 }}
               />
@@ -246,18 +246,18 @@ const Shop = () => {
                 <p className="text-[#E39712] font-bold mt-2 text-lg md:text-xl">
                   {product.price}
                 </p>
-                <div className="mt-3 md:mt-4 grid grid-cols-2 gap-2">
+                <div className="mt-3 md:mt-4 grid grid-cols-2 gap-1 md:gap-2">
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="bg-[#E39712] text-black font-bold py-1 md:py-2 px-2 md:px-3 rounded hover:bg-[#c17e0f] transition-colors text-xs md:text-sm"
+                    className="bg-[#E39712] text-black font-bold py-1 md:py-2 px-1 md:px-3 rounded hover:bg-[#c17e0f] transition-colors text-xs md:text-sm"
                   >
                     Add to Cart
                   </motion.button>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="bg-transparent border border-[#E39712] text-[#E39712] font-bold py-1 md:py-2 px-2 md:px-3 rounded hover:bg-[#E39712]/10 transition-colors text-xs md:text-sm"
+                    className="bg-transparent border border-[#E39712] text-[#E39712] font-bold py-1 md:py-2 px-1 md:px-3 rounded hover:bg-[#E39712]/10 transition-colors text-xs md:text-sm"
                   >
                     Save Later
                   </motion.button>
@@ -283,7 +283,7 @@ const Shop = () => {
         </motion.h1>
         <motion.div
           variants={staggerContainer}
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-5 max-w-6xl mx-auto"
+          className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-5 max-w-6xl mx-auto"
         >
           {Tattoos.map((url, index) => (
             <motion.img

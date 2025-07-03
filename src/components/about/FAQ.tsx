@@ -47,17 +47,17 @@ const FAQ = () => {
       initial="hidden"
       animate={faqInView ? "visible" : "hidden"}
       variants={fadeIn}
-      className="p-8 md:px-28 bg-black "
+      className="py-8 md:py-0 md:p-8 md:px-28 bg-black "
     >
       <motion.h2
         variants={fadeInUp}
-        className="pb-8 text-2xl font-semibold text-[#E39712]  tracking-widest lg:text-5xl"
+        className="pb-8 text-xl font-semibold text-[#E39712]  tracking-widest md:text-4xl ml-2"
       >
         FREQUENTLY ASKED QUESTIONS
       </motion.h2>
       <motion.div
         variants={fadeInUp}
-        className="md:flex md:gap-8 w-[80%] mx-auto"
+        className="md:flex md:gap-8 w-[90%] md:w-[80%] mx-auto"
       >
         <motion.div
           variants={staggerContainer}

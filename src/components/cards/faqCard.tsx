@@ -31,7 +31,7 @@ const FAQCard = ({
       }`}
     >
       <div className="flex items-center justify-between w-full p-4 text-neutral-700">
-        <span className="text-xl font-semibold transition-colors duration-300">
+        <span className="font-bold md:text-xl md:font-semibold transition-colors duration-300">
           {faq.question}
         </span>
         <span
@@ -65,7 +65,7 @@ const FAQCard = ({
         }`}
       >
         <div className="overflow-hidden">
-          <div className="p-4 pt-0 text-neutral-600">{faq.answer}</div>
+          <div className="text-sm md:text-base p-4 pt-0 text-neutral-600">{faq.answer}</div>
         </div>
       </div>
     </div>
