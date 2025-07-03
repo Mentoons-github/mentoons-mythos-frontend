@@ -104,6 +104,10 @@ const AstrologyAssessment = () => {
                   :
                   <span className="text-sm xl:text-md ml-2">{detail.age}+</span>
                 </p>
+                <p className="text-white flex items-center gap-2 mt-1">
+                  <span className="font-semibold text-base lg:text-lg">🆓</span>
+                  <span className="text-sm lg:text-base">Free</span>
+                </p>
                 <motion.button
                   className="mt-6 xl:mt-10 bg-[#EC9600] rounded-full px-4 py-2 font-extrabold text-white"
                   whileHover={{ scale: 1.05, backgroundColor: "#f8a728" }}

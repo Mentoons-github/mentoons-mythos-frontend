@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import useInView from "../hooks/useInView";
 import { FaArrowRight, FaSearch } from "react-icons/fa";
 import FAQ from "../components/about/FAQ";
+import { NavLink } from "react-router-dom";
+import ProductCard from "../components/cards/productCard";
 
 const Shop = () => {
   const { ref: heroRef, isInView: heroInView } = useInView(0.3, true);
@@ -213,59 +215,18 @@ const Shop = () => {
           </motion.div>
         </div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={productsInView ? "visible" : "hidden"}
-          className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-6"
-        >
-          {products.map((product) => (
-            <motion.div
-              key={product.id}
-              variants={itemVariants}
-              whileHover={{
-                y: -5,
-                boxShadow: "0 10px 25px rgba(227, 151, 18, 0.3)",
-              }}
-              className="bg-gray-900 rounded-lg overflow-hidden transition-all"
-            >
-              <motion.img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-36 sm:h-56 md:h-64 object-cover object-center"
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.3 }}
-              />
-              <div className="p-3 md:p-4">
-                <h3 className="text-base md:text-lg font-semibold">
-                  {product.name}
-                </h3>
-                <p className="text-gray-400 text-xs md:text-sm mt-1 truncate">
-                  {product.description}
-                </p>
-                <p className="text-[#E39712] font-bold mt-2 text-lg md:text-xl">
-                  {product.price}
-                </p>
-                <div className="mt-3 md:mt-4 grid grid-cols-2 gap-1 md:gap-2">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="bg-[#E39712] text-black font-bold py-1 md:py-2 px-1 md:px-3 rounded hover:bg-[#c17e0f] transition-colors text-xs md:text-sm"
-                  >
-                    Add to Cart
-                  </motion.button>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="bg-transparent border border-[#E39712] text-[#E39712] font-bold py-1 md:py-2 px-1 md:px-3 rounded hover:bg-[#E39712]/10 transition-colors text-xs md:text-sm"
-                  >
-                    Save Later
-                  </motion.button>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+        <NavLink to={"/products-details"}>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate={productsInView ? "visible" : "hidden"}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6"
+          >
+            {products.map((product) => (
+              <ProductCard product={product} />
+            ))}
+          </motion.div>
+        </NavLink>
       </motion.div>
 
       <motion.div

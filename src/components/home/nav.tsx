@@ -1,4 +1,4 @@
-import { FaBars, FaTimes } from "react-icons/fa";
+import { FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { motion, useAnimation, AnimatePresence } from "framer-motion";
 import MythosSidebar from "./sidebar";
@@ -18,10 +18,19 @@ const MythosHeader = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isAssessmentsDropdownOpen, setIsAssessmentsDropdownOpen] =
+    useState(false);
   const navigate = useNavigate();
   const [lastScrollY, setLastScrollY] = useState(0);
   const controls = useAnimation();
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const assessmentItems = [
+    { name: "Intelligence", path: "" },
+    { name: "Astrology", path: "/assessments/planet" },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,8 +40,7 @@ const MythosHeader = () => {
         setIsScrolled(true);
         if (currentScrollY > lastScrollY) {
           controls.start({ y: "-100%", transition: { duration: 0.3 } });
-        }
-        else {
+        } else {
           controls.start({ y: 0, transition: { duration: 0.3 } });
         }
       } else {
@@ -53,6 +61,29 @@ const MythosHeader = () => {
       searchInputRef.current.focus();
     }
   }, [isSearchOpen]);
+
+  // Handle hover interactions
+  const handleMouseEnter = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+    setIsAssessmentsDropdownOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    hoverTimeoutRef.current = setTimeout(() => {
+      setIsAssessmentsDropdownOpen(false);
+    }, 150); // Small delay to prevent flickering
+  };
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -102,14 +133,74 @@ const MythosHeader = () => {
                 key={index}
                 className="relative font-bold text-sm tracking-[1.5px] group"
               >
-                <Link
-                  to={text === "HOME" ? "/" : `/${text.toLowerCase()}`}
-                  className="relative flex items-center gap-3"
-                >
-                  <img src="/assets/icons/star.png" />
-                  {text === "ABOUT-US" ? "ABOUT" : text}
-                  <span className="absolute left-1/2 -bottom-2 h-[2px] w-0 bg-gray-500 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
-                </Link>
+                {text === "ASSESSMENTS" ? (
+                  <div
+                    className="relative"
+                    ref={dropdownRef}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    <div className="relative flex items-center gap-3 cursor-pointer">
+                      <img src="/assets/icons/star.png" alt="star" />
+                      {text}
+                      <motion.div
+                        animate={{
+                          rotate: isAssessmentsDropdownOpen ? 180 : 0,
+                        }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <FaChevronDown className="text-xs ml-1" />
+                      </motion.div>
+                      <span className="absolute left-1/2 -bottom-2 h-[2px] w-0 bg-gray-500 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
+                    </div>
+
+                    <AnimatePresence>
+                      {isAssessmentsDropdownOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                          transition={{ duration: 0.2, ease: "easeOut" }}
+                          className="absolute top-full left-0 mt-2 w-48 bg-black border border-gray-700 rounded-lg shadow-2xl overflow-hidden z-[60]"
+                        >
+                          <div className="py-2">
+                            {assessmentItems.map((item, itemIndex) => (
+                              <motion.div
+                                key={item.name}
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: itemIndex * 0.05 }}
+                              >
+                                <Link
+                                  to={item.path}
+                                  className="block px-4 py-3 text-white hover:bg-[#E39712] hover:text-black transition-all duration-200 text-sm font-medium"
+                                >
+                                  <div className="flex items-center gap-2">
+                                    <img
+                                      src="/assets/icons/star.png"
+                                      alt="star"
+                                      className="w-3 h-3"
+                                    />
+                                    {item.name}
+                                  </div>
+                                </Link>
+                              </motion.div>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <Link
+                    to={text === "HOME" ? "/" : `/${text.toLowerCase()}`}
+                    className="relative flex items-center gap-3"
+                  >
+                    <img src="/assets/icons/star.png" alt="star" />
+                    {text === "ABOUT-US" ? "ABOUT" : text}
+                    <span className="absolute left-1/2 -bottom-2 h-[2px] w-0 bg-gray-500 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
+                  </Link>
+                )}
               </li>
             ))}
           </ul>
