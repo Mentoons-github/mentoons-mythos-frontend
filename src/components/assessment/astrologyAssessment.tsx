@@ -36,7 +36,7 @@ const AstrologyAssessment = () => {
   ];
 
   return (
-    <div className="px-6 sm:px-10 md:px-15 lg:px-20 xl:px-25 py-10 xl:py-15 bg-white">
+    <div className="px-2 sm:px-10 md:px-15 lg:px-20 xl:px-25 py-10 xl:py-15 bg-white">
       <motion.h1
         ref={titleRef.ref}
         initial={{ opacity: 0, y: -20 }}
@@ -54,11 +54,11 @@ const AstrologyAssessment = () => {
             <motion.div
               key={index}
               ref={itemsRef[index].ref}
-              initial={{ opacity: 0, x: index % 2 === 0 ? -100 : 100 }}
+              initial={{ opacity: 0, y: 50 }}
               animate={
                 itemsRef[index].isInView
-                  ? { opacity: 1, x: 0 }
-                  : { opacity: 0, x: index % 2 === 0 ? -100 : 100 }
+                  ? { opacity: 1, y: 0 }
+                  : { opacity: 0, y: 50 }
               }
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="relative flex flex-col xl:flex-row items-center xl:items-end mb-16 xl:mb-20 w-full"

@@ -21,7 +21,7 @@ const Problems = () => {
   return (
     <div className="bg-[#1A1D3B] p-4 md:p-6 pb-12 md:pb-24">
       <motion.h2
-        className="text-3xl font-semibold text-star text-[#E39712] tracking-widest px-12 pb-12 md:text-4xl lg:text-5xl"
+        className="text-2xl font-semibold text-[#E39712] tracking-widest md:px-12 pb-8 md:pb-12 md:text-4xl lg:text-5xl"
         initial={{ opacity: 0, y: -30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}

@@ -7,7 +7,7 @@ const GroupsSunshineCardSection = () => {
     <div className="bg-black px-4 py-16 md:px-6">
       <div className="">
         <motion.h2
-          className="text-5xl font-semibold text-start text-[#e39712] mb-16 px-24"
+          className="text-2xl md:text-5xl font-semibold text-start text-[#e39712] mb-8 md:mb-16  md:px-24"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -17,7 +17,7 @@ const GroupsSunshineCardSection = () => {
           Reach out to individuals who share your BIRTH sign.
         </motion.h2>
         <motion.div
-          className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3  w-[85%] mx-auto"
+          className="grid gap-2 md:gap-8 grid-cols-2 md:grid-cols-3  md:w-[85%] mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, staggerChildren: 0.1 }}
@@ -27,7 +27,7 @@ const GroupsSunshineCardSection = () => {
           {SUNSHINE.map((item, index) => (
             <Link to={`/groups/${item.name.toLowerCase()}`} key={item.id}>
               <motion.div
-                className={`group relative rounded-3xl overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl h-[450px] w-full`}
+                className={`group relative rounded-3xl overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl min-h-[320px] md:min-h-[450px] h-auto w-full py-2`}
                 style={{ backgroundColor: item.color }}
                 initial={{ opacity: 0, y: 50 }}
                 viewport={{ once: true, amount: 0.1 }}
@@ -48,7 +48,7 @@ const GroupsSunshineCardSection = () => {
                 />
                 {/* Main Illustration */}
                 <motion.div
-                  className="flex items-center justify-center mt-8"
+                  className="flex items-center justify-center md:mt-8"
                   initial={{ scale: 0.8, opacity: 0 }}
                   viewport={{ once: true }}
                   whileInView={{ scale: 1, opacity: 1 }}
@@ -57,13 +57,13 @@ const GroupsSunshineCardSection = () => {
                   <img
                     src={item.imageUrl}
                     alt={item.name}
-                    className="object-contain w-64 h-64 transition-transform duration-300 transform group-hover:scale-110"
+                    className="object-contain w-48 h-48 md:w-64 md:h-64 transition-transform duration-300 transform group-hover:scale-110"
                   />
                 </motion.div>
 
                 {/* Content Container */}
                 <motion.div
-                  className="flex items-start justify-start gap-4 p-8"
+                  className="flex items-start justify-start gap-1 md:gap-2 md:p-8 mt-3 md:mt-0"
                   initial={{ y: 20, opacity: 0 }}
                   viewport={{ once: true }}
                   whileInView={{ y: 0, opacity: 1 }}
@@ -71,7 +71,7 @@ const GroupsSunshineCardSection = () => {
                 >
                   {/* Zodiac Symbol */}
                   <motion.div
-                    className="mb-4"
+                    className=" flex-shrink-0 mt-1 md:mt-2"
                     initial={{ rotate: -10, opacity: 0 }}
                     viewport={{ once: true }}
                     whileInView={{ rotate: 0, opacity: 1 }}
@@ -80,14 +80,14 @@ const GroupsSunshineCardSection = () => {
                     <img
                       src={item.zodiacSign}
                       alt={`${item.name} symbol`}
-                      className="object-contain w-12 h-12 opacity-90"
+                      className="object-contain w-full h-full opacity-90 "
                     />
                   </motion.div>
 
                   <div className="flex flex-col gap-1">
                     {/* Title */}
                     <motion.h3
-                      className="text-3xl font-bold text-white"
+                      className="text-xl md:text-3xl font-bold text-white"
                       initial={{ x: -20, opacity: 0 }}
                       viewport={{ once: true }}
                       whileInView={{ x: 0, opacity: 1 }}
@@ -98,7 +98,7 @@ const GroupsSunshineCardSection = () => {
 
                     {/* Description */}
                     <motion.p
-                      className="text-lg text-white/90 line-clamp-2"
+                      className=" md:text-lg text-white/90 line-clamp-2"
                       initial={{ opacity: 0 }}
                       viewport={{ once: true }}
                       whileInView={{ opacity: 1 }}

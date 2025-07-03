@@ -11,7 +11,7 @@ const HeroSection = () => {
         transition={{ duration: 0.8 }}
       >
         <motion.h1
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-[#E39712] text-center py-6 md:py-10"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-[#E39712] py-6 md:py-10"
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -19,7 +19,7 @@ const HeroSection = () => {
           ABOUT MENTOONS MYTHOS
         </motion.h1>
         <motion.p
-          className="pb-8 text-lg tracking-wide text-center text-white md:pb-12 sm:text-xl md:text-2xl md:tracking-widest"
+          className="pb-8 text-lg tracking-wide text-white md:pb-12 sm:text-xl md:text-2xl md:tracking-widest"
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.4 }}
