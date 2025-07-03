@@ -38,7 +38,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
         transition={{ duration: 0.3 }}
       />
       <div className="p-3 md:p-4">
-        <h3 className="text-base md:text-lg font-semibold">{product.name}</h3>
+        <h3 className="text-base md:text-lg font-semibold text-white">
+          {product.name}
+        </h3>
         <p className="text-gray-400 text-xs md:text-sm mt-1 truncate">
           {product.description}
         </p>
