@@ -2,11 +2,10 @@ import { motion } from "framer-motion";
 
 const CreateGroupSection = () => {
   return (
-    <div className="flex flex-col md:flex-row items-start justify-between gap-8 bg-white bg-[url('/assets/background/section/stars_background.png')] bg-center bg-cover bg-no-repeat py-10 px-6 sm:px-10">
+    <div className="flex flex-col md:flex-row items-start justify-between gap-8 bg-white bg-[url('/assets/background/section/stars_background.png')] bg-center bg-cover bg-no-repeat py-10 px-10 sm:px-0">
 
-      {/* Image Section */}
       <motion.div
-        className="flex justify-center md:justify-end flex-1 ml-5 md:ml-0"
+        className="flex justify-center flex-1 ml-7 md:ml-0"
         initial={{ opacity: 0, x: -40 }}
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.7 }}
@@ -19,9 +18,8 @@ const CreateGroupSection = () => {
         />
       </motion.div>
 
-      {/* Text and Button Section */}
       <motion.div
-        className="flex flex-col flex-1 items-start justify-center"
+        className="flex flex-col flex-1 items-start justify-center -ml-5 md:ml-10"
         initial={{ opacity: 0, x: 40 }}
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.7, delay: 0.3 }}
@@ -49,7 +47,7 @@ const CreateGroupSection = () => {
         </motion.p>
 
         <motion.button
-          className="flex items-center mx-auto md:mx-0 justify-center gap-3 px-5 py-3 text-base sm:text-lg rounded text-black bg-[#E39712] hover:bg-[#cc810e] transition"
+          className="flex items-center justify-center gap-3 px-5 py-3 text-base sm:text-lg rounded text-black bg-[#E39712] hover:bg-[#cc810e] transition"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.98 }}
           initial={{ opacity: 0 }}

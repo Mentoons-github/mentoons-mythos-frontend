@@ -14,10 +14,10 @@ const MythosCards = ({
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 50 * index }}
+      initial={{ opacity: 0, y: 30 * index }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.2 }}
-      className="w-[99.5%] h-full md:h-[400px] lg:h-[550px] p-4 md:p-8 lg:p-14 flex flex-col items-center justify-between text-center bg-[#E39712]"
+      transition={{ duration: 0.6, delay: index * 0.1 }}
+      className="w-[99.5%] h-[300px] md:h-[400px] lg:h-[550px] p-4 md:p-8 lg:p-14 flex flex-col items-center justify-between text-center bg-[#E39712]"
     >
       <div className="flex items-center justify-center flex-1">
         <img
