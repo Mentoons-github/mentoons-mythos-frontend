@@ -6,7 +6,6 @@ import MusicAndChants from "../components/assessment/musicAndChants";
 import WeAreHiring from "../components/assessment/weAreHiring";
 
 const Assessment = () => {
-  
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -74,9 +73,8 @@ const Assessment = () => {
     <div className="bg-[#1A1D3B]">
       <motion.div
         initial="hidden"
-        whileInView="visible"
+        animate="visible"
         exit="exit"
-        viewport={{ once: false, amount: 0.3 }}
         variants={staggerContainer}
         className="relative p-4 md:p-8 lg:p-15 lg:px-20 space-y-4 md:space-y-5 bg-black bg-[url('/assets/background/section/stars_background.png')]"
       >
@@ -115,9 +113,8 @@ const Assessment = () => {
 
       <motion.div
         initial="hidden"
-        whileInView="visible"
+        animate="visible"
         exit="exit"
-        viewport={{ once: false, amount: 0.1 }}
         variants={sectionVariant}
       >
         <AstrologyAssessment />

@@ -28,8 +28,8 @@ const MythosHeader = () => {
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const assessmentItems = [
-    { name: "Intelligence", path: "" },
-    { name: "Astrology", path: "/assessments/planet" },
+    { name: "psychology", path: "/assessment/psychology" },
+    { name: "Astrology", path: "/assessment/planet" },
   ];
 
   useEffect(() => {
