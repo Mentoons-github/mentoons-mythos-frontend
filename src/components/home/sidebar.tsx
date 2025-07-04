@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes } from "react-icons/fa";
-import { useEffect, useCallback, useRef } from "react";
+import { useEffect, useCallback, useRef, useState } from "react";
 
 interface MythosSidebarProps {
   isOpen: boolean;
@@ -15,6 +15,7 @@ const MythosSidebar = ({
   navItems,
 }: MythosSidebarProps) => {
   const sidebarRef = useRef<HTMLDivElement>(null);
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const handleClickOutside = useCallback(
     (e: MouseEvent) => {
@@ -90,22 +91,76 @@ const MythosSidebar = ({
 
             <nav className="flex-1 flex items-center justify-center">
               <ul className="space-y-8 font-semibold text-2xl md:text-3xl mulish">
-                {navItems.map((item, index) => (
-                  <motion.li
-                    key={index}
-                    whileHover={{ scale: 1.05, x: 10 }}
-                    transition={{ duration: 0.2, ease: "easeOut" }}
-                    className="px-6 py-2 border-l-4 border-transparent hover:border-gray-800"
-                  >
-                    <Link
-                      to={item === "HOME" ? "/" : `/${item.toLowerCase()}`}
-                      className="block transition hover:text-gray-600 focus:outline-none focus:text-gray-600"
-                      onClick={() => setSidebar(false)}
-                    >
-                      {item}
-                    </Link>
-                  </motion.li>
-                ))}
+                {navItems.map((item, index) => {
+                  if (item.toLowerCase() === "assessments") {
+                    return (
+                      <motion.li
+                        key={index}
+                        className="relative px-6 py-2 border-l-4 border-transparent hover:border-gray-800"
+                      >
+                        {/* Toggle Dropdown on Click */}
+                        <span
+                          onClick={() => setDropdownOpen((prev) => !prev)}
+                          className="block cursor-pointer transition hover:text-gray-600 focus:outline-none focus:text-gray-600"
+                        >
+                          {item}
+                        </span>
+
+                        <AnimatePresence>
+                          {isDropdownOpen && (
+                            <motion.ul
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -10 }}
+                              className="absolute left-0 mt-2 bg-white shadow-md rounded-md py-2 w-48 z-50"
+                            >
+                              <li className="px-4 py-2 hover:bg-gray-100">
+                                <Link
+                                  to="/assessment/psychology"
+                                  onClick={() => {
+                                    setSidebar(false);
+                                    setDropdownOpen(false);
+                                  }}
+                                >
+                                  Psychology
+                                </Link>
+                              </li>
+                              <li className="px-4 py-2 hover:bg-gray-100">
+                                <Link
+                                  to="/assessment/planet"
+                                  onClick={() => {
+                                    setSidebar(false);
+                                    setDropdownOpen(false);
+                                  }}
+                                >
+                                  Astrology
+                                </Link>
+                              </li>
+                            </motion.ul>
+                          )}
+                        </AnimatePresence>
+                      </motion.li>
+                    );
+                  } else {
+                    // Normal nav item
+                    return (
+                      <motion.li
+                        key={index}
+                        whileHover={{ scale: 1.05, x: 10 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        className="px-6 py-2 border-l-4 border-transparent hover:border-gray-800"
+                      >
+                        <Link
+                          to={item === "HOME" ? "/" : `/${item.toLowerCase()}`}
+                          className="block transition hover:text-gray-600 focus:outline-none focus:text-gray-600"
+                          onClick={() => setSidebar(false)}
+                        >
+                          {item}
+                        </Link>
+                      </motion.li>
+                    );
+                  }
+                })}
               </ul>
             </nav>
           </motion.aside>
