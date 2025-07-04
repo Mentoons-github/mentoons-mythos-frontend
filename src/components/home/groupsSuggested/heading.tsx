@@ -19,13 +19,13 @@ const Heading = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8 }}
-      className="flex flex-col-reverse lg:flex-row justify-between items-start gap-5 w-full"
+      className="flex flex-col-reverse lg:flex-row justify-between items-start md:gap-60 w-full"
     >
       <motion.div
         initial={{ opacity: 0, x: -50 }}
         animate={isInView ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 0.8 }}
-        className="w-full lg:w-3/4"
+        className="w-full "
       >
         <h1 className="montserrat font-bold text-[32px] sm:text-[40px] tracking-wider text-[#1A1D3B]">
           GROUPS SUGGESTED FOR YOU
@@ -63,7 +63,7 @@ const Heading = () => {
         initial={{ opacity: 0, x: 50 }}
         animate={isInView ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 0.8 }}
-        className="space-y-3 w-full lg:w-auto lg:mr-5 lg:text-left"
+        className="space-y-3 w-full lg:w-auto lg:mr-5 lg:text-left "
       >
         <h2 className="mulish text-xs sm:text-sm tracking-wider">
           FOR MEMBERS ONLY

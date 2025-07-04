@@ -25,7 +25,7 @@ const GroupsSunshineCardSection = () => {
           whileInView={{ opacity: 1 }}
         >
           {SUNSHINE.map((item, index) => (
-            <Link to={`/groups/${item.name.toLowerCase()}`} key={item.id}>
+            <Link to={`/groups/${item.id}`} key={item.id}>
               <motion.div
                 className={`group relative rounded-3xl overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl min-h-[320px] md:min-h-[450px] h-auto w-full py-2`}
                 style={{ backgroundColor: item.color }}

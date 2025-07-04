@@ -30,3 +30,13 @@ export interface News {
   name?: string;
   img?: string;
 }
+
+export interface Sunshine {
+  id:string,
+  rashi:string,
+  name:string,
+  description:string,
+  imageUrl:string,
+  zodiacSign:string,
+  color:string
+}
