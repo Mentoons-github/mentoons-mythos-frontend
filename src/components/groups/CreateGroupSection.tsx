@@ -20,7 +20,7 @@ const CreateGroupSection = () => {
 
       <motion.div
         className="flex flex-col flex-1 items-start justify-center -ml-5 md:ml-10"
-        initial={{ opacity: 0, x: 40 }}
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.7, delay: 0.3 }}
         viewport={{ once: true }}
