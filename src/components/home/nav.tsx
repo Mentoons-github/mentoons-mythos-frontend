@@ -237,9 +237,10 @@ const MythosHeader = () => {
               </span>
             </motion.button>
             <motion.button
-              whileHover={{ scale: 1 }}
+              whileHover={{ scale: 1.1 }}
               transition={{ duration: 0.2, ease: "easeIn" }}
               aria-label="View more"
+              onClick={() => navigate("/wishlist")}
               className="hidden md:flex justify-center items-center rounded-full w-10 h-10 sm:w-12 sm:h-12 outline-dashed outline-2 outline-gray-600 cursor-pointer"
             >
               <img
