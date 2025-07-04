@@ -43,16 +43,29 @@ const ProductDetail = () => {
   ];
 
   return (
-    <div className="max-w-7xl p-10 mx-auto">
-      <div className="flex justify-between items-start gap-x-10">
-        <ProductImages />
-        <Details />
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-6 sm:py-8 lg:py-10">
+      {/* Main Product Section */}
+      <div className="flex flex-col lg:flex-row justify-between items-start gap-6 lg:gap-10">
+        <div className="w-full lg:w-1/2">
+          <ProductImages />
+        </div>
+        <div className="w-full lg:w-1/2">
+          <Details />
+        </div>
       </div>
-      <div className="mt-30 space-y-4">
-        <h1 className="text-2xl font-bold font-montserrat">Related Items :</h1>
+
+      {/* Related Items Section */}
+      <div className="mt-16 sm:mt-20 lg:mt-30 space-y-4 sm:space-y-6">
+        <h1 className="text-xl sm:text-2xl font-bold font-montserrat">
+          Related Items :
+        </h1>
         <ProductSlider products={products} />
       </div>
-      <Review />
+
+      {/* Reviews Section */}
+      <div className="mt-12 sm:mt-16 lg:mt-20">
+        <Review />
+      </div>
     </div>
   );
 };
