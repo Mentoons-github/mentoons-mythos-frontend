@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
-
 const Pagination = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 12;
+  const totalPages = 32;
 
   const getVisiblePages = (): (number | string)[] => {
     const delta = 2;
@@ -36,7 +35,7 @@ const Pagination = () => {
     return rangeWithDots;
   };
 
-  const handlePageChange: (page: number) => void = (page) => {
+  const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
@@ -65,8 +64,8 @@ const Pagination = () => {
   };
 
   return (
-    <div className="flex items-center justify-center bg-white py-5">
-      <div className="flex items-center space-x-2">
+    <div className="flex flex-wrap items-center justify-center bg-white py-4 px-2 sm:px-4">
+      <div className="flex flex-wrap items-center justify-center gap-2">
         {/* Previous Button */}
         <motion.button
           variants={buttonVariants}
@@ -76,8 +75,8 @@ const Pagination = () => {
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
           className={`
-            flex items-center justify-center w-10 h-10 border-2 border-black rounded-lg
-            transition-colors duration-200 group
+            flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 border-2 border-black rounded-md
+            transition-colors duration-200
             ${
               currentPage === 1
                 ? "opacity-50 cursor-not-allowed bg-gray-100"
@@ -89,12 +88,12 @@ const Pagination = () => {
             animate={{ x: currentPage === 1 ? 0 : [-2, 0] }}
             transition={{ duration: 0.3 }}
           >
-            <ChevronLeft size={16} />
+            <ChevronLeft size={14} className="sm:size-4" />
           </motion.div>
         </motion.button>
 
         {/* Page Numbers */}
-        <div className="flex items-center space-x-1">
+        <div className="flex flex-wrap items-center justify-center gap-1">
           <AnimatePresence mode="wait">
             {getVisiblePages().map((page, index) => (
               <motion.div
@@ -106,8 +105,11 @@ const Pagination = () => {
                 transition={{ duration: 0.2, delay: index * 0.05 }}
               >
                 {page === "..." ? (
-                  <div className="flex items-center justify-center w-10 h-10">
-                    <MoreHorizontal size={16} className="text-black" />
+                  <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10">
+                    <MoreHorizontal
+                      size={14}
+                      className="text-black sm:size-4"
+                    />
                   </div>
                 ) : (
                   <motion.button
@@ -120,11 +122,11 @@ const Pagination = () => {
                     whileTap="tap"
                     onClick={() => handlePageChange(page as number)}
                     className={`
-                      relative w-10 h-10 border-2 border-black rounded-lg font-medium
+                      relative w-8 h-8 sm:w-10 sm:h-10 text-xs sm:text-sm border-2 border-black rounded-md font-medium
                       transition-all duration-200 overflow-hidden
                       ${
                         currentPage === page
-                          ? "bg-black text-white shadow-lg"
+                          ? "bg-black text-white shadow-md"
                           : "bg-white text-black hover:bg-black hover:text-white"
                       }
                     `}
@@ -136,8 +138,6 @@ const Pagination = () => {
                     >
                       {page}
                     </motion.span>
-
-                    {/* Active page indicator */}
                     {currentPage === page && (
                       <motion.div
                         className="absolute inset-0 bg-black"
@@ -163,8 +163,8 @@ const Pagination = () => {
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           className={`
-            flex items-center justify-center w-10 h-10 border-2 border-black rounded-lg
-            transition-colors duration-200 group
+            flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 border-2 border-black rounded-md
+            transition-colors duration-200
             ${
               currentPage === totalPages
                 ? "opacity-50 cursor-not-allowed bg-gray-100"
@@ -176,7 +176,7 @@ const Pagination = () => {
             animate={{ x: currentPage === totalPages ? 0 : [2, 0] }}
             transition={{ duration: 0.3 }}
           >
-            <ChevronRight size={16} />
+            <ChevronRight size={14} className="sm:size-4" />
           </motion.div>
         </motion.button>
       </div>

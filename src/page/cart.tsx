@@ -94,6 +94,8 @@ const Cart = () => {
           <OrderSummary cartItems={cartItems} />
         </div>
       </div>
+
+      {/* Pagination */}
       <Pagination />
     </div>
   );
