@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { registerApi } from "./authApi";
-import { RegisterPayload, RegisterResponse } from "../../types/redux/authInterfaces";
+import { loginApi, registerApi } from "./authApi";
+import { LoginPayload, LoginResponse, RegisterPayload, RegisterResponse } from "../../types/redux/authInterfaces";
 
 
 export const registerThunk = createAsyncThunk<
@@ -22,14 +22,14 @@ export const registerThunk = createAsyncThunk<
 );
 
 export const loginThunk = createAsyncThunk<
-  RegisterResponse,   
-  RegisterPayload,                
+  LoginResponse,   
+  LoginPayload,                
   { rejectValue: string }      
 >(
-  "auth/register",
+  "auth/login",
   async (userData, { rejectWithValue }) => {
     try {
-      const res = await registerApi(userData);
+      const res = await loginApi(userData);
       return res.data; 
     } catch (error:any) {
       return rejectWithValue(
