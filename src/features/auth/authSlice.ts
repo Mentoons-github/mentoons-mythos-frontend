@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerThunk } from "./authThunk";
-import { RegisterResponse } from "../../types/redux/authInterfaces";
+import { loginThunk, registerThunk } from "./authThunk";
 
 interface Auth {
-    message: RegisterResponse |string,
+    message: string,
+    token:string | null,
+    userId:string | null,
     success: boolean,
     loading:boolean,
     error: string | null | undefined
@@ -11,6 +12,8 @@ interface Auth {
 
 const initialState:Auth = {
     message: "",
+    token:null,
+    userId:null,
     success:false,
     loading: false,
     error: null,
@@ -24,7 +27,9 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.message = "";
-      state.success = false
+      state.success = false;
+      state.token = null;
+      state.userId = null;
     },
   },
   extraReducers:(builder)=> {
@@ -46,14 +51,22 @@ const authSlice = createSlice({
         })
 
         //login
-        // .addCase(loginThunk.pending, (state) => {
-        //     state.loading = true;
-        //     state.error = null
-        // })
-        // .addCase(loginThunk.fulfilled, (state, action) => {
-        //     state.loading = false;
-        //     state
-        // })
+        .addCase(loginThunk.pending, (state) => {
+            state.loading = true;
+            state.error = null
+        })
+        .addCase(loginThunk.fulfilled, (state, action) => {
+            state.loading = false;
+            state.error = null;
+            state.message = action.payload.message;
+            state.token = action.payload.user.accessToken;
+            state.userId = action.payload.user._id;
+            state.success = true
+        })
+        .addCase(loginThunk.rejected,(state,action)=>{
+            state.loading = false;
+            state.error = action.payload
+        })
   }
 });
 
