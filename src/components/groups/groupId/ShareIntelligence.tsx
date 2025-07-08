@@ -31,7 +31,7 @@ const floatImage = {
   },
 };
 
-const ShareIntelligence = ({ name }: { name: string | undefined }) => {
+const ShareIntelligence = ({ name, isIntelligence }: { name: string | undefined, isIntelligence :boolean}) => {
   return (
     <motion.div
       className="flex flex-col md:flex-row items-center justify-between gap-10 px-6 md:px-32 py-14 bg-white"
@@ -48,7 +48,7 @@ const ShareIntelligence = ({ name }: { name: string | undefined }) => {
           className="text-xl md:text-4xl font-bold leading-snug"
           variants={fadeInUp}
         >
-          Share The {name?.toUpperCase()} Group With Your Friends & Families!
+          Share The {name?.toUpperCase()} {isIntelligence && "Intelligence"} Group With Your Friends & Families!
         </motion.h1>
         <motion.p
           className="text-lg leading-relaxed"

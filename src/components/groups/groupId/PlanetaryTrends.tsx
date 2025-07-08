@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { BLOGS_FOR_PLANET } from "../../../constants/sunshine";
 
-const PlaneteryTrends = () => {
+const PlaneteryTrends = ({isIntelligence} :{isIntelligence:boolean}) => {
   const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
   visible: {
@@ -43,7 +43,7 @@ const floatImage = {
           className="mt-4 text-xl text-center md:text-5xl font-bold text-[#FEE898]"
           variants={fadeInUp}
         >
-          Planetary Trends in Aries
+          {isIntelligence ? "Topics To Discuss" : "Planetary Trends in Aries" }
         </motion.h1>
         <div className="space-y-">
           {BLOGS_FOR_PLANET.map((post, ind) => (
