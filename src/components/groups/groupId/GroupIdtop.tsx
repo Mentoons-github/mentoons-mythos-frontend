@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Sunshine } from "../../../types/interface";
+import { Intelligence, Sunshine } from "../../../types/interface";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -31,7 +31,13 @@ const floatImage = {
   },
 };
 
-const GroupIdtop = ({ details }: { details: Sunshine | undefined }) => {
+const GroupIdtop = ({
+  details,
+  isIntelligence,
+}: {
+  details: Sunshine | Intelligence | undefined;
+  isIntelligence: boolean;
+}) => {
   if (!details) {
     return (
       <div className="px-10 py-20 text-center text-red-500 font-semibold">
@@ -48,19 +54,28 @@ const GroupIdtop = ({ details }: { details: Sunshine | undefined }) => {
       viewport={{ once: false, amount: 0.1 }}
       variants={containerVariants}
     >
-      <motion.div
-        className="space-y-4 max-w-xl"
-        variants={containerVariants}
-      >
+      <motion.div className="space-y-4 max-w-xl" variants={containerVariants}>
         <motion.div className="space-y-2">
-          <motion.h1
-          className="text-4xl md:text-7xl font-bold "
+          {!isIntelligence ? (
+            <motion.h1
+              className="text-4xl md:text-7xl font-bold "
+              variants={fadeInUp}
+            >
+              {(details as Sunshine).rashi}
+            </motion.h1>
+          ) : (
+            <motion.h1
+              className="text-4xl md:text-7xl font-bold "
+              variants={fadeInUp}
+            >
+              Welcome, Nupur
+            </motion.h1>
+          )}
+          <motion.h3
+            className="text-xl md:text-3xl font-semibold text-red-600"
             variants={fadeInUp}
           >
-            {details.rashi}
-          </motion.h1>
-          <motion.h3 className="text-xl md:text-3xl font-semibold text-red-600" variants={fadeInUp}>
-            The {details.name} Group
+            The {details.name} {isIntelligence && "Intelligence"} Group
           </motion.h3>
         </motion.div>
         <motion.p
@@ -71,13 +86,13 @@ const GroupIdtop = ({ details }: { details: Sunshine | undefined }) => {
         </motion.p>
       </motion.div>
 
-      <motion.div >
+      <motion.div>
         <motion.img
-        src={details.imageUrl}
-        alt={details.name}
-        className="w-[350px] h-auto object-contain"
-        variants={floatImage}
-      />
+          src={details.imageUrl}
+          alt={details.name}
+          className="w-[350px] h-auto object-contain"
+          variants={floatImage}
+        />
       </motion.div>
     </motion.div>
   );

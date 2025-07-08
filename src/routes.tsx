@@ -4,6 +4,9 @@ import MythosLayout from "./layout/mythos";
 import NotFound from "./components/NotFound";
 import Loader from "./components/loader/Loader";
 import Rashi from "./page/group/Rashi";
+import ScrollToTop from "./components/ScrollToTop";
+import Register from "./page/auth/Register";
+import Login from "./page/auth/Login";
 
 const MythosHome = lazy(() => import("./page/home"));
 const MythosAbout = lazy(() => import("./page/about"));
@@ -25,7 +28,10 @@ const AppRouter = () => {
   return (
     <Router>
       <Suspense fallback={<Loader />}>
+      <ScrollToTop/>
         <Routes>
+          <Route path="register" element={<Register/>} />
+          <Route path="login" element={<Login/>}/>
           <Route path="/" element={<MythosLayout />}>
             <Route index element={<MythosHome />} />
             <Route path="about-us" element={<MythosAbout />} />
