@@ -40,3 +40,12 @@ export interface Sunshine {
   zodiacSign:string,
   color:string
 }
+
+export interface Intelligence {
+  id:string,
+  name:string,
+  description:string,
+  imageUrl:string,
+  zodiacSign:string,
+  color:string
+}

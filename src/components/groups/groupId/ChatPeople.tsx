@@ -32,7 +32,7 @@ const floatImage = {
   },
 };
 
-const ChatPeople = () => {
+const ChatPeople = ({isIntelligence}:{isIntelligence:boolean}) => {
   return (
     <motion.div
       className="px-6 py-10 md:px-20 bg-white"
@@ -45,8 +45,8 @@ const ChatPeople = () => {
         className="text-center mb-10"
         variants={fadeInUp}
       >
-        <motion.h1 className="text-2xl sm:text-3xl font-bold tracking-wider text-[#1A1D3B] max-w-xl mx-auto" variants={fadeInUp}>
-          CHAT WITH PEOPLE HAVING THE SAME RASHI AS YOU!
+        <motion.h1 className="text-2xl sm:text-3xl font-bold tracking-wider  text-[#1A1D3B] max-w-xl mx-auto" variants={fadeInUp}>
+          CHAT WITH PEOPLE HAVING THE SAME {isIntelligence ? "INTELLIGENCE" : "RASHI" } AS YOU!
         </motion.h1>
       </motion.div>
 
