@@ -14,15 +14,12 @@ const Login = () => {
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
-  const { error, loading, message, success, token, userId } = useAppSelector(
-    (state) => state.auth
-  );
+  const { error, loading, message, success, accessToken, userId } =
+    useAppSelector((state) => state.auth);
 
-  console.log(token, userId);
-
+  console.log(accessToken, userId);
   useEffect(() => {
     if (success) {
-      // localStorage.setItem("token", token);
       alert(message);
       navigate("/");
       dispatch(resetAuthState());
