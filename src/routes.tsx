@@ -3,11 +3,11 @@ import { lazy, Suspense } from "react";
 import MythosLayout from "./layout/mythos";
 import NotFound from "./components/NotFound";
 import Loader from "./components/loader/Loader";
-import PsychologyAssessment from "./page/assessments/psychologyAssessment";
 import Rashi from "./page/group/Rashi";
 import ScrollToTop from "./components/ScrollToTop";
 import Register from "./page/auth/Register";
 import Login from "./page/auth/Login";
+import OAuthResult from "./page/auth/OAuth";
 
 const MythosHome = lazy(() => import("./page/home"));
 const MythosAbout = lazy(() => import("./page/about"));
@@ -20,33 +20,39 @@ const MythosDetails = lazy(() => import("./page/details"));
 const MythosAssessments = lazy(() => import("./page/assessment"));
 const MythosProductDetail = lazy(() => import("./page/productDetail"));
 const MythosWishList = lazy(() => import("./page/wishlist"));
+const MythosHiring = lazy(() => import("./page/hiring"));
+const MythosPsychologyAssessments = lazy(
+  () => import("./page/assessments/psychologyAssessment")
+);
 
 const AppRouter = () => {
   return (
     <Router>
       <Suspense fallback={<Loader />}>
-      <ScrollToTop/>
+        <ScrollToTop />
         <Routes>
-          <Route path="register" element={<Register/>} />
-          <Route path="login" element={<Login/>}/>
+          <Route path="register" element={<Register />} />
+          <Route path="login" element={<Login />} />
+          <Route path="oauth-result" element={<OAuthResult />} />
           <Route path="/" element={<MythosLayout />}>
             <Route index element={<MythosHome />} />
             <Route path="about-us" element={<MythosAbout />} />
             <Route path="blog" element={<MythosBlogs />} />
             <Route path="groups" element={<MythosGroups />} />
-            <Route path="groups/:groupId" element={<Rashi/>}/>
+            <Route path="groups/:groupId" element={<Rashi />} />
             <Route path="*" element={<NotFound />} />
             <Route path="shop" element={<MythosShop />} />
             <Route path="quiz" element={<MythosQuiz />} />
             <Route path="assessment/planet" element={<MythosAssessments />} />
-            <Route
-              path="assessment/psychology"
-              element={<PsychologyAssessment />}
-            />
             <Route path="cart" element={<MythosCart />} />
             <Route path="details" element={<MythosDetails />} />
             <Route path="products-details" element={<MythosProductDetail />} />
             <Route path="wishlist" element={<MythosWishList />} />
+            <Route path="hiring" element={<MythosHiring />} />
+            <Route
+              path="assessment/psychology"
+              element={<MythosPsychologyAssessments />}
+            />
           </Route>
         </Routes>
       </Suspense>
