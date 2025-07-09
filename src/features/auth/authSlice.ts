@@ -3,7 +3,7 @@ import { loginThunk, registerThunk } from "./authThunk";
 
 interface Auth {
     message: string,
-    token:string | null,
+    accessToken:string | null,
     userId:string | null,
     success: boolean,
     loading:boolean,
@@ -12,7 +12,7 @@ interface Auth {
 
 const initialState:Auth = {
     message: "",
-    token:null,
+    accessToken:localStorage.getItem("token"),
     userId:null,
     success:false,
     loading: false,
@@ -28,7 +28,7 @@ const authSlice = createSlice({
       state.error = null;
       state.message = "";
       state.success = false;
-      state.token = null;
+      state.accessToken = null;
       state.userId = null;
     },
   },
@@ -56,11 +56,16 @@ const authSlice = createSlice({
             state.error = null
         })
         .addCase(loginThunk.fulfilled, (state, action) => {
+
+            // const {accessToken, _id} = action.payload.user
+
+            //  localStorage.setItem("token", accessToken);
+
             state.loading = false;
             state.error = null;
             state.message = action.payload.message;
-            state.token = action.payload.user.accessToken;
-            state.userId = action.payload.user._id;
+            // state.accessToken = accessToken;
+            // state.userId = _id;
             state.success = true
         })
         .addCase(loginThunk.rejected,(state,action)=>{
