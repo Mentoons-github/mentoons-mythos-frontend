@@ -8,15 +8,19 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { loginThunk } from "../../features/auth/authThunk";
 import { useEffect } from "react";
 import { resetAuthState } from "../../features/auth/authSlice";
+import GoogleAuth from "../../components/button/googleAuth";
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const dispatch = useAppDispatch()
-  const {error, loading, message, success, token, userId} = useAppSelector((state) => state.auth)
+  const dispatch = useAppDispatch();
+  const { error, loading, message, success, token, userId } = useAppSelector(
+    (state) => state.auth
+  );
 
-  console.log(token, userId)
-   useEffect(() => {
+  console.log(token, userId);
+
+  useEffect(() => {
     if (success) {
       // localStorage.setItem("token", token);
       alert(message);
@@ -37,7 +41,7 @@ const Login = () => {
     },
     validationSchema: loginSchema,
     onSubmit: (values) => {
-      dispatch(loginThunk(values))
+      dispatch(loginThunk(values));
     },
   });
 
@@ -50,14 +54,23 @@ const Login = () => {
 
       {/* Right side form */}
       <div className="w-1/2 flex items-center justify-center px-20">
-        <form
-          onSubmit={formik.handleSubmit}
-          className="w-full  p-8 "
-        >
-          <h2 className="text-4xl font-bold mb-8  text-gray-800">Login</h2>
+        <form onSubmit={formik.handleSubmit} className="w-full p-8">
+          <h2 className="text-4xl font-bold mb-8 text-gray-800">Login</h2>
+
+          {/* Google Login Button */}
+          <div className="mb-6">
+            <GoogleAuth text="Sign In" />
+          </div>
+
+          {/* OR Divider */}
+          <div className="mb-6 flex items-center">
+            <div className="flex-1 border-t border-gray-300"></div>
+            <span className="px-4 text-gray-500 text-sm">OR</span>
+            <div className="flex-1 border-t border-gray-300"></div>
+          </div>
 
           <Input
-          className="mb-6"
+            className="mb-6"
             label="Email"
             name="email"
             type="email"
@@ -73,7 +86,7 @@ const Login = () => {
           />
 
           <Input
-          className="mb-6"
+            className="mb-6"
             label="Password"
             name="password"
             type="password"

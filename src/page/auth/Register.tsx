@@ -9,12 +9,14 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { registerThunk } from "../../features/auth/authThunk";
 import { resetAuthState } from "../../features/auth/authSlice";
 import { useEffect } from "react";
+import GoogleAuth from "../../components/button/googleAuth";
 
 const Register = () => {
-  const dispatch = useAppDispatch()
-  const {message,loading,error, success} = useAppSelector((state)=>state.auth)
+  const dispatch = useAppDispatch();
+  const { message, loading, error, success } = useAppSelector(
+    (state) => state.auth
+  );
   const navigate = useNavigate();
-
 
   useEffect(() => {
     if (success) {
@@ -24,7 +26,7 @@ const Register = () => {
     }
     if (error) {
       alert(error);
-      console.log(error, "errror");
+      console.log(error, "error");
       dispatch(resetAuthState());
     }
   }, [dispatch, error, message, navigate, success]);
@@ -43,20 +45,37 @@ const Register = () => {
     },
     validationSchema: signupSchema,
     onSubmit: (values) => {
-      dispatch(registerThunk(values))
+      dispatch(registerThunk(values));
       console.log("object", values);
     },
   });
 
   return (
-    <div className="w-full flex h-screen justi">
+    <div className="w-full flex h-screen">
       <div className="w-1/2 flex bg-[#1A1D3B]">
-      <AuthLayout/>
+        <AuthLayout />
       </div>
-      <div className="w-1/2  px-20 py-">
+      <div className="w-1/2 px-20 py-4 overflow-y-auto max-h-screen">
+        <form onSubmit={formik.handleSubmit} className="w-full pt-4 px-8 p-10">
+          <h1 className="text-4xl font-bold mb-5">Register</h1>
 
-        <form onSubmit={formik.handleSubmit} className="mt- w-full pt-4 px-8">
-        <h1 className="text-4xl font-bold mb-5">Register</h1>
+          {/* Google Sign-up Button */}
+          <div className="mb-6">
+            <GoogleAuth text="Sign Up" />
+          </div>
+
+          {/* Divider */}
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-gray-500">
+                Or continue with
+              </span>
+            </div>
+          </div>
+
           <div className="flex gap-3 w-full">
             <Input
               className="flex-1"
