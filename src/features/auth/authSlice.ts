@@ -1,13 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginThunk, registerThunk } from "./authThunk";
+import { loginThunk, registerThunk, sendOtpThunk, verifyOtpThunk } from "./authThunk";
 
 interface Auth {
   message: string;
   accessToken: string | null;
   userId: string | null;
   success: boolean;
+  otpSuccess:boolean;
   loading: boolean;
   error: string | null | undefined;
+  otpError:string | null | undefined;
 }
 
 const initialState: Auth = {
@@ -15,8 +17,10 @@ const initialState: Auth = {
   accessToken: localStorage.getItem("token"),
   userId: null,
   success: false,
+  otpSuccess:false,
   loading: false,
   error: null,
+  otpError:null
 };
 
 const authSlice = createSlice({
@@ -28,6 +32,7 @@ const authSlice = createSlice({
       state.error = null;
       state.message = "";
       state.success = false;
+      state.otpSuccess = false;
       state.accessToken = null;
       state.userId = null;
     },
@@ -70,7 +75,39 @@ const authSlice = createSlice({
       .addCase(loginThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+
+      //sendOtp
+      .addCase(sendOtpThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(sendOtpThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.message = action.payload.message;
+        state.success = true;
+      })
+      .addCase(sendOtpThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      //verifyOtp
+      .addCase(verifyOtpThunk.pending, (state) => {
+        state.loading = true;
+        state.otpError = null;
+      })
+      .addCase(verifyOtpThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.otpError = null;
+        state.message = action.payload.message;
+        state.otpSuccess = true;
+      })
+      .addCase(verifyOtpThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.otpError = action.payload;
+      })
   },
 });
 

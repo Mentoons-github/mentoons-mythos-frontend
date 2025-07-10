@@ -1,10 +1,16 @@
 import * as Yup from "yup";
+import { subYears } from "date-fns";
+
+const today = new Date();
+const minimumDate = subYears(today, 13);
 
 export const signupSchema = Yup.object().shape({
   firstName: Yup.string().required("First Name is required"),
   lastName: Yup.string().required("Last Name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
-  dateOfBirth: Yup.string().required("Date of Birth is required"),
+  dateOfBirth: Yup.date()
+    .max(minimumDate, "You must be at least 13 years old")
+    .required("Date of birth is required"),
   country: Yup.string().required("Country is required"),
   password: Yup.string()
     .min(6, "Password must be at least 6 characters")

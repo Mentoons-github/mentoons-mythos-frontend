@@ -1,10 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { loginApi, registerApi } from "./authApi";
+import { loginApi, registerApi, sendOtpApi, verifyOtpApi } from "./authApi";
 import {
   LoginPayload,
   LoginResponse,
   RegisterPayload,
   RegisterResponse,
+  SendOtpPayload,
+  SendOtpResponse,
+  VerifyOtpPayload,
+  VerifyOtpResponse,
 } from "../../types/redux/authInterfaces";
 
 export const registerThunk = createAsyncThunk<
@@ -32,5 +36,35 @@ export const loginThunk = createAsyncThunk<
     return res.data;
   } catch (error: any) {
     return rejectWithValue(error?.response?.data?.message || "Login Failed");
+  }
+});
+
+export const sendOtpThunk = createAsyncThunk<
+  SendOtpResponse,
+  SendOtpPayload,
+  { rejectValue: string }
+>("auth/send-otp", async (email, { rejectWithValue }) => {
+  try {
+    const res = await sendOtpApi(email);
+    return res.data;
+  } catch (error: any) {
+    return rejectWithValue(
+      error?.response?.data?.message || "Cant Send OTP, Try again"
+    );
+  }
+});
+
+export const verifyOtpThunk = createAsyncThunk<
+  VerifyOtpResponse,
+  VerifyOtpPayload,
+  { rejectValue: string }
+>("auth/verify-otp", async (data, { rejectWithValue }) => {
+  try {
+    const res = await verifyOtpApi(data);
+    return res.data;
+  } catch (error: any) {
+    return rejectWithValue(
+      error?.response?.data?.message || "Cant verify this OTP"
+    );
   }
 });

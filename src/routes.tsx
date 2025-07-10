@@ -8,6 +8,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import Register from "./page/auth/Register";
 import Login from "./page/auth/Login";
 import OAuthResult from "./page/auth/OAuth";
+import Otp from "./page/auth/Otp";
 
 const MythosHome = lazy(() => import("./page/home"));
 const MythosAbout = lazy(() => import("./page/about"));
@@ -35,6 +36,7 @@ const AppRouter = () => {
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
           <Route path="oauth-result" element={<OAuthResult />} />
+          <Route path="verify-otp" element={<Otp/>}/>
           <Route path="/" element={<MythosLayout />}>
             <Route index element={<MythosHome />} />
             <Route path="about-us" element={<MythosAbout />} />

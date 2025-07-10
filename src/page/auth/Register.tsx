@@ -1,4 +1,6 @@
 import { useFormik } from "formik";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { signupSchema } from "../../validation/authValidation";
 import Input from "../../components/ui/Input";
 import AuthButton from "../../components/ui/AuthButton";
@@ -6,22 +8,30 @@ import SelectInput from "../../components/ui/selectInput";
 import { useNavigate } from "react-router-dom";
 import AuthLayout from "./AuthLayout";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { registerThunk } from "../../features/auth/authThunk";
+import { sendOtpThunk } from "../../features/auth/authThunk";
 import { resetAuthState } from "../../features/auth/authSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import GoogleAuth from "../../components/button/googleAuth";
 
 const Register = () => {
+  const [form, setForm] = useState({});
   const dispatch = useAppDispatch();
   const { message, loading, error, success } = useAppSelector(
     (state) => state.auth
   );
   const navigate = useNavigate();
 
+  const today = new Date();
+  const thirteenYearsAgo = new Date(
+    today.getFullYear() - 13,
+    today.getMonth(),
+    today.getDate()
+  );
+
   useEffect(() => {
     if (success) {
       alert(message);
-      navigate("/login");
+      navigate("/verify-otp", { state: { userData: form } });
       dispatch(resetAuthState());
     }
     if (error) {
@@ -29,7 +39,7 @@ const Register = () => {
       console.log(error, "error");
       dispatch(resetAuthState());
     }
-  }, [dispatch, error, message, navigate, success]);
+  }, [dispatch, error, form, message, navigate, success]);
 
   const formik = useFormik({
     initialValues: {
@@ -45,17 +55,18 @@ const Register = () => {
     },
     validationSchema: signupSchema,
     onSubmit: (values) => {
-      dispatch(registerThunk(values));
+      dispatch(sendOtpThunk({ email: values.email }));
+      setForm(values);
       console.log("object", values);
     },
   });
 
   return (
     <div className="w-full flex h-screen">
-      <div className="w-1/2 flex bg-[#1A1D3B]">
+      <div className="w-1/2 hidden md:flex bg-[#1A1D3B]">
         <AuthLayout />
       </div>
-      <div className="w-1/2 px-20 py-4 overflow-y-auto max-h-screen">
+      <div className="w-full md:w-1/2 px-20 py-4 overflow-y-auto max-h-screen">
         <form onSubmit={formik.handleSubmit} className="w-full pt-4 px-8 p-10">
           <h1 className="text-4xl font-bold mb-5">Register</h1>
 
@@ -108,7 +119,7 @@ const Register = () => {
             />
           </div>
 
-          <div className="flex gap-4 w-full">
+          <div className="flex gap-4 w-full ">
             <Input
               className="flex-1"
               label="Email"
@@ -125,20 +136,40 @@ const Register = () => {
               }
             />
 
-            <Input
-              className="flex-1"
-              label="Your Date Of Birth"
-              name="dateOfBirth"
-              type="date"
-              value={formik.values.dateOfBirth}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.dateOfBirth && formik.errors.dateOfBirth
-                  ? formik.errors.dateOfBirth
-                  : undefined
-              }
-            />
+            <div className="flex-1">
+              <label className="block text-sm font-bold mb-1 text-[#3B3D41]">
+                Your Date Of Birth
+              </label>
+              <DatePicker
+                selected={
+                  formik.values.dateOfBirth
+                    ? new Date(formik.values.dateOfBirth)
+                    : null
+                }
+                onChange={(date: Date | null) => {
+                  formik.setFieldValue(
+                    "dateOfBirth",
+                    date?.toISOString().split("T")[0]
+                  );
+                }}
+                maxDate={thirteenYearsAgo}
+                showYearDropdown
+                scrollableYearDropdown
+                wrapperClassName="w-full"
+                dateFormat="yyyy-MM-dd"
+                placeholderText="Select your date of birth "
+                className={`w-full p-2 border-2 rounded-xl ${
+                  formik.touched.dateOfBirth && formik.errors.dateOfBirth
+                    ? "border-red-500"
+                    : "border-gray-300"
+                }`}
+              />
+              {formik.touched.dateOfBirth && formik.errors.dateOfBirth && (
+                <p className="text-red-500 text-xs mt-1">
+                  {formik.errors.dateOfBirth}
+                </p>
+              )}
+            </div>
           </div>
 
           <SelectInput
