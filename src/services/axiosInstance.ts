@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_DEV_URL,
@@ -8,21 +8,35 @@ const apiClient = axios.create({
   },
 });
 
+interface CustomAxiosRequestConfig extends AxiosRequestConfig {
+  _retry?: boolean;
+}
+
 apiClient.interceptors.response.use(
   (response) => response,
-  (error) => {
-    if (error.response) {
-      console.log(error.response.data.message, "error");
+  async (error: AxiosError) => {
+    const originalRequest = error.config as CustomAxiosRequestConfig;
 
-      if (
-        error.response.status === 401 ||
-        error.response.data.message === "jwt expired"
-      ) {
-        console.warn("Unauthorized - logging out...");
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      !originalRequest._retry
+    ) {
+      originalRequest._retry = true;
 
+      try {
+        await apiClient.get("/auth/get-access-token", {
+          withCredentials: true, 
+        });
+
+        return apiClient(originalRequest);
+      } catch (refreshError) {
+        console.warn("Refresh token expired. Redirecting to login.");
         window.location.href = "/login";
+        return Promise.reject(refreshError);
       }
     }
+
     return Promise.reject(error);
   }
 );

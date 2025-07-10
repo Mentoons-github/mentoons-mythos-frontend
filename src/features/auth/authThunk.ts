@@ -10,6 +10,7 @@ import {
   VerifyOtpPayload,
   VerifyOtpResponse,
 } from "../../types/redux/authInterfaces";
+import { AxiosError } from "axios";
 
 export const registerThunk = createAsyncThunk<
   RegisterResponse,
@@ -19,7 +20,8 @@ export const registerThunk = createAsyncThunk<
   try {
     const res = await registerApi(userData);
     return res.data;
-  } catch (error: any) {
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
       error?.response?.data?.message || "Registration Failed"
     );
@@ -34,7 +36,8 @@ export const loginThunk = createAsyncThunk<
   try {
     const res = await loginApi(userData);
     return res.data;
-  } catch (error: any) {
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(error?.response?.data?.message || "Login Failed");
   }
 });
@@ -47,7 +50,8 @@ export const sendOtpThunk = createAsyncThunk<
   try {
     const res = await sendOtpApi(email);
     return res.data;
-  } catch (error: any) {
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
       error?.response?.data?.message || "Cant Send OTP, Try again"
     );
@@ -62,7 +66,8 @@ export const verifyOtpThunk = createAsyncThunk<
   try {
     const res = await verifyOtpApi(data);
     return res.data;
-  } catch (error: any) {
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
       error?.response?.data?.message || "Cant verify this OTP"
     );
