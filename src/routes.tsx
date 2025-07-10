@@ -36,7 +36,7 @@ const AppRouter = () => {
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
           <Route path="oauth-result" element={<OAuthResult />} />
-          <Route path="verify-otp" element={<Otp/>}/>
+          <Route path="verify-otp" element={<Otp />} />
           <Route path="/" element={<MythosLayout />}>
             <Route index element={<MythosHome />} />
             <Route path="about-us" element={<MythosAbout />} />
