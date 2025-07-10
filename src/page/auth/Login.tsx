@@ -44,22 +44,18 @@ const Login = () => {
 
   return (
     <div className="flex w-full h-screen">
-      {/* Left side layout or image */}
-      <div className="w-1/2 bg-[#1A1D3B] flex items-center justify-center">
+      <div className="w-1/2 bg-[#1A1D3B] hidden md:flex items-center justify-center">
         <AuthLayout />
       </div>
 
-      {/* Right side form */}
-      <div className="w-1/2 flex items-center justify-center px-20">
+      <div className="w-full md:w-1/2 flex items-center justify-center px-20">
         <form onSubmit={formik.handleSubmit} className="w-full p-8">
           <h2 className="text-4xl font-bold mb-8 text-gray-800">Login</h2>
 
-          {/* Google Login Button */}
           <div className="mb-6">
             <GoogleAuth text="Sign In" />
           </div>
 
-          {/* OR Divider */}
           <div className="mb-6 flex items-center">
             <div className="flex-1 border-t border-gray-300"></div>
             <span className="px-4 text-gray-500 text-sm">OR</span>
