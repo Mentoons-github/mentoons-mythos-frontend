@@ -27,3 +27,20 @@ export interface LoginPayload {
     email:string,
     password:string
 }
+
+export interface SendOtpResponse {
+    message:string,
+}
+
+export interface SendOtpPayload {
+    email:string
+}
+
+export interface VerifyOtpResponse {
+    message:string,
+}
+
+export interface VerifyOtpPayload {
+    email:string,
+    otp:string
+}
