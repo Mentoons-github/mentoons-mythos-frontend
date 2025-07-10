@@ -22,6 +22,7 @@ const MythosAssessments = lazy(() => import("./page/assessment"));
 const MythosProductDetail = lazy(() => import("./page/productDetail"));
 const MythosWishList = lazy(() => import("./page/wishlist"));
 const MythosHiring = lazy(() => import("./page/hiring"));
+const MythosProfile = lazy(() => import("./page/profile"));
 const MythosPsychologyAssessments = lazy(
   () => import("./page/assessments/psychologyAssessment")
 );
@@ -51,6 +52,7 @@ const AppRouter = () => {
             <Route path="products-details" element={<MythosProductDetail />} />
             <Route path="wishlist" element={<MythosWishList />} />
             <Route path="hiring" element={<MythosHiring />} />
+            <Route path="profile" element={<MythosProfile />} />
             <Route
               path="assessment/psychology"
               element={<MythosPsychologyAssessments />}
