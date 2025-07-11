@@ -1,10 +1,12 @@
-import { FaBars, FaChevronDown } from "react-icons/fa";
+import { FaBars, FaChevronDown, FaUser, FaSignOutAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { motion, useAnimation, AnimatePresence } from "framer-motion";
 import MythosSidebar from "./sidebar";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import MythosSearch from "../modal/search";
+import { useAuth } from "../../hooks/auth/useAuth";
+import apiClient from "../../services/axiosInstance";
 
 const MythosHeader = () => {
   const headerText = [
@@ -36,6 +38,15 @@ const MythosHeader = () => {
   const controls = useAnimation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
+
+  const { user, setUser } = useAuth();
+
+  // Auth state
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+  const userDropdownRef = useRef<HTMLDivElement>(null);
+  const userHoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
 
   const assessmentItems = [
     { name: "psychology", path: "/assessment/psychology" },
@@ -72,7 +83,7 @@ const MythosHeader = () => {
     }
   }, [isSearchOpen]);
 
-  // Handle hover interactions
+  // Handle hover interactions for assessments dropdown
   const handleMouseEnter = () => {
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
@@ -83,14 +94,31 @@ const MythosHeader = () => {
   const handleMouseLeave = () => {
     hoverTimeoutRef.current = setTimeout(() => {
       setIsAssessmentsDropdownOpen(false);
-    }, 150); // Small delay to prevent flickering
+    }, 150);
   };
 
-  // Cleanup timeout on unmount
+  // Handle hover interactions for user dropdown
+  const handleUserMouseEnter = () => {
+    if (userHoverTimeoutRef.current) {
+      clearTimeout(userHoverTimeoutRef.current);
+    }
+    setIsUserDropdownOpen(true);
+  };
+
+  const handleUserMouseLeave = () => {
+    userHoverTimeoutRef.current = setTimeout(() => {
+      setIsUserDropdownOpen(false);
+    }, 150);
+  };
+
+  // Cleanup timeouts on unmount
   useEffect(() => {
     return () => {
       if (hoverTimeoutRef.current) {
         clearTimeout(hoverTimeoutRef.current);
+      }
+      if (userHoverTimeoutRef.current) {
+        clearTimeout(userHoverTimeoutRef.current);
       }
     };
   }, []);
@@ -102,6 +130,20 @@ const MythosHeader = () => {
       // Add your search logic here
       setIsSearchOpen(false);
       setSearchQuery("");
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await apiClient.post("/auth/logout");
+      setUser(null);
+      setIsUserDropdownOpen(false);
+      navigate("/");
+    } catch (error) {
+      console.error("Logout error:", error);
+      setUser(null);
+      setIsUserDropdownOpen(false);
+      navigate("/");
     }
   };
 
@@ -228,6 +270,7 @@ const MythosHeader = () => {
           </ul>
 
           <div className="flex items-center gap-3 lg:gap-5">
+            {/* Search Button */}
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
@@ -242,6 +285,8 @@ const MythosHeader = () => {
                 className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6"
               />
             </motion.button>
+
+            {/* Cart Button */}
             <motion.button
               whileHover={{ scale: 1.1 }}
               transition={{ duration: 0.2, ease: "easeIn" }}
@@ -258,19 +303,129 @@ const MythosHeader = () => {
                 0
               </span>
             </motion.button>
+
+            {/* Wishlist Button */}
             <motion.button
               whileHover={{ scale: 1.1 }}
               transition={{ duration: 0.2, ease: "easeIn" }}
-              aria-label="View more"
+              aria-label="View wishlist"
               onClick={() => navigate("/wishlist")}
               className="flex justify-center items-center rounded-full w-8 h-8 sm:w-10 sm:h-10 md:w-10 md:h-10 lg:w-12 lg:h-12 outline-dashed outline-2 outline-gray-600 cursor-pointer"
             >
               <img
                 src="/assets/icons/Vector (2).png"
-                alt="view-icon"
+                alt="wishlist-icon"
                 className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6"
               />
             </motion.button>
+
+            {/* Auth Section */}
+            {user ? (
+              // User is logged in - show user dropdown
+              <div
+                className="relative"
+                ref={userDropdownRef}
+                onMouseEnter={handleUserMouseEnter}
+                onMouseLeave={handleUserMouseLeave}
+              >
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.2, ease: "easeIn" }}
+                  className="flex justify-center items-center rounded-full w-8 h-8 sm:w-10 sm:h-10 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-[#E39712] cursor-pointer text-white"
+                >
+                  {user?.profilePicture ? (
+                    <img
+                      src={user.profilePicture}
+                      alt="Profile"
+                      className="w-full h-full rounded-full object-cover"
+                    />
+                  ) : (
+                    <FaUser className="text-sm sm:text-lg" />
+                  )}
+                </motion.button>
+
+                <AnimatePresence>
+                  {isUserDropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                      transition={{ duration: 0.2, ease: "easeOut" }}
+                      className="absolute top-full right-0 mt-2 w-48 bg-black border border-gray-700 rounded-lg shadow-2xl overflow-hidden z-[60]"
+                    >
+                      <div className="py-2">
+                        <div className="px-4 py-3 border-b border-gray-700">
+                          <p className="text-white text-sm font-medium">
+                            {user?.firstName && user?.lastName
+                              ? `${user.firstName} ${user.lastName}`
+                              : user?.email || "User"}
+                          </p>
+                          <p className="text-gray-400 text-xs">{user?.email}</p>
+                        </div>
+
+                        <Link
+                          to="/profile"
+                          className="block px-4 py-3 text-white hover:bg-[#E39712] hover:text-black transition-all duration-200 text-sm font-medium"
+                        >
+                          <div className="flex items-center gap-2">
+                            <FaUser className="w-3 h-3" />
+                            Profile
+                          </div>
+                        </Link>
+
+                        <Link
+                          to="/orders"
+                          className="block px-4 py-3 text-white hover:bg-[#E39712] hover:text-black transition-all duration-200 text-sm font-medium"
+                        >
+                          <div className="flex items-center gap-2">
+                            <img
+                              src="/assets/icons/Vector (1).png"
+                              alt="orders"
+                              className="w-3 h-3"
+                            />
+                            My Orders
+                          </div>
+                        </Link>
+
+                        <button
+                          onClick={handleLogout}
+                          className="w-full text-left px-4 py-3 text-white hover:bg-red-600 hover:text-white transition-all duration-200 text-sm font-medium"
+                        >
+                          <div className="flex items-center gap-2">
+                            <FaSignOutAlt className="w-3 h-3" />
+                            Logout
+                          </div>
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
+              // User is not logged in - show login/register buttons
+              <div className="hidden sm:flex items-center gap-2">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
+                  onClick={() => navigate("/login")}
+                  className="px-3 py-1 md:px-4 md:py-2 text-white border border-gray-600 rounded-md hover:border-[#E39712] transition-colors duration-300 text-sm font-medium"
+                >
+                  Login
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
+                  onClick={() => navigate("/register")}
+                  className="px-3 py-1 md:px-4 md:py-2 bg-[#E39712] text-black rounded-md hover:bg-[#d4860e] transition-colors duration-300 text-sm font-medium"
+                >
+                  Register
+                </motion.button>
+              </div>
+            )}
+
+            {/* Mobile Menu Button */}
             <motion.button
               whileHover={{ rotate: 360 }}
               whileTap={{ scale: 1.1 }}
