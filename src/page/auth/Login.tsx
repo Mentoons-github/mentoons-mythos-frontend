@@ -13,17 +13,16 @@ import { useAuth } from "../../hooks/auth/useAuth";
 
 const Login = () => {
   const navigate = useNavigate();
-
   const dispatch = useAppDispatch();
-  const { error, loading, message, success } = useAppSelector(
-    (state) => state.auth
-  );
 
   const { user } = useAuth();
 
   console.log("user:", user);
-  console.log(success);
 
+  const { error, loading, message, success } =
+    useAppSelector((state) => state.auth);
+
+  // console.log(accessToken, userId);
   useEffect(() => {
     if (success && user) {
       alert(message);
