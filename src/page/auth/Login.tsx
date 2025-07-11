@@ -9,17 +9,22 @@ import { loginThunk } from "../../features/auth/authThunk";
 import { useEffect } from "react";
 import { resetAuthState } from "../../features/auth/authSlice";
 import GoogleAuth from "../../components/button/googleAuth";
+import { useAuth } from "../../hooks/auth/useAuth";
 
 const Login = () => {
   const navigate = useNavigate();
-
   const dispatch = useAppDispatch();
+
+  const { user } = useAuth();
+
+  console.log("user:", user);
+
   const { error, loading, message, success } =
     useAppSelector((state) => state.auth);
 
   // console.log(accessToken, userId);
   useEffect(() => {
-    if (success) {
+    if (success && user) {
       alert(message);
       navigate("/");
       dispatch(resetAuthState());

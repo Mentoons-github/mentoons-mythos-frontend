@@ -166,6 +166,7 @@ const AstroForm = ({
           className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
+          // onClick={handleZodiacCheck}
         >
           Save
         </motion.button>

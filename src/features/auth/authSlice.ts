@@ -1,26 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginThunk, registerThunk, sendOtpThunk, verifyOtpThunk } from "./authThunk";
+import {
+  loginThunk,
+  registerThunk,
+  sendOtpThunk,
+  verifyOtpThunk,
+} from "./authThunk";
 
 interface Auth {
   message: string;
-  // accessToken: string | null;
   userId: string | null;
   success: boolean;
-  otpSuccess:boolean;
+  otpSuccess: boolean;
   loading: boolean;
   error: string | null | undefined;
-  otpError:string | null | undefined;
+  otpError: string | null | undefined;
 }
 
 const initialState: Auth = {
   message: "",
-  // accessToken: localStorage.getItem("token"),
   userId: null,
   success: false,
-  otpSuccess:false,
+  otpSuccess: false,
   loading: false,
   error: null,
-  otpError:null
+  otpError: null,
 };
 
 const authSlice = createSlice({
@@ -33,7 +36,6 @@ const authSlice = createSlice({
       state.message = "";
       state.success = false;
       state.otpSuccess = false;
-      // state.accessToken = null;
       state.userId = null;
     },
   },
@@ -107,7 +109,7 @@ const authSlice = createSlice({
       .addCase(verifyOtpThunk.rejected, (state, action) => {
         state.loading = false;
         state.otpError = action.payload;
-      })
+      });
   },
 });
 
