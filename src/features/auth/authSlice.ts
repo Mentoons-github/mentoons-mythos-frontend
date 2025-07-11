@@ -3,7 +3,7 @@ import { loginThunk, registerThunk, sendOtpThunk, verifyOtpThunk } from "./authT
 
 interface Auth {
   message: string;
-  accessToken: string | null;
+  // accessToken: string | null;
   userId: string | null;
   success: boolean;
   otpSuccess:boolean;
@@ -14,7 +14,7 @@ interface Auth {
 
 const initialState: Auth = {
   message: "",
-  accessToken: localStorage.getItem("token"),
+  // accessToken: localStorage.getItem("token"),
   userId: null,
   success: false,
   otpSuccess:false,
@@ -33,7 +33,7 @@ const authSlice = createSlice({
       state.message = "";
       state.success = false;
       state.otpSuccess = false;
-      state.accessToken = null;
+      // state.accessToken = null;
       state.userId = null;
     },
   },

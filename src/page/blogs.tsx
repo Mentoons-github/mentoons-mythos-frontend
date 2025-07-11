@@ -3,6 +3,9 @@ import LeftSection from "../components/blogs/left/leftSection";
 import RightSection from "../components/blogs/right/rigthSection";
 import { FaSearch } from "react-icons/fa";
 import TopSection from "../components/blogs/top/topSection";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import { useEffect } from "react";
+import { fetcheBlogThunk } from "../features/blog/blogThunk";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -10,6 +13,16 @@ const fadeInUp = {
 };
 
 const Blogs = () => {
+
+  const dispatch = useAppDispatch()
+  const {data} = useAppSelector((state)=> state.blog)
+
+  console.log(data)
+
+  useEffect(()=> {
+    dispatch(fetcheBlogThunk())
+  },[dispatch])
+
   return (
     <motion.section
       className="flex flex-col md:px-20 py-12 justify-between items-center bg-[#FEFEF6]"

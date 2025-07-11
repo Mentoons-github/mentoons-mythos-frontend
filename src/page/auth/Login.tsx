@@ -14,10 +14,10 @@ const Login = () => {
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
-  const { error, loading, message, success, accessToken, userId } =
+  const { error, loading, message, success } =
     useAppSelector((state) => state.auth);
 
-  console.log(accessToken, userId);
+  // console.log(accessToken, userId);
   useEffect(() => {
     if (success) {
       alert(message);
