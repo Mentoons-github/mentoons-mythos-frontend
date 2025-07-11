@@ -5,6 +5,7 @@ import { TfiMicrophone } from "react-icons/tfi";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { createBlogThunk } from "../../../features/blog/blogThunk";
 import { useEffect, useState } from "react";
+import { resetBlogSlice } from "../../../features/blog/blogSlice";
 
 const CreateBlog = () => {
   const dispatch = useAppDispatch();
@@ -16,11 +17,13 @@ const CreateBlog = () => {
   useEffect(()=> {
     if(createblogSuccess){
       alert(message)
+      dispatch(resetBlogSlice())
     }
     if(error){
       alert(error)
+      dispatch(resetBlogSlice())
     }
-  },[createblogSuccess, error, message])
+  },[createblogSuccess, dispatch, error, message])
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput({ ...input, [e.target.name]: e.target.value });

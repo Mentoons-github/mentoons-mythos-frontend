@@ -7,5 +7,12 @@ export interface Blog {
 }
 
 export interface CreateBlogResponse {
-    message:string
+    message:string,
+    blog:Blog
 }
+
+export interface GetBlogResponse {
+    message:string
+    blogs:Blog[]
+}
+
