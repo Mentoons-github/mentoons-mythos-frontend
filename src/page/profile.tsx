@@ -114,13 +114,19 @@ const Profile = () => {
           whileHover="hover"
         >
           <div className="flex items-center space-x-6 mb-6">
-            <motion.div
+            <div
               className="relative"
-              whileHover={{ rotate: 360 }}
-              transition={{ duration: 0.8 }}
             >
               <div className="w-20 h-20 bg-gradient-to-br from-gray-600 to-gray-800 rounded-full flex items-center justify-center border-2 border-gray-500">
-                <User size={32} className="text-gray-300" />
+                {user?.profilePicture ? (
+                  <img
+                    src={user.profilePicture}
+                    alt="Profile"
+                    className="w-full h-full rounded-full object-cover"
+                  />
+                ) : (
+                  <User size={32} className="text-gray-300" />
+                )}
               </div>
               <motion.div
                 className="absolute -top-1 -right-1 w-6 h-6 bg-white rounded-full flex items-center justify-center"
@@ -129,7 +135,7 @@ const Profile = () => {
               >
                 <Star size={12} className="text-black" />
               </motion.div>
-            </motion.div>
+            </div>
 
             <div>
               <motion.h2
