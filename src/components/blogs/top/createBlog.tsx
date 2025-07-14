@@ -6,33 +6,72 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { createBlogThunk } from "../../../features/blog/blogThunk";
 import { useEffect, useState } from "react";
 import { resetBlogSlice } from "../../../features/blog/blogSlice";
+import { fileUploadThunk } from "../../../features/upload/fileUploadThunk";
 
 const CreateBlog = () => {
   const dispatch = useAppDispatch();
+  const { file: uploadedImage } = useAppSelector((state) => state.upload);
+
+  const [file, setFile] = useState<File | null>(null);
+
   const [input, setInput] = useState({
+    title: "",
+    tags: "",
     description: "",
   });
-  const { error, loading, message, createblogSuccess } = useAppSelector((state) => state.blog);
+  const { error, loading, message, createblogSuccess } = useAppSelector(
+    (state) => state.blog
+  );
 
-  useEffect(()=> {
-    if(createblogSuccess){
-      alert(message)
-      dispatch(resetBlogSlice())
+  useEffect(() => {
+    if (createblogSuccess) {
+      alert(message);
+      dispatch(resetBlogSlice());
     }
-    if(error){
-      alert(error)
-      dispatch(resetBlogSlice())
+    if (error) {
+      alert(error);
+      dispatch(resetBlogSlice());
     }
-  },[createblogSuccess, dispatch, error, message])
+  }, [createblogSuccess, dispatch, error, message]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInput({ ...input, [e.target.name]: e.target.value });
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+
+    if (name === "description") {
+      if (value.length > 500) return; // limit to 500 characters
+    }
+
+    setInput({ ...input, [name]: value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(createBlogThunk(input));
-    setInput({ description: "" });
+    let imageUrl = uploadedImage;
+
+    if (file) {
+      try {
+        imageUrl = await dispatch(
+          fileUploadThunk({ file, category: "blog" })
+        ).unwrap();
+      } catch (err) {
+        alert("File upload failed: " + err);
+        return;
+      }
+    }
+    const formattedInput = {
+      ...input,
+      file: imageUrl ?? undefined,
+      tags: input.tags
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter((tag) => tag.length > 0),
+    };
+
+    dispatch(createBlogThunk(formattedInput));
+    setFile(null);
+    setInput({ description: "", title: "", tags: "" });
   };
 
   return (
@@ -58,29 +97,92 @@ const CreateBlog = () => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, delay: 0.3 }}
       >
-        <form onSubmit={handleSubmit}>
-          <motion.div className="relative w-full">
-            <textarea
-              name="description"
-              rows={3}
-              cols={95}
-              className="bg-white p-4 pr-4 pl-4 pb-12 rounded h-24 md:h-full resize-none w-full"
+        <form onSubmit={handleSubmit} className="space-y-4 relative">
+          <div className="flex flex-col md:flex-row md:gap-4 ">
+            <input
+              type="text"
+              name="title"
+              value={input.title}
               onChange={handleChange}
-              placeholder="Start writing your thoughts here...."
-              value={input.description}
-            ></textarea>
+              placeholder="Enter blog title"
+              className="bg-white p-3 rounded w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E39712]"
+            />
 
+            <input
+              type="text"
+              name="tags"
+              value={input.tags}
+              onChange={handleChange}
+              placeholder="Enter Tags separate by coma(e.g. tech,react,ui)"
+              className="bg-white p-3 rounded w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E39712] mt-3 md:mt-0"
+            />
+          </div>
+
+          {/* Description Area */}
+          <motion.div className="relative w-full">
+            <div className="relative">
+              <textarea
+                name="description"
+                rows={5}
+                className="bg-white p-4 pr-4 pl-4 pb-12 rounded resize-none w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E39712]"
+                onChange={handleChange}
+                placeholder="Start writing your thoughts here..."
+                value={input.description}
+              ></textarea>
+              <p className="text-sm text-gray-500 text-right absolute bottom-2 right-2">
+                {input.description.length}/500 
+              </p>
+            </div>
+
+            {/* Upload Icons */}
             <motion.div
-              className="absolute left-4 bottom-3 flex gap-3 text-gray-500 text-xl"
+              className="absolute left-4 bottom-3 flex gap-4 text-gray-500 text-xl"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.5 }}
             >
-              <LuImage className="cursor-pointer text-black md:text-2xl" />
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                id="imageUpload"
+                onChange={(e) => {
+                  const selected = e.target.files?.[0];
+                  if (selected) {
+                    setFile(selected);
+                  }
+                }}
+              />
+              <label htmlFor="imageUpload" className="cursor-pointer">
+                <LuImage className="text-black md:text-2xl" />
+              </label>
               <BiVideoRecording className="cursor-pointer text-black md:text-2xl" />
               <TfiMicrophone className="cursor-pointer text-black md:text-2xl" />
             </motion.div>
           </motion.div>
+
+          {file && (
+            <div
+              className="absolute mt-4 bottom-0 left-0 overflow-hidden group cursor-pointer"
+              onClick={() => document.getElementById("imageUpload")?.click()}
+            >
+              <img
+                src={URL.createObjectURL(file)}
+                alt="Preview"
+                className="rounded-md max-w-[200px] max-h-[200px] object-cover"
+              />
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setFile(null);
+                }}
+                className="absolute top-1 right-1 bg-white text-black rounded-full p-1 text-sm shadow-md hover:bg-red-500 hover:text-white transition-all"
+              >
+                ❌
+              </button>
+            </div>
+          )}
 
           <motion.div
             className="flex justify-end gap-4 md:mt-4"
@@ -88,15 +190,22 @@ const CreateBlog = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.6 }}
           >
-            <button className="text-[#E39712] font-medium hover:underline">
+            <button
+              type="button"
+              className="text-[#E39712] font-medium hover:underline"
+            >
               Post Later
             </button>
             <motion.button
+              disabled={
+                input.description.trim() === "" || input.title.trim() === ""
+              }
               type="submit"
-              className="bg-[#E39712] px-6 py-2 text-white rounded hover:bg-[#d3860f]"
+              className="bg-[#E39712] px-6 py-2 disabled:bg-[rgb(219,179,111)] text-white rounded hover:bg-[#d3860f]"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.97 }}
-            >{loading?"Loading...":"Post"}
+            >
+              {loading ? "Loading..." : "Post"}
             </motion.button>
           </motion.div>
         </form>

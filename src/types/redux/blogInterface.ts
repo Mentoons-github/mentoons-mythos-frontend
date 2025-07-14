@@ -3,7 +3,9 @@ export interface Blog {
     writerId?:string,
     writer?:string,
     title?:string,
+    tags?:string[] | undefined
     description:string
+    createdAt?:Date
 }
 
 export interface CreateBlogResponse {
