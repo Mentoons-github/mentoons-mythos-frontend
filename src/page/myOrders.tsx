@@ -155,7 +155,7 @@ const AstrologyOrdersPage = () => {
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex justify-center mb-8">
+        {/* <div className="flex justify-center mb-8">
           <div className="bg-white/5 backdrop-blur-sm rounded-full p-1 border border-white/10">
             {["all", "completed", "in-progress", "pending"].map((tab) => (
               <button
@@ -171,7 +171,7 @@ const AstrologyOrdersPage = () => {
               </button>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Orders Grid */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
