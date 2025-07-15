@@ -12,7 +12,16 @@ import {
   ChevronDown,
 } from "lucide-react";
 
-const products = [
+type Product = {
+  id: number;
+  name: string;
+  description: string;
+  price: string;
+  image: string;
+  category: string;
+};
+
+const products: Product[] = [
   {
     id: 1,
     name: "Zodiac T-Shirt",
@@ -160,7 +169,13 @@ const GlobalSearchPage = () => {
     },
   };
 
-  const ProductCard = ({ product, index }) => (
+  const ProductCard = ({
+    product,
+    index,
+  }: {
+    product: Product;
+    index: number;
+  }) => (
     <motion.div
       className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group border border-gray-200"
       variants={itemVariants}
@@ -198,7 +213,13 @@ const GlobalSearchPage = () => {
     </motion.div>
   );
 
-  const ProductListItem = ({ product, index }) => (
+  const ProductListItem = ({
+    product,
+    index,
+  }: {
+    product: Product;
+    index: number;
+  }) => (
     <motion.div
       className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-4 border border-gray-200"
       variants={itemVariants}
