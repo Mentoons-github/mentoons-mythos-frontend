@@ -5,6 +5,18 @@ export const createBlogApi = (data:Blog) => {
     return apiClient.post('/blog/create', data)
 }
 
-export const fetchBlogApi = () => {
-    return apiClient.get('/blog/get')
+export const fetchBlogApi = (skip:number,limit:number) => {
+    return apiClient.get(`/blog/get?skip=${skip}&limit=${limit}`)
+}
+
+export const likeBlogApi = (blogId:string) => {
+    return apiClient.patch(`/blog/${blogId}/like`)
+}
+
+export const commentBlogApi = (blogId:string, comment:string) => {
+    return apiClient.post(`/blog/${blogId}/comment/post-comments`,{comment})
+}
+
+export const getCommentBlogApi = (blogId:string) => {
+    return apiClient.get(`/blog/${blogId}/comment/get-comments`)
 }

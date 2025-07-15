@@ -1,13 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createBlogThunk, fetcheBlogThunk } from "./blogThunk";
+import { commentBlogThunk, createBlogThunk, fetcheBlogThunk, getCommentBlogThunk, likeBlogThunk } from "./blogThunk";
 import { Blog } from "../../types/redux/blogInterface";
 
 interface SliceBlog {
   data: Blog[];
   error: null | string | undefined;
   createblogSuccess: boolean;
+  total: number;
   loading: boolean;
   message: string;
+  userId: string;
+  comments:string[]
 }
 
 const initialState: SliceBlog = {
@@ -15,7 +18,10 @@ const initialState: SliceBlog = {
   error: null,
   loading: false,
   createblogSuccess: false,
+  total: 0,
   message: "",
+  userId: "",
+  comments:[]
 };
 
 export const blogSlice = createSlice({
@@ -23,9 +29,6 @@ export const blogSlice = createSlice({
   initialState,
   reducers: {
     resetBlogSlice: (state) => {
-      console.log("Type of state.data:", typeof state.data);
-      console.log("state.data instanceof Array:", state.data instanceof Array);
-      console.log("state.data:", state.data);
       state.error = null;
       state.loading = false;
       state.message = "";
@@ -44,7 +47,7 @@ export const blogSlice = createSlice({
         state.error = null;
         state.loading = false;
         state.message = action.payload.message;
-        state.data.push(action.payload.blog);
+        state.data.unshift(action.payload.blog);
         state.createblogSuccess = true;
       })
       .addCase(createBlogThunk.rejected, (state, action) => {
@@ -60,12 +63,67 @@ export const blogSlice = createSlice({
       .addCase(fetcheBlogThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
-        state.data = action.payload.blogs;
+        state.data = [...state.data, ...action.payload.blogs];
+        state.total = action.payload.total;
+        state.userId = action.payload.userId;
       })
       .addCase(fetcheBlogThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+
+      //like blog
+      .addCase(likeBlogThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(likeBlogThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.message = action.payload.message;
+        const { blogId, likes } = action.payload;
+
+        const blog = state.data.find((b) => b._id === blogId);
+        if (blog) {
+          blog.likes = likes;
+        }
+      })
+      .addCase(likeBlogThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      //post-comment
+      .addCase(commentBlogThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(commentBlogThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.message = action.payload.message;
+        
+      })
+      .addCase(commentBlogThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      //get-comments
+      .addCase(getCommentBlogThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getCommentBlogThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.message = action.payload.message;
+        state.comments = action.payload.comments
+      })
+      .addCase(getCommentBlogThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
   },
 });
 

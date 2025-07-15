@@ -40,7 +40,7 @@ const CreateBlog = () => {
     const { name, value } = e.target;
 
     if (name === "description") {
-      if (value.length > 500) return; // limit to 500 characters
+      if (value.length > 2000) return; 
     }
 
     setInput({ ...input, [name]: value });
@@ -130,11 +130,10 @@ const CreateBlog = () => {
                 value={input.description}
               ></textarea>
               <p className="text-sm text-gray-500 text-right absolute bottom-2 right-2">
-                {input.description.length}/500 
+                {input.description.length}/2000 
               </p>
             </div>
 
-            {/* Upload Icons */}
             <motion.div
               className="absolute left-4 bottom-3 flex gap-4 text-gray-500 text-xl"
               initial={{ opacity: 0, x: -20 }}

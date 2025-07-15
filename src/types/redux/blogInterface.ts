@@ -1,4 +1,5 @@
 export interface Blog {
+    _id?:string 
     file?:string,
     writerId?:string,
     writer?:string,
@@ -6,6 +7,8 @@ export interface Blog {
     tags?:string[] | undefined
     description:string
     createdAt?:Date
+    likes?: string[]
+    comments?:string[]
 }
 
 export interface CreateBlogResponse {
@@ -16,5 +19,7 @@ export interface CreateBlogResponse {
 export interface GetBlogResponse {
     message:string
     blogs:Blog[]
+    total:number
+    userId:string
 }
 
