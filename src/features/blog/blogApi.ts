@@ -1,10 +1,14 @@
-import apiClient from "../../services/axiosInstance"
-import { Blog } from "../../types/redux/blogInterface"
+import apiClient from "../../services/axiosInstance";
+import { Blog } from "../../types/redux/blogInterface";
 
-export const createBlogApi = (data:Blog) => {
-    return apiClient.post('/blog/create', data)
-}
+export const createBlogApi = (data: Blog) => {
+  return apiClient.post("/blog/create", data);
+};
 
 export const fetchBlogApi = () => {
-    return apiClient.get('/blog/get')
-}
+  return apiClient.get("/blog/get");
+};
+
+export const fetchUsersBlogApi = () => {
+  return apiClient.get("/blog/");
+};

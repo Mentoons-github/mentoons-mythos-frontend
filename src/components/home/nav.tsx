@@ -5,10 +5,13 @@ import MythosSidebar from "./sidebar";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import MythosSearch from "../modal/search";
-import { useAuth } from "../../hooks/auth/useAuth";
-import apiClient from "../../services/axiosInstance";
+import { useAppSelector, useAppDispatch } from "../../hooks/reduxHooks";
+import { fetchUserData, userLogout } from "../../features/user/userThunk";
 
 const MythosHeader = () => {
+  const dispatch = useAppDispatch();
+  const { user, loading: userLoading } = useAppSelector((state) => state.user);
+
   const headerText = [
     "HOME",
     "GROUPS",
@@ -39,8 +42,6 @@ const MythosHeader = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  const { user, setUser } = useAuth();
-
   // Auth state
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const userDropdownRef = useRef<HTMLDivElement>(null);
@@ -49,9 +50,24 @@ const MythosHeader = () => {
   );
 
   const assessmentItems = [
-    { name: "psychology", path: "/assessment/psychology" },
+    { name: "Psychology", path: "/assessment/psychology" },
     { name: "Astrology", path: "/assessment/planet" },
   ];
+
+  useEffect(() => {
+    let isMounted = true;
+    console.log("Fetching user data...");
+    dispatch(fetchUserData())
+      .unwrap()
+      .catch((error) => {
+        if (isMounted) {
+          console.error("Fetch user data failed:", error);
+        }
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, [dispatch]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -133,18 +149,16 @@ const MythosHeader = () => {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await apiClient.post("/auth/logout");
-      setUser(null);
-      setIsUserDropdownOpen(false);
-      navigate("/");
-    } catch (error) {
-      console.error("Logout error:", error);
-      setUser(null);
-      setIsUserDropdownOpen(false);
-      navigate("/");
-    }
+  const handleLogout = () => {
+    dispatch(userLogout())
+      .unwrap()
+      .then(() => {
+        setIsUserDropdownOpen(false);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("Logout failed:", error);
+      });
   };
 
   useEffect(() => {
@@ -185,7 +199,6 @@ const MythosHeader = () => {
               <li
                 key={index}
                 className={`relative font-bold ${
-                  // Smaller text on tablets, normal on desktop
                   window.innerWidth < 1024 ? "text-xs" : "text-sm"
                 } tracking-[1.5px] group`}
               >
@@ -320,7 +333,9 @@ const MythosHeader = () => {
             </motion.button>
 
             {/* Auth Section */}
-            {user ? (
+            {userLoading ? (
+              <div className="text-white text-sm">Loading...</div>
+            ) : user ? (
               // User is logged in - show user dropdown
               <div
                 className="relative"
@@ -333,7 +348,7 @@ const MythosHeader = () => {
                   transition={{ duration: 0.2, ease: "easeIn" }}
                   className="flex justify-center items-center rounded-full w-8 h-8 sm:w-10 sm:h-10 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-[#E39712] cursor-pointer text-white"
                 >
-                  {user?.profilePicture ? (
+                  {user.profilePicture ? (
                     <img
                       src={user.profilePicture}
                       alt="Profile"
@@ -356,11 +371,11 @@ const MythosHeader = () => {
                       <div className="py-2">
                         <div className="px-4 py-3 border-b border-gray-700">
                           <p className="text-white text-sm font-medium">
-                            {user?.firstName && user?.lastName
+                            {user.firstName && user.lastName
                               ? `${user.firstName} ${user.lastName}`
-                              : user?.email || "User"}
+                              : user.email || "User"}
                           </p>
-                          <p className="text-gray-400 text-xs">{user?.email}</p>
+                          <p className="text-gray-400 text-xs">{user.email}</p>
                         </div>
 
                         <Link
