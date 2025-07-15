@@ -25,7 +25,18 @@ const initialState: SliceBlog = {
 export const blogSlice = createSlice({
   name: "blog",
   initialState,
-  reducers: {},
+
+ reducers: {
+    resetBlogSlice: (state) => {
+      console.log("Type of state.data:", typeof state.data);
+      console.log("state.data instanceof Array:", state.data instanceof Array);
+      console.log("state.data:", state.data);
+      state.error = null;
+      state.loading = false;
+      state.message = "";
+      state.createblogSuccess = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
 
@@ -34,10 +45,11 @@ export const blogSlice = createSlice({
         state.error = null;
         state.loading = true;
       })
-      .addCase(createBlogThunk.fulfilled, (state, action) => {
+       .addCase(createBlogThunk.fulfilled, (state, action) => {
         state.error = null;
         state.loading = false;
         state.message = action.payload.message;
+        state.data.push(action.payload.blog);
         state.createblogSuccess = true;
       })
       .addCase(createBlogThunk.rejected, (state, action) => {
@@ -77,3 +89,4 @@ export const blogSlice = createSlice({
 });
 
 export default blogSlice.reducer;
+export const { resetBlogSlice } = blogSlice.actions;

@@ -1,13 +1,18 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { createBlogApi, fetchBlogApi, fetchUsersBlogApi } from "./blogApi";
 import { AxiosError } from "axios";
-import { Blog, CreateBlogResponse } from "../../types/redux/blogInterface";
+import {
+  Blog,
+  CreateBlogResponse,
+  GetBlogResponse,
+} from "../../types/redux/blogInterface";
 
 export const createBlogThunk = createAsyncThunk<
   CreateBlogResponse,
   Blog,
   { rejectValue: string }
 >("blog/create", async (data, { rejectWithValue }) => {
+  console.log(data.tags,'dataaaaaaaa')
   try {
     const res = await createBlogApi(data);
     return res.data;
@@ -20,7 +25,7 @@ export const createBlogThunk = createAsyncThunk<
 });
 
 export const fetcheBlogThunk = createAsyncThunk<
-  Blog[],
+  GetBlogResponse,
   void,
   { rejectValue: string }
 >("blog/fetch", async (_, { rejectWithValue }) => {
@@ -50,3 +55,4 @@ export const fetchCurrentUserBlog = createAsyncThunk<
     );
   }
 });
+

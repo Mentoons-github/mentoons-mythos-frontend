@@ -25,9 +25,9 @@ apiClient.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        // await apiClient.get("/auth/get-access-token", {
-        //   withCredentials: true,
-        // });
+        await apiClient.get("/auth/get-access-token", {
+          withCredentials: true,
+        });
 
         return apiClient(originalRequest);
       } catch (refreshError) {
