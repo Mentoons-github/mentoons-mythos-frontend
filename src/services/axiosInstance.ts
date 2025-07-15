@@ -32,6 +32,7 @@ apiClient.interceptors.response.use(
         return apiClient(originalRequest);
       } catch (refreshError) {
         console.warn("Refresh token expired. Redirecting to login.");
+        await apiClient.post("/auth/logout");
         window.location.href = "/login";
         return Promise.reject(refreshError);
       }

@@ -1,5 +1,7 @@
 import { FormEvent, useState } from "react";
 import { motion } from "framer-motion";
+import { LatLng } from "leaflet";
+import MapSelector from "./mapSelector";
 
 interface AstroFormProps {
   formData: {
@@ -29,6 +31,7 @@ const AstroForm = ({
   setIsEditing,
 }: AstroFormProps) => {
   const [geoError, setGeoError] = useState<string | null>(null);
+  const [showMap, setShowMap] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(
@@ -82,6 +85,16 @@ const AstroForm = ({
         }
       }
     );
+  };
+
+  const handleMapSelect = (latlng: LatLng) => {
+    setFormData((prev) => ({
+      ...prev,
+      latitude: latlng.lat.toFixed(4),
+      longitude: latlng.lng.toFixed(4),
+    }));
+    setShowMap(false);
+    setGeoError(null);
   };
 
   return (
@@ -149,7 +162,7 @@ const AstroForm = ({
           {geoError}
         </motion.p>
       )}
-      <div className="mt-4">
+      <div className="mt-4 flex space-x-4">
         <motion.button
           type="button"
           onClick={handleGetCurrentLocation}
@@ -159,14 +172,33 @@ const AstroForm = ({
         >
           Use Current Location
         </motion.button>
+        <motion.button
+          type="button"
+          onClick={() => setShowMap(true)}
+          className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-500 transition-colors"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          View on Map
+        </motion.button>
       </div>
+      {showMap && (
+        <motion.div
+          className="mt-6 relative w-full h-80"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.5 }}
+        >
+          <MapSelector onSelect={handleMapSelect} />
+        </motion.div>
+      )}
       <div className="mt-6 flex space-x-4">
         <motion.button
           type="submit"
           className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          // onClick={handleZodiacCheck}
         >
           Save
         </motion.button>

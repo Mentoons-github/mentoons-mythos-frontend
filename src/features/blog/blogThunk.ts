@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { createBlogApi, fetchBlogApi } from "./blogApi";
+import { createBlogApi, fetchBlogApi, fetchUsersBlogApi } from "./blogApi";
 import { AxiosError } from "axios";
 import {
   Blog,
@@ -39,3 +39,20 @@ export const fetcheBlogThunk = createAsyncThunk<
     );
   }
 });
+
+export const fetchCurrentUserBlog = createAsyncThunk<
+  Blog[],
+  void,
+  { rejectValue: string }
+>("blog/Currentfetch", async (_, { rejectWithValue }) => {
+  try {
+    const res = await fetchUsersBlogApi();
+    return res.data.blogs;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(
+      error?.response?.data?.message || "Registration Failed"
+    );
+  }
+});
+
