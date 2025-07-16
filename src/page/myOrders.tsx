@@ -1,9 +1,6 @@
-import { useState } from "react";
 import { Star, Eye, Calendar, Clock, Package } from "lucide-react";
 
 const AstrologyOrdersPage = () => {
-  const [selectedTab, setSelectedTab] = useState("all");
-
   const products = [
     {
       id: 1,
@@ -87,11 +84,6 @@ const AstrologyOrdersPage = () => {
     },
   ];
 
-  const filteredOrders =
-    selectedTab === "all"
-      ? products
-      : products.filter((order) => order.status === selectedTab);
-
   const getStatusColor = (status: string) => {
     switch (status) {
       case "completed":
@@ -155,7 +147,7 @@ const AstrologyOrdersPage = () => {
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex justify-center mb-8">
+        {/* <div className="flex justify-center mb-8">
           <div className="bg-white/5 backdrop-blur-sm rounded-full p-1 border border-white/10">
             {["all", "completed", "in-progress", "pending"].map((tab) => (
               <button
@@ -171,11 +163,11 @@ const AstrologyOrdersPage = () => {
               </button>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Orders Grid */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filteredOrders.map((order, index) => (
+          {products.map((order, index) => (
             <div
               key={order.id}
               className="group relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-all duration-500 hover:transform hover:scale-105 hover:shadow-2xl"
@@ -261,7 +253,7 @@ const AstrologyOrdersPage = () => {
         </div>
 
         {/* Empty State */}
-        {filteredOrders.length === 0 && (
+        {products.length === 0 && (
           <div className="text-center py-16">
             <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center">
               <Package className="w-12 h-12 text-gray-400" />

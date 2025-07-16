@@ -1,5 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { commentBlogApi, createBlogApi, fetchBlogApi, fetchSinglBlogApi, getCommentBlogApi, likeBlogApi, replyCommentApi } from "./blogApi";
+import {
+  commentBlogApi,
+  createBlogApi,
+  fetchBlogApi,
+  fetchSinglBlogApi,
+  getCommentBlogApi,
+  likeBlogApi,
+  replyCommentApi,
+  fetchUsersBlogApi,
+} from "./blogApi";
+
 import { AxiosError } from "axios";
 import {
   Blog,
@@ -13,7 +23,7 @@ export const createBlogThunk = createAsyncThunk<
   Blog,
   { rejectValue: string }
 >("blog/create", async (data, { rejectWithValue }) => {
-  console.log(data.tags,'dataaaaaaaa')
+  console.log(data.tags, "dataaaaaaaa");
   try {
     const res = await createBlogApi(data);
     return res.data;
@@ -27,17 +37,15 @@ export const createBlogThunk = createAsyncThunk<
 
 export const fetcheBlogThunk = createAsyncThunk<
   GetBlogResponse,
-  {skip:number,limit:number},
+  { skip: number; limit: number },
   { rejectValue: string }
->("blog/fetch", async ({skip,limit}, { rejectWithValue }) => {
+>("blog/fetch", async ({ skip, limit }, { rejectWithValue }) => {
   try {
-    const res = await fetchBlogApi(skip,limit);
+    const res = await fetchBlogApi(skip, limit);
     return res.data;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
-    return rejectWithValue(
-      error?.response?.data?.message || "Cant fetch blog"
-    );
+    return rejectWithValue(error?.response?.data?.message || "Cant fetch blog");
   }
 });
 
@@ -51,14 +59,12 @@ export const fetchSinglBlogThunk = createAsyncThunk<
     return res.data.blog;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
-    return rejectWithValue(
-      error?.response?.data?.message || "Cant fetch blog"
-    );
+    return rejectWithValue(error?.response?.data?.message || "Cant fetch blog");
   }
 });
 
 export const likeBlogThunk = createAsyncThunk<
-  {message:string, likes:string[], blogId:string},
+  { message: string; likes: string[]; blogId: string },
   string,
   { rejectValue: string }
 >("blog/like", async (blogId, { rejectWithValue }) => {
@@ -67,19 +73,17 @@ export const likeBlogThunk = createAsyncThunk<
     return res.data;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
-    return rejectWithValue(
-      error?.response?.data?.message || "Like failed"
-    );
+    return rejectWithValue(error?.response?.data?.message || "Like failed");
   }
 });
 
 export const commentBlogThunk = createAsyncThunk<
-  {message:string},
-  {blogId:string,comment:string},
+  { message: string },
+  { blogId: string; comment: string },
   { rejectValue: string }
->("blog/post-comment", async ({blogId, comment}, { rejectWithValue }) => {
+>("blog/post-comment", async ({ blogId, comment }, { rejectWithValue }) => {
   try {
-    const res = await commentBlogApi(blogId,comment);
+    const res = await commentBlogApi(blogId, comment);
     return res.data;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
@@ -90,25 +94,28 @@ export const commentBlogThunk = createAsyncThunk<
 });
 
 export const replyCommentThunk = createAsyncThunk<
-  {message:string},
-  {commentId:string,replyText:string},
+  { message: string },
+  { commentId: string; replyText: string },
   { rejectValue: string }
->("blog/reply-comment", async ({commentId, replyText}, { rejectWithValue }) => {
-  try {
-    const res = await replyCommentApi(commentId,replyText);
-    console.log(replyText,'rwplyyyyyy')
-    console.log(res, 'ressssssssss')
-    return res.data;
-  } catch (err) {
-    const error = err as AxiosError<{ message: string }>;
-    return rejectWithValue(
-      error?.response?.data?.message || "Comment posting failed"
-    );
+>(
+  "blog/reply-comment",
+  async ({ commentId, replyText }, { rejectWithValue }) => {
+    try {
+      const res = await replyCommentApi(commentId, replyText);
+      console.log(replyText, "rwplyyyyyy");
+      console.log(res, "ressssssssss");
+      return res.data;
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      return rejectWithValue(
+        error?.response?.data?.message || "Comment posting failed"
+      );
+    }
   }
-});
+);
 
 export const getCommentBlogThunk = createAsyncThunk<
-  {message:string, comments:Comments[], blogId:string},
+  { message: string; comments: Comments[]; blogId: string },
   string,
   { rejectValue: string }
 >("blog/get-comment", async (blogId, { rejectWithValue }) => {
@@ -123,3 +130,18 @@ export const getCommentBlogThunk = createAsyncThunk<
   }
 });
 
+export const fetchCurrentUserBlog = createAsyncThunk<
+  Blog[],
+  void,
+  { rejectValue: string }
+>("blog/Currentfetch", async (_, { rejectWithValue }) => {
+  try {
+    const res = await fetchUsersBlogApi();
+    return res.data.blogs;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(
+      error?.response?.data?.message || "Registration Failed"
+    );
+  }
+});

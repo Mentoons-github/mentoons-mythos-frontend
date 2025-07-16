@@ -2,13 +2,24 @@ export interface IUser {
   firstName: string;
   lastName: string;
   email: string;
-  password?: string;
+  password: string;
   dateOfBirth?: Date;
-  timeOfBirth?: string;
-  country?: string;
+  timeOfBirth: string;
   about?: string;
-  isGoogleUser: boolean;
+  country?: string;
+  isGoogleUser?: boolean;
+  longitude: string;
+  latitude: string;
   profilePicture?: string | null;
-  latitude?: number;
-  longitude?: number;
+  astrologyDetail?: IAstrologyDetail;
+}
+
+export interface IAstrologyDetail {
+  moonSign?: string;
+  sunSign?: string;
+}
+
+export interface UserResponse {
+  success: boolean;
+  user: IUser;
 }
