@@ -1,11 +1,14 @@
 export interface Blog {
-    file?:string,
-    writerId?:string,
-    writer?:string,
-    title?:string,
+    _id?:string 
+    file?:string 
+    writerId?:string
+    writer?:string
+    title?:string
     tags?:string[] | undefined
     description:string
     createdAt?:Date
+    likes?: string[]
+    comments?:string[]
 }
 
 export interface CreateBlogResponse {
@@ -16,5 +19,27 @@ export interface CreateBlogResponse {
 export interface GetBlogResponse {
     message:string
     blogs:Blog[]
+    total:number
+    userId:string
+}
+
+
+export interface IReply {
+  userId: string;
+  username: string;
+  profile?: string;
+  replyText: string;
+  createdAt:string
+}
+
+export interface Comments {
+    _id:string
+    comment:string
+    blogId:string
+    userId:string
+    username:string
+    profile:string
+    createdAt:string
+    reply:IReply[]
 }
 

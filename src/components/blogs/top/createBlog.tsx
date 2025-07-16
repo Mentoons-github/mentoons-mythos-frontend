@@ -13,6 +13,7 @@ const CreateBlog = () => {
   const { file: uploadedImage } = useAppSelector((state) => state.upload);
 
   const [file, setFile] = useState<File | null>(null);
+  const [touched, setTouched] = useState(false);
 
   const [input, setInput] = useState({
     title: "",
@@ -22,6 +23,8 @@ const CreateBlog = () => {
   const { error, loading, message, createblogSuccess } = useAppSelector(
     (state) => state.blog
   );
+
+  const wordCount = input.description.trim().split(/\s+/).length;
 
   useEffect(() => {
     if (createblogSuccess) {
@@ -40,7 +43,8 @@ const CreateBlog = () => {
     const { name, value } = e.target;
 
     if (name === "description") {
-      if (value.length > 500) return; // limit to 500 characters
+      const words = value.trim().split(/\s+/).filter(Boolean);
+      if (words.length > 250) return;
     }
 
     setInput({ ...input, [name]: value });
@@ -121,22 +125,37 @@ const CreateBlog = () => {
           {/* Description Area */}
           <motion.div className="relative w-full">
             <div className="relative">
-              <textarea
-                name="description"
-                rows={5}
-                className="bg-white p-4 pr-4 pl-4 pb-12 rounded resize-none w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E39712]"
-                onChange={handleChange}
-                placeholder="Start writing your thoughts here..."
-                value={input.description}
-              ></textarea>
-              <p className="text-sm text-gray-500 text-right absolute bottom-2 right-2">
-                {input.description.length}/500 
-              </p>
+              <div className="relative ">
+                <textarea
+                  name="description"
+                  rows={5}
+                  className="bg-white p-4 pr-4 pl-4 pb-12 rounded resize-none w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E39712]"
+                  onChange={handleChange}
+                  placeholder="Start writing your thoughts here..."
+                  onFocus={() => setTouched(true)}
+                  value={input.description}
+                ></textarea>
+                <p className="text-sm text-gray-500 text-right absolute bottom-2 right-2">
+                  {input.description.trim().split(/\s+/).filter(Boolean).length}{" "}
+                  / 250
+                </p>
+              </div>
+
+              {touched && wordCount < 20 && (
+                <p className="text-red-500 text-xs mt-1">
+                  Minimum 20 words required
+                </p>
+              )}
+
+              {wordCount > 250 && (
+                <p className="text-red-500 text-xs mt-1">
+                  Maximum 250 words allowed
+                </p>
+              )}
             </div>
 
-            {/* Upload Icons */}
             <motion.div
-              className="absolute left-4 bottom-3 flex gap-4 text-gray-500 text-xl"
+              className="absolute left-4 -bottom-10 flex gap-4 text-gray-500 text-xl"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.5 }}
@@ -198,7 +217,10 @@ const CreateBlog = () => {
             </button>
             <motion.button
               disabled={
-                input.description.trim() === "" || input.title.trim() === ""
+                input.description.trim() === "" ||
+                input.title.trim() === "" ||
+                wordCount < 20 ||
+                wordCount > 250
               }
               type="submit"
               className="bg-[#E39712] px-6 py-2 disabled:bg-[rgb(219,179,111)] text-white rounded hover:bg-[#d3860f]"

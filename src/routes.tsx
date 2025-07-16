@@ -9,11 +9,11 @@ import Register from "./page/auth/Register";
 import Login from "./page/auth/Login";
 import OAuthResult from "./page/auth/OAuth";
 import Otp from "./page/auth/Otp";
+import Blogs from "./page/blogs";
 
 const MythosHome = lazy(() => import("./page/home"));
 const MythosAbout = lazy(() => import("./page/about"));
 const MythosGroups = lazy(() => import("./page/groups"));
-const MythosBlogs = lazy(() => import("./page/blogs"));
 const MythosShop = lazy(() => import("./page/shop"));
 const MythosQuiz = lazy(() => import("./page/quiz/quizHome"));
 const MythosCart = lazy(() => import("./page/cart"));
@@ -42,7 +42,7 @@ const AppRouter = () => {
           <Route path="/" element={<MythosLayout />}>
             <Route index element={<MythosHome />} />
             <Route path="about-us" element={<MythosAbout />} />
-            <Route path="blog" element={<MythosBlogs />} />
+            <Route path="blog" element={<Blogs />} />
             <Route path="groups" element={<MythosGroups />} />
             <Route path="groups/:groupId" element={<Rashi />} />
             <Route path="*" element={<NotFound />} />

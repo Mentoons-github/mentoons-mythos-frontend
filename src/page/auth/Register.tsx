@@ -63,7 +63,7 @@ const Register = () => {
 
   return (
     <div className="w-full flex h-screen">
-      <div className="w-1/2 hidden md:flex bg-[#1A1D3B]">
+      <div className="w-1/2 hidden md:flex bg-[#1A1D3B] items-center justify-center">
         <AuthLayout />
       </div>
       <div className="w-full md:w-1/2 px-20 py-4 overflow-y-auto max-h-screen">
