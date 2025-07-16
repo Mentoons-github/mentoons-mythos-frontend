@@ -1,28 +1,40 @@
 import { motion } from "framer-motion";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { useEffect, useRef, useState } from "react";
-import { fetcheBlogThunk } from "../../../features/blog/blogThunk";
+import {
+  fetcheBlogThunk,
+  fetchSinglBlogThunk,
+} from "../../../features/blog/blogThunk";
 import { format } from "date-fns";
 import SinglePostModal from "../../modal/singlePostModal";
 import { Blog } from "../../../types/redux/blogInterface";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const RecentPosts = () => {
   const dispatch = useAppDispatch();
-  const { data, total, loading, userId } = useAppSelector((state) => state.blog);
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedPost, setSelectedPost] = useState<Blog | null>(null);
+  const { data, total, loading, userId } = useAppSelector(
+    (state) => state.blog
+  );
+
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(3);
   const containerRef = useRef<HTMLDivElement>(null);
-  const hasFetched = useRef(false);   
+  const hasFetched = useRef(false);
 
-  console.log(data.length, "lengthhh");
+  const blogId = searchParams.get("id");
+  const selectedFromList = data.find((b) => b._id === blogId) || null;
+  const { blog: blogFromStore } = useAppSelector((state) => state.blog);
+
+  const selectedPost =
+    selectedFromList || (blogFromStore?._id === blogId ? blogFromStore : null);
 
   const fetchBlogs = () => {
     dispatch(fetcheBlogThunk({ skip, limit }));
     setSkip((prev) => prev + limit);
-    if (limit !== 10) setLimit(10); 
+    if (limit !== 10) setLimit(10);
 
     setTimeout(() => {
       containerRef.current?.scrollIntoView({
@@ -31,21 +43,24 @@ const RecentPosts = () => {
       });
     }, 200);
   };
- useEffect(() => {
-  if (!hasFetched.current) {
-    fetchBlogs();
-    hasFetched.current = true;
-  }
-}, []);
+
+  useEffect(() => {
+    if (!hasFetched.current) {
+      fetchBlogs();
+      hasFetched.current = true;
+    }
+
+    if (blogId && !selectedFromList) {
+      dispatch(fetchSinglBlogThunk(blogId));
+    }
+  }, [blogId]);
 
   const handlePostClick = (post: Blog) => {
-    setSelectedPost(post);
-    setIsOpen(true);
+    navigate(`?id=${post._id}`);
   };
 
   const closeModal = () => {
-    setIsOpen(false);
-    setSelectedPost(null);
+    navigate(".", { replace: true });
   };
 
   return (
@@ -66,7 +81,7 @@ const RecentPosts = () => {
         Recent Posts
       </motion.h1>
 
-      <div className="space-y-6">
+      <div className="space-y-6" ref={containerRef}>
         {data.map((post, ind) => (
           <motion.div
             key={ind}
@@ -124,9 +139,16 @@ const RecentPosts = () => {
         )}
       </div>
 
-      {/* Modal */}
-      {isOpen && selectedPost && (
-        <SinglePostModal post={selectedPost} onClose={closeModal} userId={userId}/>
+      {blogId && selectedPost && (
+        <SinglePostModal
+          post={selectedPost}
+          onClose={closeModal}
+          userId={userId}
+        />
+      )}
+
+      {blogId && !selectedPost && (
+        <p className="text-center mt-4 text-gray-600">Loading post...</p>
       )}
     </motion.div>
   );

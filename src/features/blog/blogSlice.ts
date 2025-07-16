@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { commentBlogThunk, createBlogThunk, fetcheBlogThunk, getCommentBlogThunk, likeBlogThunk } from "./blogThunk";
-import { Blog } from "../../types/redux/blogInterface";
+import { commentBlogThunk, createBlogThunk, fetcheBlogThunk, fetchSinglBlogThunk, getCommentBlogThunk, likeBlogThunk, replyCommentThunk } from "./blogThunk";
+import { Blog, Comments } from "../../types/redux/blogInterface";
 
 interface SliceBlog {
   data: Blog[];
@@ -10,7 +10,8 @@ interface SliceBlog {
   loading: boolean;
   message: string;
   userId: string;
-  comments:string[]
+  comments:Comments[];
+  blog:Blog | null
 }
 
 const initialState: SliceBlog = {
@@ -21,7 +22,8 @@ const initialState: SliceBlog = {
   total: 0,
   message: "",
   userId: "",
-  comments:[]
+  comments:[],
+  blog: null as Blog | null
 };
 
 export const blogSlice = createSlice({
@@ -72,6 +74,21 @@ export const blogSlice = createSlice({
         state.error = action.payload;
       })
 
+      //fetch single blog
+      .addCase(fetchSinglBlogThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchSinglBlogThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.blog = action.payload
+      })
+      .addCase(fetchSinglBlogThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
       //like blog
       .addCase(likeBlogThunk.pending, (state) => {
         state.loading = true;
@@ -105,6 +122,22 @@ export const blogSlice = createSlice({
         
       })
       .addCase(commentBlogThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      //reply-comment
+      .addCase(replyCommentThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(replyCommentThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.message = action.payload.message;
+        
+      })
+      .addCase(replyCommentThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

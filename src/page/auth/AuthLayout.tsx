@@ -1,8 +1,8 @@
 
 const AuthLayout = () => {
   return (
-    <div className='w-screen flex items-center justify-center'>
-        <img src="assets/auth/auth.png" alt="" className='w-[500px]'/>
+    <div className=' flex items-center justify-center'>
+        <img src="assets/auth/teamIllustration.png" alt="" className='w-[600px]'/>
     </div>
   )
 }

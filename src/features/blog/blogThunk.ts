@@ -1,8 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { commentBlogApi, createBlogApi, fetchBlogApi, getCommentBlogApi, likeBlogApi } from "./blogApi";
+import { commentBlogApi, createBlogApi, fetchBlogApi, fetchSinglBlogApi, getCommentBlogApi, likeBlogApi, replyCommentApi } from "./blogApi";
 import { AxiosError } from "axios";
 import {
   Blog,
+  Comments,
   CreateBlogResponse,
   GetBlogResponse,
 } from "../../types/redux/blogInterface";
@@ -19,7 +20,7 @@ export const createBlogThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Registration Failed"
+      error?.response?.data?.message || "Cant create blog"
     );
   }
 });
@@ -35,7 +36,23 @@ export const fetcheBlogThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Registration Failed"
+      error?.response?.data?.message || "Cant fetch blog"
+    );
+  }
+});
+
+export const fetchSinglBlogThunk = createAsyncThunk<
+  Blog,
+  string,
+  { rejectValue: string }
+>("blog/fetchsingle", async (blogId, { rejectWithValue }) => {
+  try {
+    const res = await fetchSinglBlogApi(blogId);
+    return res.data.blog;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(
+      error?.response?.data?.message || "Cant fetch blog"
     );
   }
 });
@@ -51,7 +68,7 @@ export const likeBlogThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Registration Failed"
+      error?.response?.data?.message || "Like failed"
     );
   }
 });
@@ -67,13 +84,31 @@ export const commentBlogThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Registration Failed"
+      error?.response?.data?.message || "Comment posting failed"
+    );
+  }
+});
+
+export const replyCommentThunk = createAsyncThunk<
+  {message:string},
+  {commentId:string,replyText:string},
+  { rejectValue: string }
+>("blog/reply-comment", async ({commentId, replyText}, { rejectWithValue }) => {
+  try {
+    const res = await replyCommentApi(commentId,replyText);
+    console.log(replyText,'rwplyyyyyy')
+    console.log(res, 'ressssssssss')
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(
+      error?.response?.data?.message || "Comment posting failed"
     );
   }
 });
 
 export const getCommentBlogThunk = createAsyncThunk<
-  {message:string, comments:string[], blogId:string},
+  {message:string, comments:Comments[], blogId:string},
   string,
   { rejectValue: string }
 >("blog/get-comment", async (blogId, { rejectWithValue }) => {
@@ -83,7 +118,7 @@ export const getCommentBlogThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Registration Failed"
+      error?.response?.data?.message || "Cannot get comments now"
     );
   }
 });

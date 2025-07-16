@@ -1,35 +1,48 @@
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Blog } from "../../types/redux/blogInterface";
-import { format } from "date-fns";
-import { useEffect, useState } from "react";
-import { AiOutlineLike } from "react-icons/ai";
-import { GoComment } from "react-icons/go";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { commentBlogThunk, likeBlogThunk } from "../../features/blog/blogThunk";
-import { AiFillLike } from "react-icons/ai";
+import {
+  commentBlogThunk,
+  getCommentBlogThunk,
+  likeBlogThunk,
+  replyCommentThunk,
+} from "../../features/blog/blogThunk";
+import { Blog } from "../../types/redux/blogInterface";
+import ModalHeader from "./BlogModal/ModalHeader";
+import BlogImage from "./BlogModal/BlogImage";
+import BlogMeta from "./BlogModal/BlogMeta";
+import CommentsList from "./BlogModal/CommentLists";
+import BlogContent from "./BlogModal/BlogContent";
+import CommentInput from "./BlogModal/CommentInput";
+import BlogActions from "./BlogModal/BlogAction";
 
-interface Props {
+interface SinglePostModalProps {
   post: Blog;
   onClose: () => void;
   userId: string;
 }
 
-const SinglePostModal = ({ post, onClose, userId }: Props) => {
+const SinglePostModal: React.FC<SinglePostModalProps> = ({
+  post,
+  onClose,
+  userId,
+}) => {
   const dispatch = useAppDispatch();
-  const [inputOpen, setInputOpen] = useState(false);
-  const [input, setInput] = useState<string>("");
+  const [inputOpen, setInputOpen] = useState<boolean>(false);
+  const [commentOpen, setCommentOpen] = useState<boolean>(false);
+
   const postFromRedux = useAppSelector((state) =>
     state.blog.data.find((b) => b._id === post._id)
   );
+  const { comments } = useAppSelector((state) => state.blog);
 
+  const blogId = post._id;
   const currentPost = postFromRedux || post;
 
-  console.log(input, "input");
-
-  const handleLike = (blogId?: string) => {
+  useEffect(() => {
     if (!blogId) return;
-    dispatch(likeBlogThunk(blogId));
-  };
+    dispatch(getCommentBlogThunk(blogId));
+  }, [blogId, dispatch]);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -38,113 +51,74 @@ const SinglePostModal = ({ post, onClose, userId }: Props) => {
     };
   }, []);
 
-  const handleSubmit = (
-    e: React.FormEvent<HTMLFormElement>,
-    blogId?: string
-  ) => {
-    e.preventDefault();
-    console.log(blogId,'blogidddd')
+  const handleLike = () => {
     if (!blogId) return;
-    dispatch(commentBlogThunk({ blogId, comment: input }));
-    setInput(""); // Optionally clear input after comment
+    dispatch(likeBlogThunk(blogId));
   };
+
+
+
+  const handleCommentSubmit = (comment: string) => {
+    if (!blogId) return;
+
+    dispatch(commentBlogThunk({ blogId, comment })).then(() => {
+      dispatch(getCommentBlogThunk(blogId));
+    });
+
+    setInputOpen(false);
+  };
+
+  const handleReplyComment = (commentId: string, replyText: string) => {
+  if (!blogId) return;
+
+  dispatch(replyCommentThunk({commentId, replyText })).then(() => {
+    dispatch(getCommentBlogThunk(blogId));
+  });
+};
+
+
+  const isLiked = currentPost?.likes?.includes(userId) || false;
+  const likesCount = currentPost?.likes?.length || 0;
+  const commentsCount = comments.length || 0;
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
       <motion.div
-        className="bg-white p-6 rounded-lg w-full max-w-xl shadow-xl max-h-[100vh]"
+        className="bg-white p-5 rounded-lg w-full max-w-xl shadow-xl max-h-[100vh]"
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">{post.title}</h2>
-          <button
-            className="text-gray-500 hover:text-red-500 text-2xl"
-            onClick={onClose}
-          >
-            &times;
-          </button>
-        </div>
+        <ModalHeader title={post.title} onClose={onClose} />
 
-        <img
-          src={post.file || "/assets/logo/Logo 2.png"}
-          alt={post.title}
-          className="w-full h-58 object-cover rounded-md mb-4"
-        />
+        <BlogImage src={post.file} alt={post.title} />
 
-        <p className="text-sm text-gray-600 mb-2">
-          <span className="font-semibold text-purple-700">{post.writer}</span> •{" "}
-          {post.createdAt && (
-            <span>{format(new Date(post.createdAt), "dd MMM yyyy")}</span>
-          )}
-        </p>
+        <BlogMeta writer={post.writer} createdAt={post.createdAt} />
 
-        <div className="max-h-56 overflow-y-auto pr-2 mb-4">
-          <p className="text-gray-800 whitespace-pre-line">
-            {post.description}
-          </p>
-        </div>
-
-        <div className="flex gap-2 flex-wrap">
-          {Array.isArray(post.tags) &&
-            post.tags.map((tag, idx) => (
-              <span
-                key={idx}
-                className="bg-gray-200 text-sm text-green-600 font-medium px-3 py-1 rounded-full"
-              >
-                {tag}
-              </span>
-            ))}
-        </div>
-        {inputOpen && (
-          <form
-            className="flex mt-2 h-8 space-x-4 pr-4"
-            onSubmit={(e) => handleSubmit(e, post._id)}
-          >
-            <input
-              type="text"
-              name="input"
-              id=""
-              onChange={(e) => setInput(e.target.value)}
-              className="w-full border-2 pl-3 text-sm rounded-md font-semibold"
-              placeholder="Write comments"
+        <div className="h-72 overflow-y-auto pr-2 hide-scrollbar will-change-scroll transform-gpu">
+          {commentOpen ? (
+            <CommentsList
+              comments={comments}
+              onClose={() => setCommentOpen(false)}
+              handleReplyComment = {handleReplyComment}
             />
-            <button type="submit">Post</button>
-          </form>
-        )}
-        <div className="flex justify-between mt-2">
-          <div className=" flex space-x-5">
-            <div
-              className="flex items-center space-x-2 cursor-pointer"
-              onClick={() => handleLike(post._id)}
-            >
-              {currentPost?.likes?.includes(userId) ? (
-                <AiFillLike className="text-2xl " />
-              ) : (
-                <AiOutlineLike className="text-2xl text-gray-700" />
-              )}
-              <p className="text-sm font-medium">
-                {currentPost?.likes?.includes(userId) ? "Unlike" : "Like"}
-              </p>
-            </div>
-
-            <div
-              className="flex space-x-1 cursor-pointer"
-              onClick={() => setInputOpen(true)}
-            >
-              <GoComment className="text-2xl" />
-              <p>Comment</p>
-            </div>
-          </div>
-          <div className="flex space-x-6">
-            <div>{currentPost?.likes?.length || 0} Likes</div>
-            <div className="cursor-pointer">
-              {currentPost?.comments?.length || 0} Comments
-            </div>
-          </div>
+          ) : (
+            <BlogContent description={post.description} tags={post.tags} />
+          )}
         </div>
+
+        <CommentInput isOpen={inputOpen} onSubmit={handleCommentSubmit} />
+
+        <BlogActions
+          isLiked={isLiked}
+          likesCount={likesCount}
+          commentsCount={commentsCount}
+          onLike={handleLike}
+          onToggleComment={() => setInputOpen((prev) => !prev)}
+          onToggleCommentsList={() => setCommentOpen(!commentOpen)}
+          blogUrl={`${window.location.origin}/blog?id=${post._id}`}
+        />
       </motion.div>
     </div>
   );
