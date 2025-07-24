@@ -19,6 +19,7 @@ const CreateBlog = () => {
     title: "",
     tags: "",
     description: "",
+    commentsOff: false,
   });
   const { error, loading, message, createblogSuccess } = useAppSelector(
     (state) => state.blog
@@ -75,7 +76,7 @@ const CreateBlog = () => {
 
     dispatch(createBlogThunk(formattedInput));
     setFile(null);
-    setInput({ description: "", title: "", tags: "" });
+    setInput({ description: "", title: "", tags: "", commentsOff: false });
   };
 
   return (
@@ -204,31 +205,61 @@ const CreateBlog = () => {
           )}
 
           <motion.div
-            className="flex justify-end gap-4 md:mt-4"
+            className="flex flex-col gap-2 md:mt-4 items-end"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.6 }}
           >
-            <button
-              type="button"
-              className="text-[#E39712] font-medium hover:underline"
-            >
-              Post Later
-            </button>
-            <motion.button
-              disabled={
-                input.description.trim() === "" ||
-                input.title.trim() === "" ||
-                wordCount < 20 ||
-                wordCount > 250
-              }
-              type="submit"
-              className="bg-[#E39712] px-6 py-2 disabled:bg-[rgb(219,179,111)] text-white rounded hover:bg-[#d3860f]"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
-            >
-              {loading ? "Loading..." : "Post"}
-            </motion.button>
+            {/* Checkbox aligned to right */}
+            {input.description.trim() !== "" &&
+              input.title.trim() !== "" &&
+              wordCount >= 20 &&
+              wordCount <= 250 && (
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id="commentsOff"
+                    name="commentsOff"
+                    checked={input.commentsOff}
+                    onChange={(e) =>
+                      setInput((prev) => ({
+                        ...prev,
+                        commentsOff: e.target.checked,
+                      }))
+                    }
+                    className="accent-[#E39712] w-4 h-4"
+                  />
+                  <label
+                    htmlFor="commentsOff"
+                    className="text-sm text-gray-700"
+                  >
+                    Turn off comments for this blog
+                  </label>
+                </div>
+              )}
+            {/* Buttons aligned to right */}
+            <div className="flex gap-4">
+              <button
+                type="button"
+                className="text-[#E39712] font-medium hover:underline"
+              >
+                Post Later
+              </button>
+              <motion.button
+                disabled={
+                  input.description.trim() === "" ||
+                  input.title.trim() === "" ||
+                  wordCount < 20 ||
+                  wordCount > 250
+                }
+                type="submit"
+                className="bg-[#E39712] px-6 py-2 disabled:bg-[rgb(219,179,111)] text-white rounded hover:bg-[#d3860f]"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                {loading ? "Loading..." : "Post"}
+              </motion.button>
+            </div>
           </motion.div>
         </form>
       </motion.div>

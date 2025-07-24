@@ -1,14 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
-import { fetchUserDetails, logout } from "./api/userApi";
+import { fetchUserDetails, logout, reportUserApi } from "./api/userApi";
 import { UserResponse } from "../../types/user/userInterface";
+import { ReportResponse } from "../../types/redux/reportInterface";
 
 export const fetchUserData = createAsyncThunk<UserResponse, void>(
   "user/fetch",
   async (_, { rejectWithValue }) => {
     try {
       const response = await fetchUserDetails();
-      console.log("response :", response.data);
       return response.data;
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
@@ -30,3 +30,22 @@ export const userLogout = createAsyncThunk<void, void>(
     }
   }
 );
+
+
+export const reportUserThunk = createAsyncThunk<
+  { message: string },
+  { data: ReportResponse; userId: string },
+  { rejectValue: string }
+>(
+  "user/report",
+  async ({ data, userId }, { rejectWithValue }) => {
+    try {
+      const response = await reportUserApi(data, userId);
+      return response.data;
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      return rejectWithValue(error?.response?.data?.message || "Report failed");
+    }
+  }
+);
+

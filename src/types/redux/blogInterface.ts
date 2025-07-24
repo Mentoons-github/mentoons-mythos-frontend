@@ -9,6 +9,7 @@ export interface Blog {
     createdAt?:Date
     likes?: string[]
     comments?:string[]
+    commentsOff?:boolean
 }
 
 export interface CreateBlogResponse {

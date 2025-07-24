@@ -16,6 +16,9 @@ apiClient.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     const originalRequest = error.config as CustomAxiosRequestConfig;
+    console.log(originalRequest,'first')
+    console.log(error.response,'error')
+
 
     if (
       error.response &&

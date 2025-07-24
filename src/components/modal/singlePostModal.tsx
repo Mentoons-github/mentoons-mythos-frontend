@@ -90,7 +90,7 @@ const SinglePostModal: React.FC<SinglePostModalProps> = ({
         exit={{ scale: 0.9, opacity: 0 }}
         onClick={(e) => e.stopPropagation()}
       >
-        <ModalHeader title={post.title} onClose={onClose} />
+        <ModalHeader title={post.title} onClose={onClose} userId = {post.writerId} postId = {post._id}/>
 
         <BlogImage src={post.file} alt={post.title} />
 
@@ -111,6 +111,7 @@ const SinglePostModal: React.FC<SinglePostModalProps> = ({
         <CommentInput isOpen={inputOpen} onSubmit={handleCommentSubmit} />
 
         <BlogActions
+        commentsOff = {currentPost.commentsOff}
           isLiked={isLiked}
           likesCount={likesCount}
           commentsCount={commentsCount}
