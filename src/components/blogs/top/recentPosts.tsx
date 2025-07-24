@@ -36,12 +36,12 @@ const RecentPosts = () => {
     setSkip((prev) => prev + limit);
     if (limit !== 10) setLimit(10);
 
-    setTimeout(() => {
-      containerRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
-      });
-    }, 200);
+    // setTimeout(() => {
+    //   containerRef.current?.scrollIntoView({
+    //     behavior: "smooth",
+    //     block: "end",
+    //   });
+    // }, 200);
   };
 
   useEffect(() => {

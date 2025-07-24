@@ -5,14 +5,14 @@ interface BlogContentProps {
 
 const BlogContent: React.FC<BlogContentProps> = ({ description, tags }) => {
   return (
-    <div>
+    <div className="flex flex-col justify-between h-full">
       <div className="max-h-60 hide-scrollbar overflow-y-auto pr-2 mb-4 will-change-scroll transform-gpu">
         <p className="text-gray-800 whitespace-pre-line">
           {description}
         </p>
       </div>
 
-      <div className="flex gap-2 flex-wrap">
+      <div className="flex gap-2 flex-wrap mt-auto">
         {Array.isArray(tags) &&
           tags.map((tag, idx) => (
             <span
