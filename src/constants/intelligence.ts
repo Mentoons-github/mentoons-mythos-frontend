@@ -37,7 +37,7 @@ export const INTELLIGENCE = [
   },
   {
     id: "int_05",
-    name: "Spacial",
+    name: "Spatial",
     description:
       "The capacity to think in three dimensions, visualize with the mind’s eye, and manipulate images mentally. This intelligence is strong in artists, architects, pilots, and designers who need to understand space and visual details.",
     imageUrl: "/assets/groups/intelligence/intelligence5.png",
@@ -55,7 +55,7 @@ export const INTELLIGENCE = [
   },
   {
     id: "int_07",
-    name: "Interpersonal",
+    name: "Intrapersonal",
     description:
       "The capacity for self-awareness and inner reflection. People with this intelligence are deeply in touch with their own feelings, motivations, and values. Often seen in philosophers, writers, and psychologists.",
     imageUrl: "/assets/groups/intelligence/intelligence7.png",

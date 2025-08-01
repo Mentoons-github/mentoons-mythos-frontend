@@ -1,4 +1,5 @@
 export interface IUser {
+  _id?:string
   firstName: string;
   lastName: string;
   email: string;
@@ -12,6 +13,8 @@ export interface IUser {
   latitude: string;
   profilePicture?: string | null;
   astrologyDetail?: IAstrologyDetail;
+  role?:string
+  isBlocked:boolean
 }
 
 export interface IAstrologyDetail {
@@ -22,4 +25,9 @@ export interface IAstrologyDetail {
 export interface UserResponse {
   success: boolean;
   user: IUser;
+}
+
+export interface AllUserResponse {
+  success: boolean;
+  users: IUser[];
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { reportUserThunk } from "../../../../features/user/userThunk";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import { resetUserSlice } from "../../../../features/user/userSlice";
+import { toast } from "sonner";
 
 interface CommentOptionsProps {
   from:string;
@@ -25,14 +26,14 @@ const ReportOptions: React.FC<CommentOptionsProps> = ({
 
   useEffect(() => {
     if (reportSuccess) {
-      alert(reportMessage);
+      toast.success(reportMessage);
       onClose();
       dispatch(resetUserSlice());
     }
 
     if (error) {
       console.log(error,'error')
-      alert(error);
+      toast.warning(error);
       onClose();
       dispatch(resetUserSlice());
     }

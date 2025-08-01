@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
 import { CHAT_PEOPLE } from "../../../constants/sunshine";
 import MythosButton from "../../home/button";
+import { Intelligence, Sunshine } from "../../../types/interface";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -32,7 +35,23 @@ const floatImage = {
   },
 };
 
-const ChatPeople = ({isIntelligence}:{isIntelligence:boolean}) => {
+const ChatPeople = ({
+  userId,
+  isIntelligence,
+  details,
+}: {
+  userId?:string
+  isIntelligence: boolean;
+  details: Sunshine | Intelligence;
+}) => {
+  const navigate = useNavigate();
+  const handleStartChat = () => {
+    if(!userId) {
+      toast.warning("Please Login to continue chatting")
+      return
+    }
+    navigate(`chat`, { state: { details } });
+  };
   return (
     <motion.div
       className="px-6 py-10 md:px-20 bg-white"
@@ -41,16 +60,20 @@ const ChatPeople = ({isIntelligence}:{isIntelligence:boolean}) => {
       viewport={{ once: false, amount: 0.1 }}
       variants={containerVariants}
     >
-      <motion.div
-        className="text-center mb-10"
-        variants={fadeInUp}
-      >
-        <motion.h1 className="text-2xl sm:text-3xl font-bold tracking-wider  text-[#1A1D3B] max-w-xl mx-auto" variants={fadeInUp}>
-          CHAT WITH PEOPLE HAVING THE SAME {isIntelligence ? "INTELLIGENCE" : "RASHI" } AS YOU!
+      <motion.div className="text-center mb-10" variants={fadeInUp}>
+        <motion.h1
+          className="text-2xl sm:text-3xl font-bold tracking-wider  text-[#1A1D3B] max-w-xl mx-auto"
+          variants={fadeInUp}
+        >
+          CHAT WITH PEOPLE HAVING THE SAME{" "}
+          {isIntelligence ? "INTELLIGENCE" : "RASHI"} AS YOU!
         </motion.h1>
       </motion.div>
 
-      <motion.div className="md:space-y-6 grid grid-cols-1 md:grid-cols-3" variants={fadeInUp}>
+      <motion.div
+        className="md:space-y-6 grid grid-cols-1 md:grid-cols-3"
+        variants={fadeInUp}
+      >
         {CHAT_PEOPLE.map((data, ind) => (
           <motion.div
             key={ind}
@@ -83,10 +106,15 @@ const ChatPeople = ({isIntelligence}:{isIntelligence:boolean}) => {
         ))}
       </motion.div>
 
-      {/* Button */}
-      <div className="mt-10 flex justify-center">
-        <MythosButton label="START CHATTING" bg="black" textClr="white" />
+      <div className="mt-10 flex justify-center ">
+        <MythosButton
+          label="START CHATTING"
+          bg="black"
+          textClr="white"
+          onClick={handleStartChat}
+        />
       </div>
+      {/* <GroupChat groupId={details?.id} groupName = {details.name}/> */}
     </motion.div>
   );
 };

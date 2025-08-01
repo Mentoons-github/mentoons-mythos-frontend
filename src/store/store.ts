@@ -4,6 +4,8 @@ import blogReducer from "../features/blog/blogSlice";
 import uploadReducer from "../features/upload/fileUploadSlice";
 import astroReducer from "../features/astrology/astroSlice";
 import userReducer from "../features/user/userSlice";
+import chatReducer from '../features/chat/chatSlice'
+import assessmentReducer from '../features/assessment/assessmentSlice'
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +14,8 @@ export const store = configureStore({
     upload: uploadReducer,
     astro: astroReducer,
     user: userReducer,
+    chat: chatReducer,
+    assessment:assessmentReducer
   },
 });
 

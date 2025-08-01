@@ -1,10 +1,10 @@
 import CreateBlog from './createBlog'
 import CreateBlogBottom from './createBlogBottom'
 
-const TopLeftSection = () => {
+const TopLeftSection = ({userId}:{userId:string}) => {
   return (
     <div className=''>
-        <CreateBlog/>
+        <CreateBlog userId = {userId}/>
         <CreateBlogBottom/>
     </div>
   )

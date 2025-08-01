@@ -1,16 +1,17 @@
 import { Heart, Share2, Sparkles } from "lucide-react";
 
 const WishListHeader = ({ itemsLength }: { itemsLength: number }) => {
+  console.log(itemsLength)
   return (
-    <div className="relative z-10 border-b border-gray-800 bg-black/80 backdrop-blur-xl sticky top-0">
+    <div className=" z-10 border-b border-gray-800 bg-black/80 backdrop-blur-xl sticky top-0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <div className="flex items-center space-x-6">
             <div className="relative">
               <Heart className="h-10 w-10 text-white" fill="currentColor" />
-              <div className="absolute -top-2 -right-2 bg-white text-black rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold animate-pulse">
+              {/* <div className="absolute -top-2 -right-2 bg-white text-black rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold animate-pulse">
                 {itemsLength}
-              </div>
+              </div> */}
             </div>
             <div>
               <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">

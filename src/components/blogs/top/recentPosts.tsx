@@ -4,20 +4,20 @@ import { useEffect, useRef, useState } from "react";
 import {
   fetcheBlogThunk,
   fetchSinglBlogThunk,
+  updateBlogViewThunk,
 } from "../../../features/blog/blogThunk";
 import { format } from "date-fns";
 import SinglePostModal from "../../modal/singlePostModal";
 import { Blog } from "../../../types/redux/blogInterface";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { toast } from "sonner";
 
-const RecentPosts = () => {
+const RecentPosts = ({ userId }: { userId: string }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  const { data, total, loading, userId } = useAppSelector(
-    (state) => state.blog
-  );
+  const { data, total, loading } = useAppSelector((state) => state.blog);
 
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(3);
@@ -50,12 +50,23 @@ const RecentPosts = () => {
       hasFetched.current = true;
     }
 
-    if (blogId && !selectedFromList) {
-      dispatch(fetchSinglBlogThunk(blogId));
+    if (blogId) {
+      if (!userId) {
+        toast.warning("Please login to view this post");
+        navigate(".", { replace: true }); // remove the query param
+        return;
+      }
+
+      if (!selectedFromList) {
+        dispatch(fetchSinglBlogThunk(blogId));
+      }
     }
-  }, [blogId]);
+  }, [blogId, dispatch, userId]);
 
   const handlePostClick = (post: Blog) => {
+    if (!userId) toast.warning("Please Login to continue read");
+    if (!post._id || !userId) return;
+    dispatch(updateBlogViewThunk(post._id));
     navigate(`?id=${post._id}`);
   };
 
@@ -81,11 +92,11 @@ const RecentPosts = () => {
         Recent Posts
       </motion.h1>
 
-      <div className="space-y-6" ref={containerRef}>
-        {data.map((post, ind) => (
+      <div className="space-y-6 px-2" ref={containerRef}>
+        {data.map((post) => (
           <motion.div
-            key={ind}
-            className="flex items-start gap-5 cursor-pointer"
+            key={post._id}
+            className="md:flex items-start gap-5 cursor-pointer"
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -95,7 +106,7 @@ const RecentPosts = () => {
             <motion.img
               src={post?.file ? post?.file : "/assets/logo/Logo 2.png"}
               alt={post.title}
-              className="min-w-[250px] max-w-[250px] h-[150px] object-cover rounded-md"
+              className="w-full h-[200px] md:min-w-[250px] md:max-w-[250px] md:h-[150px] object-cover rounded-md"
               initial={{ scale: 0.95, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.1 }}
@@ -131,7 +142,7 @@ const RecentPosts = () => {
         {data.length < total && (
           <button
             onClick={fetchBlogs}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className="bg-[#E39712] text-white px-4 py-2 rounded hover:bg-[#e39700ed]"
             disabled={loading}
           >
             {loading ? "Loading..." : "Load More"}

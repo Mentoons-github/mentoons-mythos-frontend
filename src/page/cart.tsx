@@ -1,59 +1,60 @@
-import { BiShoppingBag } from "react-icons/bi";
-import CartItem from "../components/cart/items";
-import { useState } from "react";
-import OrderSummary from "../components/cart/orderSummary";
-import Pagination from "../components/common/pagination";
+// import { BiShoppingBag } from "react-icons/bi";
+// import CartItem from "../components/cart/items";
+// import { useState } from "react";
+// import OrderSummary from "../components/cart/orderSummary";
+// import Pagination from "../components/common/pagination";
+
+import { Package } from "lucide-react";
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Constellation Cap",
-      image: "/assets/mythosProducts/tote-bag-mockup.png",
-      color: "White",
-      size: "M",
-      price: 500,
-      quantity: 1,
-      inStock: true,
-    },
-    {
-      id: 2,
-      name: "Minimalist Tote",
-      image: "/assets/mythosProducts/tote-bag-mockup.png",
-      color: "Black",
-      size: "L",
-      price: 750,
-      quantity: 2,
-      inStock: true,
-    },
-  ]);
+  // const [cartItems, setCartItems] = useState([
+  //   {
+  //     id: 1,
+  //     name: "Constellation Cap",
+  //     image: "/assets/mythosProducts/tote-bag-mockup.png",
+  //     color: "White",
+  //     size: "M",
+  //     price: 500,
+  //     quantity: 1,
+  //     inStock: true,
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Minimalist Tote",
+  //     image: "/assets/mythosProducts/tote-bag-mockup.png",
+  //     color: "Black",
+  //     size: "L",
+  //     price: 750,
+  //     quantity: 2,
+  //     inStock: true,
+  //   },
+  // ]);
 
-  const updateQuantity = (id: number, newQuantity: number) => {
-    if (newQuantity < 1) return;
-    setCartItems((items) =>
-      items.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  };
+  // const updateQuantity = (id: number, newQuantity: number) => {
+  //   if (newQuantity < 1) return;
+  //   setCartItems((items) =>
+  //     items.map((item) =>
+  //       item.id === id ? { ...item, quantity: newQuantity } : item
+  //     )
+  //   );
+  // };
 
-  const removeItem = (id: number) => {
-    setCartItems((items) => items.filter((item) => item.id !== id));
-  };
+  // const removeItem = (id: number) => {
+  //   setCartItems((items) => items.filter((item) => item.id !== id));
+  // };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white relative overflow-hidden">
       <div className="max-w-8xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {/* Header */}
         <div className="text-center mb-7 sm:mb-8 md:mb-12">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black tracking-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">
             MY CART
           </h1>
-          <div className="w-16 sm:w-20 md:w-24 h-px bg-black mx-auto mt-3 sm:mt-4" />
+          <div className="w-16 sm:w-20 md:w-24 h-px bg-white mx-auto mt-3 sm:mt-4" />
         </div>
 
-        <div className="grid grid-cols-1 xl:grid-cols-6 gap-6 sm:gap-8 xl:gap-10">
-          {/* Cart Items */}
+        {/* <div className="grid grid-cols-1 xl:grid-cols-6 gap-6 sm:gap-8 xl:gap-10">
           <div className="xl:col-span-4">
             <div className="space-y-4 sm:space-y-6">
               <div className="flex items-center justify-between border-b border-gray-200 pb-3 sm:pb-4">
@@ -90,13 +91,25 @@ const Cart = () => {
             </div>
           </div>
 
-          {/* Order Summary */}
+          
           <OrderSummary cartItems={cartItems} />
-        </div>
+        </div> */}
+
+        <div className="text-center py-16">
+            <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center">
+              <Package className="w-12 h-12 text-gray-400" />
+            </div>
+            <h3 className="text-xl font-semibold text-white mb-2">
+              No Item found in cart
+            </h3>
+            <p className="text-gray-400">
+              You don't have any item with this status yet.
+            </p>
+          </div>
       </div>
 
       {/* Pagination */}
-      <Pagination />
+      {/* <Pagination /> */}
     </div>
   );
 };

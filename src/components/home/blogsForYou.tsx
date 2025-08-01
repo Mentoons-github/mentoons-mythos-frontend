@@ -73,8 +73,9 @@ const BlogsForYou = () => {
         >
           {NEWS.map((data, index) => (
             <div
-              className="w-full p-3 mx-auto lg:max-w-2xs lg:mx-0"
+              className="w-full p-3 mx-auto lg:max-w-2xs lg:mx-0 cursor-pointer"
               key={index}
+              onClick={() => window.open(data.redirect, "_blank")}
             >
               <div className="flex items-center justify-center w-full text-xs font-semibold font-jost">
                 <h1 className="z-10 pr-3 bg-white whitespace-nowrap">

@@ -32,3 +32,12 @@ export const getCommentBlogApi = (blogId: string) => {
 export const fetchUsersBlogApi = () => {
   return apiClient.get("/blog/");
 };
+
+export const updateBlogViewApi = (blogId:string) => {
+  return apiClient.patch(`/blog/${blogId}/views`)
+}
+
+export const fetchByMostReadApi = () => {
+  return apiClient.get('/blog/most-read')
+}
+ 

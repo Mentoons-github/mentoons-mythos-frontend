@@ -8,6 +8,8 @@ import {
   likeBlogApi,
   replyCommentApi,
   fetchUsersBlogApi,
+  updateBlogViewApi,
+  fetchByMostReadApi,
 } from "./blogApi";
 
 import { AxiosError } from "axios";
@@ -141,7 +143,40 @@ export const fetchCurrentUserBlog = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Registration Failed"
+      error?.response?.data?.message || "Cannot fetch user blog"
+    );
+  }
+});
+
+export const updateBlogViewThunk = createAsyncThunk<
+  {message:string},
+  string,
+  { rejectValue: string }
+>("blog/updateViewCount", async (blogId, { rejectWithValue }) => {
+  try {
+    const res = await updateBlogViewApi(blogId);
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(
+      error?.response?.data?.message || "Views increment failed"
+    );
+  }
+});
+
+export const fetchByMostReadThunk = createAsyncThunk<
+  Blog[],
+  void,
+  { rejectValue: string }
+>("blog/fetchByMostRead", async (_, { rejectWithValue }) => {
+  try {
+    const res = await fetchByMostReadApi();
+    console.log(res,'resssssssss')
+    return res.data.blogs;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(
+      error?.response?.data?.message || "Feth Blog failed"
     );
   }
 });

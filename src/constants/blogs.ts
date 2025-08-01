@@ -56,41 +56,49 @@ export const NEWS: News[] = [
     category: "FAMILY",
     date: "May 1, 2024",
     news: "Family Conflict And Its Effect On Teenagers",
+    redirect:"https://mentoonsnews.com/familyConflicts.html"
   },
   {
     category: "SELF",
     date: "April 21, 2024",
     news: "The Magical Journey to Self-Discovery",
+    redirect:"https://mentoonsnews.com/theMagicalJourny.html"
   },
   {
-    category: "FINANCE",
+    category: "SOCIAL MEDIA",
     date: "Nov 24, 2024",
-    news: "How to Handle Your Expenses in the Year 2025",
+    news: "Social media de-addiction",
+    redirect:"https://mentoonsnews.com/SocialMediaDeaddiction.html"
   },
   {
     category: "PARENTS",
     date: "May 1, 2024",
     news: "Common Parenting Mistakes",
+    redirect:"https://mentoonsnews.com/commonParentingMistakes.html"
   },
   {
-    category: "HEALTH",
+    category: "CELL-PHONE",
     date: "March 10, 2024",
-    news: "How Meditation Can Improve Mental Health",
+    news: "Cell-phone addiction",
+    redirect:"https://mentoonsnews.com/CellPhoneAddiction.html"
   },
   {
-    category: "TECH",
+    category: "RELATIONSHIPS",
     date: "June 15, 2024",
-    news: "AI’s Role in the Future of Education",
+    news: "Maintaing relationships with teenagers",
+    redirect:"https://mentoonsnews.com/MaintainingRelationships.html"
   },
   {
-    category: "TRAVEL",
+    category: "TEEN EMOTIONS",
     date: "July 5, 2024",
-    news: "Top 10 Budget-Friendly Destinations for 2024",
+    news: "Teen Emotions and Behavioural Problems",
+    redirect:"https://mentoonsnews.com/TeenEmotions.html"
   },
   {
-    category: "CAREER",
+    category: "REALITY",
     date: "September 12, 2024",
-    news: "How to Switch Careers Without Starting Over",
+    news: "Are we escaping reality ? or Is reality escaping us ?",
+    redirect:"https://mentoonsnews.com/EscapingReality.html"
   },
 ];
 
