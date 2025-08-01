@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchUserData, reportUserThunk, userLogout } from "./userThunk";
+import {
+  blockUserThunk,
+  fetchAllUserThunk,
+  fetchUserData,
+  reportUserThunk,
+  userLogout,
+} from "./userThunk";
 import { IUser } from "../../types";
 
 interface UserData {
@@ -7,17 +13,21 @@ interface UserData {
   error: null | string | undefined;
   loading: boolean;
   success: boolean;
-  reportMessage:string
-  reportSuccess:boolean
+  reportMessage: string;
+  reportSuccess: boolean;
+  allUsers: IUser[];
+  blockMessage: string;
 }
 
 const initialState: UserData = {
   user: null,
   error: null,
-  loading: false,
+  loading: true,
   success: false,
-  reportMessage:'',
-  reportSuccess:false
+  reportMessage: "",
+  reportSuccess: false,
+  allUsers: [],
+  blockMessage: "",
 };
 
 const userSlice = createSlice({
@@ -29,24 +39,66 @@ const userSlice = createSlice({
       state.loading = false;
       state.reportMessage = "";
       state.reportSuccess = false;
+      state.success = false;
+      state.blockMessage = "";
     },
   },
   extraReducers: (builder) => {
     builder
+      .addCase(fetchUserData.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(fetchUserData.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.success = action.payload.success;
         state.error = null;
         state.loading = false;
       })
-      .addCase(fetchUserData.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(fetchUserData.rejected, (state, action) => {
         state.error = action.payload as string;
         state.loading = false;
       })
+
+      //fetch all users
+      .addCase(fetchAllUserThunk.fulfilled, (state, action) => {
+        state.allUsers = action.payload.users;
+        state.error = null;
+        state.loading = false;
+      })
+      .addCase(fetchAllUserThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAllUserThunk.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.loading = false;
+      })
+
+      //block users
+      .addCase(blockUserThunk.fulfilled, (state, action) => {
+        const updatedUser = action.payload.user;
+        const index = state.allUsers.findIndex(
+          (u) => u._id === updatedUser._id
+        );
+        if (index !== -1) {
+          state.allUsers[index].isBlocked = updatedUser.isBlocked;
+        }
+        state.blockMessage = action.payload.message;
+        state.success = action.payload.success;
+        state.error = null;
+        state.loading = false;
+      })
+      .addCase(blockUserThunk.pending, (state) => {
+        // state.loading = true;
+        state.error = null;
+      })
+      .addCase(blockUserThunk.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.loading = false;
+      })
+
+      //logout
       .addCase(userLogout.fulfilled, (state) => {
         state.user = null;
         state.success = false;
@@ -62,24 +114,24 @@ const userSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      //retportUser 
+      //retportUser
       .addCase(reportUserThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(reportUserThunk.fulfilled, (state, action) => {
-        state.reportMessage = action.payload.message
-        state.reportSuccess = true
+        state.reportMessage = action.payload.message;
+        state.reportSuccess = true;
         state.loading = false;
         state.error = null;
       })
       .addCase(reportUserThunk.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload ;
+        state.error = action.payload;
       });
   },
 });
 
-export const {resetUserSlice} = userSlice.actions
+export const { resetUserSlice } = userSlice.actions;
 
 export default userSlice.reducer;

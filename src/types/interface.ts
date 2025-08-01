@@ -29,6 +29,7 @@ export interface News {
   news: string;
   name?: string;
   img?: string;
+  redirect?:string
 }
 
 export interface Sunshine {

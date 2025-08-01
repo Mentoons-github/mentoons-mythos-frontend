@@ -12,6 +12,7 @@ import { sendOtpThunk } from "../../features/auth/authThunk";
 import { resetAuthState } from "../../features/auth/authSlice";
 import { useEffect, useState } from "react";
 import GoogleAuth from "../../components/button/googleAuth";
+import { toast } from "sonner";
 
 const Register = () => {
   const [form, setForm] = useState({});
@@ -30,12 +31,12 @@ const Register = () => {
 
   useEffect(() => {
     if (success) {
-      alert(message);
+      toast.success(message);
       navigate("/verify-otp", { state: { userData: form } });
       dispatch(resetAuthState());
     }
     if (error) {
-      alert(error);
+      toast.error(error);
       console.log(error, "error");
       dispatch(resetAuthState());
     }

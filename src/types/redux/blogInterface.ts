@@ -8,7 +8,7 @@ export interface Blog {
     description:string
     createdAt?:Date
     likes?: string[]
-    comments?:string[]
+    commentCount?:number
     commentsOff?:boolean
 }
 

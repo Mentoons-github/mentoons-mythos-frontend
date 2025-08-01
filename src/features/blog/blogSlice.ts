@@ -8,6 +8,8 @@ import {
   likeBlogThunk,
   replyCommentThunk,
   fetchCurrentUserBlog,
+  updateBlogViewThunk,
+  fetchByMostReadThunk,
 } from "./blogThunk";
 import { Blog, Comments } from "../../types/redux/blogInterface";
 
@@ -21,6 +23,7 @@ interface SliceBlog {
   userId: string;
   comments: Comments[];
   blog: Blog | null;
+  mostReadBlogs : Blog[]
 }
 
 const initialState: SliceBlog = {
@@ -33,6 +36,7 @@ const initialState: SliceBlog = {
   userId: "",
   comments: [],
   blog: null as Blog | null,
+  mostReadBlogs:[]
 };
 
 export const blogSlice = createSlice({
@@ -164,6 +168,11 @@ export const blogSlice = createSlice({
         state.error = action.payload;
       })
 
+      //currentUserBlog
+      .addCase(fetchCurrentUserBlog.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(fetchCurrentUserBlog.fulfilled, (state, action) => {
         state.data = action.payload;
         state.error = null;
@@ -173,10 +182,35 @@ export const blogSlice = createSlice({
         state.error = action.payload as string;
         state.loading = false;
       })
-      .addCase(fetchCurrentUserBlog.pending, (state) => {
+
+      //update blog views
+      .addCase(updateBlogViewThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
-      });
+      })
+      .addCase(updateBlogViewThunk.fulfilled, (state, action) => {
+        state.message = action.payload.message;
+        state.error = null;
+        state.loading = false;
+      })
+      .addCase(updateBlogViewThunk.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.loading = false;
+      })
+
+      .addCase(fetchByMostReadThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchByMostReadThunk.fulfilled, (state, action) => {
+        state.mostReadBlogs = action.payload;
+        state.error = null;
+        state.loading = false;
+      })
+      .addCase(fetchByMostReadThunk.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.loading = false;
+      })
   },
 });
 

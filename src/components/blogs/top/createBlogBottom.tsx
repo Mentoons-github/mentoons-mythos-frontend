@@ -4,7 +4,7 @@ import { RiArrowRightUpLine } from "react-icons/ri";
 const CreateBlogBottom = () => {
   return (
     <motion.div
-      className="mt-10 md:flex "
+      className="mt-10 md:flex hidden"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}

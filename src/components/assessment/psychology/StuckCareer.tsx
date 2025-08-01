@@ -54,7 +54,6 @@ const StuckCareer = () => {
             className="bg-white shadow-xl flex flex-col justify-between rounded-xl p-8 space-y-6 transition-transform duration-300 hover:scale-[1.01] min-h-[580px]"
             variants={containerVariants}
           >
-            {/* Top Content */}
             <motion.div className="space-y-5">
               <motion.div
                 className="flex items-center justify-center rounded-2xl"
@@ -93,7 +92,6 @@ const StuckCareer = () => {
               </motion.p>
             </motion.div>
 
-            {/* Bottom Button */}
             <div className="flex justify-end">
               <motion.button
                 whileHover={{ scale: 1.05 }}

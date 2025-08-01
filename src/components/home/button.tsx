@@ -5,15 +5,18 @@ const MythosButton = ({
   bg = "white",
   textClr = "black",
   icon: Icon,
+  onClick = () => {}
 }: {
   label: string;
   bg?: string;
   textClr?: string;
   icon?: IconType;
+  onClick?: () => void;
 }) => {
   return (
     <button
-      className={`flex justify-center items-center gap-2 px-4 sm:px-6 py-3 sm:py-4 cursor-pointer z-3 cursor-pointer ${
+      onClick={onClick}
+      className={`flex justify-center items-center gap-2 px-4 sm:px-6 py-3 sm:py-4 z-3 cursor-pointer ${
         !bg && "rounded-md"
       } shadow-md hover:shadow-lg transition-all duration-300`}
       style={{

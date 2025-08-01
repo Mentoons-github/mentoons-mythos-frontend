@@ -44,6 +44,7 @@ const RightSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: index * 0.1 }}
             viewport={{ once: true }}
+            onClick={() => window.open(data.redirect, "_blank")}
           >
             <div className="flex justify-center items-center w-full font-jost font-semibold text-xs">
               <h1 className="bg-white whitespace-nowrap z-10 pr-3">
@@ -55,7 +56,7 @@ const RightSection = () => {
               </span>
               <div className="w-[30px] border-t border-gray-900"></div>
             </div>
-            <h1 className="font-outfit font-semibold text-lg text-[#111111] mt-3">
+            <h1 className="font-outfit font-semibold text-lg text-[#111111] mt-3 cursor-pointer">
               {data.news}
             </h1>
           </motion.div>
@@ -66,7 +67,7 @@ const RightSection = () => {
         <MissingOutProducts />
       </motion.div>
 
-      <motion.div
+      {/* <motion.div
         className="flex justify-center"
         initial={{ opacity: 0, scale: 0.95 }}
         whileInView={{ opacity: 1, scale: 1 }}
@@ -78,7 +79,7 @@ const RightSection = () => {
           alt="neptune"
           className="w-96 h-96"
         />
-      </motion.div>
+      </motion.div> */}
     </motion.div>
   );
 };

@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import MythosSearch from "../modal/search";
 import { useAppSelector, useAppDispatch } from "../../hooks/reduxHooks";
 import { fetchUserData, userLogout } from "../../features/user/userThunk";
+import { toast } from "sonner";
 
 const MythosHeader = () => {
   const dispatch = useAppDispatch();
@@ -173,6 +174,22 @@ const MythosHeader = () => {
     return () => document.removeEventListener("keydown", handleEscape);
   }, [isSearchOpen]);
 
+  const handleWishList = () => {
+    if(!user?._id) {
+      toast.warning("Please Login with continue wishlist")
+      return
+    }
+    navigate("/wishlist");
+  };
+
+  const handleCart = () => {
+    if(!user?._id) {
+      toast.warning("Please Login with continue cart")
+      return
+    }
+    navigate("/cart");
+  };
+
   return (
     <>
       <motion.header
@@ -303,7 +320,7 @@ const MythosHeader = () => {
             <motion.button
               whileHover={{ scale: 1.1 }}
               transition={{ duration: 0.2, ease: "easeIn" }}
-              onClick={() => navigate("/cart")}
+              onClick={handleCart}
               aria-label="View cart"
               className="relative flex justify-center items-center rounded-full w-8 h-8 sm:w-10 sm:h-10 md:w-10 md:h-10 lg:w-12 lg:h-12 outline-dashed outline-2 outline-gray-600 cursor-pointer"
             >
@@ -322,7 +339,7 @@ const MythosHeader = () => {
               whileHover={{ scale: 1.1 }}
               transition={{ duration: 0.2, ease: "easeIn" }}
               aria-label="View wishlist"
-              onClick={() => navigate("/wishlist")}
+              onClick={handleWishList}
               className="flex justify-center items-center rounded-full w-8 h-8 sm:w-10 sm:h-10 md:w-10 md:h-10 lg:w-12 lg:h-12 outline-dashed outline-2 outline-gray-600 cursor-pointer"
             >
               <img

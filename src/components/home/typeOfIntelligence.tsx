@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
 import useInView from "../../hooks/useInView";
 import MythosButton from "./button";
+import { useNavigate } from "react-router-dom";
 
 const TypeOfIntelligence = () => {
+  const navigate = useNavigate()
   const { isInView, ref } = useInView(0.3, false);
   const intelligence = [
     "Based on Howard Gardner's theory of multiple intelligences",
@@ -42,7 +44,7 @@ const TypeOfIntelligence = () => {
           ))}
         </ul>
         <div className="mt-4 sm:mt-5">
-          <MythosButton label="LEARN MORE" bg="#FEE898" />
+          <MythosButton label="LEARN MORE" bg="#FEE898" onClick={()=>navigate('/assessment/psychology')}/>
         </div>
       </div>
       <motion.div

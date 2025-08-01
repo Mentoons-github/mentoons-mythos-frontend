@@ -2,13 +2,21 @@ import { motion } from "framer-motion";
 import useInView from "../hooks/useInView";
 import { FaArrowRight, FaSearch } from "react-icons/fa";
 import FAQ from "../components/about/FAQ";
-import { NavLink } from "react-router-dom";
 import ProductCard from "../components/cards/productCard";
+import WeAreHiring from "../components/hiring/WeAreHiring";
+import { Hiring } from "../types/hiringTypes";
+import { useEffect, useState } from "react";
+import { HIRING } from "../constants/hiring";
 
 const Shop = () => {
   const { ref: heroRef, isInView: heroInView } = useInView(0.3, true);
   const { ref: productsRef, isInView: productsInView } = useInView(0.2, true);
   const { ref: tattoosRef, isInView: tattoosInView } = useInView(0.2, true);
+  const [hiring, setHiring] = useState<Hiring[] | []>([]);
+
+  useEffect(() => {
+    setHiring(HIRING);
+  }, []);
 
   const products = [
     {
@@ -197,9 +205,9 @@ const Shop = () => {
               productsInView ? { y: 0, opacity: 1 } : { y: 30, opacity: 0 }
             }
             transition={{ duration: 0.6 }}
-            className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-[#E39712] font-semibold mb-5 md:mb-10"
+            className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-[#E39712] font-semibold mb-5 md:mb-1"
           >
-            New Arrival
+            Coming Soon...
           </motion.h2>
           <motion.div
             initial={{ x: 30, opacity: 0 }}
@@ -215,7 +223,8 @@ const Shop = () => {
           </motion.div>
         </div>
 
-        <NavLink to={"/products-details"}>
+        {/* <NavLink to={"/products-details"}> */}
+        <div>
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -223,40 +232,43 @@ const Shop = () => {
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6"
           >
             {products.map((product) => (
-              <ProductCard product={product} />
+              <ProductCard product={product} key={product.id}/>
             ))}
           </motion.div>
-        </NavLink>
+        </div>
       </motion.div>
 
-      <motion.div
-        ref={tattoosRef}
-        initial="hidden"
-        animate={tattoosInView ? "visible" : "hidden"}
-        variants={fadeInUp}
-        className="flex flex-col justify-center items-center gap-5 md:gap-10 bg-[#E39712] py-6 md:py-10 px-4"
-      >
-        <motion.h1
-          variants={fadeInUp}
-          className="text-xl sm:text-2xl md:text-3xl text-[#1A1D3B] tracking-[1.5px] md:tracking-[2.5px] font-bold text-center"
-        >
-          TATTOOS YOU WOULD LIKE TO HAVE!
-        </motion.h1>
+      <motion.div className="flex bg-[#E39712] pr-6">
         <motion.div
-          variants={staggerContainer}
-          className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-5 max-w-6xl mx-auto"
+          ref={tattoosRef}
+          initial="hidden"
+          animate={tattoosInView ? "visible" : "hidden"}
+          variants={fadeInUp}
+          className="flex flex-col justify-center items-center gap-5 md:gap-10  py-6 md:py-10 md:w-2/3"
         >
-          {Tattoos.map((url, index) => (
-            <motion.img
-              key={index}
-              variants={itemVariants}
-              whileHover={{ scale: 1.05, rotate: 1 }}
-              alt={`${url}+${index}`}
-              src={url}
-              className="w-full rounded-lg shadow-md"
-            />
-          ))}
+          <motion.h1
+            variants={fadeInUp}
+            className="text-xl sm:text-2xl md:text-3xl text-[#1A1D3B] tracking-[1.5px] md:tracking-[2.5px] font-bold text-center"
+          >
+            TATTOOS YOU WOULD LIKE TO HAVE!
+          </motion.h1>
+          <motion.div
+            variants={staggerContainer}
+            className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-10 max-w-6xl mx-auto"
+          >
+            {Tattoos.map((url, index) => (
+              <motion.img
+                key={index}
+                variants={itemVariants}
+                whileHover={{ scale: 1.05, rotate: 1 }}
+                alt={`${url}+${index}`}
+                src={url}
+                className="md:w-64 md:h-72 rounded-lg shadow-md"
+              />
+            ))}
+          </motion.div>
         </motion.div>
+        <WeAreHiring hiring={hiring} />
       </motion.div>
 
       <FAQ />

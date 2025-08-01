@@ -185,7 +185,7 @@ const KnowMoreAboutUs = () => {
               navigate("/bookings");
             }}
           >
-            <img src="/assets/mythos/icons/star.png" className="w-6" />
+            <img src="/assets/icons/star.png" className="w-6" />
             <p>BOOK A CALL NOW</p>
           </motion.button>
         </motion.div>

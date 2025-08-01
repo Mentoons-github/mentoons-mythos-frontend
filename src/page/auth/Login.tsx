@@ -9,6 +9,7 @@ import { loginThunk } from "../../features/auth/authThunk";
 import { useEffect } from "react";
 import { resetAuthState } from "../../features/auth/authSlice";
 import GoogleAuth from "../../components/button/googleAuth";
+import { toast } from "sonner";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -20,12 +21,12 @@ const Login = () => {
   // console.log(accessToken, userId);
   useEffect(() => {
     if (success) {
-      alert(message);
+      toast.success(message);
       navigate("/");
       dispatch(resetAuthState());
     }
     if (error) {
-      alert(error);
+      toast.error(error);
       console.log(error, "errror");
       dispatch(resetAuthState());
     }

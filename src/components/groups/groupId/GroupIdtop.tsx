@@ -35,7 +35,7 @@ const GroupIdtop = ({
   details,
   isIntelligence,
 }: {
-  details: Sunshine | Intelligence | undefined;
+  details: Sunshine | Intelligence ;
   isIntelligence: boolean;
 }) => {
   if (!details) {

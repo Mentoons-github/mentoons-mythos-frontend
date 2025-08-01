@@ -3,7 +3,7 @@ import ReactPlayer from "react-player";
 
 const HeroSection = () => {
   return (
-    <div className="bg-[#1A1D3B] bg-[url('/assets/background/section/stars_background.png')] bg-center p-4 md:p-6 pb-12 md:pb-24">
+    <div className="bg-black bg-[url('/assets/background/section/stars_background.png')] bg-center p-4 md:p-6 pb-12 md:pb-24">
       <motion.div
         className="w-full md:w-[80%] lg:w-[60%] mx-auto"
         initial={{ opacity: 0 }}
@@ -37,7 +37,7 @@ const HeroSection = () => {
         transition={{ duration: 0.8, delay: 0.6 }}
       >
         <ReactPlayer
-          url="https://res.cloudinary.com/dacwu8tri/video/upload/v1741857522/Mentoons_Mythos_2_psixmo.mp4"
+          url="assets/problem areas_2.mp4"
           className="absolute inset-0"
           width="100%"
           height="100%"

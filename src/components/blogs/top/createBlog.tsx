@@ -1,14 +1,13 @@
 import { motion } from "framer-motion";
 import { LuImage } from "react-icons/lu";
-import { BiVideoRecording } from "react-icons/bi";
-import { TfiMicrophone } from "react-icons/tfi";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { createBlogThunk } from "../../../features/blog/blogThunk";
 import { useEffect, useState } from "react";
 import { resetBlogSlice } from "../../../features/blog/blogSlice";
 import { fileUploadThunk } from "../../../features/upload/fileUploadThunk";
+import { toast } from "sonner";
 
-const CreateBlog = () => {
+const CreateBlog = ({ userId }: { userId: string }) => {
   const dispatch = useAppDispatch();
   const { file: uploadedImage } = useAppSelector((state) => state.upload);
 
@@ -29,11 +28,11 @@ const CreateBlog = () => {
 
   useEffect(() => {
     if (createblogSuccess) {
-      alert(message);
+      toast.success(message);
       dispatch(resetBlogSlice());
     }
     if (error) {
-      alert(error);
+      toast.error(error);
       dispatch(resetBlogSlice());
     }
   }, [createblogSuccess, dispatch, error, message]);
@@ -53,6 +52,13 @@ const CreateBlog = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!userId) {
+      toast.warning("Please login to create blogs");
+      setInput({ description: "", title: "", tags: "", commentsOff: false });
+      return;
+    }
+
     let imageUrl = uploadedImage;
 
     if (file) {
@@ -93,7 +99,7 @@ const CreateBlog = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        Create your first blog post
+        Create Your Blog Post
       </motion.h1>
 
       <motion.div
@@ -176,8 +182,8 @@ const CreateBlog = () => {
               <label htmlFor="imageUpload" className="cursor-pointer">
                 <LuImage className="text-black md:text-2xl" />
               </label>
-              <BiVideoRecording className="cursor-pointer text-black md:text-2xl" />
-              <TfiMicrophone className="cursor-pointer text-black md:text-2xl" />
+              {/* <BiVideoRecording className="cursor-pointer text-black md:text-2xl" />
+              <TfiMicrophone className="cursor-pointer text-black md:text-2xl" /> */}
             </motion.div>
           </motion.div>
 
