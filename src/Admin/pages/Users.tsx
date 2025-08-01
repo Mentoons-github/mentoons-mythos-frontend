@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { blockUserThunk, fetchAllUserThunk } from "../../features/user/userThunk";
+import {
+  blockUserThunk,
+  fetchAllUserThunk,
+} from "../../features/user/userThunk";
 import { format } from "date-fns";
 import { Switch } from "../../components/ui/switch";
 import { toast } from "sonner";
@@ -8,8 +11,10 @@ import { resetUserSlice } from "../../features/user/userSlice";
 
 const Users = () => {
   const dispatch = useAppDispatch();
-  const { allUsers, loading, success, blockMessage,error } = useAppSelector((state) => state.user);
-  const [showTable, setShowTable] = useState(false); 
+  const { allUsers, loading, success, blockMessage, error } = useAppSelector(
+    (state) => state.user
+  );
+  const [showTable, setShowTable] = useState(false);
 
   useEffect(() => {
     dispatch(fetchAllUserThunk());
@@ -18,19 +23,19 @@ const Users = () => {
       setShowTable(true);
     }, 1000);
 
-    return () => clearTimeout(timer); 
+    return () => clearTimeout(timer);
   }, [dispatch]);
 
-  useEffect(()=>{
-    if(success){
-      toast.success(blockMessage)
-      dispatch(resetUserSlice())
+  useEffect(() => {
+    if (success) {
+      toast.success(blockMessage);
+      dispatch(resetUserSlice());
     }
-    if(error){
-      toast.error(error)
-      dispatch(resetUserSlice())
+    if (error) {
+      toast.error(error);
+      dispatch(resetUserSlice());
     }
-  },[blockMessage, dispatch, error, success])
+  }, [blockMessage, dispatch, error, success]);
 
   const handleBlockToggle = (userId: string) => {
     dispatch(blockUserThunk(userId));
@@ -41,7 +46,9 @@ const Users = () => {
       <h1 className="text-2xl font-semibold mb-4">All Users</h1>
 
       {!showTable || loading ? (
-        <div className="text-gray-300 flex items-center justify-center">Loading users data...</div>
+        <div className="text-gray-300 flex items-center justify-center">
+          Loading users data...
+        </div>
       ) : (
         <div className="overflow-x-auto">
           <table className="min-w-full table-auto border-collapse rounded-md overflow-hidden">
@@ -60,7 +67,9 @@ const Users = () => {
               {allUsers.map((user, index) => (
                 <tr
                   key={index}
-                  className={`border-b ${index % 2 == 0 ? "bg-black/60" : ""} border-gray-600`}
+                  className={`border-b ${
+                    index % 2 == 0 ? "bg-black/60" : ""
+                  } border-gray-600`}
                 >
                   <td className="px-4 py-4">{index + 1}</td>
                   <td className="px-4 py-4">
@@ -91,7 +100,9 @@ const Users = () => {
                   <td className="px-4 py-4">
                     <Switch
                       checked={user.isBlocked}
-                      onCheckedChange={() => handleBlockToggle(user._id)}
+                      onCheckedChange={() =>
+                        user._id && handleBlockToggle(user._id)
+                      }
                     />
                   </td>
                 </tr>
