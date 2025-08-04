@@ -5,6 +5,7 @@ import {
   fetchUserData,
   reportUserThunk,
   userLogout,
+  updateUserData,
 } from "./userThunk";
 import { IUser } from "../../types";
 
@@ -128,6 +129,22 @@ const userSlice = createSlice({
       .addCase(reportUserThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+      // updateUser
+      .addCase(updateUserData.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateUserData.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.success = true;
+        state.error = null;
+        state.loading = false;
+      })
+      .addCase(updateUserData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });

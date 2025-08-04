@@ -10,9 +10,6 @@ const fadeInUp = {
 };
 
 const Blogs = () => {
-
-
-
   return (
     <motion.section
       className="flex flex-col md:px-20 py-12 justify-between items-center bg-[#FEFEF6]"
@@ -48,7 +45,11 @@ const Blogs = () => {
         </motion.div>
       </motion.div>
 
-      <motion.div className="w-full mt-10" variants={fadeInUp} transition={{ delay: 0.3 }}>
+      <motion.div
+        className="w-full mt-10"
+        variants={fadeInUp}
+        transition={{ delay: 0.3 }}
+      >
         <TopSection />
       </motion.div>
 
@@ -60,7 +61,11 @@ const Blogs = () => {
         <motion.div className="flex-1" variants={fadeInUp}>
           <LeftSection />
         </motion.div>
-        <motion.div className="flex-1" variants={fadeInUp} transition={{ delay: 0.5 }}>
+        <motion.div
+          className="flex-1"
+          variants={fadeInUp}
+          transition={{ delay: 0.5 }}
+        >
           <RightSection />
         </motion.div>
       </motion.div>

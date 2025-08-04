@@ -20,3 +20,4 @@ export const logout = () => {
 export const reportUserApi = (data:ReportResponse, userId:string) => {
   return apiClient.post(`/user/report/${userId}`,data)
 }
+

@@ -7,9 +7,14 @@ import ProfileBlogs from "../components/profile/blogs";
 import { IUser } from "../types";
 import { useAppSelector, useAppDispatch } from "../hooks/reduxHooks";
 import { fetchMoonAndSunSign } from "../features/astrology/astroThunk";
-import { fetchUserData, userLogout } from "../features/user/userThunk";
+import {
+  fetchUserData,
+  userLogout,
+} from "../features/user/userThunk";
 import { fetchCurrentUserBlog } from "../features/blog/blogThunk";
 import { debounce } from "lodash";
+import { FaPlus } from "react-icons/fa";
+import ProfileUpload from "../components/modal/profileUpload";
 
 const Profile = () => {
   const dispatch = useAppDispatch();
@@ -31,6 +36,7 @@ const Profile = () => {
 
   const [activeTab, setActiveTab] = useState<"profile" | "blogs">("profile");
   const [isEditing, setIsEditing] = useState(false);
+  const [showUpload, setShowUpload] = useState(false);
 
   const [formData, setFormData] = useState({
     birthDate: user?.dateOfBirth
@@ -134,6 +140,11 @@ useEffect(() => {
     }
   };
 
+  const onClose = async () => {
+    setShowUpload(false);
+    await dispatch(fetchUserData());
+  };
+
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -222,7 +233,7 @@ useEffect(() => {
         >
           <div className="flex items-center space-x-6 mb-6">
             <div className="relative">
-              <div className="w-20 h-20 bg-gradient-to-br from-gray-600 to-gray-800 rounded-full flex items-center justify-center border-2 border-gray-500">
+              <div className="relative w-20 h-20 bg-gradient-to-br from-gray-600 to-gray-800 rounded-full flex items-center justify-center border-2 border-gray-500">
                 {user.profilePicture ? (
                   <img
                     src={user.profilePicture}
@@ -232,6 +243,14 @@ useEffect(() => {
                 ) : (
                   <User size={32} className="text-gray-300" />
                 )}
+                <motion.button
+                  whileHover={{ y: 3 }}
+                  transition={{ duration: 0.3, ease: "easeIn" }}
+                  onClick={() => setShowUpload(true)}
+                  className="absolute bottom-0 right-0 bg-gradient-to-r from-gray-500 to-gray-900 cursor-pointer rounded-full w-5 h-5 flex justify-center items-center"
+                >
+                  <FaPlus className=" text-sm" />
+                </motion.button>
               </div>
               <motion.div
                 className="absolute -top-1 -right-1 w-6 h-6 bg-white rounded-full flex items-center justify-center"
@@ -332,7 +351,6 @@ useEffect(() => {
               </AnimatePresence>
             </motion.div>
           )}
-          Batal batalkan
           {activeTab === "blogs" && (
             <ProfileBlogs
               userBlogs={userBlogs}
@@ -342,6 +360,7 @@ useEffect(() => {
           )}
         </AnimatePresence>
       </div>
+      {showUpload && <ProfileUpload onClose={onClose} />}
     </motion.div>
   );
 };
