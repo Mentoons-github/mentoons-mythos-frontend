@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { sunMoonSign } from "./astroService";
+import { updateUser } from "./astroService";
 import { IAstrologyDetail, IUser } from "../../types";
 import { AxiosError } from "axios";
 
@@ -8,7 +8,7 @@ export const fetchMoonAndSunSign = createAsyncThunk<
   { user: IUser }
 >("astrology/moonAndSun", async ({ user }, { rejectWithValue }) => {
   try {
-    const response = await sunMoonSign(user);
+    const response = await updateUser(user);
     console.log("signs :", response.data);
     return response.data;
   } catch (err) {

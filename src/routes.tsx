@@ -46,8 +46,22 @@ const AppRouter = () => {
           <Route path="login" element={<Login />} />
           <Route path="oauth-result" element={<OAuthResult />} />
           <Route path="verify-otp" element={<Otp />} />
-          <Route path="groups/:groupId/chat" element={<ProtectedRoute><GroupChat /></ProtectedRoute>} />
-          <Route path="assessment/:type/:name" element={<ProtectedRoute><AssessmentQuestions/></ProtectedRoute>}/>
+          <Route
+            path="groups/:groupId/chat"
+            element={
+              <ProtectedRoute>
+                <GroupChat />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="assessment/:type/:name"
+            element={
+              <ProtectedRoute>
+                <AssessmentQuestions />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/" element={<MythosLayout />}>
             <Route index element={<MythosHome />} />
             <Route path="about-us" element={<MythosAbout />} />
@@ -62,23 +76,49 @@ const AppRouter = () => {
             <Route path="products-details" element={<MythosProductDetail />} />
             <Route path="hiring" element={<MythosHiring />} />
             <Route path="profile" element={<MythosProfile />} />
-            <Route path="cart" element={<ProtectedRoute><MythosCart /></ProtectedRoute>} />
-            <Route path="wishlist" element={<ProtectedRoute><MythosWishList /></ProtectedRoute>} />
-            <Route path="orders" element={<ProtectedRoute><MythosOrder /></ProtectedRoute>} />
+            <Route
+              path="cart"
+              element={
+                <ProtectedRoute>
+                  <MythosCart />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="wishlist"
+              element={
+                <ProtectedRoute>
+                  <MythosWishList />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="orders"
+              element={
+                <ProtectedRoute>
+                  <MythosOrder />
+                </ProtectedRoute>
+              }
+            />
             <Route path="search" element={<MythosSearch />} />
             <Route
               path="assessment/psychology"
               element={<MythosPsychologyAssessments />}
             />
           </Route>
-          <Route path="/admin" 
-          // element={<AdminLayout />}
-          element={<RequireAdmin><AdminLayout /></RequireAdmin>}
+          <Route
+            path="/admin"
+            // element={<AdminLayout />}
+            element={
+              <RequireAdmin>
+                <AdminLayout />
+              </RequireAdmin>
+            }
           >
             <Route index element={<Dashboard />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="users" element={<Users />} />
-            <Route path = '*' element = {<Users/>}/>
+            <Route path="*" element={<Users />} />
             {/* <Route path="orders" element={<Orders />} />
             <Route path="products" element={<Products />} /> */}
           </Route>
