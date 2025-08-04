@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { QUESTIONS } from "../../constants/assessment";
 import { useEffect, useState } from "react";
 import { LuNotebookPen } from "react-icons/lu";
@@ -6,10 +6,17 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { assessmentSubmitTunk } from "../../features/assessment/assessmentThunk";
 import { toast } from "sonner";
 import { resetAssessmentSlice } from "../../features/assessment/assessmentSlice";
+import PaymentModal from "../../components/modal/paymentModal/paymentModal";
+import { useNavigate } from "react-router-dom";
 
 const AssessmentQuestions = () => {
   const dispatch = useAppDispatch();
-  const { message, error, success } = useAppSelector((state) => state.assessment);
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const paid = searchParams.get("paid") === "true";
+  const { message, error, success } = useAppSelector(
+    (state) => state.assessment
+  );
   const { name, type } = useParams<{ name?: string; type?: string }>();
   const questions = QUESTIONS[name as keyof typeof QUESTIONS];
   const initialIndex = sessionStorage.getItem(`${name}_currentIndex`);
@@ -17,6 +24,8 @@ const AssessmentQuestions = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(
     initialIndex ? parseInt(initialIndex) : 0
   );
+  const [paymentRequired, setPaymentRequired] = useState(false);
+  const [paymentDone, setPaymentDone] = useState(false);
   const [selectedAnswers, setSelectedAnswers] = useState<{
     [key: number]: string;
   }>(storedAnswers ? JSON.parse(storedAnswers) : {});
@@ -24,16 +33,16 @@ const AssessmentQuestions = () => {
 
   const currentQuestion = questions[currentQuestionIndex];
 
-  useEffect(()=>{
-    if(success){
-      toast.success(message)
-      dispatch(resetAssessmentSlice())
+  useEffect(() => {
+    if (success) {
+      toast.success(message);
+      dispatch(resetAssessmentSlice());
     }
-    if(error){
-      toast.error(error)
-      dispatch(resetAssessmentSlice())
+    if (error) {
+      toast.error(error);
+      dispatch(resetAssessmentSlice());
     }
-  },[dispatch, error, message, success])
+  }, [dispatch, error, message, success]);
 
   const handleOptionSelect = (option: string) => {
     setSelectedAnswers((prev) => ({
@@ -42,7 +51,19 @@ const AssessmentQuestions = () => {
     }));
   };
 
+  useEffect(() => {
+    if (paid) {
+      setPaymentDone(true);
+      setPaymentRequired(false);
+    }
+  }, [paid]);
+
   const handleNext = () => {
+    if (currentQuestionIndex === 4 && !paymentDone) {
+      setPaymentRequired(true);
+      return;
+    }
+
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     }
@@ -93,7 +114,7 @@ const AssessmentQuestions = () => {
 
   return (
     <div
-      className="flex items-center justify-center min-h-screen md:px-4 text-gray-700"
+      className="relative flex items-center justify-center min-h-screen md:px-4 text-gray-700"
       style={{
         backgroundImage: "url('/assets/assessments/career2.png')",
         backgroundRepeat: "no-repeat",
@@ -196,6 +217,20 @@ const AssessmentQuestions = () => {
           </>
         )}
       </div>
+      {paymentRequired && (
+        <PaymentModal
+          closeModal={() => {
+            setPaymentRequired(false);
+            navigate(`/assessment/${type}`);
+          }}
+          paymentDone={paymentDone}
+          itemType={type!}
+          itemName={name!}
+          heading="Assessment"
+          price={9}
+          description="To access the full assessment, a one-time payment of ₹9 is required. This small fee helps us maintain the quality of the platform and provide you with the best experience."
+        />
+      )}
     </div>
   );
 };

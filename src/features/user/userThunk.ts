@@ -7,8 +7,13 @@ import {
   logout,
   reportUserApi,
 } from "./api/userApi";
-import { AllUserResponse, IUser, UserResponse } from "../../types/user/userInterface";
+import {
+  AllUserResponse,
+  IUser,
+  UserResponse,
+} from "../../types/user/userInterface";
 import { ReportResponse } from "../../types/redux/reportInterface";
+import { updateUser } from "../astrology/astroService";
 
 export const fetchUserData = createAsyncThunk<UserResponse, void>(
   "user/fetch",
@@ -41,7 +46,7 @@ export const fetchAllUserThunk = createAsyncThunk<AllUserResponse, void>(
 );
 
 export const blockUserThunk = createAsyncThunk<
-  { message: string, user:IUser, success:boolean },
+  { message: string; user: IUser; success: boolean },
   string,
   { rejectValue: string }
 >("user/block-user", async (userId, { rejectWithValue }) => {
@@ -81,3 +86,18 @@ export const reportUserThunk = createAsyncThunk<
     return rejectWithValue(error?.response?.data?.message || "Report failed");
   }
 });
+
+export const updateUserData = createAsyncThunk<IUser, { user: Partial<IUser> }>(
+  "user/add",
+  async ({ user }, { rejectWithValue }) => {
+    try {
+      const response = await updateUser(user);
+      return response.data;
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      return rejectWithValue(
+        error?.response?.data?.message || "failed update user"
+      );
+    }
+  }
+);
