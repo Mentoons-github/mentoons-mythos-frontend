@@ -44,7 +44,7 @@ const CreateBlog = ({ userId }: { userId: string }) => {
 
     if (name === "description") {
       const words = value.trim().split(/\s+/).filter(Boolean);
-      if (words.length > 250) return;
+      if (words.length > 500) return;
     }
 
     setInput({ ...input, [name]: value });
@@ -144,7 +144,7 @@ const CreateBlog = ({ userId }: { userId: string }) => {
                 ></textarea>
                 <p className="text-sm text-gray-500 text-right absolute bottom-2 right-2">
                   {input.description.trim().split(/\s+/).filter(Boolean).length}{" "}
-                  / 250
+                  / 500
                 </p>
               </div>
 
@@ -154,7 +154,7 @@ const CreateBlog = ({ userId }: { userId: string }) => {
                 </p>
               )}
 
-              {wordCount > 250 && (
+              {wordCount > 500 && (
                 <p className="text-red-500 text-xs mt-1">
                   Maximum 250 words allowed
                 </p>
@@ -245,12 +245,12 @@ const CreateBlog = ({ userId }: { userId: string }) => {
               )}
             {/* Buttons aligned to right */}
             <div className="flex gap-4">
-              <button
+              {/* <button
                 type="button"
                 className="text-[#E39712] font-medium hover:underline"
               >
                 Post Later
-              </button>
+              </button> */}
               <motion.button
                 disabled={
                   input.description.trim() === "" ||

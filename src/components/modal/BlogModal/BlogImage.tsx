@@ -8,7 +8,7 @@ const BlogImage: React.FC<PostImageProps> = ({ src, alt }) => {
     <img
       src={src || "/assets/logo/Logo 2.png"}
       alt={alt}
-      className="w-full h-58 object-cover rounded-md mb-4"
+      className="w-full h-60 object-cover rounded-md mb-4"
     />
   );
 };

@@ -1,5 +1,5 @@
 import FAQ from "../../components/about/FAQ";
-import CareerBlog from "../../components/assessment/psychology/CareerBlog";
+// import CareerBlog from "../../components/assessment/psychology/CareerBlog";
 import IntaligentTypes from "../../components/assessment/psychology/IntaligentTypes";
 // import LogicalMathmatical from "../../components/assessment/psychology/LogicalMathmatical";
 import PsychologyAssessmentTop from "../../components/assessment/psychology/PsychologyAssessmentTop";
@@ -18,7 +18,7 @@ const PsychologyAssessment = () => {
       {/* <LogicalMathmatical/> */}
       {/* <StuckCareer/> */}
       <Tests userId = {user?._id}/>
-      <CareerBlog/>
+      {/* <CareerBlog/> */}
       <WeAreHiring/>
       <FAQ/>
     </div>

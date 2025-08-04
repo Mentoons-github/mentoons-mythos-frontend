@@ -52,7 +52,6 @@ const ProfileBlogs = ({
   blogsLoading: boolean;
   blogError: string | null | undefined;
 }) => {
-  console.log("user blogs :", userBlogs);
 
   return (
     <div className="w-full max-w-4xl mx-auto p-6">

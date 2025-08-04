@@ -30,6 +30,10 @@ const BlogsCard = ({ blogs, userId }: { blogs: Blog[], userId:string }) => {
     };
   return (
     <div className="flex flex-col gap-8 w-full md:w-[50rem]">
+     <div>
+       <h1 className="text-3xl font-semibold -mb-4">Popular Blogs</h1>
+     </div>
+      
       {blogs.map((blog, index) => (
         <motion.div
           className="flex flex-col w-full min-h-fit"
@@ -49,7 +53,7 @@ const BlogsCard = ({ blogs, userId }: { blogs: Blog[], userId:string }) => {
               />
             </div>
           )}
-          <div className="p-12 bg-[#1A1D3B] flex flex-col flex-grow">
+          <div className="p-4 md:p-12 bg-[#1A1D3B] flex flex-col flex-grow">
             <div className="flex gap-5 text-gray-300 font-medium font-proza">
               <span>
                 {blog.createdAt && (
@@ -70,7 +74,7 @@ const BlogsCard = ({ blogs, userId }: { blogs: Blog[], userId:string }) => {
             </p>
 
             <div className="flex items-center justify-start mt-5">
-              <button className="p-3 outline-none bg-transparent border-[#3B3B3B] border-2 text-[#9D9D9D] font-semibold tracking-[2px] font-proza text-xs w-1/4" onClick={() => handlePostClick(blog)}>
+              <button className="p-3 outline-none bg-transparent border-[#3B3B3B] border-2 text-[#9D9D9D] font-semibold tracking-[2px] font-proza text-xs " onClick={() => handlePostClick(blog)}>
                 READ MORE
               </button>
             </div>

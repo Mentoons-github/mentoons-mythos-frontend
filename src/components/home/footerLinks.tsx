@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { FooterLists } from "../../types/interface";
 
 const FooterLinks = ({
@@ -19,8 +18,8 @@ const FooterLinks = ({
             key={index}
             className="flex justify-start md:justify-start items-center gap-2 md:gap-3 font-mulish"
           >
-            <Link
-              to={`/${typeof item === "string" ? item : item.value}`}
+            <div
+              // to={`/${typeof item === "string" ? item : item.value}`}
               className="flex items-center"
             >
               {typeof item === "string" ? (
@@ -38,7 +37,7 @@ const FooterLinks = ({
                   </span>
                 </div>
               )}
-            </Link>
+            </div>
           </li>
         ))}
       </ul>

@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  forgotPasswordThunk,
   loginThunk,
   registerThunk,
   sendOtpThunk,
@@ -109,7 +110,24 @@ const authSlice = createSlice({
       .addCase(verifyOtpThunk.rejected, (state, action) => {
         state.loading = false;
         state.otpError = action.payload;
-      });
+      })
+
+      //forgot-password
+       .addCase(forgotPasswordThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(forgotPasswordThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.message = action.payload.message;
+        state.success = action.payload.success;
+      })
+      .addCase(forgotPasswordThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
   },
 });
 

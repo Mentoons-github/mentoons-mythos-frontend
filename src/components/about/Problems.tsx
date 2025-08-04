@@ -19,7 +19,7 @@ const Problems = () => {
     },
   ];
   return (
-    <div className="bg-[#1A1D3B] p-4 md:p-6 pb-12 md:pb-24">
+    <div className="bg-black p-4 md:p-6 pb-12 md:pb-24">
       <motion.h2
         className="text-2xl font-semibold text-[#E39712] tracking-widest md:px-12 pb-8 md:pb-12 md:text-4xl lg:text-5xl"
         initial={{ opacity: 0, y: -30 }}

@@ -65,10 +65,10 @@ const GroupIdtop = ({
             </motion.h1>
           ) : (
             <motion.h1
-              className="text-4xl md:text-7xl font-bold "
+              className="text-4xl md:text-5xl font-bold "
               variants={fadeInUp}
             >
-              Welcome, Nupur
+              Welcome, 
             </motion.h1>
           )}
           <motion.h3

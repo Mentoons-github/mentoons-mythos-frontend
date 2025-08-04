@@ -44,3 +44,13 @@ export interface VerifyOtpPayload {
     email:string,
     otp:string
 }
+
+export interface ForgotPasswordPayload {
+    email:string,
+    newPassword:string
+}
+
+export interface ForgotPasswordResponse {
+    message:string,
+    success:boolean
+}

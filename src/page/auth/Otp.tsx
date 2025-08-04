@@ -9,6 +9,7 @@ import {
 import { resetAuthState } from "../../features/auth/authSlice";
 import AuthLayout from "./AuthLayout";
 import AuthButton from "../../components/ui/AuthButton";
+import { toast } from "sonner";
 
 const OTPInputPage = () => {
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
@@ -28,8 +29,15 @@ const OTPInputPage = () => {
   console.log(userData);
 
   useEffect(() => {
+  // Redirect if userData is not provided (direct access to OTP page)
+  if (!userData) {
+    navigate("/register", { replace: true });
+  }
+}, [userData, navigate]);
+
+  useEffect(() => {
     if (otpSuccess) {
-      alert(message);
+      toast.success(message);
       dispatch(registerThunk(userData));
       dispatch(resetAuthState());
       navigate("/");
@@ -104,27 +112,6 @@ const OTPInputPage = () => {
     inputRefs.current[0]?.focus();
   };
 
-  //   if (success) {
-  //     return (
-  //       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-  //         <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center">
-  //           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-  //             <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-  //               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-  //             </svg>
-  //           </div>
-  //           <h1 className="text-2xl font-bold text-gray-900 mb-2">Verification Successful!</h1>
-  //           <p className="text-gray-600 mb-6">Your account has been verified successfully.</p>
-  //           <button
-  //             onClick={() => navigate("/login")}
-  //             className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-  //           >
-  //             Continue
-  //           </button>
-  //         </div>
-  //       </div>
-  //     );
-  //   }
 
   return (
     <div className="min-h-screen flex">

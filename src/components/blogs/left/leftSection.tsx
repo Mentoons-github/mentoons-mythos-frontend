@@ -15,7 +15,7 @@ const LeftSection = () => {
 
 
   return (
-    <div className="flex flex-col items-start gap-5 w-full">
+    <div className="flex flex-col items-start gap-5 w-full md:-mt-80">
       <BlogsCard blogs={mostReadBlogs} userId = {userId??""}/>
     </div>
   );

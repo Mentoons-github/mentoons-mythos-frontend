@@ -16,7 +16,8 @@ import Dashboard from "./Admin/pages/Dashboard";
 import Users from "./Admin/pages/Users";
 import AssessmentQuestions from "./page/assessments/AssessmentQuestions";
 import RequireAdmin from "./Admin/components/RequireAdmin";
-import ProtectedRoute from "./components/ProtectedRoutes";
+import { AuthGuard, ProtectedRoute } from "./components/ProtectedRoutes";
+import ForgotPassword from "./page/auth/ForgotPassword";
 
 const MythosHome = lazy(() => import("./page/home"));
 const MythosAbout = lazy(() => import("./page/about"));
@@ -42,12 +43,28 @@ const AppRouter = () => {
       <Suspense fallback={<Loader />}>
         <ScrollToTop />
         <Routes>
-          <Route path="register" element={<Register />} />
-          <Route path="login" element={<Login />} />
-          <Route path="oauth-result" element={<OAuthResult />} />
-          <Route path="verify-otp" element={<Otp />} />
-          <Route path="groups/:groupId/chat" element={<ProtectedRoute><GroupChat /></ProtectedRoute>} />
-          <Route path="assessment/:type/:name" element={<ProtectedRoute><AssessmentQuestions/></ProtectedRoute>}/>
+
+          <Route path="register" element={<AuthGuard><Register /></AuthGuard>} />
+          <Route path="login" element={<AuthGuard><Login /></AuthGuard>} />
+          <Route path="oauth-result" element={<AuthGuard><OAuthResult /></AuthGuard>} />
+          <Route path="verify-otp" element={<AuthGuard><Otp /></AuthGuard>} />
+          <Route path="forgot-password" element={<AuthGuard><ForgotPassword /></AuthGuard>} />
+          <Route
+            path="groups/:groupId/chat"
+            element={
+              <ProtectedRoute>
+                <GroupChat />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="assessment/:type/:name"
+            element={
+              <ProtectedRoute>
+                <AssessmentQuestions />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/" element={<MythosLayout />}>
             <Route index element={<MythosHome />} />
             <Route path="about-us" element={<MythosAbout />} />
@@ -62,23 +79,49 @@ const AppRouter = () => {
             <Route path="products-details" element={<MythosProductDetail />} />
             <Route path="hiring" element={<MythosHiring />} />
             <Route path="profile" element={<MythosProfile />} />
-            <Route path="cart" element={<ProtectedRoute><MythosCart /></ProtectedRoute>} />
-            <Route path="wishlist" element={<ProtectedRoute><MythosWishList /></ProtectedRoute>} />
-            <Route path="orders" element={<ProtectedRoute><MythosOrder /></ProtectedRoute>} />
+            <Route
+              path="cart"
+              element={
+                <ProtectedRoute>
+                  <MythosCart />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="wishlist"
+              element={
+                <ProtectedRoute>
+                  <MythosWishList />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="orders"
+              element={
+                <ProtectedRoute>
+                  <MythosOrder />
+                </ProtectedRoute>
+              }
+            />
             <Route path="search" element={<MythosSearch />} />
             <Route
               path="assessment/psychology"
               element={<MythosPsychologyAssessments />}
             />
           </Route>
-          <Route path="/admin" 
-          // element={<AdminLayout />}
-          element={<RequireAdmin><AdminLayout /></RequireAdmin>}
+          <Route
+            path="/admin"
+            // element={<AdminLayout />}
+            element={
+              <RequireAdmin>
+                <AdminLayout />
+              </RequireAdmin>
+            }
           >
             <Route index element={<Dashboard />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="users" element={<Users />} />
-            <Route path = '*' element = {<Users/>}/>
+            <Route path="*" element={<Users />} />
             {/* <Route path="orders" element={<Orders />} />
             <Route path="products" element={<Products />} /> */}
           </Route>
