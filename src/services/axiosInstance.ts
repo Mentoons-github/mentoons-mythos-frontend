@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_DEV_URL,
+  baseURL: `${import.meta.env.VITE_BACKEND_DEV_URL}/api/v1`,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
@@ -9,7 +9,7 @@ const apiClient = axios.create({
 });
 
 const plainAxios = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_DEV_URL,
+  baseURL: `${import.meta.env.VITE_BACKEND_DEV_URL}/api/v1`,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
@@ -26,7 +26,9 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config as CustomAxiosRequestConfig;
 
     const is401 = error.response?.status === 401;
-    const isNotRefreshCall = !originalRequest.url?.includes("/auth/get-access-token");
+    const isNotRefreshCall = !originalRequest.url?.includes(
+      "/auth/get-access-token"
+    );
     const isNotRetried = !originalRequest._retry;
 
     if (is401 && isNotRefreshCall && isNotRetried) {

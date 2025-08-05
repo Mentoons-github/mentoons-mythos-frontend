@@ -13,6 +13,8 @@ const MythosHeader = () => {
   const dispatch = useAppDispatch();
   const { user, loading: userLoading } = useAppSelector((state) => state.user);
 
+  console.log("user ", user);
+
   const headerText = [
     "HOME",
     "GROUPS",
@@ -175,17 +177,17 @@ const MythosHeader = () => {
   }, [isSearchOpen]);
 
   const handleWishList = () => {
-    if(!user?._id) {
-      toast.warning("Please Login with continue wishlist")
-      return
+    if (!user?._id) {
+      toast.warning("Please Login with continue wishlist");
+      return;
     }
     navigate("/wishlist");
   };
 
   const handleCart = () => {
-    if(!user?._id) {
-      toast.warning("Please Login with continue cart")
-      return
+    if (!user?._id) {
+      toast.warning("Please Login with continue cart");
+      return;
     }
     navigate("/cart");
   };
