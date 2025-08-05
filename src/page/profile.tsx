@@ -12,7 +12,6 @@ import {
   userLogout,
 } from "../features/user/userThunk";
 import { fetchCurrentUserBlog } from "../features/blog/blogThunk";
-import Cookies from "js-cookie";
 import { debounce } from "lodash";
 import { FaPlus } from "react-icons/fa";
 import ProfileUpload from "../components/modal/profileUpload";
@@ -48,21 +47,18 @@ const Profile = () => {
     latitude: user?.latitude || "",
   });
 
-  // Debounced fetchUserData to prevent excessive calls
   const debouncedFetchUserData = useRef(
     debounce(() => {
       dispatch(fetchUserData());
     }, 1000)
   ).current;
 
-  // Debounced fetchCurrentUserBlog to prevent excessive calls
   const debouncedFetchUserBlogs = useRef(
     debounce(() => {
       dispatch(fetchCurrentUserBlog());
     }, 1000)
   ).current;
 
-  // Update formData when user changes
   useEffect(() => {
     if (user) {
       setFormData({
@@ -76,17 +72,16 @@ const Profile = () => {
     }
   }, [user]);
 
-  // Fetch user data on mount if token exists and no user data
   useEffect(() => {
-    const token = Cookies.get("token");
-    if (token && !user && !userLoading) {
+   
+    if ( !user && !userLoading) {
       console.log("Fetching user data...");
       debouncedFetchUserData();
     }
     return () => {
       debouncedFetchUserData.cancel();
     };
-  }, [debouncedFetchUserData, user, userLoading]);
+  }, [ user, userLoading]);
 
   useEffect(() => {
     if (
@@ -101,21 +96,24 @@ const Profile = () => {
     }
   }, [userError, blogError, dispatch]);
 
-  useEffect(() => {
-    if (
-      user &&
-      activeTab === "blogs" &&
-      !blogsLoading &&
-      userBlogs.length === 0 &&
-      !blogError
-    ) {
-      console.log("Fetching user blogs...");
-      debouncedFetchUserBlogs();
-    }
-    return () => {
-      debouncedFetchUserBlogs.cancel();
-    };
-  }, []);
+useEffect(() => {
+ 
+  if (
+    user &&
+    activeTab === "blogs" &&
+    !blogsLoading &&
+    userBlogs.length === 0 &&
+    !blogError
+  ) {
+    console.log("Fetching user blogs...");
+    debouncedFetchUserBlogs();
+  }
+
+  return () => {
+    debouncedFetchUserBlogs.cancel();
+  };
+}, [user, activeTab, blogsLoading, userBlogs.length, blogError, debouncedFetchUserBlogs]);
+
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -134,7 +132,7 @@ const Profile = () => {
       await dispatch(fetchMoonAndSunSign({ user: updatedProfile })).unwrap();
       await dispatch(fetchUserData()).unwrap();
       setIsEditing(false);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Failed to update profile:", err);
       if (err === "Token expired" || err === "Unauthorized") {
         dispatch(userLogout());
@@ -277,7 +275,6 @@ const Profile = () => {
           </div>
         </motion.div>
 
-        {/* Tab Navigation */}
         <motion.div className="flex space-x-4 mb-8" variants={itemVariants}>
           <button
             onClick={() => setActiveTab("profile")}

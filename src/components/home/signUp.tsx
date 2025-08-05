@@ -1,8 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import useInView from "../../hooks/useInView";
 import { motion } from "framer-motion";
 
 const SignUpSection = () => {
   const { ref, isInView } = useInView(0.3, false);
+  const navigate = useNavigate()
 
   return (
     <motion.section
@@ -79,6 +81,7 @@ const SignUpSection = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.7 }}
+          onClick={()=>navigate('login')}
         >
           Sign Up
         </motion.button>

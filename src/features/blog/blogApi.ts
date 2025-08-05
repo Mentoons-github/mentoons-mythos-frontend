@@ -30,7 +30,7 @@ export const getCommentBlogApi = (blogId: string) => {
 };
 
 export const fetchUsersBlogApi = () => {
-  return apiClient.get("/blog/");
+  return apiClient.get("/blog");
 };
 
 export const updateBlogViewApi = (blogId:string) => {

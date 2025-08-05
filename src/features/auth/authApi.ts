@@ -1,5 +1,5 @@
 import apiClient from "../../services/axiosInstance"
-import { LoginPayload, RegisterPayload, SendOtpPayload, VerifyOtpPayload } from "../../types/redux/authInterfaces"
+import { ForgotPasswordPayload, LoginPayload, RegisterPayload, SendOtpPayload, VerifyOtpPayload } from "../../types/redux/authInterfaces"
 
 export const registerApi = (userData:RegisterPayload) => {
     return apiClient.post('/auth/register',userData)
@@ -15,4 +15,8 @@ export const sendOtpApi = (email:SendOtpPayload) => {
 
 export const verifyOtpApi = (data:VerifyOtpPayload) => {
     return apiClient.post("/auth/verify-otp",data)
+}
+
+export const forgotPasswordApi = (data:ForgotPasswordPayload) => {
+    return apiClient.post('auth/forgot-password',data)
 }

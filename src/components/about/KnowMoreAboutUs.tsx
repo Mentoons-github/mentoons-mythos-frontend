@@ -2,7 +2,6 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { FaRegEnvelope, FaRegUser } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const KnowMoreAboutUs = () => {
@@ -22,7 +21,6 @@ const KnowMoreAboutUs = () => {
   };
 
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -58,7 +56,7 @@ const KnowMoreAboutUs = () => {
   };
 
   return (
-    <div className="bg-[#1A1D3B] bg-[url('/assets/background/section/stars_background.png')] bg-center p-4 md:p-6 pb-12 md:pb-24 flex items-center">
+    <div className="bg-black bg-[url('/assets/background/section/stars_background.png')] bg-center p-4 md:p-6 pb-12 md:pb-24 flex items-center">
       <div className="w-[90%] mx-auto flex flex-col md:flex-row items-start justify-start gap-8 md:gap-12 pt-12">
         <motion.div
           className="w-full md:w-[50%] flex flex-col items-start justify-center px-4 md:px-12"
@@ -92,7 +90,7 @@ const KnowMoreAboutUs = () => {
           >
             <textarea
               placeholder="Your Comment"
-              className="w-full p-4 pr-12 active:ring-2 border border-[#E39712] text-[#E39712] focus:ring-2 focus:ring-[#E39712] focus:outline-none"
+              className="w-full p-4 pr-12 rounded-md active:ring-2 border border-[#E39712] text-[#E39712] focus:ring-2 focus:ring-[#E39712] focus:outline-none"
               rows={5}
               name="comment"
               value={formData.comment}
@@ -109,7 +107,7 @@ const KnowMoreAboutUs = () => {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full p-4 pr-12 active:ring-2 border border-[#E39712]  text-[#E39712] focus:ring-2 focus:ring-[#E39712] focus:outline-none"
+                  className="w-full p-4 pr-12 rounded-md active:ring-2 border border-[#E39712]  text-[#E39712] focus:ring-2 focus:ring-[#E39712] focus:outline-none"
                 />
                 <FaRegUser className="absolute w-6 transform -translate-y-1/2 right-4 top-1/2 text-[#E39712]" />
               </div>
@@ -120,7 +118,7 @@ const KnowMoreAboutUs = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full p-4 pr-12 border border-[#E39712] text-[#E39712] active:ring-2 focus:ring-2 focus:ring-[#E39712] focus:outline-none"
+                  className="w-full p-4 pr-12 rounded-md border border-[#E39712] text-[#E39712] active:ring-2 focus:ring-2 focus:ring-[#E39712] focus:outline-none"
                 />
                 <FaRegEnvelope className="absolute w-6 transform -translate-y-1/2 right-4 top-1/2 text-[#E39712]" />
               </div>
@@ -137,17 +135,16 @@ const KnowMoreAboutUs = () => {
               </p>
             </div>
             <motion.button
-              className="flex items-center justify-center gap-6 px-8 py-4 text-white bg-black md:px-12 w-fit"
+              className="flex items-center justify-center gap-4 rounded-md px-4 py-4 text- bg-[#E39712] md:px- w-fit"
               type="submit"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              {isLoading ? (
-                <div className="w-4 h-4 border-white border-solid rounded-full border-t-transparent animate-spin" />
-              ) : (
-                <img src="/assets/icons/star.png" className="w-6" />
-              )}
-              <p>{isLoading ? "POSTING..." : "POST COMMENT"}</p>
+              <span className="text-2xl">✦</span>
+
+              <p className="text-lg font-semibold">
+                {isLoading ? "POSTING..." : "POST COMMENT"}
+              </p>
             </motion.button>
           </motion.form>
         </motion.div>
@@ -163,30 +160,28 @@ const KnowMoreAboutUs = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <img
-              src="/assets/about/mythos-book-call.png"
-              className="w-full"
-            />
+            <img src="/assets/about/mythos-book-call.png" className="w-full" />
           </motion.div>
           <motion.p
-            className="text-2xl md:text-4xl font-semibold text-center text-[#E39712] w-full md:w-[20ch]"
+            className="text-2xl md:text-3xl font-semibold text-center text-[#E39712] w-full md:w-[30ch]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.5 }}
           >
             Book a one-on-one video call session with us now!
+          <span className="text-white mt-2 block">(Coming Soon...)</span>
           </motion.p>
           <motion.button
-            className="flex items-center justify-center gap-6 px-8 py-4 text-black bg-white md:px-12 w-fit"
+           className="flex items-center justify-center gap-4 rounded-md px-4 py-4  bg-[#E39712] w-fit"
             type="submit"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => {
-              navigate("/bookings");
-            }}
+            // onClick={() => {
+            //   navigate("/bookings");
+            // }}
           >
-            <img src="/assets/icons/star.png" className="w-6" />
-            <p>BOOK A CALL NOW</p>
+                <span className="text-2xl">✦</span>
+            <p className="text-lg font-semibold">BOOK A CALL NOW</p>
           </motion.button>
         </motion.div>
       </div>

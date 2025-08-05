@@ -31,6 +31,14 @@ const GroupsCardSection = () => {
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+        transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
+      >
+        {/* <Heading /> */}
+        <h1 className="text-lg -mb-10 md:-mb-0 md:text-3xl font-bold font-montserrat text-[#E39712]">TAKE OUR ASSESSMENT AND GET YOUR PERSONAL REPORT </h1>
+      </motion.div>
     <div className="flex flex-wrap justify-start items-stretch md:px-16 gap-10 md:gap-40 w-full mt-10">
       {cardData.map((group, index) => (
         <motion.div

@@ -18,11 +18,10 @@ export const signupSchema = Yup.object().shape({
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")], "Passwords must match")
     .required("Confirm Password is required"),
-  about: Yup.string().required('Please fill this about field'),
+  about: Yup.string().required("Please fill this about field"),
   terms: Yup.boolean()
-  .oneOf([true], "You must accept the Terms & Conditions")
-  .required("Required"),
-
+    .oneOf([true], "You must accept the Terms & Conditions")
+    .required("Required"),
 });
 
 export const loginSchema = Yup.object().shape({
@@ -30,4 +29,14 @@ export const loginSchema = Yup.object().shape({
   password: Yup.string()
     .min(6, "Password must be at least 6 characters")
     .required("Password is required"),
+});
+
+export const forgotPasswordSchema = Yup.object({
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  newPassword: Yup.string()
+    .min(6, "Password must be at least 6 characters")
+    .required("New password is required"),
+  confirmNewPassword: Yup.string()
+    .oneOf([Yup.ref("newPassword")], "Passwords do not match")
+    .required("Confirm your new password"),
 });

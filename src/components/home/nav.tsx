@@ -155,7 +155,8 @@ const MythosHeader = () => {
       .unwrap()
       .then(() => {
         setIsUserDropdownOpen(false);
-        navigate("/");
+         navigate("/", { replace: true });
+         sessionStorage.clear()
       })
       .catch((error) => {
         console.error("Logout failed:", error);

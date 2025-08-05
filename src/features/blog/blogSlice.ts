@@ -23,7 +23,7 @@ interface SliceBlog {
   userId: string;
   comments: Comments[];
   blog: Blog | null;
-  mostReadBlogs : Blog[]
+  mostReadBlogs: Blog[];
 }
 
 const initialState: SliceBlog = {
@@ -36,7 +36,7 @@ const initialState: SliceBlog = {
   userId: "",
   comments: [],
   blog: null as Blog | null,
-  mostReadBlogs:[]
+  mostReadBlogs: [],
 };
 
 export const blogSlice = createSlice({
@@ -77,7 +77,12 @@ export const blogSlice = createSlice({
       .addCase(fetcheBlogThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
-        state.data = [...state.data, ...action.payload.blogs];
+        // state.data = [...state.data,...action.payload.blogs]
+        const mergedPosts = [...state.data, ...action.payload.blogs];
+        const uniquePosts = Array.from(
+          new Map(mergedPosts.map((item) => [item._id, item])).values()
+        );
+        state.data = uniquePosts;
         state.total = action.payload.total;
         state.userId = action.payload.userId;
       })
@@ -210,7 +215,7 @@ export const blogSlice = createSlice({
       .addCase(fetchByMostReadThunk.rejected, (state, action) => {
         state.error = action.payload as string;
         state.loading = false;
-      })
+      });
   },
 });
 

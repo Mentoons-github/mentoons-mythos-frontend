@@ -13,16 +13,17 @@ import { toast } from "sonner";
 
 const Login = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();;
+  const dispatch = useAppDispatch();
 
-  const { error, loading, message, success } =
-    useAppSelector((state) => state.auth);
+  const { error, loading, message, success } = useAppSelector(
+    (state) => state.auth
+  );
 
   // console.log(accessToken, userId);
   useEffect(() => {
     if (success) {
       toast.success(message);
-      navigate("/");
+     navigate("/", { replace: true }); 
       dispatch(resetAuthState());
     }
     if (error) {
@@ -79,21 +80,30 @@ const Login = () => {
             }
           />
 
-          <Input
-            className="mb-6"
-            label="Password"
-            name="password"
-            type="password"
-            placeholder="Enter your password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={
-              formik.touched.password && formik.errors.password
-                ? formik.errors.password
-                : undefined
-            }
-          />
+          <div className="mb-6">
+            <div className="flex justify-between items-center mb-2">
+              <label className="text-gray-700 font-medium">Password</label>
+              <span
+               className="text-blue-600 font-medium cursor-pointer hover:underline text-sm"
+                onClick={() => navigate("/forgot-password")}
+              >
+                Forgot your password?
+              </span>
+            </div>
+            <Input
+              name="password"
+              type="password"
+              placeholder="Enter your password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.password && formik.errors.password
+                  ? formik.errors.password
+                  : undefined
+              }
+            />
+          </div>
 
           <AuthButton type="submit" className="w-full mt-4">
             {loading ? "Loading" : "Login"}

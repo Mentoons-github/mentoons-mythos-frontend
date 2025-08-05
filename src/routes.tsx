@@ -16,7 +16,8 @@ import Dashboard from "./Admin/pages/Dashboard";
 import Users from "./Admin/pages/Users";
 import AssessmentQuestions from "./page/assessments/AssessmentQuestions";
 import RequireAdmin from "./Admin/components/RequireAdmin";
-import ProtectedRoute from "./components/ProtectedRoutes";
+import { AuthGuard, ProtectedRoute } from "./components/ProtectedRoutes";
+import ForgotPassword from "./page/auth/ForgotPassword";
 
 const MythosHome = lazy(() => import("./page/home"));
 const MythosAbout = lazy(() => import("./page/about"));
@@ -42,10 +43,12 @@ const AppRouter = () => {
       <Suspense fallback={<Loader />}>
         <ScrollToTop />
         <Routes>
-          <Route path="register" element={<Register />} />
-          <Route path="login" element={<Login />} />
-          <Route path="oauth-result" element={<OAuthResult />} />
-          <Route path="verify-otp" element={<Otp />} />
+
+          <Route path="register" element={<AuthGuard><Register /></AuthGuard>} />
+          <Route path="login" element={<AuthGuard><Login /></AuthGuard>} />
+          <Route path="oauth-result" element={<AuthGuard><OAuthResult /></AuthGuard>} />
+          <Route path="verify-otp" element={<AuthGuard><Otp /></AuthGuard>} />
+          <Route path="forgot-password" element={<AuthGuard><ForgotPassword /></AuthGuard>} />
           <Route
             path="groups/:groupId/chat"
             element={

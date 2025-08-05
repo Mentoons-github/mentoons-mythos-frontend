@@ -37,7 +37,7 @@ const Tests = ({userId}:{userId?:string}) => {
   const navigate = useNavigate();
   const handleStart = (name:string) => {
     if(!userId) {
-      toast.warning("Please Loagin continue Assessment test")
+      toast.warning("Please Login to continue Assessment test")
       return
     }
     navigate(`${name}`)

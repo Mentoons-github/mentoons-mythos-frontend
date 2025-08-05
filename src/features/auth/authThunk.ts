@@ -1,6 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { loginApi, registerApi, sendOtpApi, verifyOtpApi } from "./authApi";
+import { forgotPasswordApi, loginApi, registerApi, sendOtpApi, verifyOtpApi } from "./authApi";
 import {
+  ForgotPasswordPayload,
+  ForgotPasswordResponse,
   LoginPayload,
   LoginResponse,
   RegisterPayload,
@@ -71,5 +73,19 @@ export const verifyOtpThunk = createAsyncThunk<
     return rejectWithValue(
       error?.response?.data?.message || "Cant verify this OTP"
     );
+  }
+});
+
+export const forgotPasswordThunk = createAsyncThunk<
+  ForgotPasswordResponse,
+  ForgotPasswordPayload,
+  { rejectValue: string }
+>("auth/forgot-password", async (userData, { rejectWithValue }) => {
+  try {
+    const res = await forgotPasswordApi(userData);
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(error?.response?.data?.message || "Forgot Password Failed");
   }
 });

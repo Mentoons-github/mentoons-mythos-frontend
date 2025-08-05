@@ -47,6 +47,7 @@ const AstrologyAssessment = () => {
         className="text-[#1A1D3B] text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl tracking-widest font-bold font-montserrat text-center max-w-xl mx-auto"
       >
         Explore our wide range of Astrology Assessments
+        <span className="block text-[#EC9600] mt-2">(Coming Soon....)</span>
       </motion.h1>
       <div className="relative flex flex-col justify-end items-center xl:items-end mt-10 xl:mt-15">
         {data.map((detail, index) => {
