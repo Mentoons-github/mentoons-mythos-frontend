@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, X } from "lucide-react";
 
-const SuccessLoader = () => {
+const SuccessLoader = ({ handleClose }: { handleClose: () => void }) => {
   return (
     <div className="flex flex-col items-center justify-center p-8">
       {/* Success Icon */}
@@ -64,6 +64,18 @@ const SuccessLoader = () => {
         </h3>
         <p className="text-green-500">Your profile picture has been updated</p>
       </motion.div>
+
+      {/* Close Button */}
+      <motion.button
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8 }}
+        onClick={handleClose}
+        className="mt-6 px-6 py-3 bg-black text-white font-bold tracking-wide rounded-lg hover:bg-gray-800 active:bg-gray-900 transition-all duration-200 flex items-center space-x-2"
+      >
+        <X size={18} />
+        <span>CLOSE</span>
+      </motion.button>
 
       {/* Confetti particles */}
       <div className="absolute inset-0 pointer-events-none">

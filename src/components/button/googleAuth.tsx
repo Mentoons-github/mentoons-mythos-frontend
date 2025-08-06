@@ -1,8 +1,8 @@
-const GoogleAuth = ({text } : {text: string}) => {
+const GoogleAuth = ({ text }: { text: string }) => {
   const handleGoogleAuth = () => {
     window.location.href = `${
       import.meta.env.VITE_BACKEND_DEV_URL
-    }/auth/google`;
+    }/api/v1/auth/google`;
   };
 
   return (

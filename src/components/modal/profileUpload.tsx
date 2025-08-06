@@ -1,17 +1,21 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { Plus, Upload, X } from "lucide-react";
 import { fileUploadThunk } from "../../features/upload/fileUploadThunk";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { updateUserData } from "../../features/user/userThunk";
 import FileUploadLoader from "../loader/fileUploader";
-import SuccessLoader from "../loader/successLoader";
 
-const ProfileUpload = ({ onClose }: { onClose: () => void }) => {
+const ProfileUpload = ({
+  onClose,
+  setUploadSuccess,
+}: {
+  onClose: (success?: boolean) => void;
+  setUploadSuccess: (value: boolean) => void;
+}) => {
   const [profile, setProfile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [picUploading, setPicUploading] = useState(false);
-  const [uploadSuccess, setUploadSuccess] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
   const { error: reduxError, loading } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
@@ -35,16 +39,14 @@ const ProfileUpload = ({ onClose }: { onClose: () => void }) => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      if (validateFile(file)) {
-        setProfile(file);
-        const reader = new FileReader();
-        reader.onload = (e) => setPreview(e.target?.result as string);
-        reader.readAsDataURL(file);
-      } else {
-        setProfile(null);
-        setPreview(null);
-      }
+    if (file && validateFile(file)) {
+      setProfile(file);
+      const reader = new FileReader();
+      reader.onload = (e) => setPreview(e.target?.result as string);
+      reader.readAsDataURL(file);
+    } else {
+      setProfile(null);
+      setPreview(null);
     }
   };
 
@@ -62,16 +64,14 @@ const ProfileUpload = ({ onClose }: { onClose: () => void }) => {
     e.preventDefault();
     setIsDragging(false);
     const file = e.dataTransfer.files[0];
-    if (file) {
-      if (validateFile(file)) {
-        setProfile(file);
-        const reader = new FileReader();
-        reader.onload = (e) => setPreview(e.target?.result as string);
-        reader.readAsDataURL(file);
-      } else {
-        setProfile(null);
-        setPreview(null);
-      }
+    if (file && validateFile(file)) {
+      setProfile(file);
+      const reader = new FileReader();
+      reader.onload = (e) => setPreview(e.target?.result as string);
+      reader.readAsDataURL(file);
+    } else {
+      setProfile(null);
+      setPreview(null);
     }
   };
 
@@ -95,17 +95,20 @@ const ProfileUpload = ({ onClose }: { onClose: () => void }) => {
           console.log("Updating user data with image URL:", imageUrl);
           await dispatch(
             updateUserData({ user: { profilePicture: imageUrl } })
-          );
+          ).unwrap();
+          console.log("User data updated successfully");
         }
 
-        console.log("Upload successful, setting uploadSuccess to true");
+        console.log(
+          "Upload successful, setting uploadSuccess to true in parent"
+        );
         setPicUploading(false);
         setUploadSuccess(true);
-      } catch (err) {
-        console.error("Upload failed:", err);
+      } catch (err: any) {
+        console.error("Upload failed:", err.message || err);
         setPicUploading(false);
         setValidationError(
-          "Failed to upload profile picture. Please try again."
+          err.message || "Failed to upload profile picture. Please try again."
         );
       }
     }
@@ -115,21 +118,8 @@ const ProfileUpload = ({ onClose }: { onClose: () => void }) => {
     setProfile(null);
     setPreview(null);
     setValidationError(null);
-    onClose();
+    onClose(false); // Indicate no success
   };
-
-  if (uploadSuccess) {
-    return (
-      <div className="fixed inset-0 bg-black/50 bg-opacity-80 flex items-center justify-center p-4 z-50">
-        <div className="bg-white border-4 border-green-500 max-w-md w-full">
-          <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white p-4 text-center">
-            <h2 className="text-xl font-bold tracking-wide">SUCCESS!</h2>
-          </div>
-          <SuccessLoader />
-        </div>
-      </div>
-    );
-  }
 
   if (picUploading || loading) {
     return (
@@ -250,4 +240,4 @@ const ProfileUpload = ({ onClose }: { onClose: () => void }) => {
   );
 };
 
-export default ProfileUpload;
+export default memo(ProfileUpload);
