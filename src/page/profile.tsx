@@ -96,23 +96,27 @@ const Profile = () => {
     }
   }, [userError, blogError, dispatch]);
 
+const hasFetchedBlogs = useRef(false);
+
 useEffect(() => {
- 
   if (
     user &&
     activeTab === "blogs" &&
     !blogsLoading &&
     userBlogs.length === 0 &&
-    !blogError
+    !blogError &&
+    !hasFetchedBlogs.current
   ) {
     console.log("Fetching user blogs...");
+    hasFetchedBlogs.current = true;
     debouncedFetchUserBlogs();
   }
 
   return () => {
     debouncedFetchUserBlogs.cancel();
   };
-}, [user, activeTab, blogsLoading, userBlogs.length, blogError, debouncedFetchUserBlogs]);
+}, [user, activeTab, blogsLoading, userBlogs.length, blogError]);
+
 
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

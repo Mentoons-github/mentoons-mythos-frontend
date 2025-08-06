@@ -40,4 +40,8 @@ export const updateBlogViewApi = (blogId:string) => {
 export const fetchByMostReadApi = () => {
   return apiClient.get('/blog/most-read')
 }
+
+export const searchBlogApi = (search:string) => {
+  return apiClient.get(`/blog/search?query=${search}`)
+}
  

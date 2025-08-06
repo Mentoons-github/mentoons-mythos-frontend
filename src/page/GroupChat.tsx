@@ -40,7 +40,7 @@ const GroupChat = () => {
     if (chatData && chatData.length > 0) {
       const formatted = chatData.map((chat: Chat) => ({
         sender: {
-          _id: chat.sender._id,
+          _id: chat.sender?._id,
           firstName: chat.sender?.firstName || "Unknown",
           lastName: chat.sender?.lastName,
           profilePicture: chat.sender?.profilePicture || "",
