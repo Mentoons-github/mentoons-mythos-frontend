@@ -44,3 +44,10 @@ export interface Comments {
     reply:IReply[]
 }
 
+export interface SearchBlogResponses{
+    data:Blog[]
+    message:string
+    success:boolean
+    results:number
+}
+

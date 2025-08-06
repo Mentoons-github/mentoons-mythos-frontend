@@ -10,6 +10,7 @@ import {
   fetchUsersBlogApi,
   updateBlogViewApi,
   fetchByMostReadApi,
+  searchBlogApi,
 } from "./blogApi";
 
 import { AxiosError } from "axios";
@@ -18,8 +19,10 @@ import {
   Comments,
   CreateBlogResponse,
   GetBlogResponse,
+  SearchBlogResponses,
 } from "../../types/redux/blogInterface";
 
+//create blog
 export const createBlogThunk = createAsyncThunk<
   CreateBlogResponse,
   Blog,
@@ -37,6 +40,7 @@ export const createBlogThunk = createAsyncThunk<
   }
 });
 
+//fetch blog
 export const fetcheBlogThunk = createAsyncThunk<
   GetBlogResponse,
   { skip: number; limit: number },
@@ -51,6 +55,7 @@ export const fetcheBlogThunk = createAsyncThunk<
   }
 });
 
+//fetch single blog
 export const fetchSinglBlogThunk = createAsyncThunk<
   Blog,
   string,
@@ -65,6 +70,7 @@ export const fetchSinglBlogThunk = createAsyncThunk<
   }
 });
 
+//like blog
 export const likeBlogThunk = createAsyncThunk<
   { message: string; likes: string[]; blogId: string },
   string,
@@ -79,6 +85,7 @@ export const likeBlogThunk = createAsyncThunk<
   }
 });
 
+//comment blog
 export const commentBlogThunk = createAsyncThunk<
   { message: string },
   { blogId: string; comment: string },
@@ -95,6 +102,7 @@ export const commentBlogThunk = createAsyncThunk<
   }
 });
 
+//reply comment
 export const replyCommentThunk = createAsyncThunk<
   { message: string },
   { commentId: string; replyText: string },
@@ -116,6 +124,7 @@ export const replyCommentThunk = createAsyncThunk<
   }
 );
 
+//get comment
 export const getCommentBlogThunk = createAsyncThunk<
   { message: string; comments: Comments[]; blogId: string },
   string,
@@ -132,6 +141,7 @@ export const getCommentBlogThunk = createAsyncThunk<
   }
 });
 
+//current user blog
 export const fetchCurrentUserBlog = createAsyncThunk<
   Blog[],
   void,
@@ -148,8 +158,9 @@ export const fetchCurrentUserBlog = createAsyncThunk<
   }
 });
 
+//update blog view
 export const updateBlogViewThunk = createAsyncThunk<
-  {message:string},
+  { message: string },
   string,
   { rejectValue: string }
 >("blog/updateViewCount", async (blogId, { rejectWithValue }) => {
@@ -164,6 +175,7 @@ export const updateBlogViewThunk = createAsyncThunk<
   }
 });
 
+//fetch by most read blog
 export const fetchByMostReadThunk = createAsyncThunk<
   Blog[],
   void,
@@ -171,7 +183,6 @@ export const fetchByMostReadThunk = createAsyncThunk<
 >("blog/fetchByMostRead", async (_, { rejectWithValue }) => {
   try {
     const res = await fetchByMostReadApi();
-    console.log(res,'resssssssss')
     return res.data.blogs;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
@@ -180,3 +191,19 @@ export const fetchByMostReadThunk = createAsyncThunk<
     );
   }
 });
+
+//search blog
+export const searchBlogThunk = createAsyncThunk<SearchBlogResponses, string>(
+  "blog/search",
+  async (search, { rejectWithValue }) => {
+    try {
+      const res = await searchBlogApi(search);
+      return res.data;
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      return rejectWithValue(
+        error?.response?.data?.message || "Feth Blog failed"
+      );
+    }
+  }
+);

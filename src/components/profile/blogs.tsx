@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Blog } from "../../types/redux/blogInterface";
 import { BookOpen, Sparkles, Stars, Moon } from "lucide-react";
+import ProfileBlogSkelton from "../skeltons/profile/ProfileBlogSkelton";
 
 const cardVariants = {
   hidden: { opacity: 0, scale: 0.9 },
@@ -70,10 +71,7 @@ const ProfileBlogs = ({
       )}
 
       {blogsLoading ? (
-        <div className="flex flex-col items-center justify-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800 mb-4"></div>
-          <p className="text-gray-600">Loading your blogs...</p>
-        </div>
+        <ProfileBlogSkelton/>
       ) : userBlogs.length === 0 ? (
         <motion.div
           className="flex flex-col items-center justify-center py-16 relative overflow-hidden"

@@ -26,7 +26,7 @@ const Rashi = () => {
       <GroupIdtop details={details} isIntelligence = {isIntelligence}/>
       <ChatPeople isIntelligence = {isIntelligence} details = {details} userId = {user?._id}/>
       <GroupIdMiddle isIntelligence = {isIntelligence}/>
-      <ShareIntelligence name={details?.name} isIntelligence = {isIntelligence}/>
+      <ShareIntelligence name={details?.name} isIntelligence = {isIntelligence} groupId = {groupId}/>
     </div>
   );
 };
