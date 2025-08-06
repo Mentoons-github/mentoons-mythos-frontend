@@ -40,7 +40,7 @@ const ShareIntelligence = ({
 }: {
   name: string | undefined;
   isIntelligence: boolean;
-  groupId: string;
+  groupId: string | undefined;
 }) => {
   const [showShareOptions, setShowShareOptions] = useState(false);
   console.log(showShareOptions, "optionsss");
