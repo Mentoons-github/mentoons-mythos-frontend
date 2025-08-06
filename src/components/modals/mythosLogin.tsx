@@ -37,13 +37,13 @@ const MythosLoginModal = ({ set }: { set: (val: boolean) => void }) => {
         <div className="mt-5 space-y-2">
           <button
             className="w-full py-2 bg-[#1A1D3B] text-white inter font-medium text-lg rounded-md"
-            onClick={() => navigate("/sign-up")}
+            onClick={() => navigate("/register")}
           >
             Sign Up
           </button>
           <button
             className="w-full py-2 text-lg font-medium bg-white border border-gray-800 rounded-md inter"
-            onClick={() => navigate("/sign-in")}
+            onClick={() => navigate("/login")}
           >
             Login
           </button>

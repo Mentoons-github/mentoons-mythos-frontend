@@ -8,7 +8,7 @@ const TopSection = () => {
   const userId = user?._id
   return (
     <div className="md:flex ">
-      <div className="md:w-[47rem]">
+      <div className="md:w-[47rem] ">
         <TopLeftSection userId = {userId??""}/>
       </div>
       <div className="md:ml-16 ml-2 mt-12 md:w-2/5 ">

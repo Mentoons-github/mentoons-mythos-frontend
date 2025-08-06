@@ -10,6 +10,7 @@ import {
   fetchCurrentUserBlog,
   updateBlogViewThunk,
   fetchByMostReadThunk,
+  searchBlogThunk,
 } from "./blogThunk";
 import { Blog, Comments } from "../../types/redux/blogInterface";
 
@@ -23,7 +24,10 @@ interface SliceBlog {
   userId: string;
   comments: Comments[];
   blog: Blog | null;
-  mostReadBlogs : Blog[]
+  mostReadBlogs: Blog[];
+  searchBlogs: Blog[];
+  searchLoading: boolean;
+  fetchBlogLoading: boolean
 }
 
 const initialState: SliceBlog = {
@@ -36,7 +40,10 @@ const initialState: SliceBlog = {
   userId: "",
   comments: [],
   blog: null as Blog | null,
-  mostReadBlogs:[]
+  mostReadBlogs: [],
+  searchBlogs: [],
+  searchLoading: false,
+  fetchBlogLoading:false
 };
 
 export const blogSlice = createSlice({
@@ -49,6 +56,8 @@ export const blogSlice = createSlice({
       state.loading = false;
       state.message = "";
       state.createblogSuccess = false;
+      state.searchBlogs = [];
+      state.searchLoading = false;
     },
   },
   extraReducers: (builder) => {
@@ -71,18 +80,23 @@ export const blogSlice = createSlice({
 
       // fetchBlog
       .addCase(fetcheBlogThunk.pending, (state) => {
-        state.loading = true;
+        state.fetchBlogLoading = true;
         state.error = null;
       })
       .addCase(fetcheBlogThunk.fulfilled, (state, action) => {
-        state.loading = false;
+        state.fetchBlogLoading = false;
         state.error = null;
-        state.data = [...state.data, ...action.payload.blogs];
+        // state.data = [...state.data,...action.payload.blogs]
+        const mergedPosts = [...state.data, ...action.payload.blogs];
+        const uniquePosts = Array.from(
+          new Map(mergedPosts.map((item) => [item._id, item])).values()
+        );
+        state.data = uniquePosts;
         state.total = action.payload.total;
         state.userId = action.payload.userId;
       })
       .addCase(fetcheBlogThunk.rejected, (state, action) => {
-        state.loading = false;
+        state.fetchBlogLoading = false;
         state.error = action.payload;
       })
 
@@ -198,6 +212,7 @@ export const blogSlice = createSlice({
         state.loading = false;
       })
 
+      //most read blogs
       .addCase(fetchByMostReadThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -211,6 +226,21 @@ export const blogSlice = createSlice({
         state.error = action.payload as string;
         state.loading = false;
       })
+
+      //search blogs
+      .addCase(searchBlogThunk.pending, (state) => {
+        state.searchLoading = true;
+        state.error = null;
+      })
+      .addCase(searchBlogThunk.fulfilled, (state, action) => {
+        state.searchBlogs = action.payload.data;
+        state.error = null;
+        state.searchLoading = false;
+      })
+      .addCase(searchBlogThunk.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.searchLoading = false;
+      });
   },
 });
 

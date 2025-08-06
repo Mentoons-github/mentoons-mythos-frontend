@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import Discover from "../home/learnMore";
+// import Discover from "../home/learnMore";
 import useInView from "../../hooks/useInView";
 
 const HelperList = ({ data, label }: { data: object; label: string }) => {
@@ -75,7 +75,7 @@ const HelperList = ({ data, label }: { data: object; label: string }) => {
         transition={{ duration: 0.6, delay: 0.5 }}
         className="mt-10"
       >
-        <Discover label="LEARN MORE" />
+        {/* <Discover label="LEARN MORE" /> */}
       </motion.div>
     </section>
   );

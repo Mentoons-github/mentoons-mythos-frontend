@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import useInView from "../../../hooks/useInView";
 import MythosButton from "../button";
-import Heading from "./heading";
 import { motion } from "framer-motion";
 
 const cardData = [
@@ -38,10 +37,11 @@ const GroupsSuggested = () => {
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
         transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
       >
-        <Heading />
+        {/* <Heading /> */}
+        <h1 className="text-lg md:text-3xl font-bold font-montserrat text-[#E39712]">TAKE OUR ASSESSMENT AND GET YOUR PERSONAL REPORT </h1>
       </motion.div>
 
-      <div className="flex flex-wrap justify-start items-stretch px-16 gap-40 w-full mt-10">
+      <div className="flex flex-wrap justify-start items-stretch md:px-16 gap-10 md:gap-40 w-full mt-5 md:mt-10">
         {cardData.map((group, index) => (
           <motion.div
             key={index}

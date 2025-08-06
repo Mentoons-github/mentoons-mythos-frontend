@@ -16,7 +16,7 @@ const MythosButton = ({
   return (
     <button
       onClick={onClick}
-      className={`flex justify-center items-center gap-2 px-4 sm:px-6 py-3 sm:py-4 z-3 cursor-pointer ${
+      className={`flex justify-center items-center gap-2 px-4 sm:px-6 py-3 sm:py-4 z-3 cursor-pointer rounded-md ${
         !bg && "rounded-md"
       } shadow-md hover:shadow-lg transition-all duration-300`}
       style={{

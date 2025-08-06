@@ -9,7 +9,6 @@ import { useAppSelector, useAppDispatch } from "../hooks/reduxHooks";
 import { fetchMoonAndSunSign } from "../features/astrology/astroThunk";
 import { fetchUserData, userLogout } from "../features/user/userThunk";
 import { fetchCurrentUserBlog } from "../features/blog/blogThunk";
-import Cookies from "js-cookie";
 import { debounce } from "lodash";
 import { FaPlus } from "react-icons/fa";
 import ProfileUpload from "../components/modal/profileUpload";
@@ -73,15 +72,15 @@ const Profile = () => {
   }, [user]);
 
   useEffect(() => {
-    const token = Cookies.get("token");
-    if (token && !user && !userLoading) {
+   
+    if ( !user && !userLoading) {
       console.log("Fetching user data...");
       debouncedFetchUserData();
     }
     return () => {
       debouncedFetchUserData.cancel();
     };
-  }, [debouncedFetchUserData, user, userLoading]);
+  }, [ user, userLoading]);
 
   useEffect(() => {
     if (
@@ -96,21 +95,28 @@ const Profile = () => {
     }
   }, [userError, blogError, dispatch]);
 
-  useEffect(() => {
-    if (
-      user &&
-      activeTab === "blogs" &&
-      !blogsLoading &&
-      userBlogs.length === 0 &&
-      !blogError
-    ) {
-      console.log("Fetching user blogs...");
-      debouncedFetchUserBlogs();
-    }
-    return () => {
-      debouncedFetchUserBlogs.cancel();
-    };
-  }, [user, activeTab, blogsLoading, userBlogs, blogError]);
+const hasFetchedBlogs = useRef(false);
+
+useEffect(() => {
+  if (
+    user &&
+    activeTab === "blogs" &&
+    !blogsLoading &&
+    userBlogs.length === 0 &&
+    !blogError &&
+    !hasFetchedBlogs.current
+  ) {
+    console.log("Fetching user blogs...");
+    hasFetchedBlogs.current = true;
+    debouncedFetchUserBlogs();
+  }
+
+  return () => {
+    debouncedFetchUserBlogs.cancel();
+  };
+}, [user, activeTab, blogsLoading, userBlogs.length, blogError]);
+
+
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -129,7 +135,7 @@ const Profile = () => {
       await dispatch(fetchMoonAndSunSign({ user: updatedProfile })).unwrap();
       await dispatch(fetchUserData()).unwrap();
       setIsEditing(false);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Failed to update profile:", err);
       if (err === "Token expired" || err === "Unauthorized") {
         dispatch(userLogout());
@@ -281,7 +287,6 @@ const Profile = () => {
           </div>
         </motion.div>
 
-        {/* Tab Navigation */}
         <motion.div className="flex space-x-4 mb-8" variants={itemVariants}>
           <button
             onClick={() => setActiveTab("profile")}

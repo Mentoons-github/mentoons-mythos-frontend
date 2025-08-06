@@ -18,7 +18,7 @@ const ShareOption = ({ blogUrl, onClose }: ShareOptionProps) => {
   };
 
   return (
-    <div className="absolute z-10 bottom-0 mt-2 p-2 bg-white border rounded shadow-md w-48">
+    <div className="absolute z-10 bottom-10 mt-2 p-2 bg-white border rounded shadow-md w-48">
       <div className="relative">
         <button
           onClick={onClose}

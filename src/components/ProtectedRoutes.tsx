@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { useAppSelector } from "../hooks/reduxHooks";
 
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAppSelector((state) => state.user);
 
   if (loading) {
@@ -15,4 +15,13 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-export default ProtectedRoute;
+export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
+  const { user } = useAppSelector((state) => state.user);
+
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <>{children}</>;
+};
+

@@ -1,5 +1,4 @@
 import FAQ from "../components/about/FAQ";
-import CreateGroupSection from "../components/groups/CreateGroupSection";
 import GroupsCardSection from "../components/groups/GroupsCardSection";
 import GroupsHeroSection from "../components/groups/GroupsHeroSection";
 import GroupsSunshineCardSection from "../components/groups/GroupsSunshineCardSection";
@@ -12,7 +11,7 @@ const MythosGroups = () => {
       <GroupsCardSection />
       <GroupsSunshineCardSection props = {SUNSHINE}/>
       <GroupsSunshineCardSection props =  {INTELLIGENCE}/>
-      <CreateGroupSection />
+      {/* <CreateGroupSection /> */}
       <FAQ />
     </div>
   );
