@@ -7,15 +7,13 @@ import ProfileBlogs from "../components/profile/blogs";
 import { IUser } from "../types";
 import { useAppSelector, useAppDispatch } from "../hooks/reduxHooks";
 import { fetchMoonAndSunSign } from "../features/astrology/astroThunk";
-import {
-  fetchUserData,
-  userLogout,
-} from "../features/user/userThunk";
+import { fetchUserData, userLogout } from "../features/user/userThunk";
 import { fetchCurrentUserBlog } from "../features/blog/blogThunk";
 import Cookies from "js-cookie";
 import { debounce } from "lodash";
 import { FaPlus } from "react-icons/fa";
 import ProfileUpload from "../components/modal/profileUpload";
+import SuccessLoader from "../components/loader/successLoader";
 
 const Profile = () => {
   const dispatch = useAppDispatch();
@@ -38,6 +36,7 @@ const Profile = () => {
   const [activeTab, setActiveTab] = useState<"profile" | "blogs">("profile");
   const [isEditing, setIsEditing] = useState(false);
   const [showUpload, setShowUpload] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
 
   const [formData, setFormData] = useState({
     birthDate: user?.dateOfBirth
@@ -48,21 +47,18 @@ const Profile = () => {
     latitude: user?.latitude || "",
   });
 
-  // Debounced fetchUserData to prevent excessive calls
   const debouncedFetchUserData = useRef(
     debounce(() => {
       dispatch(fetchUserData());
     }, 1000)
   ).current;
 
-  // Debounced fetchCurrentUserBlog to prevent excessive calls
   const debouncedFetchUserBlogs = useRef(
     debounce(() => {
       dispatch(fetchCurrentUserBlog());
     }, 1000)
   ).current;
 
-  // Update formData when user changes
   useEffect(() => {
     if (user) {
       setFormData({
@@ -76,7 +72,6 @@ const Profile = () => {
     }
   }, [user]);
 
-  // Fetch user data on mount if token exists and no user data
   useEffect(() => {
     const token = Cookies.get("token");
     if (token && !user && !userLoading) {
@@ -115,7 +110,7 @@ const Profile = () => {
     return () => {
       debouncedFetchUserBlogs.cancel();
     };
-  }, []);
+  }, [user, activeTab, blogsLoading, userBlogs, blogError]);
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -142,9 +137,18 @@ const Profile = () => {
     }
   };
 
-  const onClose = async () => {
-    setShowUpload(false);
-    await dispatch(fetchUserData());
+  const onClose = async (success: boolean = false) => {
+    if (success) {
+      setUploadSuccess(true);
+      setTimeout(() => {
+        setShowUpload(false);
+        setUploadSuccess(false);
+        dispatch(fetchUserData());
+      }, 2000);
+    } else {
+      setShowUpload(false);
+      await dispatch(fetchUserData());
+    }
   };
 
   const containerVariants = {
@@ -251,7 +255,7 @@ const Profile = () => {
                   onClick={() => setShowUpload(true)}
                   className="absolute bottom-0 right-0 bg-gradient-to-r from-gray-500 to-gray-900 cursor-pointer rounded-full w-5 h-5 flex justify-center items-center"
                 >
-                  <FaPlus className=" text-sm" />
+                  <FaPlus className="text-sm" />
                 </motion.button>
               </div>
               <motion.div
@@ -363,7 +367,28 @@ const Profile = () => {
           )}
         </AnimatePresence>
       </div>
-      {showUpload && <ProfileUpload onClose={onClose} />}
+
+      {/* Render SuccessLoader in the parent when uploadSuccess is true */}
+      {uploadSuccess && (
+        <div className="fixed inset-0 bg-black/50 bg-opacity-80 flex items-center justify-center p-4 z-50">
+          <div className="bg-white border-4 border-green-500 max-w-md w-full">
+            <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white p-4 text-center">
+              <h2 className="text-xl font-bold tracking-wide">SUCCESS!</h2>
+            </div>
+            <SuccessLoader
+              handleClose={() => {
+                setUploadSuccess(false);
+                setShowUpload(false);
+                dispatch(fetchUserData());
+              }}
+            />
+          </div>
+        </div>
+      )}
+
+      {showUpload && !uploadSuccess && (
+        <ProfileUpload onClose={onClose} setUploadSuccess={setUploadSuccess} />
+      )}
     </motion.div>
   );
 };

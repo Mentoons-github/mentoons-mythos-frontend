@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import MythosLayout from "./layout/mythos";
 import NotFound from "./components/NotFound";
@@ -38,7 +38,7 @@ const MythosPsychologyAssessments = lazy(
 
 const AppRouter = () => {
   return (
-    <Router>
+    <>
       <Suspense fallback={<Loader />}>
         <ScrollToTop />
         <Routes>
@@ -124,7 +124,7 @@ const AppRouter = () => {
           </Route>
         </Routes>
       </Suspense>
-    </Router>
+    </>
   );
 };
 

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { INTELLIGENCE } from "../../../constants/intelligence";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
+import useSignInSignUp from "../../../hooks/useSignInSignUpModal";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -33,15 +33,17 @@ const floatImage = {
   },
 };
 
-const Tests = ({userId}:{userId?:string}) => {
+const Tests = ({ userId }: { userId?: string }) => {
+  const { showModal } = useSignInSignUp();
+
   const navigate = useNavigate();
-  const handleStart = (name:string) => {
-    if(!userId) {
-      toast.warning("Please Loagin continue Assessment test")
-      return
+  const handleStart = (name: string) => {
+    if (!userId) {
+      showModal("Assessment");
+      return;
     }
-    navigate(`${name}`)
-  } 
+    navigate(`${name}`);
+  };
   return (
     <motion.div
       className=" md:py-16 py-2 px-2  md:px-12 bg-[#FEEBD5]"
@@ -49,7 +51,6 @@ const Tests = ({userId}:{userId?:string}) => {
       whileInView="visible"
       viewport={{ once: false, amount: 0.1 }}
       variants={containerVariants}
-    
     >
       <motion.h1
         className="text-2xl md:text-4xl font-bold text-center text-[#2E2E2E] mb-12 leading-tight tracking-wider"
@@ -83,7 +84,8 @@ const Tests = ({userId}:{userId?:string}) => {
                 variants={fadeInUp}
                 className="md:text-2xl font-bold tracking-wider flex gap-2"
               >
-                {data.name} <span className="hidden sm:block">Intelligence</span>
+                {data.name}{" "}
+                <span className="hidden sm:block">Intelligence</span>
               </motion.h2>
 
               <motion.p variants={fadeInUp} className="md:text-lg ">
@@ -98,7 +100,7 @@ const Tests = ({userId}:{userId?:string}) => {
 
             <div className="sm:flex justify-end">
               <motion.button
-                onClick={() => handleStart(data.name) }
+                onClick={() => handleStart(data.name)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="bg-[#EC9600] px-6 py-2 rounded-2xl text-white font-semibold text-lg"
