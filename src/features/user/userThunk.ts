@@ -6,6 +6,7 @@ import {
   fetchUserDetails,
   logout,
   reportUserApi,
+  updateUser,
 } from "./api/userApi";
 import {
   AllUserResponse,
@@ -13,7 +14,6 @@ import {
   UserResponse,
 } from "../../types/user/userInterface";
 import { ReportResponse } from "../../types/redux/reportInterface";
-import { updateUser } from "../astrology/astroService";
 
 export const fetchUserData = createAsyncThunk<UserResponse, void>(
   "user/fetch",

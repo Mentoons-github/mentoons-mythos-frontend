@@ -1,4 +1,5 @@
 import apiClient from "../../../services/axiosInstance";
+import { IUser } from "../../../types";
 import { ReportResponse } from "../../../types/redux/reportInterface";
 
 export const fetchUserDetails = () => {
@@ -6,18 +7,21 @@ export const fetchUserDetails = () => {
 };
 
 export const fetchAllUsersApi = () => {
-  return apiClient.get('/user/all-users')
-}
+  return apiClient.get("/user/all-users");
+};
 
-export const blockUserApi = (userId:string) => {
-  return apiClient.put(`/user/block/${userId}`)
-}
+export const blockUserApi = (userId: string) => {
+  return apiClient.put(`/user/block/${userId}`);
+};
 
 export const logout = () => {
   return apiClient.post("/auth/logout");
 };
 
-export const reportUserApi = (data:ReportResponse, userId:string) => {
-  return apiClient.post(`/user/report/${userId}`,data)
-}
+export const reportUserApi = (data: ReportResponse, userId: string) => {
+  return apiClient.post(`/user/report/${userId}`, data);
+};
 
+export const updateUser = (data: Partial<IUser>) => {
+  return apiClient.put("/user/update-profile", { data });
+};

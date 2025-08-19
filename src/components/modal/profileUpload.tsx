@@ -1,9 +1,8 @@
 import { useState, memo } from "react";
-import { Plus, Upload, X } from "lucide-react";
-import { fileUploadThunk } from "../../features/upload/fileUploadThunk";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { updateUserData } from "../../features/user/userThunk";
+import { Plus, X } from "lucide-react";
+import { useAppSelector } from "../../hooks/reduxHooks";
 import FileUploadLoader from "../loader/fileUploader";
+import ImageCropperModal from "./cropper";
 
 const ProfileUpload = ({
   onClose,
@@ -15,10 +14,9 @@ const ProfileUpload = ({
   const [profile, setProfile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [picUploading, setPicUploading] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
+  const [showCropper, setShowCropper] = useState(false);
   const { error: reduxError, loading } = useAppSelector((state) => state.user);
-  const dispatch = useAppDispatch();
 
   const MAX_FILE_SIZE = 3 * 1024 * 1024;
 
@@ -42,7 +40,10 @@ const ProfileUpload = ({
     if (file && validateFile(file)) {
       setProfile(file);
       const reader = new FileReader();
-      reader.onload = (e) => setPreview(e.target?.result as string);
+      reader.onload = (e) => {
+        setPreview(e.target?.result as string);
+        setShowCropper(true);
+      };
       reader.readAsDataURL(file);
     } else {
       setProfile(null);
@@ -67,7 +68,10 @@ const ProfileUpload = ({
     if (file && validateFile(file)) {
       setProfile(file);
       const reader = new FileReader();
-      reader.onload = (e) => setPreview(e.target?.result as string);
+      reader.onload = (e) => {
+        setPreview(e.target?.result as string);
+        setShowCropper(true);
+      };
       reader.readAsDataURL(file);
     } else {
       setProfile(null);
@@ -79,49 +83,18 @@ const ProfileUpload = ({
     setProfile(null);
     setPreview(null);
     setValidationError(null);
-  };
-
-  const handleUpload = async () => {
-    if (profile) {
-      setPicUploading(true);
-      setValidationError(null);
-      try {
-        const imageUrl = (await dispatch(
-          fileUploadThunk({ file: profile, category: "userProfile" })
-        ).unwrap()) as string;
-        console.log("Image URL received:", imageUrl);
-
-        if (imageUrl) {
-          console.log("Updating user data with image URL:", imageUrl);
-          await dispatch(
-            updateUserData({ user: { profilePicture: imageUrl } })
-          ).unwrap();
-          console.log("User data updated successfully");
-        }
-
-        console.log(
-          "Upload successful, setting uploadSuccess to true in parent"
-        );
-        setPicUploading(false);
-        setUploadSuccess(true);
-      } catch (err: any) {
-        console.error("Upload failed:", err.message || err);
-        setPicUploading(false);
-        setValidationError(
-          err.message || "Failed to upload profile picture. Please try again."
-        );
-      }
-    }
+    setShowCropper(false);
   };
 
   const handleClose = () => {
     setProfile(null);
     setPreview(null);
     setValidationError(null);
-    onClose(false); // Indicate no success
+    setShowCropper(false);
+    onClose(false);
   };
 
-  if (picUploading || loading) {
+  if (loading) {
     return (
       <div className="fixed inset-0 bg-black/50 bg-opacity-80 flex items-center justify-center p-4 z-50">
         <div className="bg-white border-4 border-black max-w-md w-full">
@@ -133,6 +106,17 @@ const ProfileUpload = ({
           <FileUploadLoader />
         </div>
       </div>
+    );
+  }
+
+  if (showCropper && preview) {
+    return (
+      <ImageCropperModal
+        imageSrc={preview}
+        onClose={onClose}
+        setUploadSuccess={setUploadSuccess}
+        aspectRatio={1}
+      />
     );
   }
 
@@ -212,21 +196,7 @@ const ProfileUpload = ({
 
           <div className="border-t-2 border-dashed border-gray-300"></div>
 
-          <div className="flex space-x-4">
-            <button
-              onClick={handleUpload}
-              disabled={!profile}
-              className={`flex-1 py-3 px-6 font-bold tracking-wide transition-all duration-200 flex items-center justify-center space-x-2
-                ${
-                  profile
-                    ? "bg-black text-white hover:bg-gray-800 active:bg-gray-900"
-                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                }`}
-            >
-              <Upload size={18} />
-              <span>UPLOAD</span>
-            </button>
-
+          <div className="flex justify-end">
             <button
               onClick={handleClose}
               className="px-6 py-3 border-2 border-black text-black font-bold tracking-wide hover:bg-black hover:text-white transition-all duration-200"

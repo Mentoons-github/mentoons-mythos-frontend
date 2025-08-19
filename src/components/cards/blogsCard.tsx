@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { updateBlogViewThunk } from "../../features/blog/blogThunk";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/reduxHooks";
-import { toast } from "sonner";
+import useSignInSignUp from "../../hooks/useSignInSignUpModal";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -18,22 +18,23 @@ const fadeUp = {
   }),
 };
 
+const BlogsCard = ({ blogs, userId }: { blogs: Blog[]; userId: string }) => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { showModal } = useSignInSignUp();
 
-const BlogsCard = ({ blogs, userId }: { blogs: Blog[], userId:string }) => {
-  const dispatch = useAppDispatch()
-  const navigate = useNavigate()
   const handlePostClick = (post: Blog) => {
-     if(!userId) toast.warning("Please Login to continue reading")
-      if(!post._id || !userId) return
-      dispatch(updateBlogViewThunk(post._id))
-      navigate(`?id=${post._id}`);
-    };
+    if (!userId) showModal("Blog");
+    if (!post._id || !userId) return;
+    dispatch(updateBlogViewThunk(post._id));
+    navigate(`?id=${post._id}`);
+  };
   return (
     <div className="flex flex-col gap-8 w-full md:w-[50rem]">
-     <div>
-       <h1 className="text-3xl font-semibold -mb-4">Popular Blogs</h1>
-     </div>
-      
+      <div>
+        <h1 className="text-3xl font-semibold -mb-4">Popular Blogs</h1>
+      </div>
+
       {blogs.map((blog, index) => (
         <motion.div
           className="flex flex-col w-full min-h-fit"
@@ -74,7 +75,10 @@ const BlogsCard = ({ blogs, userId }: { blogs: Blog[], userId:string }) => {
             </p>
 
             <div className="flex items-center justify-start mt-5">
-              <button className="p-3 outline-none bg-transparent border-[#3B3B3B] border-2 text-[#9D9D9D] font-semibold tracking-[2px] font-proza text-xs " onClick={() => handlePostClick(blog)}>
+              <button
+                className="p-3 outline-none bg-transparent border-[#3B3B3B] border-2 text-[#9D9D9D] font-semibold tracking-[2px] font-proza text-xs "
+                onClick={() => handlePostClick(blog)}
+              >
                 READ MORE
               </button>
             </div>

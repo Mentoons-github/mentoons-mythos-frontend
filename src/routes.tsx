@@ -18,6 +18,11 @@ import AssessmentQuestions from "./page/assessments/AssessmentQuestions";
 import RequireAdmin from "./Admin/components/RequireAdmin";
 import { AuthGuard, ProtectedRoute } from "./components/ProtectedRoutes";
 import ForgotPassword from "./page/auth/ForgotPassword";
+// import AstrologyReport from "./components/astro/report";
+import EmployeeLayout from "./layout/employee";
+import EmployeeDashboard from "./page/employee/dashboard";
+import EmployeeLogin from "./page/employee/login";
+import LeaveManagement from "./page/employee/leaveManagement";
 
 const MythosHome = lazy(() => import("./page/home"));
 const MythosAbout = lazy(() => import("./page/about"));
@@ -33,6 +38,7 @@ const MythosHiring = lazy(() => import("./page/hiring"));
 const MythosProfile = lazy(() => import("./page/profile"));
 const MythosOrder = lazy(() => import("./page/myOrders"));
 const MythosSearch = lazy(() => import("./page/globalSearch"));
+const MythosContactUs = lazy(() => import("./page/contactUs"));
 const MythosPsychologyAssessments = lazy(
   () => import("./page/assessments/psychologyAssessment")
 );
@@ -43,12 +49,46 @@ const AppRouter = () => {
       <Suspense fallback={<Loader />}>
         <ScrollToTop />
         <Routes>
-
-          <Route path="register" element={<AuthGuard><Register /></AuthGuard>} />
-          <Route path="login" element={<AuthGuard><Login /></AuthGuard>} />
-          <Route path="oauth-result" element={<AuthGuard><OAuthResult /></AuthGuard>} />
-          <Route path="verify-otp" element={<AuthGuard><Otp /></AuthGuard>} />
-          <Route path="forgot-password" element={<AuthGuard><ForgotPassword /></AuthGuard>} />
+          <Route
+            path="register"
+            element={
+              <AuthGuard>
+                <Register />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path="login"
+            element={
+              <AuthGuard>
+                <Login />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path="oauth-result"
+            element={
+              <AuthGuard>
+                <OAuthResult />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path="verify-otp"
+            element={
+              <AuthGuard>
+                <Otp />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path="forgot-password"
+            element={
+              <AuthGuard>
+                <ForgotPassword />
+              </AuthGuard>
+            }
+          />
           <Route
             path="groups/:groupId/chat"
             element={
@@ -79,6 +119,8 @@ const AppRouter = () => {
             <Route path="products-details" element={<MythosProductDetail />} />
             <Route path="hiring" element={<MythosHiring />} />
             <Route path="profile" element={<MythosProfile />} />
+            <Route path="contactUs" element={<MythosContactUs />} />
+            {/* <Route path="report" element={<AstrologyReport />} /> */}
             <Route
               path="cart"
               element={
@@ -125,6 +167,13 @@ const AppRouter = () => {
             {/* <Route path="orders" element={<Orders />} />
             <Route path="products" element={<Products />} /> */}
           </Route>
+
+          {/*Employee Route*/}
+          <Route path="/employee" element={<EmployeeLayout />}>
+            <Route index element={<EmployeeDashboard />} />
+            <Route path="leave-management" element={<LeaveManagement />} />
+          </Route>
+          <Route path="/employee/login" element={<EmployeeLogin />} />
         </Routes>
       </Suspense>
     </>

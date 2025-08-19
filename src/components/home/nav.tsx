@@ -7,13 +7,12 @@ import { useNavigate } from "react-router-dom";
 import MythosSearch from "../modal/search";
 import { useAppSelector, useAppDispatch } from "../../hooks/reduxHooks";
 import { fetchUserData, userLogout } from "../../features/user/userThunk";
-import { toast } from "sonner";
+import useSignInSignUp from "../../hooks/useSignInSignUpModal";
 
 const MythosHeader = () => {
   const dispatch = useAppDispatch();
   const { user, loading: userLoading } = useAppSelector((state) => state.user);
-
-  console.log("user ", user);
+  const { showModal } = useSignInSignUp();
 
   const headerText = [
     "HOME",
@@ -157,8 +156,8 @@ const MythosHeader = () => {
       .unwrap()
       .then(() => {
         setIsUserDropdownOpen(false);
-         navigate("/", { replace: true });
-         sessionStorage.clear()
+        navigate("/", { replace: true });
+        sessionStorage.clear();
       })
       .catch((error) => {
         console.error("Logout failed:", error);
@@ -179,7 +178,7 @@ const MythosHeader = () => {
 
   const handleWishList = () => {
     if (!user?._id) {
-      toast.warning("Please Login with continue wishlist");
+      showModal("Wishlist");
       return;
     }
     navigate("/wishlist");
@@ -187,7 +186,7 @@ const MythosHeader = () => {
 
   const handleCart = () => {
     if (!user?._id) {
-      toast.warning("Please Login with continue cart");
+      showModal("Cart");
       return;
     }
     navigate("/cart");

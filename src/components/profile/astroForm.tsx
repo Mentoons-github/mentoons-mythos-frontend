@@ -42,7 +42,7 @@ const AstroForm = ({
         latitude: string;
       }) => ({ ...prev, [e.target.name]: e.target.value })
     );
-    setGeoError(null); // Clear error on manual input
+    setGeoError(null);
   };
 
   const handleGetCurrentLocation = () => {
