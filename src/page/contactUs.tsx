@@ -10,29 +10,26 @@ const AstrologyContactPage = () => {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Create mailto link
     const subject = encodeURIComponent(formData.subject || "Astrology Inquiry");
     const body = encodeURIComponent(
       `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
     );
     const mailtoLink = `mailto:mentoonsmythos@gmail.com?subject=${subject}&body=${body}`;
 
-    // Open email client
     window.location.href = mailtoLink;
 
     setIsSubmitted(true);
 
-    // Reset form after 3 seconds
     setTimeout(() => {
       setFormData({ name: "", email: "", subject: "", message: "" });
       setIsSubmitted(false);
@@ -41,7 +38,6 @@ const AstrologyContactPage = () => {
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      {/* Animated background stars */}
       <div className="absolute inset-0">
         {[...Array(50)].map((_, i) => (
           <div
@@ -226,7 +222,7 @@ const AstrologyContactPage = () => {
                       id="message"
                       name="message"
                       value={formData.message}
-                      onChange={handleChange}
+                      onChange={() => handleChange}
                       required
                       rows={5}
                       className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-transparent transition-all duration-300 resize-none"

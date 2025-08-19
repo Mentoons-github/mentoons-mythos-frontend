@@ -18,7 +18,7 @@ import AssessmentQuestions from "./page/assessments/AssessmentQuestions";
 import RequireAdmin from "./Admin/components/RequireAdmin";
 import { AuthGuard, ProtectedRoute } from "./components/ProtectedRoutes";
 import ForgotPassword from "./page/auth/ForgotPassword";
-import AstrologyReport from "./components/astro/report";
+// import AstrologyReport from "./components/astro/report";
 import EmployeeLayout from "./layout/employee";
 import EmployeeDashboard from "./page/employee/dashboard";
 import EmployeeLogin from "./page/employee/login";
@@ -120,7 +120,7 @@ const AppRouter = () => {
             <Route path="hiring" element={<MythosHiring />} />
             <Route path="profile" element={<MythosProfile />} />
             <Route path="contactUs" element={<MythosContactUs />} />
-            <Route path="report" element={<AstrologyReport />} />
+            {/* <Route path="report" element={<AstrologyReport />} /> */}
             <Route
               path="cart"
               element={
