@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import MythosButton from "../home/button";
 import { motion } from "framer-motion";
 import useInView from "../../hooks/useInView";
@@ -10,6 +10,7 @@ const WeAreHiring = () => {
   const { ref: astrologerRef, isInView: isAstrologerInView } = useInView(0.1);
   const { ref: psychologistRef, isInView: isPsychologistInView } =
     useInView(0.1);
+    const navigate = useNavigate()
 
   const HiringTexts = [
     "Work with a growing community",
@@ -111,7 +112,7 @@ const WeAreHiring = () => {
           className="w-auto"
         />
         <NavLink
-          to="/"
+          to="/hiring"
           className="inline-block border-b-2 border-black pb-1 text-center text-base"
         >
           APPLY FOR ASTROLOGER
@@ -133,7 +134,7 @@ const WeAreHiring = () => {
           className="w-40"
         />
         <NavLink
-          to="/"
+          to="/hiring"
           className="inline-block border-b-2 border-black pb-1 text-center text-base"
         >
           APPLY FOR PSYCHOLOGIST
@@ -182,7 +183,7 @@ const WeAreHiring = () => {
         </motion.ul>
 
         <motion.div className="mt-6 sm:mt-7 md:mt-8" variants={buttonVariants}>
-          <MythosButton label="APPLY NOW" bg="#1A1D3B" textClr="white" />
+          <MythosButton label="APPLY NOW" bg="#1A1D3B" textClr="white" onClick={()=>navigate('/hiring')}/>
         </motion.div>
       </motion.div>
 

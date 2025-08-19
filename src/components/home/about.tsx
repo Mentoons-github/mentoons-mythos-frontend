@@ -56,7 +56,7 @@ const AboutMythos = () => {
       >
         <div className="relative w-full pb-[56.25%] max-w-[100%] sm:max-w-[90%] md:max-w-full">
           <ReactPlayer
-            url="/assets/problem areas_2.mp4"
+            url="/assets/about.mp4"
             className="absolute inset-0"
             width="100%"
             height="100%"

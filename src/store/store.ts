@@ -6,6 +6,7 @@ import astroReducer from "../features/astrology/astroSlice";
 import userReducer from "../features/user/userSlice";
 import chatReducer from '../features/chat/chatSlice'
 import assessmentReducer from '../features/assessment/assessmentSlice'
+import careerReducer from '../features/career/careerSlice'
 
 export const store = configureStore({
   reducer: {
@@ -15,7 +16,8 @@ export const store = configureStore({
     astro: astroReducer,
     user: userReducer,
     chat: chatReducer,
-    assessment:assessmentReducer
+    assessment:assessmentReducer,
+    career:careerReducer
   },
 });
 

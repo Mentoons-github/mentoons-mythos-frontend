@@ -16,6 +16,7 @@ const JobSection = ({
   icon: Icon,
   gradient,
   index,
+  onApply,
 }: {
   title: string;
   requirements: Record<string, string>;
@@ -24,6 +25,7 @@ const JobSection = ({
   icon: any;
   gradient: string;
   index: number;
+  onApply: ()=> void
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [animateIn, setAnimateIn] = useState(false);
@@ -91,9 +93,8 @@ const JobSection = ({
             ? "shadow-xl md:shadow-2xl scale-[1.01] md:scale-[1.02]"
             : "shadow-md md:shadow-lg hover:shadow-lg md:hover:shadow-xl hover:scale-[1.005] md:hover:scale-[1.01]"
         }`}
-        onClick={onToggle}
+        
       >
-        {/* Animated background gradient */}
         <div
           className={`absolute inset-0 ${gradient} opacity-5 transition-opacity duration-500 ${
             isHovered ? "opacity-10" : "opacity-5"
@@ -117,8 +118,7 @@ const JobSection = ({
           ))}
         </div>
 
-        {/* Main content */}
-        <div className="relative bg-black backdrop-blur-sm p-6 md:p-10">
+        <div className="relative bg-black backdrop-blur-sm p-6 md:p-10" onClick={onToggle}>
           <div className="flex flex-col md:flex-row md:justify-between md:items-center space-y-4 md:space-y-0">
             <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 md:space-x-6">
               {/* Enhanced icon */}
@@ -142,7 +142,7 @@ const JobSection = ({
                 />
               </div>
 
-              <div className="space-y-1 md:space-y-2">
+              <div className="space-y-1 md:space-y-2" >
                 <h2 className="text-white text-xl md:text-3xl font-bold tracking-tight">
                   {title}
                 </h2>
@@ -158,7 +158,7 @@ const JobSection = ({
                     <span className="text-xs md:text-sm">Remote & On-site</span>
                   </div>
                   <div className="flex items-center space-x-1">
-                    <Clock className="w-3 h-3 md:w-4 md:w-4" />
+                    <Clock className="w-3 h-3 md:w-4 " />
                     <span className="text-xs md:text-sm">Full-time</span>
                   </div>
                 </div>
@@ -204,7 +204,7 @@ const JobSection = ({
             </div>
 
             {/* Apply button */}
-            <div className="mt-6 md:mt-8 text-center">
+            <div className="mt-6 md:mt-8 text-center" onClick={onApply}>
               <button className="group relative overflow-hidden bg-black text-white px-6 py-3 md:px-8 md:py-4 rounded-xl md:rounded-2xl font-semibold transition-all duration-300 hover:shadow-xl md:hover:shadow-2xl hover:scale-[1.03] md:hover:scale-105">
                 <span className="relative z-10 flex items-center space-x-2">
                   <span className="text-sm md:text-base">
@@ -218,6 +218,9 @@ const JobSection = ({
           </div>
         </div>
       </div>
+      {/* {isModalOpen && (
+        <HiringModal setModalOpen={setModalOpen} title={title}/>
+      )} */}
     </div>
   );
 };

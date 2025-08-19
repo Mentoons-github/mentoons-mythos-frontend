@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Users, Star, Brain, Sparkles } from "lucide-react";
 import JobSection from "./jobSection";
+import HiringModal from "../modal/HiringModal/HiringModal";
 
 // Mock constants - replace with your actual imports
 const PSYCHOLOGISTS_REQUIREMENTS = {
@@ -32,6 +33,7 @@ const ASTROLOGER_INTERN_REQUIREMENT = {
 };
 const Jobs = () => {
   const [openSection, setOpenSection] = useState<string | null>(null);
+  const [selectedJob, setSelectedJob] = useState<string | null>(null);
 
   const handleToggle = (sectionName: string) => {
     setOpenSection((prev) => (prev === sectionName ? null : sectionName));
@@ -141,9 +143,16 @@ const Jobs = () => {
             onToggle={() => handleToggle(section.title)}
             icon={section.icon}
             gradient={section.gradient}
+            onApply={() => setSelectedJob(section.title)}
           />
         ))}
       </div>
+      {selectedJob && (
+        <HiringModal
+          setModalOpen={() => setSelectedJob(null)}
+          title={selectedJob}
+        />
+      )}
     </div>
   );
 };
