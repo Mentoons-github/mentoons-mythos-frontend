@@ -9,7 +9,7 @@ import {
 } from "./userThunk";
 import { IUser } from "../../types";
 
-interface UserData {
+export interface UserData {
   user: IUser | null;
   error: null | string | undefined;
   loading: boolean;

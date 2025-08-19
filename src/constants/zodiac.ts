@@ -177,3 +177,18 @@ export const ZODIAC_DATA: Record<
     },
   },
 };
+
+export const RASHI_DETAILS = {
+  Mesha: { zodiac: "Aries", element: "Fire", ruler: "Mars" },
+  Vrishabha: { zodiac: "Taurus", element: "Earth", ruler: "Venus" },
+  Mithuna: { zodiac: "Gemini", element: "Air", ruler: "Mercury" },
+  Karka: { zodiac: "Cancer", element: "Water", ruler: "Moon" },
+  Simha: { zodiac: "Leo", element: "Fire", ruler: "Sun" },
+  Kanya: { zodiac: "Virgo", element: "Earth", ruler: "Mercury" },
+  Tula: { zodiac: "Libra", element: "Air", ruler: "Venus" },
+  Vrishchika: { zodiac: "Scorpio", element: "Water", ruler: "Mars" },
+  Dhanu: { zodiac: "Sagittarius", element: "Fire", ruler: "Jupiter" },
+  Makara: { zodiac: "Capricorn", element: "Earth", ruler: "Saturn" },
+  Kumbha: { zodiac: "Aquarius", element: "Air", ruler: "Saturn" },
+  Meena: { zodiac: "Pisces", element: "Water", ruler: "Jupiter" },
+};

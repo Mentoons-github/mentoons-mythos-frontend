@@ -1,7 +1,15 @@
 import { motion } from "framer-motion";
 import { CheckCircle, X } from "lucide-react";
 
-const SuccessLoader = ({ handleClose }: { handleClose: () => void }) => {
+const SuccessLoader = ({
+  handleClose,
+  heading,
+  description,
+}: {
+  handleClose: () => void;
+  heading: string;
+  description: string;
+}) => {
   return (
     <div className="flex flex-col items-center justify-center p-8">
       {/* Success Icon */}
@@ -59,10 +67,8 @@ const SuccessLoader = ({ handleClose }: { handleClose: () => void }) => {
         transition={{ delay: 0.6 }}
         className="text-center"
       >
-        <h3 className="text-2xl font-bold text-green-600 mb-2">
-          Upload Successful!
-        </h3>
-        <p className="text-green-500">Your profile picture has been updated</p>
+        <h3 className="text-2xl font-bold text-green-600 mb-2">{heading}</h3>
+        <p className="text-green-500">{description}</p>
       </motion.div>
 
       {/* Close Button */}

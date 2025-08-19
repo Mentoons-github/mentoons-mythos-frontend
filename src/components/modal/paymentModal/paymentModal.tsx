@@ -25,7 +25,6 @@ const PaymentModal = ({
   const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
-  // Trigger success animation when payment is done
   useEffect(() => {
     if (paymentDone) {
       setShowSuccess(true);

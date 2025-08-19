@@ -1,25 +1,22 @@
-export interface IUser {
-  _id?:string
+export interface IUser extends ZodiacDetails {
+  _id?: string;
   firstName: string;
   lastName: string;
   email: string;
   password: string;
-  dateOfBirth?: Date;
-  timeOfBirth: string;
   about?: string;
   country?: string;
   isGoogleUser?: boolean;
-  longitude: string;
-  latitude: string;
   profilePicture?: string | null;
   astrologyDetail?: IAstrologyDetail;
-  role?:string
-  isBlocked:boolean
+  role?: string;
+  isBlocked: boolean;
 }
 
 export interface IAstrologyDetail {
   moonSign?: string;
   sunSign?: string;
+  report?: any;
 }
 
 export interface UserResponse {
@@ -30,4 +27,11 @@ export interface UserResponse {
 export interface AllUserResponse {
   success: boolean;
   users: IUser[];
+}
+
+export interface ZodiacDetails {
+  dateOfBirth?: Date;
+  timeOfBirth: string;
+  longitude: string;
+  latitude: string;
 }

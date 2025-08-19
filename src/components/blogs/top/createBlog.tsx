@@ -5,10 +5,12 @@ import { createBlogThunk } from "../../../features/blog/blogThunk";
 import { useEffect, useState } from "react";
 import { resetBlogSlice } from "../../../features/blog/blogSlice";
 import { fileUploadThunk } from "../../../features/upload/fileUploadThunk";
+import useSignInSignUp from "../../../hooks/useSignInSignUpModal";
 import { toast } from "sonner";
 
 const CreateBlog = ({ userId }: { userId: string }) => {
   const dispatch = useAppDispatch();
+  const { showModal } = useSignInSignUp();
   const { file: uploadedImage } = useAppSelector((state) => state.upload);
 
   const [file, setFile] = useState<File | null>(null);
@@ -54,7 +56,7 @@ const CreateBlog = ({ userId }: { userId: string }) => {
     e.preventDefault();
 
     if (!userId) {
-      toast.warning("Please login to create blogs");
+      showModal("Blog");
       setInput({ description: "", title: "", tags: "", commentsOff: false });
       return;
     }

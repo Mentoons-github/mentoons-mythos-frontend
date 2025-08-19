@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { IAstrologyDetail } from "../../types";
-import { fetchMoonAndSunSign } from "./astroThunk";
+import { fetchMoonAndSunSign, upsertUserZodiacDetail } from "./astroThunk";
 
 interface AstroInterface {
   result: IAstrologyDetail | null;
@@ -33,6 +33,21 @@ const astroSlice = createSlice({
       .addCase(fetchMoonAndSunSign.rejected, (state, action) => {
         state.error = action.payload as string;
         state.loading = false;
+      })
+
+      //upsert
+      .addCase(upsertUserZodiacDetail.fulfilled, (state, action) => {
+        state.result = action.payload;
+        state.error = null;
+        state.loading = false;
+      })
+      .addCase(upsertUserZodiacDetail.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.loading = false;
+      })
+      .addCase(upsertUserZodiacDetail.pending, (state) => {
+        state.loading = true;
+        state.error = null;
       });
   },
 });

@@ -6,6 +6,7 @@ import {
   ProductType,
   workshop,
 } from "./enum";
+import { getFullCountryName } from "./profile";
 
 export {
   CardType,
@@ -14,4 +15,5 @@ export {
   ORDER_TYPE,
   ProductType,
   workshop,
+  getFullCountryName,
 };
