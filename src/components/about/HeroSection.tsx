@@ -37,7 +37,7 @@ const HeroSection = () => {
         transition={{ duration: 0.8, delay: 0.6 }}
       >
         <ReactPlayer
-          url="assets/problem areas_2.mp4"
+          url="assets/about.mp4"
           className="absolute inset-0"
           width="100%"
           height="100%"
