@@ -6,6 +6,15 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@font-face {
+  font-family: "Futura Std";
+  src: url("/fonts/FuturaStd.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+
 @custom-variant dark (&:is(.dark *));
 
 @theme {
@@ -13,6 +22,12 @@
   --font-inter: "Inter", san-serif;
   --font-mulish: "Mulish", sans-serif;
   --font-forum: "Forum", sans-serif;
+}
+
+.text {
+  font-size: 1rem;
+  line-height: 2rem;
+  
 }
 
 body{

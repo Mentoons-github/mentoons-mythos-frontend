@@ -11,11 +11,15 @@ import {
   updateBlogViewThunk,
   fetchByMostReadThunk,
   searchBlogThunk,
+  deleteBlogThunk,
+  deleteCommentThunk,
+  fetcheBlogCountThunk,
 } from "./blogThunk";
 import { Blog, Comments } from "../../types/redux/blogInterface";
 
 interface SliceBlog {
   data: Blog[];
+  adminBlog: Blog[];
   error: null | string | undefined;
   createblogSuccess: boolean;
   total: number;
@@ -27,11 +31,18 @@ interface SliceBlog {
   mostReadBlogs: Blog[];
   searchBlogs: Blog[];
   searchLoading: boolean;
-  fetchBlogLoading: boolean
+  fetchBlogLoading: boolean;
+  success: boolean;
+  blogId: string;
+  deleteLoading: boolean;
+  deleteSuccess: boolean;
+  deleteMessage: string;
+  blogCount:number
 }
 
 const initialState: SliceBlog = {
   data: [],
+  adminBlog: [],
   error: null,
   loading: false,
   createblogSuccess: false,
@@ -43,7 +54,13 @@ const initialState: SliceBlog = {
   mostReadBlogs: [],
   searchBlogs: [],
   searchLoading: false,
-  fetchBlogLoading:false
+  fetchBlogLoading: false,
+  success: false,
+  blogId: "",
+  deleteLoading: false,
+  deleteMessage: "",
+  deleteSuccess: false,
+  blogCount:0
 };
 
 export const blogSlice = createSlice({
@@ -58,6 +75,11 @@ export const blogSlice = createSlice({
       state.createblogSuccess = false;
       state.searchBlogs = [];
       state.searchLoading = false;
+      state.success = false;
+      state.blogId = "";
+      state.deleteLoading = false;
+      state.deleteMessage = "";
+      state.deleteSuccess = false;
     },
   },
   extraReducers: (builder) => {
@@ -92,10 +114,26 @@ export const blogSlice = createSlice({
           new Map(mergedPosts.map((item) => [item._id, item])).values()
         );
         state.data = uniquePosts;
+        state.adminBlog = action.payload.blogs; 
         state.total = action.payload.total;
         state.userId = action.payload.userId;
       })
       .addCase(fetcheBlogThunk.rejected, (state, action) => {
+        state.fetchBlogLoading = false;
+        state.error = action.payload;
+      })
+
+      //fetch blog count 
+      .addCase(fetcheBlogCountThunk.pending, (state) => {
+        state.fetchBlogLoading = true;
+        state.error = null;
+      })
+      .addCase(fetcheBlogCountThunk.fulfilled, (state, action) => {
+        state.fetchBlogLoading = false;
+        state.error = null;
+       state.blogCount = action.payload
+      })
+      .addCase(fetcheBlogCountThunk.rejected, (state, action) => {
         state.fetchBlogLoading = false;
         state.error = action.payload;
       })
@@ -182,6 +220,24 @@ export const blogSlice = createSlice({
         state.error = action.payload;
       })
 
+      //delete comment
+      .addCase(deleteCommentThunk.pending, (state) => {
+        state.deleteLoading = true;
+        state.error = null;
+        state.deleteSuccess = false;
+      })
+      .addCase(deleteCommentThunk.fulfilled, (state, action) => {
+        state.deleteLoading = false;
+        state.error = null;
+        state.deleteMessage = action.payload;
+        state.deleteSuccess = true;
+      })
+      .addCase(deleteCommentThunk.rejected, (state, action) => {
+        state.deleteLoading = false;
+        state.error = action.payload;
+        state.deleteSuccess = false;
+      })
+
       //currentUserBlog
       .addCase(fetchCurrentUserBlog.pending, (state) => {
         state.loading = true;
@@ -240,6 +296,28 @@ export const blogSlice = createSlice({
       .addCase(searchBlogThunk.rejected, (state, action) => {
         state.error = action.payload as string;
         state.searchLoading = false;
+      })
+
+      //delete blog
+      .addCase(deleteBlogThunk.pending, (state) => {
+        state.deleteLoading = true;
+        state.error = null;
+        state.deleteSuccess = false;
+      })
+      .addCase(deleteBlogThunk.fulfilled, (state, action) => {
+        state.deleteMessage = action.payload.message;
+        state.blogId = action.payload.blogId;
+        state.error = null;
+        state.deleteLoading = false;
+        state.deleteSuccess = true;
+        if (action.meta.arg) {
+          state.data = state.data.filter((job) => job._id !== action.meta.arg);
+        }
+      })
+      .addCase(deleteBlogThunk.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.deleteLoading = false;
+        state.deleteSuccess = true;
       });
   },
 });

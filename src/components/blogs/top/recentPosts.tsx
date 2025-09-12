@@ -37,7 +37,7 @@ const RecentPosts = ({ userId }: { userId: string }) => {
     selectedFromList || (blogFromStore?._id === blogId ? blogFromStore : null);
 
   const fetchBlogs = () => {
-    dispatch(fetcheBlogThunk({ skip, limit }));
+    dispatch(fetcheBlogThunk({ skip, limit, sort:"newest", search:"" }));
     setSkip((prev) => prev + limit);
     if (limit !== 10) setLimit(10);
   };

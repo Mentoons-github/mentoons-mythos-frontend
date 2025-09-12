@@ -14,7 +14,6 @@ function App() {
       dispatch(fetchUserData());
     }
   }, [dispatch, user]);
-
   return (
     <BrowserRouter>
       <LoginModalProvider>

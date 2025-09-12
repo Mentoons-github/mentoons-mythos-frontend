@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Chat } from "../../../../types/redux/chatInterfaces";
-import { getDateLabel } from "../../../../utils/chateDateFormate";
+import { getDateLabel } from "../../../../utils/DateFormate";
 import DateLabel from "./DateLabel";
 import MessageBubble from "./MessageBubble";
 
