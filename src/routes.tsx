@@ -1,5 +1,5 @@
-import { Route, Routes } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { lazy, Suspense, useEffect, useState } from "react";
 import MythosLayout from "./layout/mythos";
 import NotFound from "./components/NotFound";
 import Loader from "./components/loader/Loader";
@@ -24,6 +24,16 @@ import EmployeeDashboard from "./page/employee/dashboard";
 import EmployeeLogin from "./page/employee/login";
 import LeaveManagement from "./page/employee/leaveManagement";
 
+import AssessmentPage from "./Admin/pages/Assessment/AssessmentPage";
+import AssessmentSubmissions from "./Admin/pages/Assessment/AssessmentSubmissions";
+import AdminJobs from "./Admin/pages/Career/AdminJobs";
+import AdminApplications from "./Admin/pages/Career/AdminApplications";
+import WelcomeScreen from "./components/Welcome";
+import AllWorkshops from "./Admin/pages/Workshops/AllWorkshops";
+import WorkshopEnquiries from "./Admin/pages/Workshops/WorkshopEnquiries";
+import AllBlogs from "./Admin/pages/Blogs/AllBlogs";
+import AdminReport from "./Admin/pages/Report&Block/AdminReport";
+
 const MythosHome = lazy(() => import("./page/home"));
 const MythosAbout = lazy(() => import("./page/about"));
 const MythosGroups = lazy(() => import("./page/groups"));
@@ -42,8 +52,27 @@ const MythosContactUs = lazy(() => import("./page/contactUs"));
 const MythosPsychologyAssessments = lazy(
   () => import("./page/assessments/psychologyAssessment")
 );
+const MythosBookCall = lazy(() => import("./page/bookCall"));
+const MythosWorkshops = lazy(() => import("./page/workshops"));
 
 const AppRouter = () => {
+  const [showWelcome, setShowWelcome] = useState(false);
+
+  useEffect(() => {
+    const hasVisited = sessionStorage.getItem("hasVisitedMythos");
+    if (!hasVisited) {
+      setShowWelcome(true);
+      sessionStorage.setItem("hasVisitedMythos", "true");
+    }
+  }, []);
+
+  const handleWelcomeComplete = () => {
+    setShowWelcome(false);
+  };
+
+  if (showWelcome) {
+    return <WelcomeScreen onComplete={handleWelcomeComplete} />;
+  }
   return (
     <>
       <Suspense fallback={<Loader />}>
@@ -117,10 +146,12 @@ const AppRouter = () => {
             <Route path="assessment/planet" element={<MythosAssessments />} />
             <Route path="details" element={<MythosDetails />} />
             <Route path="products-details" element={<MythosProductDetail />} />
-            <Route path="hiring" element={<MythosHiring />} />
+            <Route path="career" element={<MythosHiring />} />
             <Route path="profile" element={<MythosProfile />} />
             <Route path="contactUs" element={<MythosContactUs />} />
             {/* <Route path="report" element={<AstrologyReport />} /> */}
+            <Route path="book-call" element={<MythosBookCall />} />
+            <Route path="workshops" element={<MythosWorkshops />} />
             <Route
               path="cart"
               element={
@@ -160,9 +191,23 @@ const AppRouter = () => {
               </RequireAdmin>
             }
           >
-            <Route index element={<Dashboard />} />
+            {/* <Route index element={<Dashboard />} /> */}
+            <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="users" element={<Users />} />
+
+            <Route path="assessments/:type" element={<AssessmentPage />} />
+            <Route
+              path="assessments/submissions"
+              element={<AssessmentSubmissions />}
+            />
+            <Route path="career/jobs" element={<AdminJobs />} />
+            <Route path="career/applications" element={<AdminApplications />} />
+            <Route path="workshops/all" element = {<AllWorkshops/>}/>
+            <Route path="workshops/enquiries" element = {<WorkshopEnquiries/>}/>
+            <Route path="blogs/all" element = {<AllBlogs/>}/>
+            <Route path="report&blocks/reports" element = {<AdminReport/>}/>
+
             <Route path="*" element={<Users />} />
             {/* <Route path="orders" element={<Orders />} />
             <Route path="products" element={<Products />} /> */}

@@ -112,7 +112,7 @@ const WeAreHiring = () => {
           className="w-auto"
         />
         <NavLink
-          to="/hiring"
+          to="/career"
           className="inline-block border-b-2 border-black pb-1 text-center text-base"
         >
           APPLY FOR ASTROLOGER
@@ -134,7 +134,7 @@ const WeAreHiring = () => {
           className="w-40"
         />
         <NavLink
-          to="/hiring"
+          to="/career"
           className="inline-block border-b-2 border-black pb-1 text-center text-base"
         >
           APPLY FOR PSYCHOLOGIST
@@ -183,7 +183,7 @@ const WeAreHiring = () => {
         </motion.ul>
 
         <motion.div className="mt-6 sm:mt-7 md:mt-8" variants={buttonVariants}>
-          <MythosButton label="APPLY NOW" bg="#1A1D3B" textClr="white" onClick={()=>navigate('/hiring')}/>
+          <MythosButton label="APPLY NOW" bg="#1A1D3B" textClr="white" onClick={()=>navigate('/career')}/>
         </motion.div>
       </motion.div>
 
@@ -203,7 +203,7 @@ const WeAreHiring = () => {
             className="w-20 sm:w-24 md:w-28 lg:w-32"
           />
           <NavLink
-            to="/"
+            to="/career"
             className="inline-block border-b-2 border-black pb-1 text-center text-xs sm:text-sm md:text-base mt-2"
           >
             APPLY FOR ASTROLOGER
@@ -220,7 +220,7 @@ const WeAreHiring = () => {
             className="w-20 sm:w-24 md:w-28 lg:w-32"
           />
           <NavLink
-            to="/"
+            to="/career"
             className="inline-block border-b-2 border-black pb-1 text-center text-xs sm:text-sm md:text-base mt-2"
           >
             APPLY FOR PSYCHOLOGIST

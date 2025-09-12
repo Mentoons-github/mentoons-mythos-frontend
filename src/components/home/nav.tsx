@@ -21,6 +21,8 @@ const MythosHeader = () => {
     "ABOUT-US",
     "ASSESSMENTS",
     "SHOP",
+    "CAREER",
+    "WORKSHOPS"
   ];
 
   const navigate = useNavigate();

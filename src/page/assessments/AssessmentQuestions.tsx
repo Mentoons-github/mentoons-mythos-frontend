@@ -1,9 +1,12 @@
 import { useParams, useSearchParams } from "react-router-dom";
-import { QUESTIONS } from "../../constants/assessment";
+// import { QUESTIONS } from "../../constants/assessment";
 import { useEffect, useState } from "react";
 import { LuNotebookPen } from "react-icons/lu";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { assessmentSubmitTunk } from "../../features/assessment/assessmentThunk";
+import {
+  assessmentFetchThunk,
+  assessmentSubmitTunk,
+} from "../../features/assessment/assessmentThunk";
 import { toast } from "sonner";
 import { resetAssessmentSlice } from "../../features/assessment/assessmentSlice";
 import PaymentModal from "../../components/modal/paymentModal/paymentModal";
@@ -14,11 +17,11 @@ const AssessmentQuestions = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const paid = searchParams.get("paid") === "true";
-  const { message, error, success } = useAppSelector(
+  const { message, error, success, assessmentQusetion } = useAppSelector(
     (state) => state.assessment
   );
-  const { name, type } = useParams<{ name?: string; type?: string }>();
-  const questions = QUESTIONS[name as keyof typeof QUESTIONS];
+  const { name, type } = useParams<{ name: string; type: string }>();
+  // const questions = QUESTIONS[name as keyof typeof QUESTIONS];
   const initialIndex = sessionStorage.getItem(`${name}_currentIndex`);
   const storedAnswers = sessionStorage.getItem(`${name}_selectedAnswers`);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(
@@ -31,7 +34,13 @@ const AssessmentQuestions = () => {
   }>(storedAnswers ? JSON.parse(storedAnswers) : {});
   const [isFinished, setIsFinished] = useState(false);
 
-  const currentQuestion = questions[currentQuestionIndex];
+  const currentQuestion = assessmentQusetion?.questions[currentQuestionIndex];
+
+  useEffect(() => {
+    if (name) {
+      dispatch(assessmentFetchThunk(name));
+    }
+  }, [name, dispatch]);
 
   useEffect(() => {
     if (success) {
@@ -64,7 +73,9 @@ const AssessmentQuestions = () => {
       return;
     }
 
-    if (currentQuestionIndex < questions.length - 1) {
+    if (!assessmentQusetion) return;
+
+    if (currentQuestionIndex < assessmentQusetion?.questions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     }
   };
@@ -112,6 +123,14 @@ const AssessmentQuestions = () => {
     }
   }, [currentQuestionIndex, selectedAnswers, name, isFinished]);
 
+  if (!assessmentQusetion) {
+    return (
+      <div className="flex justify-center items-center h-screen text-lg">
+        Loading questions...
+      </div>
+    );
+  }
+
   return (
     <div
       className="relative flex items-center justify-center min-h-screen md:px-4 text-gray-700"
@@ -157,17 +176,18 @@ const AssessmentQuestions = () => {
                 </h1>
               </div>
               <h2 className="text-sm md:text-base text-right">
-                {currentQuestionIndex + 1} of {questions.length}
+                {currentQuestionIndex + 1} of{" "}
+                {assessmentQusetion?.questions.length}
               </h2>
             </div>
 
             <div className="">
               <h3 className="text-lg font-semibold mb-10 md:mb-4">
-                {currentQuestion.question}
+                {currentQuestion?.question}
               </h3>
 
               <div className="flex flex-col space-y-4">
-                {currentQuestion.options.map((option, idx) => (
+                {currentQuestion?.options.map((option, idx) => (
                   <label
                     key={idx}
                     className={`p-3 border rounded-lg cursor-pointer transition ${
@@ -200,7 +220,10 @@ const AssessmentQuestions = () => {
               </button>
               <button
                 onClick={() => {
-                  if (currentQuestionIndex < questions.length - 1) {
+                  if (
+                    currentQuestionIndex <
+                    assessmentQusetion?.questions?.length - 1
+                  ) {
                     handleNext();
                   } else {
                     handleFinish();
@@ -209,7 +232,8 @@ const AssessmentQuestions = () => {
                 disabled={!selectedAnswers[currentQuestionIndex]}
                 className="bg-yellow-600 hover:opacity-90 text-white px-4 py-2 rounded disabled:opacity-50"
               >
-                {currentQuestionIndex === questions.length - 1
+                {currentQuestionIndex ===
+                assessmentQusetion?.questions?.length - 1
                   ? "Finish"
                   : "Next"}
               </button>

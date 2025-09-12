@@ -2,6 +2,7 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { FaRegEnvelope, FaRegUser } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const KnowMoreAboutUs = () => {
@@ -21,6 +22,7 @@ const KnowMoreAboutUs = () => {
   };
 
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -169,18 +171,18 @@ const KnowMoreAboutUs = () => {
             transition={{ duration: 0.5, delay: 0.5 }}
           >
             Book a one-on-one video call session with us now!
-          <span className="text-white mt-2 block">(Coming Soon...)</span>
+            <span className="text-white mt-2 block">(Coming Soon...)</span>
           </motion.p>
           <motion.button
-           className="flex items-center justify-center gap-4 rounded-md px-4 py-4  bg-[#E39712] w-fit"
+            className="flex items-center justify-center gap-4 rounded-md px-4 py-4  bg-[#E39712] w-fit"
             type="submit"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            // onClick={() => {
-            //   navigate("/bookings");
-            // }}
+            onClick={() => {
+              navigate("/book-call");
+            }}
           >
-                <span className="text-2xl">✦</span>
+            <span className="text-2xl">✦</span>
             <p className="text-lg font-semibold">BOOK A CALL NOW</p>
           </motion.button>
         </motion.div>

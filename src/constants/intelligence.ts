@@ -1,4 +1,6 @@
-export const INTELLIGENCE = [
+import { Intelligence } from "../types/interface";
+
+export const INTELLIGENCE:Intelligence[] = [
   {
     id: "int_01",
     name: "Sports",

@@ -11,6 +11,9 @@ import {
   updateBlogViewApi,
   fetchByMostReadApi,
   searchBlogApi,
+  deleteBlogApi,
+  deleteCommentApi,
+  fetchBlogCountApi,
 } from "./blogApi";
 
 import { AxiosError } from "axios";
@@ -43,15 +46,30 @@ export const createBlogThunk = createAsyncThunk<
 //fetch blog
 export const fetcheBlogThunk = createAsyncThunk<
   GetBlogResponse,
-  { skip: number; limit: number },
+  { skip: number; limit: number; sort?: string; search?: string },
   { rejectValue: string }
->("blog/fetch", async ({ skip, limit }, { rejectWithValue }) => {
+>("blog/fetch", async ({ skip, limit, sort, search }, { rejectWithValue }) => {
   try {
-    const res = await fetchBlogApi(skip, limit);
+    const res = await fetchBlogApi(skip, limit, sort, search);
     return res.data;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(error?.response?.data?.message || "Cant fetch blog");
+  }
+});
+
+//fetch blog count
+export const fetcheBlogCountThunk = createAsyncThunk<
+  number,
+  void,
+  { rejectValue: string }
+>("blog/fetchblog-count", async (_, { rejectWithValue }) => {
+  try {
+    const res = await fetchBlogCountApi();
+    return res.data.count;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(error?.response?.data?.message || "Cant fetch blog count");
   }
 });
 
@@ -141,6 +159,23 @@ export const getCommentBlogThunk = createAsyncThunk<
   }
 });
 
+//delete comment
+export const deleteCommentThunk = createAsyncThunk<
+  string,
+  string,
+  { rejectValue: string }
+>("blog/delete-comment", async (commentId, { rejectWithValue }) => {
+  try {
+    const res = await deleteCommentApi(commentId);
+    return res.data.message;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(
+      error?.response?.data?.message || "Cannot get comments now"
+    );
+  }
+});
+
 //current user blog
 export const fetchCurrentUserBlog = createAsyncThunk<
   Blog[],
@@ -207,3 +242,19 @@ export const searchBlogThunk = createAsyncThunk<SearchBlogResponses, string>(
     }
   }
 );
+
+export const deleteBlogThunk = createAsyncThunk<
+  { message: string; blogId: string },
+  string,
+  { rejectValue: string }
+>("blog/deleteblog", async (blogId, { rejectWithValue }) => {
+  try {
+    const res = await deleteBlogApi(blogId);
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(
+      error?.response?.data?.message || "Delete Blog failed"
+    );
+  }
+});

@@ -118,6 +118,7 @@ const CreateBlog = ({ userId }: { userId: string }) => {
               value={input.title}
               onChange={handleChange}
               placeholder="Enter blog title"
+              maxLength={60} 
               className="bg-white p-3 rounded w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E39712]"
             />
 

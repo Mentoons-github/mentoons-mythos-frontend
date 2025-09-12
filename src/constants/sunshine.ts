@@ -1,4 +1,6 @@
-export const SUNSHINE = [
+import { Sunshine } from "../types/interface";
+
+export const SUNSHINE:Sunshine[] = [
   {
     id: "su_01",
     rashi:"Mesha",

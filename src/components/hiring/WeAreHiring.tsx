@@ -1,5 +1,6 @@
 // import { Hiring } from "@/types";
 // import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Hiring } from "../../types/hiringTypes";
 // import ResumeSubmissionModal from "../common/modal/jobApplyModel";
 
@@ -9,16 +10,7 @@ export type Position = {
 };
 
 const WeAreHiring = ({ hiring }: { hiring: Hiring[] }) => {
-//   const [position, setPosition] = useState<Position | null>(null);
-//   const [isOpen, setIsOpen] = useState(false);
-//   const handleClick = (job: Hiring) => {
-//     const data = {
-//       position: job.job,
-//       _id: job._id,
-//     };
-//     setPosition(data);
-//     setIsOpen(true);
-//   };
+const navigate = useNavigate()
 
   return (
     <div className="hidden md:flex flex-col items-center w-1/3 gap-4 px-2 md:gap-6 md:px-0 py-6">
@@ -41,7 +33,7 @@ const WeAreHiring = ({ hiring }: { hiring: Hiring[] }) => {
             className="w-32 h-auto mx-auto mt-2 md:w-40 lg:w-48 md:mt-3"
           />
           <div className="flex justify-center mt-3 md:mt-4">
-            <button className="px-4 md:px-6 py-1 md:py-2 bg-white text-[#EC9600] rounded-full shadow-md border border-[#652D90] font-roboto text-sm md:text-base font-extrabold">
+            <button className="px-4 md:px-6 py-1 md:py-2 bg-white text-[#EC9600] rounded-full shadow-md border border-[#652D90] font-roboto text-sm md:text-base font-extrabold" onClick={()=>navigate('/hiring')}>
               APPLY HERE
             </button>
           </div>
