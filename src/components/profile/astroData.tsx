@@ -17,9 +17,6 @@ const AstroData = ({ userProfile, setIsEditing }: AstroDataProps) => {
     "english"
   );
 
-  console.log("AstroData userProfile:", userProfile);
-  console.log("AstroData astrologyDetail:", userProfile.astrologyDetail);
-
   const formatCoordinate = (value: string, type: "lat" | "lng") => {
     const num = parseFloat(value);
     if (isNaN(num)) return "Not provided";
@@ -69,12 +66,12 @@ const AstroData = ({ userProfile, setIsEditing }: AstroDataProps) => {
       {/* Toggle Button */}
       <motion.div className="flex justify-end mb-4" variants={cardVariants}>
         <div className="flex items-center space-x-2">
-          <span className="text-sm text-gray-400">Display Mode:</span>
+          <span className="text-sm text-muted-foreground">Display Mode:</span>
           <motion.button
             onClick={() =>
               setDisplayMode(displayMode === "english" ? "indian" : "english")
             }
-            className="px-3 py-1 bg-gray-600 text-white rounded-lg hover:bg-gray-500 transition-colors text-sm"
+            className="px-3 py-1 bg-muted-foreground rounded-lg hover:bg-gray-500 transition-colors text-sm"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -87,7 +84,7 @@ const AstroData = ({ userProfile, setIsEditing }: AstroDataProps) => {
 
       {/* Birth Details */}
       <motion.div
-        className="bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-2xl p-8 mb-6 border border-gray-700"
+        className="border border-muted-foreground backdrop-blur-sm rounded-2xl p-8 mb-6 "
         variants={cardVariants}
         whileHover="hover"
       >
@@ -96,7 +93,7 @@ const AstroData = ({ userProfile, setIsEditing }: AstroDataProps) => {
           <div className="flex items-center justify-center gap-5">
             <motion.button
               onClick={() => setIsEditing(true)}
-              className="px-4 py-2 border border-gray-600 rounded-lg hover:bg-gray-700 transition-colors text-sm"
+              className="px-4 py-2 border border-muted-foreground rounded-lg hover:bg-muted-foreground transition-colors text-sm"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -110,11 +107,14 @@ const AstroData = ({ userProfile, setIsEditing }: AstroDataProps) => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           <motion.div
-            className="text-center p-4 bg-gray-700 bg-opacity-50 rounded-lg"
+            className="text-center p-4  border border-muted-foreground  rounded-lg"
             variants={cardVariants}
           >
-            <Calendar className="mx-auto mb-2 text-gray-300" size={24} />
-            <p className="text-sm text-gray-400">Birth Date</p>
+            <Calendar
+              className="mx-auto mb-2 text-muted-foreground"
+              size={24}
+            />
+            <p className="text-sm text-muted-foreground">Birth Date</p>
             <p className="text-lg font-semibold">
               {userProfile.dateOfBirth
                 ? new Date(userProfile.dateOfBirth).toISOString().split("T")[0]
@@ -123,22 +123,25 @@ const AstroData = ({ userProfile, setIsEditing }: AstroDataProps) => {
           </motion.div>
 
           <motion.div
-            className="text-center p-4 bg-gray-700 bg-opacity-50 rounded-lg"
+            className="text-center p-4  border border-muted-foreground  rounded-lg"
             variants={cardVariants}
           >
-            <Clock className="mx-auto mb-2 text-gray-300" size={24} />
-            <p className="text-sm text-gray-400">Birth Time</p>
+            <Clock className="mx-auto mb-2 text-muted-foreground" size={24} />
+            <p className="text-sm text-muted-foreground">Birth Time</p>
             <p className="text-lg font-semibold">
               {userProfile.timeOfBirth || "Not provided"}
             </p>
           </motion.div>
 
           <motion.div
-            className="text-center p-4 bg-gray-700 bg-opacity-50 rounded-lg"
+            className="text-center p-4  border border-muted-foreground  rounded-lg"
             variants={cardVariants}
           >
-            <Navigation className="mx-auto mb-2 text-gray-300" size={24} />
-            <p className="text-sm text-gray-400">Latitude</p>
+            <Navigation
+              className="mx-auto mb-2 text-muted-foreground"
+              size={24}
+            />
+            <p className="text-sm text-muted-foreground">Latitude</p>
             <p className="text-lg font-semibold">
               {userProfile.latitude
                 ? formatCoordinate(userProfile.latitude, "lat")
@@ -147,14 +150,14 @@ const AstroData = ({ userProfile, setIsEditing }: AstroDataProps) => {
           </motion.div>
 
           <motion.div
-            className="text-center p-4 bg-gray-700 bg-opacity-50 rounded-lg"
+            className="text-center p-4  border border-muted-foreground  rounded-lg"
             variants={cardVariants}
           >
             <Navigation
-              className="mx-auto mb-2 text-gray-300 transform rotate-90"
+              className="mx-auto mb-2 text-muted-foreground transform rotate-90"
               size={24}
             />
-            <p className="text-sm text-gray-400">Longitude</p>
+            <p className="text-sm text-muted-foreground">Longitude</p>
             <p className="text-lg font-semibold">
               {userProfile.longitude
                 ? formatCoordinate(userProfile.longitude, "lng")
@@ -164,7 +167,7 @@ const AstroData = ({ userProfile, setIsEditing }: AstroDataProps) => {
         </div>
 
         <motion.div
-          className="mt-6 p-4 bg-gray-700 bg-opacity-30 rounded-lg"
+          className="mt-6 p-4 border border-muted-foreground bg-opacity-30 rounded-lg"
           variants={cardVariants}
         >
           <CoordinateVisualization
@@ -181,7 +184,7 @@ const AstroData = ({ userProfile, setIsEditing }: AstroDataProps) => {
       >
         {hasSunSign && (
           <motion.div
-            className="bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700"
+            className=" bg-opacity-50 backdrop-blur-sm rounded-2xl p-8 border border-muted-foreground"
             variants={cardVariants}
             whileHover="hover"
           >
@@ -213,7 +216,7 @@ const AstroData = ({ userProfile, setIsEditing }: AstroDataProps) => {
                     ][displayMode].name
                   }
                 </p>
-                <p className="text-gray-400 mt-2">
+                <p className=" mt-2">
                   {
                     ZODIAC_DATA[
                       normalizeSignName(userProfile.astrologyDetail!.sunSign)
@@ -227,7 +230,7 @@ const AstroData = ({ userProfile, setIsEditing }: AstroDataProps) => {
 
         {hasMoonSign && (
           <motion.div
-            className="bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700"
+            className=" bg-opacity-50 backdrop-blur-sm rounded-2xl p-8 border border-muted-foreground"
             variants={cardVariants}
             whileHover="hover"
           >
@@ -258,7 +261,7 @@ const AstroData = ({ userProfile, setIsEditing }: AstroDataProps) => {
                     ][displayMode].name
                   }
                 </p>
-                <p className="text-gray-400 mt-2">
+                <p className=" mt-2">
                   {
                     ZODIAC_DATA[
                       normalizeSignName(userProfile.astrologyDetail!.moonSign)

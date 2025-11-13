@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const ExplorePodcast = () => {
   return (
     <motion.div
-      className="p-6 flex flex-col bg-[#FEE898] md:w-[490px] rounded-lg shadow-md"
+      className="p-6 flex flex-col border border-muted-foreground md:w-[490px] rounded-lg shadow-md"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
@@ -18,7 +18,7 @@ const ExplorePodcast = () => {
         transition={{ duration: 0.5, delay: 0.2 }}
         viewport={{ once: true }}
       >
-        <h1 className="text-4xl font-bold font-mulish text-[#1A1D3B] w-3/4">
+        <h1 className="text-4xl font-bold font-mulish w-3/4">
           Explore Podcasts For You
         </h1>
         <img
@@ -40,14 +40,14 @@ const ExplorePodcast = () => {
           >
             <div className="flex items-center gap-3">
               <button className="w-8 h-8 flex justify-center items-center rounded-full border border-black bg-transparent text-[#333333] hover:bg-white transition">
-                <FaPlay className="w-5 h-5" />
+                <FaPlay className="w-5 h-5 text-foreground" />
               </button>
-              <h2 className="text-sm font-bold text-[#333333] tracking-wider font-roboto">
+              <h2 className="text-sm font-bold tracking-wider font-roboto">
                 {data.title}
               </h2>
             </div>
             <button className="w-8 h-8 flex justify-center items-center">
-              <FaBars className="w-6 h-6 text-gray-700" />
+              <FaBars className="w-6 h-6 " />
             </button>
           </motion.div>
         ))}

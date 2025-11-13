@@ -46,9 +46,9 @@ const CommentHeader: React.FC<CommentHeaderProps> = ({
 
   return (
     <div className="relative group flex items-center space-x-2 cursor-pointer">
-      <p className="font-semibold text-sm text-gray-800">{username}</p>
+      <p className="font-semibold text-sm text-primary">{username}</p>
       {createdAt && (
-        <span className="text-xs text-gray-500">{formatTime(createdAt)}</span>
+        <span className="text-xs text-muted-foreground">{formatTime(createdAt)}</span>
       )}
       <button
         onClick={onReply}
@@ -63,14 +63,14 @@ const CommentHeader: React.FC<CommentHeaderProps> = ({
           onClick={handleShowOption}
         />
         {showOption && (
-          <div className="absolute top-7 right-12 w-32 bg-white shadow-md border rounded-md z-50">
+          <div className="absolute top-7 right-12 w-32 bg-secondary shadow-md border rounded-md z-50">
             <div
-              className="p-2 px-4 hover:bg-gray-100 text-sm text-gray-800 cursor-pointer rounded-t-md transition"
+              className="p-2 px-4 hover:bg-muted-foreground text-sm  cursor-pointer rounded-t-md transition"
               onClick={handleReportOption}
             >
               Report
             </div>
-            <div className="p-2 px-4 hover:bg-red-100 text-sm text-red-600 cursor-pointer rounded-b-md transition border-t">
+            <div className="p-2 px-4 hover:bg-muted-foreground text-sm text-red-600 cursor-pointer rounded-b-md transition border-t">
               Block
             </div>
           </div>

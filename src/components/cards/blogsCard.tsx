@@ -32,12 +32,12 @@ const BlogsCard = ({ blogs, userId }: { blogs: Blog[]; userId: string }) => {
   return (
     <div className="flex flex-col gap-8 w-full md:w-[50rem]">
       <div>
-        <h1 className="text-3xl font-semibold -mb-4">Popular Blogs</h1>
+        <h1 className="text-3xl font-semibold -mb-4 ">Popular Blogs</h1>
       </div>
 
       {blogs.map((blog, index) => (
         <motion.div
-          className="flex flex-col w-full min-h-fit"
+          className="flex flex-col w-full min-h-fit border border-muted-foreground"
           key={index}
           custom={index}
           initial="hidden"
@@ -54,8 +54,8 @@ const BlogsCard = ({ blogs, userId }: { blogs: Blog[]; userId: string }) => {
               />
             </div>
           )}
-          <div className="p-4 md:p-12 bg-[#1A1D3B] flex flex-col flex-grow">
-            <div className="flex gap-5 text-gray-300 font-medium font-proza">
+          <div className="p-4 md:p-10  flex flex-col flex-grow">
+            <div className="flex gap-5 font-medium font-proza">
               <span>
                 {blog.createdAt && (
                   <span>{format(new Date(blog.createdAt), "dd MMM yyyy")}</span>
@@ -67,7 +67,7 @@ const BlogsCard = ({ blogs, userId }: { blogs: Blog[]; userId: string }) => {
                   : "0 Comments"}
               </span>
             </div>
-            <h1 className="text-2xl font-bold font-inter text-[#FFC367] mt-2 md:w-[520px]">
+            <h1 className="text-2xl font-bold font-inter mt-2 md:w-[520px]">
               {blog.title}
             </h1>
             <p className="text-[#9D9D9D] mt-4 font-proza truncate whitespace-nowrap overflow-hidden text-ellipsis">
@@ -76,7 +76,7 @@ const BlogsCard = ({ blogs, userId }: { blogs: Blog[]; userId: string }) => {
 
             <div className="flex items-center justify-start mt-5">
               <button
-                className="p-3 outline-none bg-transparent border-[#3B3B3B] border-2 text-[#9D9D9D] font-semibold tracking-[2px] font-proza text-xs "
+                className="p-3 outline-none bg-transparent border-foreground rounded-md hover:text-background hover:bg-foreground border-2  font-semibold tracking-[2px] font-proza text-xs "
                 onClick={() => handlePostClick(blog)}
               >
                 READ MORE

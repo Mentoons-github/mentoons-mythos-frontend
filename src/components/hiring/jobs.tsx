@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { getJobsThunk } from "../../features/career/careerThunk";
 import JobDetailsModal from "../modal/HiringModal/JobDetailModal";
 import { IJobs } from "../../types/redux/careerInterface";
+import { toast } from "sonner";
 
 const Jobs = () => {
   const dispatch = useAppDispatch();
@@ -13,16 +14,19 @@ const Jobs = () => {
   const [applyJob, setApplyJob] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 10;
+  const { user } = useAppSelector((state) => state.user);
 
-  console.log(jobs,'jobsss')
+  console.log(jobs, "jobsss");
 
   useEffect(() => {
-    dispatch(getJobsThunk({ page: currentPage, limit, sort: "newest", search:"" }));
+    dispatch(
+      getJobsThunk({ page: currentPage, limit, sort: "newest", search: "" })
+    );
   }, [currentPage, dispatch]);
 
   return (
     <div
-      className="relative min-h-screen bg-gradient-to-br  from-gray-50 to-gray-100"
+      className="relative min-h-screen "
       // style={{ fontFamily: "Futura Std, serif" }}
     >
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
@@ -51,36 +55,36 @@ const Jobs = () => {
         <div className="absolute top-1/3 right-2/3 w-18 h-18 bg-gray-500 rounded-full opacity-70"></div>
         <div className="absolute bottom-60 left-1/6 w-22 h-22 bg-gray-400 rounded-full opacity-65"></div>
 
-        <div className="absolute top-16 left-1/2 w-12 h-12 bg-gray-600 rounded-full opacity-80"></div>
-        <div className="absolute top-36 left-2/3 w-10 h-10 bg-gray-500 rounded-full opacity-85"></div>
-        <div className="absolute bottom-12 left-60 w-14 h-14 bg-gray-400 rounded-full opacity-70"></div>
-        <div className="absolute top-2/3 right-40 w-8 h-8 bg-gray-600 rounded-full opacity-90"></div>
-        <div className="absolute top-44 left-6 w-10 h-10 bg-gray-500 rounded-full opacity-75"></div>
-        <div className="absolute bottom-96 left-1/4 w-12 h-12 bg-gray-400 rounded-full opacity-70"></div>
-        <div className="absolute top-1/4 left-3 w-8 h-8 bg-gray-600 rounded-full opacity-85"></div>
-        <div className="absolute bottom-2/3 right-8 w-10 h-10 bg-gray-500 rounded-full opacity-80"></div>
-        <div className="absolute top-3/4 right-56 w-6 h-6 bg-gray-600 rounded-full opacity-90"></div>
-        <div className="absolute bottom-24 right-2/3 w-8 h-8 bg-gray-400 rounded-full opacity-80"></div>
-        <div className="absolute top-1/3 left-1/2 w-14 h-14 bg-gray-500 rounded-full opacity-65"></div>
-        <div className="absolute bottom-1/4 left-16 w-6 h-6 bg-gray-600 rounded-full opacity-85"></div>
-        <div className="absolute top-1/6 right-1/3 w-10 h-10 bg-gray-400 rounded-full opacity-75"></div>
-        <div className="absolute bottom-1/6 right-1/4 w-8 h-8 bg-gray-500 rounded-full opacity-80"></div>
-        <div className="absolute top-5/6 left-1/3 w-6 h-6 bg-gray-600 rounded-full opacity-85"></div>
+        <div className="absolute top-16 left-1/2 w-12 h-12 bg-gray-600 rounded-full opacity-80 -z-10"></div>
+        <div className="absolute top-36 left-2/3 w-10 h-10 bg-gray-500 rounded-full opacity-85 -z-10"></div>
+        <div className="absolute bottom-12 left-60 w-14 h-14 bg-gray-400 rounded-full opacity-70 -z-10"></div>
+        <div className="absolute top-2/3 right-40 w-8 h-8 bg-gray-600 rounded-full opacity-90 -z-10"></div>
+        <div className="absolute top-44 left-6 w-10 h-10 bg-gray-500 rounded-full opacity-75 -z-10"></div>
+        <div className="absolute bottom-96 left-1/4 w-12 h-12 bg-gray-400 rounded-full opacity-70 -z-10"></div>
+        <div className="absolute top-1/4 left-3 w-8 h-8 bg-gray-600 rounded-full opacity-85 -z-10"></div>
+        <div className="absolute bottom-2/3 right-8 w-10 h-10 bg-gray-500 rounded-full opacity-80 -z-10"></div>
+        <div className="absolute top-3/4 right-56 w-6 h-6 bg-gray-600 rounded-full opacity-90 -z-10"></div>
+        <div className="absolute bottom-24 right-2/3 w-8 h-8 bg-gray-400 rounded-full opacity-80 -z-10"></div>
+        <div className="absolute top-1/3 left-1/2 w-14 h-14 bg-gray-500 rounded-full opacity-65 -z-10"></div>
+        <div className="absolute bottom-1/4 left-16 w-6 h-6 bg-gray-600 rounded-full opacity-85 -z-10"></div>
+        <div className="absolute top-1/6 right-1/3 w-10 h-10 bg-gray-400 rounded-full opacity-75 -z-10"></div>
+        <div className="absolute bottom-1/6 right-1/4 w-8 h-8 bg-gray-500 rounded-full opacity-80 -z-10"></div>
+        <div className="absolute top-5/6 left-1/3 w-6 h-6 bg-gray-600 rounded-full opacity-85 -z-10"></div>
       </div>
 
-      <div className="bg-white shadow-sm border-b border-gray-200 relative z-10 ">
-        <div className="max-w-6xl mx-auto px-8 py-8 text-center">
-          <h1 className="text-6xl font-bold text-gray-900 mb-4 tracking-tight">
+      <div className=" shadow-sm border-b border-b-muted-foreground relative z-10 ">
+        <div className="max-w-6xl mx-auto px-3 md:px-8 py-8 md:text-center">
+          <h1 className="text-2xl md:text-4xl lg:text-6xl font-bold  mb-4 tracking-tight">
             WHO WE'RE LOOKING FOR
           </h1>
-          <p className=" text-gray-600 max-w-lg text-start text-xl mx-auto">
+          <p className="  max-w-lg text-start md:text-xl mx-auto">
             Join us! Whether you're experienced or just starting, bring your
             passion and make an impact.
           </p>
         </div>
       </div>
 
-      <div className="relative py-16 z-10 grid grid-cols-1 md:grid-cols-2 gap-8 px-20">
+      <div className="relative py-10 md:py-16 z-10 grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8 px-4 md:px-20">
         {[...jobs]
           .sort((a, b) => a.jobTitle.localeCompare(b.jobTitle))
           .map((section, index) => (
@@ -104,7 +108,7 @@ const Jobs = () => {
         <button
           onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
           disabled={currentPage === 1}
-          className="px-5 py-2 bg-white border-2 border-gray-500 rounded-2xl  disabled:opacity-50"
+          className="px-5 py-2 bg-foreground border-2 border-gray-500 rounded-2xl text-background disabled:opacity-50"
         >
           Prev
         </button>
@@ -117,8 +121,8 @@ const Jobs = () => {
               onClick={() => setCurrentPage(pageNum)}
               className={` rounded-full h-10 w-10 ${
                 currentPage === pageNum
-                  ? "bg-black text-white"
-                  : "bg-white border-2 border-black hover:bg-gray-100"
+                  ? "bg-background text-foreground border-2 border-foreground "
+                  : "bg-foreground  text-background hover:bg-background hover:border hover:border-foreground hover:text-foreground"
               }`}
             >
               {pageNum}
@@ -130,7 +134,7 @@ const Jobs = () => {
         <button
           onClick={() => setCurrentPage((p) => (p < jobTotalPage ? p + 1 : p))}
           disabled={currentPage === jobTotalPage}
-          className="px-5 py-2 bg-white border-2 border-gray-500 rounded-2xl  disabled:opacity-50"
+          className="px-5 py-2 bg-foreground text-background border-2 border-gray-500 rounded-2xl  disabled:opacity-50"
         >
           Next
         </button>
@@ -141,7 +145,11 @@ const Jobs = () => {
           job={selectedJob}
           onClose={() => setSelectedJob(null)}
           onApply={() => {
-            setApplyJob(selectedJob.jobTitle);
+            if (!user) {
+              toast.warning("Please login to apply this job");
+            } else {
+              setApplyJob(selectedJob.jobTitle);
+            }
           }}
         />
       )}

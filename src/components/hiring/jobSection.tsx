@@ -22,7 +22,7 @@ const JobSection = ({
       style={{ animationDelay: `${index * 200}ms` }}
     >
       <div
-        className="relative overflow-hidden rounded-2xl  cursor-pointer flex gap-6 items-center skew-x-[10deg] sm:skew-x-[20deg] lg:skew-x-[40deg]"
+        className="relative overflow-hidden rounded-2xl  cursor-pointer flex gap-4 md:gap-6 items-center skew-x-[10deg] sm:skew-x-[20deg] lg:skew-x-[40deg]"
         onClick={onViewDetails}
       >
         <div className="flex-shrink-0 ">
@@ -35,8 +35,8 @@ const JobSection = ({
 
         {/* Job details */}
         <div className="flex flex-col justify-between">
-          <h2 className="text-2xl font-extrabold text-center">{title}</h2>
-          <p className="text-lg mt-2 line-clamp-1 tracking-wide ">{jobDescription}</p>
+          <h2 className="md:text-2xl text-lg font-bold md:font-extrabold md:text-center">{title}</h2>
+          <p className="md:text-lg mt-2 line-clamp-1 tracking-wide ">{jobDescription}</p>
           <div className="mt-3 text-sm text-gray-200">
             {jobLocation} · {jobType}
           </div>

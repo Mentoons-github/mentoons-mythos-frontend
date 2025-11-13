@@ -35,7 +35,7 @@ const MessagesList = ({
   return (
     <div
       onClick={onContainerClick}
-      className=" flex-1 overflow-y-auto hide-scrollbar transform-gpu md:rounded-t-lg p-1 md:p-3 bg-black/80 space-y-4"
+      className=" flex-1 overflow-y-auto hide-scrollbar transform-gpu md:rounded-t-lg p-1 md:p-3 space-y-4"
       style={{
         backgroundImage: `url(${backgroundImage})`,
         backgroundRepeat: "no-repeat",

@@ -29,7 +29,7 @@ const CommentsList: React.FC<CommentsListProps> = ({
           ))}
         </ul>
       ) : (
-        <p className="text-gray-500 pt-6">No comments yet.</p>
+        <p className="text-muted-foreground pt-6">No comments yet.</p>
       )}
     </div>
   );

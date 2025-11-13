@@ -1,7 +1,7 @@
 import { BLOGS, MYTHOS_NEWS, NEWS } from "./blogs";
-import { CONTACT_INFO, CAREER, PLANET } from "./footer";
+import { CONTACT_INFO } from "./footer";
 import { MYTHOS_PLANS } from "./membershipPlans";
-import { PROBLEMS_FACED } from "./problemsFaced";
+import { PROBLEMS_FACED_ASTROLOGY } from "./problemsFaced";
 import { SUNSHINE } from "./sunshine";
 import { MYTHOS_FAQ } from "./faq";
 import { MYTHOS_PODCASTS } from "./podcasts";
@@ -19,10 +19,8 @@ export {
   MYTHOS_NEWS,
   NEWS,
   CONTACT_INFO,
-  CAREER,
-  PLANET,
   MYTHOS_PLANS,
-  PROBLEMS_FACED,
+  PROBLEMS_FACED_ASTROLOGY,
   SUNSHINE,
   MYTHOS_FAQ,
   MYTHOS_PODCASTS,

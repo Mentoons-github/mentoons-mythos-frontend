@@ -8,6 +8,10 @@ import MythosSearch from "../modal/search";
 import { useAppSelector, useAppDispatch } from "../../hooks/reduxHooks";
 import { fetchUserData, userLogout } from "../../features/user/userThunk";
 import useSignInSignUp from "../../hooks/useSignInSignUpModal";
+import { IoCartOutline } from "react-icons/io5";
+import { HiOutlineShoppingBag } from "react-icons/hi";
+import ThemeToggle from "../ThemToggle";
+import { Heart } from "lucide-react";
 
 const MythosHeader = () => {
   const dispatch = useAppDispatch();
@@ -15,14 +19,14 @@ const MythosHeader = () => {
   const { showModal } = useSignInSignUp();
 
   const headerText = [
-    "HOME",
-    "GROUPS",
+    "ASSESSMENTS",
+    "WORKSHOPS",
+    "SHOP",
     "BLOG",
     "ABOUT-US",
-    "ASSESSMENTS",
-    "SHOP",
     "CAREER",
-    "WORKSHOPS"
+    "GROUPS",
+    "BECOME MENTOR",
   ];
 
   const navigate = useNavigate();
@@ -33,6 +37,8 @@ const MythosHeader = () => {
   // Dropdown
   const [isAssessmentsDropdownOpen, setIsAssessmentsDropdownOpen] =
     useState(false);
+
+  const [becomeMentorDropdown, setBecomeMentorDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -56,6 +62,12 @@ const MythosHeader = () => {
   const assessmentItems = [
     { name: "Psychology", path: "/assessment/psychology" },
     { name: "Astrology", path: "/assessment/planet" },
+  ];
+
+  const mentorItems = [
+    { name: "Psychology", path: "/become-mentor" },
+    { name: "Astrology", path: "/become-mentor" },
+    { name: "Spiritual", path: "/become-mentor" },
   ];
 
   useEffect(() => {
@@ -104,16 +116,24 @@ const MythosHeader = () => {
   }, [isSearchOpen]);
 
   // Handle hover interactions for assessments dropdown
-  const handleMouseEnter = () => {
+  const handleMouseEnter = (from: string) => {
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
     }
-    setIsAssessmentsDropdownOpen(true);
+    if (from == "assessment") {
+      setIsAssessmentsDropdownOpen(true);
+    } else {
+      setBecomeMentorDropdown(true);
+    }
   };
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = (from: string) => {
     hoverTimeoutRef.current = setTimeout(() => {
-      setIsAssessmentsDropdownOpen(false);
+      if (from == "assessment") {
+        setIsAssessmentsDropdownOpen(false);
+      } else {
+        setBecomeMentorDropdown(false);
+      }
     }, 150);
   };
 
@@ -194,12 +214,18 @@ const MythosHeader = () => {
     navigate("/cart");
   };
 
+  const handleMentorClick = (type: string) => {
+    navigate("/become-mentor", {
+      state: { mentorType: type },
+    });
+  };
+
   return (
     <>
       <motion.header
         animate={controls}
         initial={{ y: 0 }}
-        className={`w-full bg-black z-50 font-akshar ${
+        className={`w-full bg-background z-50 font-akshar border-b border-border ${
           isScrolled ? "fixed top-0 left-0 shadow-lg" : "relative"
         }`}
       >
@@ -209,28 +235,26 @@ const MythosHeader = () => {
               <img
                 src="/assets/logo/image 2.png"
                 alt="company logo"
-                className="w-20 md:w-24 lg:w-28"
+                className="w-20 md:w-24 lg:w-32 h-11 md:h-14 lg:h-16"
               />
             </Link>
           </div>
 
           {/* Tablet and Desktop Navigation */}
-          <ul className="hidden lg:flex items-center gap-4 lg:gap-6 xl:gap-8 mulish text-white mx-4 xl:mx-0">
+          <ul className="hidden xl:flex items-center gap-4  mulish  mx-4 xl:mx-0">
             {headerText.map((text, index) => (
               <li
                 key={index}
-                className={`relative font-bold ${
-                  window.innerWidth < 1024 ? "text-xs" : "text-sm"
-                } tracking-[1.5px] group`}
+                className={`relative font-bold text-[14px] tracking group`}
               >
                 {text === "ASSESSMENTS" ? (
                   <div
                     className="relative"
                     ref={dropdownRef}
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
+                    onMouseEnter={() => handleMouseEnter("assessment")}
+                    onMouseLeave={() => handleMouseLeave("assessment")}
                   >
-                    <div className="relative flex items-center gap-2 lg:gap-3 cursor-pointer">
+                    <div className="relative flex items-center gap-1  cursor-pointer">
                       <img
                         src="/assets/icons/star.png"
                         alt="star"
@@ -243,7 +267,7 @@ const MythosHeader = () => {
                         }}
                         transition={{ duration: 0.3 }}
                       >
-                        <FaChevronDown className="text-xs ml-1" />
+                        <FaChevronDown className="text-xs ml-" />
                       </motion.div>
                       <span className="absolute left-1/2 -bottom-1 lg:-bottom-2 h-[2px] w-0 bg-gray-500 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
                     </div>
@@ -255,7 +279,7 @@ const MythosHeader = () => {
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: -10, scale: 0.95 }}
                           transition={{ duration: 0.2, ease: "easeOut" }}
-                          className="absolute top-full left-0 mt-2 w-48 bg-black border border-gray-700 rounded-lg shadow-2xl overflow-hidden z-[60]"
+                          className="absolute top-full left-0 mt-2 w-48 bg-background border border-border rounded-lg shadow-2xl overflow-hidden z-[60]"
                         >
                           <div className="py-2">
                             {assessmentItems.map((item, itemIndex) => (
@@ -267,7 +291,7 @@ const MythosHeader = () => {
                               >
                                 <Link
                                   to={item.path}
-                                  className="block px-4 py-3 text-white hover:bg-[#E39712] hover:text-black transition-all duration-200 text-sm font-medium"
+                                  className="block px-4 py-3  hover:text-foreground/70 transition-all duration-200 text-sm font-medium"
                                 >
                                   <div className="flex items-center gap-2">
                                     <img
@@ -285,10 +309,72 @@ const MythosHeader = () => {
                       )}
                     </AnimatePresence>
                   </div>
+                ) : text === "BECOME MENTOR" ? (
+                  <div
+                    className="relative"
+                    ref={dropdownRef}
+                    onMouseEnter={() => handleMouseEnter("mentor")}
+                    onMouseLeave={() => handleMouseLeave("mentor")}
+                  >
+                    <div className="relative flex items-center gap-1  cursor-pointer">
+                      <img
+                        src="/assets/icons/star.png"
+                        alt="star"
+                        className="w-3 h-3 lg:w-4 lg:h-4"
+                      />
+                      {text}
+                      <motion.div
+                        animate={{
+                          rotate: becomeMentorDropdown ? 180 : 0,
+                        }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <FaChevronDown className="text-xs ml-" />
+                      </motion.div>
+                      <span className="absolute left-1/2 -bottom-1 lg:-bottom-2 h-[2px] w-0 bg-gray-500 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
+                    </div>
+
+                    <AnimatePresence>
+                      {becomeMentorDropdown && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                          transition={{ duration: 0.2, ease: "easeOut" }}
+                          className="absolute top-full left-0 mt-2 w-48 bg-background border border-border rounded-lg shadow-2xl overflow-hidden z-[60]"
+                        >
+                          <div className="py-2">
+                            {mentorItems.map((item, itemIndex) => (
+                              <motion.div
+                                key={item.name}
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: itemIndex * 0.05 }}
+                              >
+                                <button
+                                  onClick={() => handleMentorClick(item.name)}
+                                  className="block px-4 py-3  hover:text-foreground/70 transition-all duration-200 text-sm font-medium"
+                                >
+                                  <div className="flex items-center gap-2">
+                                    <img
+                                      src="/assets/icons/star.png"
+                                      alt="star"
+                                      className="w-3 h-3"
+                                    />
+                                    {item.name}
+                                  </div>
+                                </button>
+                              </motion.div>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 ) : (
                   <Link
                     to={text === "HOME" ? "/" : `/${text.toLowerCase()}`}
-                    className="relative flex items-center gap-2 lg:gap-3"
+                    className="relative flex items-center gap-1"
                   >
                     <img
                       src="/assets/icons/star.png"
@@ -305,7 +391,7 @@ const MythosHeader = () => {
 
           <div className="flex items-center gap-3 lg:gap-5">
             {/* Search Button */}
-            <motion.button
+            {/* <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.2, ease: "easeIn" }}
@@ -318,9 +404,10 @@ const MythosHeader = () => {
                 alt="search-icon"
                 className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6"
               />
-            </motion.button>
+            </motion.button> */}
 
             {/* Cart Button */}
+            <ThemeToggle />
             <motion.button
               whileHover={{ scale: 1.1 }}
               transition={{ duration: 0.2, ease: "easeIn" }}
@@ -328,34 +415,33 @@ const MythosHeader = () => {
               aria-label="View cart"
               className="relative flex justify-center items-center rounded-full w-8 h-8 sm:w-10 sm:h-10 md:w-10 md:h-10 lg:w-12 lg:h-12 outline-dashed outline-2 outline-gray-600 cursor-pointer"
             >
-              <img
-                src="/assets/icons/Vector (1).png"
-                alt="cart-icon"
-                className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6"
-              />
-              <span className="absolute -top-1 -right-1 md:-top-2 md:right-0 border-[#E39712] w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 bg-[#E39712] rounded-full text-white flex items-center justify-center text-[10px] sm:text-xs">
+              <IoCartOutline className="" size={25} />
+              <span className="absolute -top-1 -right-1 md:-top-2 md:right-0  w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 bg-foreground rounded-full text-background flex items-center justify-center text-[10px] sm:text-xs">
                 0
               </span>
             </motion.button>
 
             {/* Wishlist Button */}
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              transition={{ duration: 0.2, ease: "easeIn" }}
-              aria-label="View wishlist"
-              onClick={handleWishList}
-              className="flex justify-center items-center rounded-full w-8 h-8 sm:w-10 sm:h-10 md:w-10 md:h-10 lg:w-12 lg:h-12 outline-dashed outline-2 outline-gray-600 cursor-pointer"
-            >
-              <img
-                src="/assets/icons/Vector (2).png"
-                alt="wishlist-icon"
-                className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6"
-              />
-            </motion.button>
+            {user && (
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.2, ease: "easeIn" }}
+                aria-label="View wishlist"
+                onClick={handleWishList}
+                className="flex justify-center items-center rounded-full w-8 h-8 sm:w-10 sm:h-10 md:w-10 md:h-10 lg:w-12 lg:h-12 outline-dashed outline-2 outline-gray-600 cursor-pointer"
+              >
+                <Heart size={20} />
+                {/* <img
+                  src="/assets/icons/Vector (2).png"
+                  alt="wishlist-icon"
+                  className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6"
+                /> */}
+              </motion.button>
+            )}
 
             {/* Auth Section */}
             {userLoading ? (
-              <div className="text-white text-sm">Loading...</div>
+              <div className="border border-foreground rounded-full text-sm w-8 h-8 sm:w-10 sm:h-10 md:w-10 md:h-10 lg:w-12 lg:h-12 animate-spin"></div>
             ) : user ? (
               // User is logged in - show user dropdown
               <div
@@ -367,7 +453,7 @@ const MythosHeader = () => {
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   transition={{ duration: 0.2, ease: "easeIn" }}
-                  className="flex justify-center items-center rounded-full w-8 h-8 sm:w-10 sm:h-10 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-[#E39712] cursor-pointer text-white"
+                  className="flex justify-center items-center rounded-full outline-dashed outline-2 outline-gray-600 w-8 h-8 sm:w-10 sm:h-10 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-foreground cursor-pointer text-background"
                 >
                   {user.profilePicture ? (
                     <img
@@ -376,7 +462,9 @@ const MythosHeader = () => {
                       className="w-full h-full rounded-full object-cover"
                     />
                   ) : (
-                    <FaUser className="text-sm sm:text-lg" />
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-10 md:h-10 lg:w-12 lg:h-12 rounded-full bg-[#02599c] flex items-center justify-center text-[20px] text-white">
+                      {user?.firstName[0].toUpperCase()}
+                    </div>
                   )}
                 </motion.button>
 
@@ -387,21 +475,23 @@ const MythosHeader = () => {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
                       transition={{ duration: 0.2, ease: "easeOut" }}
-                      className="absolute top-full right-0 mt-2 w-48 bg-black border border-gray-700 rounded-lg shadow-2xl overflow-hidden z-[60]"
+                      className="absolute top-full right-0 mt-2 w-48 bg-background border border-border rounded-lg shadow-2xl overflow-hidden z-[60]"
                     >
                       <div className="py-2">
-                        <div className="px-4 py-3 border-b border-gray-700">
-                          <p className="text-white text-sm font-medium">
+                        <div className="px-4 py-3 border-b border-border">
+                          <p className=" text-sm font-medium">
                             {user.firstName && user.lastName
                               ? `${user.firstName} ${user.lastName}`
                               : user.email || "User"}
                           </p>
-                          <p className="text-gray-400 text-xs">{user.email}</p>
+                          <p className="text-muted-foreground text-xs">
+                            {user.email}
+                          </p>
                         </div>
 
                         <Link
                           to="/profile"
-                          className="block px-4 py-3 text-white hover:bg-[#E39712] hover:text-black transition-all duration-200 text-sm font-medium"
+                          className="block px-4 py-3  hover:bg-foreground hover:text-background transition-all duration-200 text-sm font-medium"
                         >
                           <div className="flex items-center gap-2">
                             <FaUser className="w-3 h-3" />
@@ -411,21 +501,17 @@ const MythosHeader = () => {
 
                         <Link
                           to="/orders"
-                          className="block px-4 py-3 text-white hover:bg-[#E39712] hover:text-black transition-all duration-200 text-sm font-medium"
+                          className="block px-4 py-3 hover:bg-foreground hover:text-background transition-all duration-200 text-sm font-medium"
                         >
                           <div className="flex items-center gap-2">
-                            <img
-                              src="/assets/icons/Vector (1).png"
-                              alt="orders"
-                              className="w-3 h-3"
-                            />
+                            <HiOutlineShoppingBag />
                             My Orders
                           </div>
                         </Link>
 
                         <button
                           onClick={handleLogout}
-                          className="w-full text-left px-4 py-3 text-white hover:bg-red-600 hover:text-white transition-all duration-200 text-sm font-medium"
+                          className="w-full text-left px-4 py-3  hover:bg-red-600 hover:text-white transition-all duration-200 text-sm font-medium"
                         >
                           <div className="flex items-center gap-2">
                             <FaSignOutAlt className="w-3 h-3" />
@@ -438,26 +524,47 @@ const MythosHeader = () => {
                 </AnimatePresence>
               </div>
             ) : (
-              // User is not logged in - show login/register buttons
-              <div className="hidden sm:flex items-center gap-2">
+              // User is not logged in - show user icon with dropdown
+              <div
+                className="relative"
+                ref={userDropdownRef}
+                onMouseEnter={handleUserMouseEnter}
+                onMouseLeave={handleUserMouseLeave}
+              >
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ duration: 0.2 }}
-                  onClick={() => navigate("/login")}
-                  className="px-3 py-1 md:px-4 md:py-2 text-white border border-gray-600 rounded-md hover:border-[#E39712] transition-colors duration-300 text-sm font-medium"
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.2, ease: "easeIn" }}
+                  className="flex justify-center items-center rounded-full outline-dashed outline-2 outline-gray-600 w-8 h-8 sm:w-10 sm:h-10 md:w-10 md:h-10 lg:w-12 lg:h-12 cursor-pointer "
                 >
-                  Login
+                  <FaUser className="text-sm sm:text-lg" />
                 </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ duration: 0.2 }}
-                  onClick={() => navigate("/register")}
-                  className="px-3 py-1 md:px-4 md:py-2 bg-[#E39712] text-black rounded-md hover:bg-[#d4860e] transition-colors duration-300 text-sm font-medium"
-                >
-                  Register
-                </motion.button>
+
+                <AnimatePresence>
+                  {isUserDropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                      transition={{ duration: 0.2, ease: "easeOut" }}
+                      className="absolute top-full right-0 mt-2 w-40 bg-background  border border-gray-700 rounded-lg shadow-2xl overflow-hidden z-[60]"
+                    >
+                      <div className="py-2">
+                        <button
+                          onClick={() => navigate("/login")}
+                          className="block w-full text-left px-4 py-3 hover:bg-foreground hover:text-background transition-all duration-200 text-sm font-medium"
+                        >
+                          Login
+                        </button>
+                        <button
+                          onClick={() => navigate("/register")}
+                          className="block w-full text-left px-4 py-3 hover:bg-foreground hover:text-background transition-all duration-200 text-sm font-medium"
+                        >
+                          Register
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             )}
 
@@ -468,9 +575,9 @@ const MythosHeader = () => {
               transition={{ duration: 0.4 }}
               aria-label="Toggle menu"
               onClick={() => setSidebarOpen((prev) => !prev)}
-              className="lg:hidden flex justify-center items-center rounded-full w-8 h-8 sm:w-10 sm:h-10 outline-dashed outline-2 outline-gray-600 cursor-pointer text-white"
+              className="xl:hidden flex justify-center items-center rounded-full w-8 h-8 sm:w-10 sm:h-10 outline-dashed outline-2 outline-gray-600 cursor-pointer "
             >
-              <FaBars className="text-sm sm:text-lg" />
+              <FaBars className="text-sm md:text-lg" />
             </motion.button>
           </div>
         </nav>
@@ -478,6 +585,7 @@ const MythosHeader = () => {
           isOpen={isSidebarOpen}
           navItems={headerText}
           setSidebar={setSidebarOpen}
+          mentorItems={mentorItems}
         />
       </motion.header>
 

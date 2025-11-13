@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { availableSlotsThunk, bookSlotThunk } from "./bookCallThunk";
 import { AvailbleSlots } from "../../types/bookCall/bookCall.type";
-import { boolean } from "yup";
 
 interface BookSlice {
   slots: AvailbleSlots | null;

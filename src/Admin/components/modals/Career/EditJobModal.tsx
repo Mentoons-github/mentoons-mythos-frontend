@@ -63,7 +63,7 @@ const EditJobModal = ({
         requirements: job.requirements || [],
         responsibilities: job.responsibilities || [],
         thumbnail: job.thumbnail,
-        endDescription: job?.endDescription??"",
+        endDescription: job?.endDescription ?? "",
       });
       setFile(null);
     }
@@ -159,13 +159,20 @@ const EditJobModal = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    let imageUrl: string | File | null = form.thumbnail;
+    let imageUrl = "";
 
     if (file) {
       try {
-        imageUrl = await dispatch(
+        const result = await dispatch(
           fileUploadThunk({ file, category: "job" })
         ).unwrap();
+        if (typeof result === "string") {
+          imageUrl = result;
+        } else if (Array.isArray(result) && result.length > 0) {
+          imageUrl = result[0].url;
+        } else {
+          throw new Error("Invalid upload response");
+        }
       } catch (err) {
         alert("File upload failed: " + err);
         return;
@@ -182,48 +189,48 @@ const EditJobModal = ({
     );
   };
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-40 italic">
-      <div className="bg-[#6f6c6c] rounded-lg shadow-xl p-6 px-10 max-w-4xl w-full relative hide-scrollbar overflow-y-auto will-change-scroll transform-gpu max-h-[95vh]">
+    <div className="fixed inset-0 bg-black/60 bg-opacity-60 flex justify-center items-center z-50 ">
+      <div className="bg-secondary rounded-lg shadow-xl p-3 md:p-6 md:px-10 max-w-[350px] md:max-w-2xl lg:max-w-4xl w-full relative hide-scrollbar overflow-y-auto will-change-scroll transform-gpu max-h-[95vh]">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 text-black/50 hover:text-black text-lg font-bold"
+          className="absolute top-2 right-2 hover:text-muted-foreground text-lg font-bold"
         >
           ✕
         </button>
 
-        <h2 className="text-2xl font-semibold mb-4 text-white border-b pb-2">
+        <h2 className="text-2xl font-semibold mb-4 border-b pb-2">
           Update Job
         </h2>
 
         {loading || !job ? (
           <div className="flex justify-center items-center py-10">
             <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-            <span className="ml-3 text-gray-600">Loading Job details...</span>
+            <span className="ml-3 ">Loading Job details...</span>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-4 text-black">
-            <div className="grid grid-cols-2 gap-4">
+          <form onSubmit={handleSubmit} className="space-y-4 ">
+            <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block mb-1 text-white">Job Title</label>
+                <label className="block mb-1 font-semibold">Job Title</label>
                 <input
                   type="text"
                   name="jobTitle"
                   value={form.jobTitle}
                   onChange={handleChange}
-                  className="w-full p-2 rounded-lg bg-black/90 border border-black text-white h-13"
+                  className="w-full p-2 rounded-lg  border h-13"
                   placeholder="Enter job title"
                   required
                 />
               </div>
 
               <div>
-                <label className="block mb-1 text-white">Job Type</label>
+                <label className="block mb-1 font-semibold">Job Type</label>
                 <select
                   name="jobType"
                   value={form.jobType}
                   onChange={handleChange}
-                  className="w-full p-2 rounded-lg bg-black/90 border border-black text-white h-13"
+                  className="w-full p-2 rounded-lg border bg-secondary h-13"
                   required
                 >
                   <option value="">Select type</option>
@@ -236,13 +243,15 @@ const EditJobModal = ({
             </div>
 
             <div>
-              <label className="block mb-1 text-white">Job Description</label>
+              <label className="block mb-1 font-semibold">
+                Job Description
+              </label>
               <textarea
                 name="jobDescription"
                 value={form.jobDescription}
                 onChange={handleChange}
                 rows={7}
-                className="w-full p-2 rounded-lg border border-black bg-black/90 text-white hide-scrollbar overflow-y-auto will-change-scroll transform-gpu"
+                className="w-full p-2 rounded-lg border hide-scrollbar overflow-y-auto will-change-scroll transform-gpu"
                 placeholder="Enter job description"
                 required
               />
@@ -251,7 +260,7 @@ const EditJobModal = ({
             <div>
               {/* Responsibilities */}
               <div className="mt-4">
-                <label className="block mb-1 text-white">
+                <label className="block mb-1 font-semibold">
                   Responsibilities
                 </label>
                 <div className="flex gap-2">
@@ -259,13 +268,13 @@ const EditJobModal = ({
                     rows={3}
                     value={responsibilityInput}
                     onChange={(e) => setResponsibilityInput(e.target.value)}
-                    className="flex-1 p-2 rounded-lg border border-black bg-black/90 text-white h-13 hide-scrollbar overflow-y-auto will-change-scroll transform-gpu"
+                    className="flex-1 p-2 rounded-lg border h-13 hide-scrollbar overflow-y-auto will-change-scroll transform-gpu"
                     placeholder="Enter responsibility"
                   />
                   <button
                     type="button"
                     onClick={handleAddResponsibility}
-                    className="bg-black/50 px-4 rounded-lg text-white"
+                    className="bg-foreground px-4 rounded-lg text-background hover:bg-primary/90"
                   >
                     Add
                   </button>
@@ -274,13 +283,13 @@ const EditJobModal = ({
                   {form.responsibilities.map((item, i) => (
                     <li
                       key={i}
-                      className="flex items-center bg-black/60 border border-white/30 rounded-lg px-3 py-2 text-white hide-scrollbar overflow-y-auto will-change-scroll transform-gpu"
+                      className="flex items-center bg-foreground text-background border rounded-lg px-3 py-2 gap-2"
                     >
                       <span>{item}</span>
                       <button
                         type="button"
                         onClick={() => handleRemoveResponsibility(i)}
-                        className="ml-2 text-red-400 hover:text-red-600"
+                        className="text-red-600 hover:text-red-700"
                       >
                         ✕
                       </button>
@@ -291,19 +300,19 @@ const EditJobModal = ({
 
               {/* Requirements */}
               <div className="mt-4">
-                <label className="block mb-1 text-white">Requirements</label>
+                <label className="block mb-1 font-semibold">Requirements</label>
                 <div className="flex gap-2">
                   <textarea
                     rows={3}
                     value={requirementInput}
                     onChange={(e) => setRequirementInput(e.target.value)}
-                    className="flex-1 p-2 rounded-lg border border-black bg-black/90 text-white h-13 hide-scrollbar overflow-y-auto will-change-scroll transform-gpu"
+                    className="flex-1 p-2 rounded-lg border h-13 hide-scrollbar overflow-y-auto will-change-scroll transform-gpu"
                     placeholder="Enter requirement"
                   />
                   <button
                     type="button"
                     onClick={handleAddRequirement}
-                    className="bg-black/50 px-4 rounded-lg text-white"
+                    className="bg-foreground px-4 rounded-lg text-background hover:bg-primary/90"
                   >
                     Add
                   </button>
@@ -312,13 +321,13 @@ const EditJobModal = ({
                   {form.requirements.map((item, i) => (
                     <li
                       key={i}
-                      className="flex items-center bg-black/60 border border-white/30 rounded-lg px-3 py-2 text-white"
+                      className="flex items-center bg-foreground text-background border rounded-lg px-3 py-2 gap-2"
                     >
                       <span>{item}</span>
                       <button
                         type="button"
                         onClick={() => handleRemoveRequirement(i)}
-                        className="ml-2 text-red-400 hover:text-red-600"
+                        className="text-red-600 hover:text-red-700"
                       >
                         ✕
                       </button>
@@ -329,7 +338,7 @@ const EditJobModal = ({
             </div>
 
             <div>
-              <label className="block mb-1 text-white">
+              <label className="block mb-1 font-semibold">
                 Description Last Words
               </label>
               <textarea
@@ -337,21 +346,21 @@ const EditJobModal = ({
                 value={form.endDescription}
                 onChange={handleChange}
                 rows={7}
-                className="w-full p-2 rounded-lg border border-black bg-black/90 text-white hide-scrollbar overflow-y-auto will-change-scroll transform-gpu"
+                className="w-full p-2 rounded-lg border  hide-scrollbar overflow-y-auto will-change-scroll transform-gpu"
                 placeholder="Enter last job description"
               />
             </div>
 
             {/* Location + Status */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-2 gap-4">
               <div className=" gap-4">
                 <div>
-                  <label className="block mb-1 text-white">Location</label>
+                  <label className="block mb-1 font-semibold">Location</label>
                   <select
                     name="jobLocation"
                     value={form.jobLocation}
                     onChange={handleChange}
-                    className="w-full p-2 rounded-lg bg-black/90 border border-black text-white h-13"
+                    className="w-full p-2 rounded-lg bg-secondary border h-13"
                     required
                   >
                     <option value="">Select Location</option>
@@ -362,12 +371,12 @@ const EditJobModal = ({
                 </div>
 
                 <div>
-                  <label className="block mb-1 text-white">Status</label>
+                  <label className="block mb-1 font-semibold">Status</label>
                   <select
                     name="status"
                     value={form.status}
                     onChange={handleChange}
-                    className="w-full p-2 rounded-lg bg-black/90 border border-black text-white h-13"
+                    className="w-full p-2 rounded-lg bg-secondary border h-13"
                     required
                   >
                     <option value="">Select status</option>
@@ -377,7 +386,7 @@ const EditJobModal = ({
                   </select>
                 </div>
                 <div>
-                  <label className="block mb-1 text-white">
+                  <label className="block mb-1 font-semibold">
                     Skills Required
                   </label>
                   <div className="flex gap-2">
@@ -385,13 +394,13 @@ const EditJobModal = ({
                       type="text"
                       value={skillInput}
                       onChange={(e) => setSkillInput(e.target.value)}
-                      className="flex-1 p-2 rounded-lg border border-black bg-black/90 text-white h-13"
+                      className="flex-1 p-2 rounded-lg borde h-13"
                       placeholder="Enter skill"
                     />
                     <button
                       type="button"
                       onClick={handleAddSkill}
-                      className="bg-black/50 px-4 rounded-lg text-white"
+                      className="bg-foreground px-4 rounded-lg text-background hover:bg-primary/90"
                     >
                       Add
                     </button>
@@ -401,13 +410,13 @@ const EditJobModal = ({
                       skill ? (
                         <li
                           key={i}
-                          className="flex items-center bg-black/60 border border-white/30 rounded-lg px-3 py-2 text-white"
+                          className="flex items-center bg-foreground text-background border rounded-lg px-3 py-2 gap-2"
                         >
                           <span>{skill}</span>
                           <button
                             type="button"
                             onClick={() => handleRemoveSkill(i)}
-                            className="ml-2 text-red-400 hover:text-red-600"
+                            className="text-red-600 hover:text-red-700"
                           >
                             ✕
                           </button>
@@ -418,9 +427,9 @@ const EditJobModal = ({
                 </div>
               </div>
 
-              <div className="flex justify-around ">
+              <div className="md:flex justify-around ">
                 <div>
-                  <label className="block mb-1 text-white">Thumbnail</label>
+                  <label className="block mb-1 font-semibold">Thumbnail</label>
 
                   <input
                     type="file"
@@ -432,7 +441,7 @@ const EditJobModal = ({
 
                   <label
                     htmlFor="imageUpload"
-                    className="inline-block bg-black hover:bg-black/80 text-white px-4 py-3 rounded-lg cursor-pointer h-13"
+                    className="inline-block bg-foreground text-background hover:bg-foreground/80 px-4 py-3 rounded-lg cursor-pointer h-13"
                   >
                     Change File
                   </label>
@@ -457,12 +466,14 @@ const EditJobModal = ({
             </div>
 
             {/* Submit */}
-            <button
-              type="submit"
-              className="bg-[#E39712] px-6 py-2 rounded font-semibold text-white hover:bg-[#d58c0d]"
-            >
-              {updateLoading ? "Updating.." : " Edit"}
-            </button>
+            <div className="flex justify-end mt-30 md:mt-0">
+              <button
+                type="submit"
+                className="bg-blue-800 hover:bg-blue-700 px-6 py-2 rounded font-semibold text-white"
+              >
+                {updateLoading ? "Updating.." : "Edit"}
+              </button>
+            </div>
           </form>
         )}
       </div>

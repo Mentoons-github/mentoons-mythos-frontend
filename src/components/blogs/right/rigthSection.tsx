@@ -33,7 +33,7 @@ const RightSection = () => {
       </motion.div>
 
       <motion.div
-        className="bg-[#6A8FFF] space-y-5 p-5 w-full max-h-[550px] overflow-y-auto"
+        className=" space-y-5 p-5 w-full max-h-[550px] border border-muted-foreground overflow-y-auto"
         variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
       >
         {NEWS.map((data, index) => (
@@ -47,16 +47,16 @@ const RightSection = () => {
             onClick={() => window.open(data.redirect, "_blank")}
           >
             <div className="flex justify-center items-center w-full font-jost font-semibold text-xs">
-              <h1 className="bg-white whitespace-nowrap z-10 pr-3">
+              <h1 className="bg-muted-foreground border whitespace-nowrap z-10 pr-3">
                 {data.category}
               </h1>
-              <div className="flex-grow border-t border-gray-900"></div>
-              <span className="bg-white text-gray-600 whitespace-nowrap px-3">
+              <div className="flex-grow border-t "></div>
+              <span className="bg-muted-foreground border  whitespace-nowrap px-3">
                 {data.date}
               </span>
-              <div className="w-[30px] border-t border-gray-900"></div>
+              <div className="w-[30px] border-t "></div>
             </div>
-            <h1 className="font-outfit font-semibold text-lg text-[#111111] mt-3 cursor-pointer">
+            <h1 className="font-outfit font-semibold text-lg  mt-3 cursor-pointer hover:text-muted-foreground">
               {data.news}
             </h1>
           </motion.div>

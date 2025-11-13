@@ -9,6 +9,7 @@ import {
   Info,
   Mail,
   Shield,
+  Trash2,
 } from "lucide-react";
 import AstroForm from "../components/profile/astroForm";
 import AstroData from "../components/profile/astroData";
@@ -28,7 +29,10 @@ import SuccessLoader from "../components/loader/successLoader";
 import EditProfile from "../components/profile/edit/editProfile";
 import ChangePassword from "../components/profile/edit/password";
 import { CgPassword } from "react-icons/cg";
-import { getFullCountryName } from "../utils";
+import { deleteAccountThunk } from "../features/auth/authThunk";
+import AccountDeleteModal from "../components/modal/AccountDeleteModal";
+import { toast } from "sonner";
+// import { getFullCountryName } from "../utils";
 
 const Profile = () => {
   const dispatch = useAppDispatch();
@@ -58,6 +62,7 @@ const Profile = () => {
     heading: "",
     description: "",
   });
+  const [deleteModal, setDeleteModal] = useState(false);
 
   const [formData, setFormData] = useState({
     birthDate: user?.dateOfBirth
@@ -101,7 +106,7 @@ const Profile = () => {
     return () => {
       debouncedFetchUserData.cancel();
     };
-  }, [user, userLoading]);
+  }, [debouncedFetchUserData, user, userLoading]);
 
   useEffect(() => {
     if (
@@ -135,7 +140,14 @@ const Profile = () => {
     return () => {
       debouncedFetchUserBlogs.cancel();
     };
-  }, [user, activeTab, blogsLoading, userBlogs.length, blogError]);
+  }, [
+    user,
+    activeTab,
+    blogsLoading,
+    userBlogs.length,
+    blogError,
+    debouncedFetchUserBlogs,
+  ]);
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -191,6 +203,24 @@ const Profile = () => {
     });
   };
 
+  const handleDeleteAccount = () => {
+    setDeleteModal(true);
+  };
+
+  const confirmDelete = () => {
+    dispatch(deleteAccountThunk())
+      .unwrap()
+      .then((message) => {
+        sessionStorage.clear();
+        toast.success(message);
+        window.location.replace("/");
+      })
+      .catch((error) => {
+        toast.error(error);
+        console.error(error);
+      });
+  };
+
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -214,14 +244,14 @@ const Profile = () => {
   if (userLoading || !user) {
     return (
       <motion.div
-        className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white p-6"
+        className="min-h-screen p-6"
         initial="hidden"
         animate="visible"
         variants={containerVariants}
       >
         <div className="max-w-4xl mx-auto text-center">
           <motion.h1
-            className="text-4xl font-bold mb-2 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent"
+            className="text-4xl font-bold mb-2  bg-clip-text text-transparent"
             variants={itemVariants}
           >
             {userLoading ? "Loading Profile..." : "Please log in"}
@@ -233,7 +263,7 @@ const Profile = () => {
 
   return (
     <motion.div
-      className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white p-6"
+      className="min-h-screen  p-6"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -241,13 +271,13 @@ const Profile = () => {
       <div className="max-w-4xl mx-auto">
         <motion.div className="text-center mb-8" variants={itemVariants}>
           <motion.h1
-            className="text-4xl font-bold mb-2 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent"
+            className="text-4xl font-bold mb-2 "
             whileHover={{ scale: 1.05 }}
           >
             Cosmic Profile
           </motion.h1>
           <motion.div
-            className="w-24 h-1 bg-gradient-to-r from-gray-400 to-white mx-auto"
+            className="w-24 h-1 bg-muted-foreground mx-auto"
             initial={{ width: 0 }}
             animate={{ width: 96 }}
             transition={{ duration: 1, delay: 0.5 }}
@@ -273,13 +303,13 @@ const Profile = () => {
         )}
 
         <motion.div
-          className="bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-2xl p-8 mb-8 border border-gray-700"
+          className="bg- bg-opacity-50 backdrop-blur-sm rounded-2xl p-8 mb-8 border border-muted-foreground"
           variants={cardVariants}
           whileHover="hover"
         >
           <div className="flex items-center space-x-6 mb-6">
             <div className="relative">
-              <div className="relative w-24 h-24 bg-gradient-to-br from-gray-600 to-gray-800 rounded-full flex items-center justify-center border-2 border-gray-500">
+              <div className="relative w-24 h-24 rounded-full flex items-center justify-center border-2 border-muted-foreground">
                 {user.profilePicture ? (
                   <img
                     src={user.profilePicture}
@@ -287,35 +317,35 @@ const Profile = () => {
                     className="w-full h-full rounded-full object-cover"
                   />
                 ) : (
-                  <User size={36} className="text-gray-300" />
+                  <User size={36} className="" />
                 )}
                 <motion.button
                   whileHover={{ y: 3 }}
                   transition={{ duration: 0.3, ease: "easeIn" }}
                   onClick={() => setShowUpload(true)}
-                  className="absolute bottom-0 right-0 bg-gradient-to-r from-gray-500 to-gray-900 cursor-pointer rounded-full w-6 h-6 flex justify-center items-center border-2 border-gray-800"
+                  className="absolute bottom-0 right-0 bg-background cursor-pointer rounded-full w-6 h-6 flex justify-center items-center border border-muted-foreground"
                 >
-                  <FaPlus className="text-xs text-white" />
+                  <FaPlus className="text-xs text-" />
                 </motion.button>
               </div>
               <motion.div
-                className="absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center"
+                className="absolute -top-1 -right-1 w-6 h-6 bg-foreground rounded-full flex items-center justify-center"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
               >
-                <Star size={14} className="text-gray-900" />
+                <Star size={14} className="text-background" />
               </motion.div>
             </div>
 
             <div className="flex-1">
               <motion.h2
-                className="text-3xl font-bold text-white mb-1"
+                className="text-3xl font-bold mb-1"
                 variants={itemVariants}
               >
                 {`${user.firstName} ${user.lastName}`}
               </motion.h2>
               <motion.div
-                className="flex items-center space-x-2 text-gray-400"
+                className="flex items-center space-x-2 text-muted-foreground"
                 variants={itemVariants}
               >
                 <Mail size={16} />
@@ -342,8 +372,8 @@ const Profile = () => {
             onClick={() => setActiveTab("profile")}
             className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
               activeTab === "profile"
-                ? "bg-white text-black shadow-lg"
-                : "bg-gray-800 text-white hover:bg-gray-700 hover:scale-105"
+                ? "bg-foreground text-background shadow-lg "
+                : "bg-background text-foreground border border-foreground hover:bg-foreground/80 hover:scale-105"
             }`}
           >
             <div className="flex items-center space-x-2">
@@ -355,8 +385,8 @@ const Profile = () => {
             onClick={() => setActiveTab("edit")}
             className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
               activeTab === "edit"
-                ? "bg-white text-black shadow-lg"
-                : "bg-gray-800 text-white hover:bg-gray-700 hover:scale-105"
+                ? "bg-foreground text-background shadow-lg"
+                : "bg-background text-foreground hover:bg-foreground/80 hover:scale-105 border border-foreground"
             }`}
           >
             <div className="flex items-center space-x-2">
@@ -368,8 +398,8 @@ const Profile = () => {
             onClick={() => setActiveTab("blogs")}
             className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
               activeTab === "blogs"
-                ? "bg-white text-black shadow-lg"
-                : "bg-gray-800 text-white hover:bg-gray-700 hover:scale-105"
+                ? "bg-foreground text-background shadow-lg"
+                : "bg-background text-foreground hover:bg-foreground/80 hover:scale-105 border border-foreground"
             }`}
           >
             <div className="flex items-center space-x-2">
@@ -381,13 +411,22 @@ const Profile = () => {
             onClick={() => setActiveTab("password")}
             className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
               activeTab === "password"
-                ? "bg-white text-black shadow-lg"
-                : "bg-gray-800 text-white hover:bg-gray-700 hover:scale-105"
+                ? "bg-foreground text-background shadow-lg"
+                : "bg-background text-foreground hover:bg-foreground/80 hover:scale-105 border border-foreground"
             }`}
           >
             <div className="flex items-center space-x-2">
               <CgPassword size={20} />
               <span>Change Password</span>
+            </div>
+          </button>
+          <button
+            onClick={handleDeleteAccount}
+            className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 bg-red-600 hover:bg-red-700`}
+          >
+            <div className="flex items-center space-x-2">
+              <Trash2 size={20} />
+              <span>Delete Account</span>
             </div>
           </button>
         </motion.div>
@@ -403,47 +442,47 @@ const Profile = () => {
             >
               {/* Enhanced User Details Section */}
               <motion.div
-                className="bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-2xl p-8 mb-8 border border-gray-700"
+                className=" bg-opacity-50 backdrop-blur-sm rounded-2xl p-8 mb-8 border border-muted-foreground"
                 variants={cardVariants}
                 whileHover="hover"
               >
-                <h3 className="text-2xl font-semibold text-white mb-6 flex items-center space-x-2">
-                  <User size={24} className="text-blue-400" />
+                <h3 className="text-2xl font-semibold-white mb-6 flex items-center space-x-2">
+                  <User size={24} className="" />
                   <span>Personal Information</span>
                 </h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {/* Email */}
                   <motion.div
-                    className="flex items-center space-x-3 p-4 bg-gradient-to-r from-gray-700 to-gray-600 bg-opacity-50 rounded-xl hover:bg-opacity-70 transition-all duration-300"
+                    className="flex items-center space-x-3 p-4 border border-muted-foreground bg-opacity-50 rounded-xl hover:bg-opacity-70 transition-all duration-300"
                     whileHover={{ scale: 1.02 }}
                   >
-                    <div className="flex-shrink-0 w-10 h-10 bg-blue-500 bg-opacity-20 rounded-lg flex items-center justify-center">
-                      <Mail size={20} className="text-blue-400" />
+                    <div className="flex-shrink-0 w-10 h-10  border border-muted-foreground rounded-lg flex items-center justify-center">
+                      <Mail size={20} className="text-" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-400 font-medium">
+                      <p className="text-sm text-muted-foreground font-medium">
                         Email Address
                       </p>
-                      <p className="text-white font-semibold">{user.email}</p>
+                      <p className="t font-semibold">{user.email}</p>
                     </div>
                   </motion.div>
 
                   {/* Country */}
                   {user.country && (
                     <motion.div
-                      className="flex items-center space-x-3 p-4 bg-gradient-to-r from-green-700 to-green-600 bg-opacity-50 rounded-xl hover:bg-opacity-70 transition-all duration-300"
+                      className="flex items-center space-x-3 p-4 border border-muted-foreground rounded-xl hover:bg-opacity-70 transition-all duration-300"
                       whileHover={{ scale: 1.02 }}
                     >
-                      <div className="flex-shrink-0 w-10 h-10 bg-green-500 bg-opacity-20 rounded-lg flex items-center justify-center">
-                        <Globe size={20} className="text-green-400" />
+                      <div className="flex-shrink-0 w-10 h-10  border border-muted-foreground rounded-lg flex items-center justify-center">
+                        <Globe size={20} className="" />
                       </div>
                       <div>
-                        <p className="text-sm text-gray-400 font-medium">
+                        <p className="text-sm text-muted-foreground font-medium">
                           Country
                         </p>
-                        <p className="text-white font-semibold">
-                          {getFullCountryName(user.country)}
+                        <p className=" font-semibold">
+                          {user.country}
                         </p>
                       </div>
                     </motion.div>
@@ -452,17 +491,17 @@ const Profile = () => {
                   {/* Account Type */}
                   {user.isGoogleUser && (
                     <motion.div
-                      className="flex items-center space-x-3 p-4 bg-gradient-to-r from-red-700 to-red-600 bg-opacity-50 rounded-xl hover:bg-opacity-70 transition-all duration-300"
+                      className="flex items-center space-x-3 p-4 border border-muted-foreground rounded-xl hover:bg-opacity-70 transition-all duration-300"
                       whileHover={{ scale: 1.02 }}
                     >
-                      <div className="flex-shrink-0 w-10 h-10 bg-red-500 bg-opacity-20 rounded-lg flex items-center justify-center">
-                        <Shield size={20} className="text-red-400" />
+                      <div className="flex-shrink-0 w-10 h-10 border border-muted-foreground rounded-lg flex items-center justify-center">
+                        <Shield size={20} className="" />
                       </div>
                       <div>
-                        <p className="text-sm text-gray-400 font-medium">
+                        <p className="text-sm text-muted-foreground font-medium">
                           Account Type
                         </p>
-                        <p className="text-white font-semibold">
+                        <p className=" font-semibold">
                           Google Account
                         </p>
                       </div>
@@ -473,7 +512,7 @@ const Profile = () => {
                 {/* About Section */}
                 {user.about && (
                   <motion.div
-                    className="mt-8 p-6 bg-gradient-to-r from-gray-700 to-gray-600 bg-opacity-30 rounded-xl border border-gray-600"
+                    className="mt-8 p-6  rounded-xl border border-gray-600"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2 }}
@@ -482,11 +521,11 @@ const Profile = () => {
                       <div className="w-8 h-8 bg-gray-500 bg-opacity-20 rounded-lg flex items-center justify-center">
                         <Info size={18} className="text-gray-400" />
                       </div>
-                      <h4 className="text-lg font-semibold text-white">
+                      <h4 className="text-lg font-semibold ">
                         About Me
                       </h4>
                     </div>
-                    <p className="text-gray-300 leading-relaxed text-base">
+                    <p className="text-muted-foreground leading-relaxed text-base">
                       {user.about}
                     </p>
                   </motion.div>
@@ -543,27 +582,12 @@ const Profile = () => {
             <EditProfile
               success={() => {
                 setUploadSuccess(true);
-                setSuccessMessage({
-                  heading: "Profile updated successfully",
-                  description:
-                    "Your changes have been saved and are now visible on your profile.",
-                });
               }}
               setActiveTab={setActiveTab}
             />
           )}
           {activeTab === "password" && (
-            <ChangePassword
-              setActiveTab={() => setActiveTab("password")}
-              success={() => {
-                setUploadSuccess(true);
-                setSuccessMessage({
-                  heading: "Profile updated successfully",
-                  description:
-                    "Your changes have been saved and are now visible on your profile.",
-                });
-              }}
-            />
+            <ChangePassword setActiveTab={setActiveTab} />
           )}
         </AnimatePresence>
       </div>
@@ -585,6 +609,13 @@ const Profile = () => {
 
       {showUpload && !uploadSuccess && (
         <ProfileUpload onClose={onClose} setUploadSuccess={setUploadSuccess} />
+      )}
+
+      {deleteModal && (
+        <AccountDeleteModal
+          onClose={() => setDeleteModal(false)}
+          onConfirm={confirmDelete}
+        />
       )}
     </motion.div>
   );

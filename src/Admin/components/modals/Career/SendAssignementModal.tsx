@@ -102,85 +102,91 @@ const SendAssignementModal = ({
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-40">
-      <div className="bg-[#6f6c6c] rounded-lg shadow-xl p-6 px-10 max-w-2xl relative overflow-y-auto hide-scrollbar max-h-[90vh]">
+    <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50 ">
+      <div className="bg-secondary rounded-lg shadow-xl p-4 md:p-6 md:px-10 max-w-[350px] md:max-w-2xl relative overflow-y-auto hide-scrollbar max-h-[90vh]">
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 text-black/70 hover:text-black text-lg font-bold"
+          className="absolute top-2 right-2  hover:text-muted-foreground text-lg font-bold"
         >
           ✕
         </button>
 
-        <h2 className="text-2xl font-semibold mb-4 text-white border-b pb-2">
+        <h2 className="text-xl md:text-2xl font-semibold mb-4 border-b pb-2">
           Send Assignment
         </h2>
 
-        <div className="p-4 w-full items-center flex flex-col text-black">
+        <div className="md:p-4 w-full items-center flex flex-col">
           <form
             onSubmit={handleSubmit}
-            className="space-y-4 flex flex-col w-lg  p-4  rounded-lg "
+            className="space-y-4 flex flex-col md:w-2xl  md:p-4 md:px-10 rounded-lg "
           >
-            <div>
-              <label className="block mb-1 text-white">Due Date</label>
-              <input
-                type="date"
-                name="dueDate"
-                value={input.dueDate}
-                onChange={handleChange}
-                className="w-full p-2 h-13 rounded-lg border border-gray-400 bg-black/90 text-white"
-                required
-              />
+            <div className="grid md:grid-cols-2 gap-5">
+              <div className="">
+                <label className="block mb-1 font-semibold">Due Date</label>
+                <input
+                  type="date"
+                  name="dueDate"
+                  value={input.dueDate}
+                  onChange={handleChange}
+                  className="w-full p-2 h-13 rounded-lg border bg-secondary text-foreground [color-scheme:light] dark:[color-scheme:dark]"
+                  required
+                />
+              </div>
+              <div className="">
+                <label className="block mb-1 font-semibold">Due Time</label>
+                <input
+                  type="time"
+                  name="dueTime"
+                  value={input.dueTime}
+                  onChange={handleChange}
+                  className="w-full p-2 h-13 rounded-lg border bg-secondary text-foreground [color-scheme:light] dark:[color-scheme:dark]"
+                  required
+                />
+              </div>
             </div>
 
-            <div>
-              <label className="block mb-1 text-white">Due Time</label>
-              <input
-                type="time"
-                name="dueTime"
-                value={input.dueTime}
-                onChange={handleChange}
-                className="w-full p-2 h-13 rounded-lg border border-gray-400 bg-black/90 text-white"
-                required
-              />
-            </div>
+            <div className="grid md:grid-cols-2 gap-5">
+              <div className="">
+                <label className="block mb-1 font-semibold">
+                  Figma Link (optional)
+                </label>
+                <input
+                  type="text"
+                  name="link"
+                  value={input.link}
+                  onChange={handleChange}
+                  placeholder="https://www.figma.com/file/..."
+                  className="w-full p-2 h-13 rounded-lg border "
+                />
+              </div>
 
-            <div>
-              <label className="block mb-1 text-white">
-                Figma Link (optional)
-              </label>
-              <input
-                type="text"
-                name="link"
-                value={input.link}
-                onChange={handleChange}
-                placeholder="https://www.figma.com/file/..."
-                className="w-full p-2 h-13 rounded-lg border border-gray-400 bg-black/90 text-white"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="fileUpload" className="block mb-1 text-white">
-                Assignment File
-              </label>
-              <input
-                type="file"
-                accept=".pdf,.doc,.docx,.zip"
-                id="fileUpload"
-                onChange={handleChange}
-                className="w-full p-2 h-13 rounded-lg bg-black/90 border border-gray-400 text-white"
-                required
-              />
-              {file && (
-                <p className="mt-2 text-sm text-white">
-                  Selected File:{" "}
-                  <span className="font-medium">{file.name}</span>
-                </p>
-              )}
+              <div className="">
+                <label
+                  htmlFor="fileUpload"
+                  className="block mb-1 font-semibold"
+                >
+                  Assignment File
+                </label>
+                <input
+                  type="file"
+                  accept=".pdf,.doc,.docx,.zip"
+                  id="fileUpload"
+                  onChange={handleChange}
+                  className="w-full p-2 h-13 rounded-lg  border"
+                  required
+                />
+                {file && (
+                  <p className="mt-2 text-sm ">
+                    Selected File:{" "}
+                    <span className="font-medium">{file.name}</span>
+                  </p>
+                )}
+              </div>
             </div>
 
             <button
               type="submit"
-              className="bg-[#E39712] px-6 py-2 rounded font-semibold hover:bg-[#d58c0d] text-white"
+              className="bg-blue-800 px-6 py-2 rounded font-semibold hover:bg-blue-700 text-white"
             >
               Send Assignment
             </button>

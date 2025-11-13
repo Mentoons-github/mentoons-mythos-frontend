@@ -27,12 +27,13 @@ export interface UserData {
   page: number;
   totalPage: number;
   userCount: number;
+  logoutSuccess: boolean;
 }
 
 const initialState: UserData = {
   user: null,
   error: null,
-  loading: true,
+  loading: false,
   success: false,
   reportMessage: "",
   reportSuccess: false,
@@ -45,6 +46,7 @@ const initialState: UserData = {
   page: 0,
   totalPage: 0,
   userCount: 0,
+  logoutSuccess: false,
 };
 
 const userSlice = createSlice({
@@ -61,6 +63,7 @@ const userSlice = createSlice({
       state.blockSuccess = false;
       state.singleUser = null;
       state.singleUserLoading = false;
+      state.logoutSuccess = false;
     },
   },
   extraReducers: (builder) => {
@@ -139,17 +142,20 @@ const userSlice = createSlice({
       //logout
       .addCase(userLogout.fulfilled, (state) => {
         state.user = null;
-        state.success = false;
+        state.success = true;
         state.loading = false;
         state.error = null;
+        state.logoutSuccess = true;
       })
       .addCase(userLogout.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.logoutSuccess = false;
       })
       .addCase(userLogout.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+        state.logoutSuccess = false;
       })
 
       //retportUser

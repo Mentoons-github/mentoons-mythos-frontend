@@ -43,10 +43,9 @@ const ShareIntelligence = ({
   groupId: string | undefined;
 }) => {
   const [showShareOptions, setShowShareOptions] = useState(false);
-  console.log(showShareOptions, "optionsss");
   return (
     <motion.div
-      className="flex flex-col relative md:flex-row items-center justify-between gap-10 px-6 md:px-32 py-14 bg-white"
+      className="flex flex-col relative md:flex-row items-center justify-between gap-10 px-6 md:px-32 py-14 "
       initial="hidden"
       whileInView="visible"
       viewport={{ once: false, amount: 0.1 }}
@@ -70,16 +69,14 @@ const ShareIntelligence = ({
         <div className="relative">
           <MythosButton
             label="SHARE"
-            bg="black"
-            textClr="white"
             onClick={() => setShowShareOptions(!showShareOptions)}
           />
           {showShareOptions && (
-        <ShareOption
-          blogUrl={`${window.location.origin}/groups/${groupId}`}
-          onClose={() => setShowShareOptions(false)}
-        />
-      )}
+            <ShareOption
+              blogUrl={`${window.location.origin}/groups/${groupId}`}
+              onClose={() => setShowShareOptions(false)}
+            />
+          )}
         </div>
       </motion.div>
 
@@ -90,7 +87,6 @@ const ShareIntelligence = ({
         className="w-52 sm:w-64 md:w-72 object-contain"
         variants={floatImage}
       />
-      
     </motion.div>
   );
 };

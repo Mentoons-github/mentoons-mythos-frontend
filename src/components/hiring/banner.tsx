@@ -43,14 +43,14 @@ const HiringBanner = () => {
   ]);
 
   return (
-    <div className="relative mx-auto min-h-screen bg-black bg-[url('/assets/background/section/stars_background.png')] bg-cover bg-center space-y-10 p-5 overflow-hidden">
+    <div className="relative mx-auto max-h-screen bg-[url('/assets/background/section/stars_background.png')] bg-cover bg-center md:space-y-10 p-5 overflow-hidden">
       {/* Saturn with floating animation */}
       <motion.img
         ref={saturnRef}
         animate={controlsSaturn}
         src="/assets/hiring/planet saturn.png"
         alt="saturn"
-        className="absolute top-1/4 left-1/5 w-20 md:w-40"
+        className="absolute top-1/4 md:left-1/5 w-20 md:w-40 hidden md:block"
       />
 
       {/* Wrench with rotating animation */}
@@ -59,7 +59,7 @@ const HiringBanner = () => {
         animate={controlsWrench}
         src="/assets/hiring/Gears and wrench.png"
         alt="wrench"
-        className="absolute bottom-15 left-15 w-16 md:w-32"
+        className="absolute bottom-15 left-15 w-16 md:w-32 hidden md:block"
       />
 
       {/* People with floating animation */}
@@ -68,15 +68,15 @@ const HiringBanner = () => {
         animate={controlsPeople}
         src="/assets/hiring/Two people watching online lesson.png"
         alt="two peoples"
-        className="absolute right-1/9 bottom-20 w-24 md:w-48"
+        className="absolute right-1/9 bottom-20 w-24 md:w-48 hidden md:block"
       />
 
       {/* Content - maintaining original alignment */}
-      <div className="h-full flex flex-col justify-center items-center pt-20 md:pt-0">
-        <h1 className="text-[#E39712] text-center text-2xl md:text-4xl font-semibold">
+      <div className="h-full flex flex-col  items-center md:pt-0">
+        <h1 className="text-[#E39712]  text-3xl md:text-6xl font-bold">
           WE ARE HIRING AT MENTOONS MYTHOS
         </h1>
-        <p className="text-base md:text-xl text-center mt-5 text-white mx-auto max-w-2xl">
+        <p className="text-base md:text-xl  mt-5  mx-auto max-w-2xl">
           If you're passionate about helping others, have deep empathy, and
           believe in guiding people through self-awareness, we'd love to hear
           from you.

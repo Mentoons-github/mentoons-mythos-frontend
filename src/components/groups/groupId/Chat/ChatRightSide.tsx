@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 const ChatRightSide = () => {
   return (
     <motion.div
-      className="w-full h-[660px] rounded-lg bg-black/80 flex flex-col  items-center justify-around "
+      className="w-full h-[660px]  border-l flex flex-col  items-center justify-around "
       initial={{ opacity: 0, x: 10 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
@@ -22,7 +22,7 @@ const ChatRightSide = () => {
         transition={{ duration: 0.5, delay: 0.5 }}
       >
         Book a one-on-one video call session with us now!
-        <span className="block text-white">(Coming Soon...)</span>
+        <span className="block text-foreground">(Coming Soon...)</span>
       </motion.p>
       <motion.button
         className="flex items-center rounded-2xl mb-2 justify-center gap-2 px-5 py-4 text-black bg-[#E39712]  w-fit"

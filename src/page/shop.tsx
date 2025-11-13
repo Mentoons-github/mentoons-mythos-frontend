@@ -131,13 +131,13 @@ const Shop = () => {
   };
 
   return (
-    <div className="bg-black text-white">
+    <div className="">
       <motion.div
         ref={heroRef}
         initial={{ opacity: 0 }}
         animate={heroInView ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 0.8 }}
-        className="p-2 md:p-10 lg:p-20 bg-black bg-[url('/assets/background/section/stars_background.png')] py-10 flex flex-col justify-center items-center"
+        className="p-2 md:p-10 lg:p-20  bg-[url('/assets/background/section/stars_background.png')] py-10 flex flex-col justify-center items-center"
       >
         <motion.h1
           initial={{ x: "100%", opacity: 0 }}
@@ -145,7 +145,7 @@ const Shop = () => {
             heroInView ? { x: 0, opacity: 1 } : { x: "100%", opacity: 0 }
           }
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-[#E39712] font-semibold text-xl sm:text-2xl md:text-3xl lg:text-4xl tracking-wider md:text-center"
+          className=" font-bold text-xl sm:text-2xl md:text-3xl lg:text-4xl tracking-wider md:text-center"
         >
           REPRESENT YOURSELF BY WEARING <br className="hidden md:block" />
           OUR RANGE OF MERCHANDISE
@@ -155,7 +155,7 @@ const Shop = () => {
           initial={{ y: 30, opacity: 0 }}
           animate={heroInView ? { y: 0, opacity: 1 } : { y: 30, opacity: 0 }}
           transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-          className="text-sm sm:text-base md:text-lg lg:text-xl text-[#FBF9F9] md:text-center mt-4 md:mt-7 max-w-3xl md:px-2"
+          className="text-sm sm:text-base md:text-lg lg:text-xl md:text-center mt-4 md:mt-7 max-w-3xl md:px-2"
         >
           Wear your planets, rising stars, birth signs, your favorite
           mythological characters and let that do all the talking!
@@ -167,26 +167,26 @@ const Shop = () => {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.8 }}
-        className="flex justify-center items-center py-5 bg-[#9FE9FF]"
+        className="flex justify-center items-center py-5 bg-foreground"
       >
         <motion.div
           initial={{ scale: 0.95, opacity: 0 }}
           whileInView={{ scale: 1, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="flex relative p-1 rounded-lg border-2 border-gray-600 w-full max-w-xl mx-4"
+          className="flex relative p-1 rounded-lg border-2 border-muted-foreground w-full max-w-xl mx-4"
         >
           <input
             type="text"
             placeholder="Search for products"
-            className="outline-none p-2 text-black w-full text-sm md:text-base"
+            className="outline-none p-2 text-background w-full text-sm md:text-base"
           />
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="flex justify-center items-center p-2 md:p-3 bg-black rounded-lg cursor-pointer"
+            className="flex justify-center items-center p-2 md:p-3 bg-background rounded-lg cursor-pointer"
           >
-            <FaSearch className="text-white text-sm md:text-base" />
+            <FaSearch className="text-foreground text-sm md:text-base" />
           </motion.div>
         </motion.div>
       </motion.div>
@@ -196,7 +196,7 @@ const Shop = () => {
         initial={{ opacity: 0 }}
         animate={productsInView ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 0.8 }}
-        className="py-8 md:py-12 px-2 md:px-10 lg:px-20 bg-[#FEEBD5]"
+        className="py-8 md:py-12 px-2 md:px-10 lg:px-20 bg-[url('/assets/background/section/stars_background.png')] bg-center"
       >
         <div className="flex justify-between items-center flex-wrap gap-3">
           <motion.h2
@@ -217,7 +217,7 @@ const Shop = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="px-3 py-1 border border-black rounded-full flex items-center gap-2 text-black cursor-pointer text-sm md:text-base"
+            className="px-3 py-1 border border-foreground rounded-full flex items-center gap-2 cursor-pointer text-sm md:text-base"
           >
             View All <FaArrowRight />
           </motion.div>
@@ -229,7 +229,7 @@ const Shop = () => {
             variants={containerVariants}
             initial="hidden"
             animate={productsInView ? "visible" : "hidden"}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 "
           >
             {products.map((product) => (
               <ProductCard product={product} key={product.id}/>
@@ -238,7 +238,7 @@ const Shop = () => {
         </div>
       </motion.div>
 
-      <motion.div className="flex bg-[#E39712] pr-6">
+      <motion.div className="flex pr-6 bg-[url('/assets/background/section/stars_background.png')] bg-center">
         <motion.div
           ref={tattoosRef}
           initial="hidden"
@@ -248,7 +248,7 @@ const Shop = () => {
         >
           <motion.h1
             variants={fadeInUp}
-            className="text-xl sm:text-2xl md:text-3xl text-[#1A1D3B] tracking-[1.5px] md:tracking-[2.5px] font-bold text-center"
+            className="text-xl sm:text-2xl md:text-3xl tracking-[1.5px] md:tracking-[2.5px] font-bold text-center"
           >
             TATTOOS YOU WOULD LIKE TO HAVE!
           </motion.h1>

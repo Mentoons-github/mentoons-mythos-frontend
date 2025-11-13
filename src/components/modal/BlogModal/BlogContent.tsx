@@ -7,7 +7,7 @@ const BlogContent: React.FC<BlogContentProps> = ({ description, tags }) => {
   return (
     <div className="flex flex-col justify-between h-full">
       <div className="max-h-60 hide-scrollbar overflow-y-auto pr-2 mb-4 will-change-scroll transform-gpu">
-        <p className="text-gray-800 whitespace-pre-line">
+        <p className=" whitespace-pre-line">
           {description}
         </p>
       </div>

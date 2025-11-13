@@ -49,7 +49,6 @@ export const getJobsThunk = createAsyncThunk<
 >("career/job", async ({ page, limit, sort, search }, { rejectWithValue }) => {
   try {
     const res = await getJobsApi(page, limit, sort, search);
-    console.log(res.data,'ddddd')
     return res.data;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;

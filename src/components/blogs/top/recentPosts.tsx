@@ -75,7 +75,7 @@ const RecentPosts = ({ userId }: { userId: string }) => {
   return (
     <div>
       <motion.h1
-        className="text-2xl font-semibold"
+        className="text-2xl font-semibold "
         initial={{ y: -20, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -115,7 +115,7 @@ const RecentPosts = ({ userId }: { userId: string }) => {
                     viewport={{ once: true }}
                   />
                   <div className="flex flex-col justify-between h-full gap-1">
-                    <p className="text-sm text-gray-500 font-medium">
+                    <p className="text-sm  font-medium">
                       <span className="text-purple-700">{post.writer}</span> •{" "}
                       {post.createdAt && (
                         <span>
@@ -124,8 +124,8 @@ const RecentPosts = ({ userId }: { userId: string }) => {
                       )}
                     </p>
 
-                    <h2 className="text-lg font-semibold mt-1">{post.title}</h2>
-                    <p className="text-sm text-gray-600 mt-1 line-clamp-3">
+                    <h2 className="text-lg font-semibold mt-1 ">{post.title}</h2>
+                    <p className="text-sm mt-1 line-clamp-3">
                       {post.description}
                     </p>
 
@@ -149,7 +149,7 @@ const RecentPosts = ({ userId }: { userId: string }) => {
           {data.length < total && (
             <button
               onClick={fetchBlogs}
-              className="bg-[#E39712] text-white px-4 py-2 rounded hover:bg-[#e39700ed]"
+              className="bg-foreground text-background px-4 py-2 rounded hover:bg-muted-foreground"
               disabled={loading}
             >
               {fetchBlogLoading ? "Loading..." : "Load More"}

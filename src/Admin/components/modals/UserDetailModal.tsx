@@ -14,36 +14,33 @@ const UserDetailModal: React.FC<ModalProps> = ({
   singleUserLoading,
 }) => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-40 italic">
-      <div className="bg-gradient-to-t from-[#141414] to-[#2b2b2b] rounded-lg shadow-xl p-6 w-full max-w-4xl relative hide-scrollbar overflow-y-auto max-h-[90vh]">
-        {/* Close Button */}
+    <div className="fixed inset-0 bg-black/60 bg-opacity-60 flex justify-center items-center z-50 ">
+      <div className="bg-secondary rounded-lg shadow-xl p-3 md:p-6 w-full max-w-xs  md:max-w-2xl lg:max-w-4xl relative hide-scrollbar overflow-y-auto max-h-[90vh]">
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 text-gray-300 hover:text-white text-lg font-bold"
+          className="absolute top-2 right-2  hover:text-muted-foreground text-lg font-bold"
         >
           ✕
         </button>
 
-        {/* Title */}
-        <h2 className="text-2xl font-semibold mb-6 text-white border-b pb-2">
+        <h2 className="text-xl md:text-2xl font-bold mb-6 border-b pb-2">
           User Profile Details
         </h2>
 
         {singleUserLoading ? (
           <div className="flex justify-center items-center py-10">
             <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-            <span className="ml-3 text-white">Loading user details...</span>
+            <span className="ml-3 ">Loading user details...</span>
           </div>
         ) : !singleUser ? (
-          <p className="text-center text-white">No user data available</p>
+          <p className="text-center ">No user data available</p>
         ) : (
           <div className="">
-            {/* Basic Details */}
             <section className="mb-6">
-              <h3 className="text-lg font-semibold text-[#E39712] mb-2">
+              <h3 className="text-lg font-semibold text-blue-800 mb-2">
                 Personal Info
               </h3>
-              <div className="grid grid-cols-2 gap-4 text-white">
+              <div className="grid md:grid-cols-2 pl-3 md:pl-0 gap-4 ">
                 <p>
                   <strong>Name:</strong> {singleUser?.firstName}{" "}
                   {singleUser?.lastName}
@@ -55,7 +52,7 @@ const UserDetailModal: React.FC<ModalProps> = ({
                   <strong>Country:</strong> {singleUser?.country || "N/A"}
                 </p>
                 <p>
-                  <strong>Joined Date:</strong>{" "}
+                  <strong>Date of Birth:</strong>{" "}
                   {formatToRealDate(singleUser?.dateOfBirth)}
                 </p>
                 <p>
@@ -65,12 +62,32 @@ const UserDetailModal: React.FC<ModalProps> = ({
               </div>
             </section>
 
+            <section className="mb-6">
+              <h3 className="text-lg font-semibold text-blue-800 mb-2">
+                Intelligence Types
+              </h3>
+              {singleUser.intelligenceTypes.length > 0 ? (
+                <div className="flex flex-wrap ml-3 md:ml-0 space-x-4">
+                  {singleUser.intelligenceTypes.map((type) => (
+                    <div
+                      key={type}
+                      className="bg-green-500 rounded-md py-1 px-2"
+                    >
+                      {type}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <h2>N/A</h2>
+              )}
+            </section>
+
             {/* Astrology Details */}
             <section className="mb-6">
-              <h3 className="text-lg font-semibold text-[#E39712] mb-2">
+              <h3 className="text-lg font-semibold text-blue-800 mb-2">
                 Astrology Details
               </h3>
-              <div className="grid grid-cols-2 gap-4 text-white">
+              <div className="grid md:grid-cols-2 ml-3 md:ml-0 gap-4 ">
                 <p>
                   <strong>Moon Sign:</strong>{" "}
                   {singleUser?.astrologyDetail?.moonSign || "N/A"}
@@ -84,7 +101,7 @@ const UserDetailModal: React.FC<ModalProps> = ({
 
             {/* Reports */}
             <section>
-              <h3 className="text-lg font-semibold text-[#E39712] mb-4">
+              <h3 className="text-lg font-semibold text-blue-800 mb-4">
                 Astrology Reports
               </h3>
 
@@ -97,7 +114,7 @@ const UserDetailModal: React.FC<ModalProps> = ({
                   <p className="text-white italic">Moon Report: N/A</p>
                 ) : (
                   <>
-                    <div className="grid grid-cols-2 gap-3 text-white  ">
+                    <div className="grid md:grid-cols-2 gap-3 ">
                       <p>
                         <strong>Deity:</strong>{" "}
                         {singleUser.astrologyReports.moon.report.deity || "N/A"}
@@ -156,7 +173,7 @@ const UserDetailModal: React.FC<ModalProps> = ({
                       </p>
                     </div>
 
-                    <div className="mt-3 text-white">
+                    <div className="mt-3 space-y-3 ">
                       <p>
                         <strong>Nakshathra:</strong>{" "}
                         {singleUser.astrologyReports.moon.nakshatra?.name ||
@@ -195,10 +212,10 @@ const UserDetailModal: React.FC<ModalProps> = ({
                   ☀️ Sun Report
                 </h4>
                 {!singleUser?.astrologyReports?.sun ? (
-                  <p className="text-white italic">Sun Report: N/A</p>
+                  <p className=" italic">Sun Report: N/A</p>
                 ) : (
                   <>
-                    <div className="grid grid-cols-2 gap-3 text-white ">
+                    <div className="grid md:grid-cols-2 gap-3 ">
                       <p>
                         <strong>Deity:</strong>{" "}
                         {singleUser.astrologyReports.sun.report.deity || "N/A"}
@@ -254,7 +271,7 @@ const UserDetailModal: React.FC<ModalProps> = ({
                       </p>
                     </div>
 
-                    <div className="mt-3  text-white">
+                    <div className="mt-3 space-y-3 ">
                       <p>
                         <strong>Nakshathra:</strong>{" "}
                         {singleUser.astrologyReports.sun.nakshatra?.name ||
@@ -267,7 +284,7 @@ const UserDetailModal: React.FC<ModalProps> = ({
                     </div>
 
                     {/* Rashi Section */}
-                    <div className="mt-3 border-t pt-2 text-white">
+                    <div className="mt-3 border-t pt-2">
                       <h5 className="font-semibold text-yellow-500">Rashi</h5>
                       <p>
                         <strong>Name:</strong>{" "}

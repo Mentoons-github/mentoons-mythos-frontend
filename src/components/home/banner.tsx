@@ -1,18 +1,37 @@
 import { motion } from "framer-motion";
-import MythosButton from "./button";
 import { useAppSelector } from "../../hooks/reduxHooks";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
+import { GrNext } from "react-icons/gr";
+import ReactPlayer from "react-player";
+import { useState, useRef } from "react";
+import SlidingSheet from "./SlidingSheet";
+import RashiFinderModal from "../modal/astro/rashiFindermodal.tsx";
+import AlreadyCheckModal from "../modal/astro/rashiFindermodal.tsx/AlreadyCheckModal.tsx";
+import MythosLoginModal from "../modals/mythosLogin.tsx";
 
 const MythosBanner = () => {
   const { user } = useAppSelector((state) => state.user);
   const navigate = useNavigate();
+  const [showServices, setShowServices] = useState(false);
+  const videoRef = useRef<HTMLDivElement>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [checkedModal, setCheckedModal] = useState(false);
+  const [loginModal, setLoginModal] = useState(false);
 
-  const handlePathClick = () => {
+
+
+  const handlePathClick = (from: string) => {
     if (!user) {
-      toast.warning("Please Login to continue Find path");
+      setLoginModal(true);
+    } else if (from == "astrology") {
+      if (user.astrologyDetail?.moonSign || user.astrologyDetail?.sunSign) {
+        setCheckedModal(true);
+        console.log(user.astrologyDetail, "laksdjfad");
+      } else {
+        setModalOpen(true);
+      }
     } else {
-      navigate("profile");
+      navigate("assessment/psychology");
     }
   };
 
@@ -25,19 +44,6 @@ const MythosBanner = () => {
         duration: 6,
         repeat: Infinity,
         ease: "easeInOut",
-      },
-    },
-  };
-
-  const planetVariants = {
-    animate: {
-      y: [0, -15, 0],
-      x: [0, 10, -10, 0],
-      rotate: [0, 360],
-      transition: {
-        duration: 8,
-        repeat: Infinity,
-        ease: "linear",
       },
     },
   };
@@ -69,7 +75,7 @@ const MythosBanner = () => {
   };
 
   return (
-    <section className="relative w-full h-screen flex justify-center items-center py-6 sm:py-8 md:py-10 bg-[url('/assets/banner/Section.png')] bg-cover bg-center bg-no-repeat mulish px-3 sm:px-4 md:px-5 overflow-hidden">
+    <section className="relative w-full xl:min-h-screen flex justify-center py-6 sm:py-8 md:py-10 md:bg-[url('/assets/banner/Section1.png')] bg-cover bg-center bg-no-repeat mulish px-3 sm:px-4 md:px-5 overflow-hidden ">
       {/* Floating Particles - Left Side (Dark) */}
       {[...Array(8)].map((_, i) => (
         <motion.div
@@ -97,7 +103,7 @@ const MythosBanner = () => {
       {[...Array(12)].map((_, i) => (
         <motion.div
           key={`particle-right-${i}`}
-          className="absolute w-1 h-1 bg-white rounded-full opacity-60"
+          className="absolute w-1 h-1 bg-[#ede8e8d3] rounded-full opacity-60"
           style={{
             right: `${Math.random() * 50}%`,
             top: `${Math.random() * 100}%`,
@@ -147,25 +153,16 @@ const MythosBanner = () => {
       <motion.img
         src="/assets/banner/planet2.png"
         alt="planet2"
-        className="absolute w-30 h-30 top-1/5 right-1/6"
+        className="absolute w-30 h-30 top-1/7 right-4"
         variants={floatVariants}
         animate="animate"
         transition={{ duration: 0.3 }}
       />
 
       <motion.img
-        src="/assets/banner/planet1.png"
-        alt="planet1"
-        className="absolute w-50 h-50 top-5 right-1/4"
-        variants={planetVariants}
-        animate="animate"
-        transition={{ duration: 0.4 }}
-      />
-
-      <motion.img
         src="/assets/banner/planet3.png"
         alt="planet3"
-        className="absolute w-40 h-40 bottom-1/3 right-20"
+        className="absolute w-40 h-40 bottom-1/4 -right-5 "
         animate={{
           y: [0, -25, 0],
           rotate: [0, 180, 360],
@@ -176,23 +173,6 @@ const MythosBanner = () => {
           },
         }}
         whileHover={{ scale: 1.2, rotate: 45 }}
-      />
-
-      <motion.img
-        src="/assets/banner/planets4.png"
-        alt="planet4"
-        className="absolute w-50 h-50 bottom-15 right-1/6"
-        animate={{
-          y: [0, -30, 0],
-          x: [0, 15, -15, 0],
-          rotate: [0, -360],
-          transition: {
-            duration: 12,
-            repeat: Infinity,
-            ease: "easeInOut",
-          },
-        }}
-        whileHover={{ scale: 1.1, y: -15 }}
       />
 
       {/* Cosmic Dust Clouds - Left Side */}
@@ -230,7 +210,7 @@ const MythosBanner = () => {
       {/* Cosmic Rings - Right Side */}
       <motion.div
         className="absolute w-40 h-40 border border-white/20 rounded-full"
-        style={{ right: "15%", top: "15%" }}
+        style={{ right: "2%", top: "10%" }}
         animate={{
           rotate: [0, 360],
           scale: [1, 1.1, 1],
@@ -244,7 +224,7 @@ const MythosBanner = () => {
 
       <motion.div
         className="absolute w-60 h-60 border border-white/10 rounded-full"
-        style={{ right: "10%", top: "10%" }}
+        style={{ right: "1%", top: "4%" }}
         animate={{
           rotate: [360, 0],
           scale: [1, 1.05, 1],
@@ -257,7 +237,7 @@ const MythosBanner = () => {
       />
 
       {/* Main Content */}
-      <div className="relative space-y-3 sm:space-y-4 md:space-y-5 p-3 sm:p-4 md:p-5 text-center flex flex-col pt-40 md:pt-0 justify-start items-start w-full z-10">
+      <div className="relative space-y-3 lg:ml-16 sm:space-y-4 md:space-y-5 p-3 sm:p-4 md:p-5 text-center flex flex-col md:mt-16 md:pt-0 justify-start items-start w-full z-10">
         <motion.h1
           initial={{ opacity: 0, y: 50, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -267,48 +247,142 @@ const MythosBanner = () => {
             type: "spring",
             stiffness: 100,
           }}
-          className="text-[#E39712] font-semibold break-words md:w-[550px] text-left text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-[1.5px] sm:tracking-[2.9px] font-montserrat drop-shadow-lg"
+          className="md:text-black font-bold break-words md:w-[700px] text-left text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-[1.5px] sm:tracking-[2.9px] font-montserrat drop-shadow-lg"
         >
           LET THE PLANETS GUIDE YOUR CAREER
         </motion.h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
-          whileHover={{
-            scale: 1.01,
-            color: "#1f2937",
-          }}
-          className="font-semibold text-left text-base sm:text-lg md:text-xl lg:text-2xl w-full sm:w-4/5 md:w-3/4 lg:w-3/5 xl:w-[45%] text-black font-mulish drop-shadow-sm"
-        >
-          Feeling stuck in life? Let your birth sign find solutions to all your
-          problems
-        </motion.p>
+        <div className="flex flex-col lg:flex-row xl:pr-52 w-full gap-5">
+          <div className="w-full lg:w-1/2 space-y-8 sm:space-y-14 mt-5 sm:mt-14">
+            {/* First Test */}
+            <motion.div
+              className="md:w-md"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
+            >
+              <div className="font-semibold text-left text-base sm:text-lg md:text-xl md:text-black font-mulish drop-shadow-sm">
+                Feeling stuck in career? Find which intelligence belongs you
+                are.{" "}
+                <motion.button
+                  onClick={() => handlePathClick("psychology")}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-foreground text-background md:bg-black inline-flex items-center md:text-white px-3 py-2 rounded-md !text-sm whitespace-nowrap align-middle gap-1"
+                >
+                  <span className="text-sm">Take a Test</span>
+                  <GrNext className="inline text-sm" />
+                </motion.button>
+              </div>
+            </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30, scale: 0.8 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{
-            duration: 1,
-            delay: 0.7,
-            ease: "easeOut",
-            type: "spring",
-            stiffness: 120,
-          }}
-          whileHover={{ scale: 1.05, y: -2 }}
-          whileTap={{ scale: 0.95 }}
-          className="flex justify-center mt-4 sm:mt-6 md:mt-8 lg:mt-10"
-        >
-          <MythosButton
-            label="FIND YOUR PATH"
-            bg="#FEE898"
-            onClick={handlePathClick}
-          />
-        </motion.div>
+            <motion.div
+              className="md:w-md ml-5 lg:ml-0"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
+            >
+              <div className="font-semibold text-left text-base sm:text-lg md:text-xl md:text-black font-mulish drop-shadow-sm">
+                Feeling stuck in life? Let your birth sign find solutions to all
+                your problems.{" "}
+                <motion.button
+                  onClick={() => handlePathClick("astrology")}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-foreground text-background md:bg-black inline-flex items-center md:text-white px-3 py-2 rounded-md !text-sm whitespace-nowrap align-middle gap-1"
+                >
+                  <span className="text-sm">Find My Rashi</span>
+                  <GrNext className="inline text-sm" />
+                </motion.button>
+              </div>
+            </motion.div>
+          </div>
+
+          <div ref={videoRef} className="w-full lg:w-1/2 mt-8 lg:mt-0 ">
+            <div className="relative w-full aspect-video rounded-lg overflow-hidden shadow-2xl">
+              <ReactPlayer
+                url="assets/about.mp4"
+                className="absolute inset-0"
+                width="100%"
+                height="100%"
+                controls
+                config={{
+                  file: {
+                    attributes: {
+                      controlsList: "nodownload",
+                      disablePictureInPicture: true,
+                    },
+                  },
+                }}
+              />
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Ambient Glow Effects */}
+      {!showServices && (
+        <motion.button
+          onClick={() => setShowServices(true)}
+          className="absolute left-0 top-1/2 -translate-y-1/2 bg-[#0f0b2b] text-white px-2 py-4 rounded-r-md shadow-lg z-50 flex flex-row items-center justify-center sm:gap-2 overflow-hidden"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <div className="flex flex-col items-center sm:space-y-1">
+            {"services".split("").map((letter, index) => (
+              <motion.span
+                key={index}
+                className="text-sm md:text-lg font-semibold tracking-wide"
+                initial={{ y: -10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{
+                  delay: index * 0.1,
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 20,
+                }}
+                whileHover={{ scale: 1.2, color: "#A78BFA" }}
+              >
+                {letter}
+              </motion.span>
+            ))}
+          </div>
+
+          <motion.div
+            className="text-white"
+            animate={{ x: [0, 5, 0] }}
+            transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
+          >
+            <GrNext className="sm:text-lg text-xs" />
+          </motion.div>
+        </motion.button>
+      )}
+
+      <SlidingSheet
+        onClose={() => setShowServices(false)}
+        showServices={showServices}
+        openModal={() => {
+          setModalOpen(true);
+          setShowServices(false);
+        }}
+        noUser={() => setLoginModal(true)}
+        user={user}
+        openCheckedModal={() => {
+          setCheckedModal(true);
+          setShowServices(false);
+        }}
+      />
+
+      {checkedModal && (
+        <AlreadyCheckModal
+          onClose={() => setCheckedModal(false)}
+          onResults={() => navigate("profile")}
+        />
+      )}
+
+      {loginModal && <MythosLoginModal onClose={() => setLoginModal(false)} />}
+
+      {modalOpen && <RashiFinderModal onClose={() => setModalOpen(false)} />}
+
       <div className="absolute inset-0 bg-gradient-to-r from-purple-900/10 via-transparent to-blue-900/10 pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-yellow-400/5 to-transparent pointer-events-none" />
     </section>

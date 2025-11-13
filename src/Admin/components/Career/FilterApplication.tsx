@@ -50,7 +50,7 @@ const FilterApplication: React.FC<FilterApplicationProps> = ({
           placeholder={`Search ${title}`}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full mb-3 border border-white px-2 py-1 text-white rounded-md outline-none"
+          className="w-full mb-3 border  px-2 py-1  rounded-md outline-none"
         />
       )}
 

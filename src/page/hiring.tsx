@@ -5,7 +5,7 @@ import WhyShouldJoin from "../components/hiring/whyShouldJoin";
 
 const Hiring = () => {
   return (
-    <div className="bg-black">
+    <div className="">
       <HiringBanner />
       <Jobs />
       <Summary />

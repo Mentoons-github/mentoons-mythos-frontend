@@ -6,13 +6,16 @@ import {
   getCommentBlogThunk,
 } from "../../../features/blog/blogThunk";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
-import { Eye, Search, Trash2 } from "lucide-react";
+import { Eye, Trash2 } from "lucide-react";
 import DeleteModal from "../../components/modals/deleteModal";
 import { toast } from "sonner";
 import { resetBlogSlice } from "../../../features/blog/blogSlice";
 import AdminViewBlogModal from "../../components/modals/Blog/AdminViewBlogModal";
-import { BiSort } from "react-icons/bi";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import {
+  SearchOptions,
+  ShowSort,
+  SortButton,
+} from "../../components/SortDetails";
 
 const AllBlogs = () => {
   const dispatch = useAppDispatch();
@@ -76,156 +79,118 @@ const AllBlogs = () => {
   };
 
   return (
-    <div className="p-4 text-white">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold mb-4">Blogs</h1>
-      </div>
-
+    <div className="pt-3 lg:p-4 ">
       <div className="flex mb-4 h-11 items-center space-x-4 justify-between">
-        <div
-          className="w-40 h-full px-4 flex items-center justify-between 
-                                         border text-white rounded-lg cursor-pointer 
-                                         shadow-md hover:bg-black/80 transition-all duration-200"
+        <SortButton
           onClick={() => setShowSort((prev) => !prev)}
-        >
-          <div className="flex items-center space-x-2">
-            <BiSort size={22} className="text-[#E39712]" />
-            <h3 className="text-[16px] font-medium">Sort By</h3>
-          </div>
-          <div className="ml-2">
-            {showSort ? (
-              <IoIosArrowUp size={20} className="text-gray-300" />
-            ) : (
-              <IoIosArrowDown size={20} className="text-gray-300" />
-            )}
-          </div>
-        </div>
+          showSort={showSort}
+        />
 
-        <div className="relative">
-          <Search
-            size={15}
-            className="absolute top-3.5 left-2 text-gray-400 "
-          />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setCurrentPage(1);
-            }}
-            placeholder="Search blogs..."
-            className="w-64 px-4 py-2 rounded-lg border border-gray-600 pl-7 
-                               bg-black/40 text-white placeholder-gray-400 
-                               focus:outline-none focus:ring-2 focus:ring-[#E39712]"
-          />
-        </div>
+        <SearchOptions
+          search={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setCurrentPage(1);
+          }}
+        />
       </div>
       {showSort && (
-        <div className="flex gap-3 mb-2">
-          {["newest", "oldest"].map((sort) => (
-            <button
-              key={sort}
-              onClick={() => {
-                setSortOrder(sort as "newest" | "oldest");
-                setCurrentPage(1);
-              }}
-              className={`px-4 py-2 rounded-lg border transition-all duration-200 ${
-                sortOrder === sort
-                  ? "bg-[#E39712] text-white border-[#E39712]"
-                  : "bg-black/40 text-gray-300 border-gray-600 hover:bg-black/70"
-              }`}
-            >
-              {sort === "newest" ? "Newest → Oldest" : "Oldest → Newest"}
-            </button>
-          ))}
-        </div>
+        <ShowSort
+          sortOrder={sortOrder}
+          onClick={(sort) => {
+            setSortOrder(sort as "newest" | "oldest");
+            setCurrentPage(1);
+          }}
+        />
       )}
 
       {!showTable && loading ? (
         <div className="flex justify-center items-center py-10">
           <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-          <span className="ml-3 text-gray-600">Loading Blogs...</span>
+          <span className="ml-3 ">Loading Blogs...</span>
         </div>
       ) : adminBlog.length == 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 text-center text-gray-400">
-          <div className="w-16 h-16 flex items-center justify-center rounded-full bg-gray-700/40 mb-4">
+        <div className="flex flex-col items-center justify-center py-20 text-center ">
+          <div className="w-16 h-16 flex items-center justify-center rounded-full  mb-4">
             📭
           </div>
-          <h2 className="text-xl font-semibold text-white">No Blogs</h2>
-          <p className="text-gray-400 mt-2">
+          <h2 className="text-xl font-semibold ">No Blogs</h2>
+          <p className="text-muted-foreground mt-2">
             It looks like there are no blogs yet. Check back later.
           </p>
         </div>
       ) : (
-        <div className="mt-5">
-          <table className="min-w-full table-auto border-collapse rounded-md overflow-hidden">
-            <thead className="bg-[#E39712] text-white">
-              <tr>
-                <th className="px-4 py-4 text-left">No</th>
-                <th className="px-4 py-4 text-left">Blog Id</th>
-                <th className="px-4 py-4 text-left">Writer Id</th>
-                <th className="px-4 py-4 text-left">Writer Name</th>
-                <th className="px-4 py-4 text-left">Title</th>
-                <th className="px-4 py-4 text-left">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {adminBlog?.map((blog, index) => (
-                <tr
-                  key={index}
-                  className={`border-b ${
-                    index % 2 === 0 ? "bg-black/60" : ""
-                  } border-gray-600`}
-                >
-                  <td className="px-4 py-4">
-                    {(currentPage - 1) * limit + index + 1}
-                  </td>
-                  <td className="px-4 py-4">{blog?._id}</td>
-                  <td className="px-4 py-4">{blog?.writerId}</td>
-                  <td className="px-4 py-4">{blog?.writer}</td>
-                  <td className="px-4 py-4">{blog?.title}</td>
-                  <td className="px-4 py-4 space-x-3">
-                    <button
-                      onClick={() => handleView(blog?._id as string)}
-                      className=" text-white rounded-md hover:text-[#c68310]"
-                    >
-                      <Eye size={20} />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(blog._id as string)}
-                      className="  text-white rounded-md hover:text-[#d32a08]"
-                    >
-                      <Trash2 size={20} />
-                    </button>
-                  </td>
+        <div className="h-[calc(94vh-110px)] overflow-y-auto hide-scrollbar will-change-scroll transform-gpu mt-5">
+          <div className="inline-block min-w-full">
+            <table className="min-w-full table-auto border-collapse rounded-md overflow-hidden">
+              <thead className="bg-blue-800 ">
+                <tr className="text-white">
+                  <th className="px-4 py-4 text-left">No</th>
+                  <th className="px-4 py-4 text-left">Blog Id</th>
+                  <th className="px-4 py-4 text-left">Writer Id</th>
+                  <th className="px-4 py-4 text-left">Writer Name</th>
+                  <th className="px-4 py-4 text-left">Title</th>
+                  <th className="px-4 py-4 text-left">Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {adminBlog?.map((blog, index) => (
+                  <tr
+                    key={index}
+                    className={`border-b ${
+                      index % 2 == 0 ? "bg-muted" : ""
+                    } border-gray-600`}
+                  >
+                    <td className="px-4 py-4">
+                      {(currentPage - 1) * limit + index + 1}
+                    </td>
+                    <td className="px-4 py-4">{blog?._id}</td>
+                    <td className="px-4 py-4">{blog?.writerId}</td>
+                    <td className="px-4 py-4">{blog?.writer}</td>
+                    <td className="px-4 py-4">{blog?.title}</td>
+                    <td className="px-4 py-4 flex space-x-3">
+                      <button
+                        onClick={() => handleView(blog?._id as string)}
+                        className=" font-semibold text-blue-800 rounded-md hover:text-blue-600"
+                      >
+                        <Eye size={20} />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(blog._id as string)}
+                        className=" font-semibold text-red-600 rounded-md hover:text-red-700"
+                      >
+                        <Trash2 size={20} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
-          {/* Pagination */}
-          <div className="flex justify-between mt-4">
-            <button
-              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-              disabled={currentPage === 1}
-              className="px-5 py-2 bg-white border-2 border-black text-black rounded-2xl disabled:opacity-50"
-            >
-              Prev
-            </button>
+            {/* Pagination */}
+            <div className="flex justify-between mt-4">
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-5 py-2 hover:bg-border border-2 rounded-2xl disabled:bg-foreground/40 text-muted-foreground"
+              >
+                Prev
+              </button>
 
-            <span>
-              Page {currentPage} of {totalPages}
-            </span>
+              <span>
+                Page {currentPage} of {totalPages}
+              </span>
 
-            <button
-              onClick={() =>
-                setCurrentPage((p) => (p < totalPages ? p + 1 : p))
-              }
-              disabled={currentPage === totalPages}
-              className="px-5 py-2 bg-white border-2 border-black text-black rounded-2xl disabled:opacity-50"
-            >
-              Next
-            </button>
+              <button
+                onClick={() =>
+                  setCurrentPage((p) => (p < totalPages ? p + 1 : p))
+                }
+                disabled={currentPage === totalPages}
+                className="px-5 py-2 hover:bg-border border-2 rounded-2xl disabled:bg-foreground/40 text-muted-foreground"
+              >
+                Next
+              </button>
+            </div>
           </div>
         </div>
       )}

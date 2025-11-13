@@ -46,14 +46,14 @@ const Tests = ({ userId }: { userId?: string }) => {
   };
   return (
     <motion.div
-      className=" md:py-16 py-2 px-2  md:px-12 bg-[#FEEBD5]"
+      className=" md:py-16 py-2 px-2  md:px-12 bg-[url('/assets/background/section/stars_background.png')] bg-center"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: false, amount: 0.1 }}
       variants={containerVariants}
     >
       <motion.h1
-        className="text-2xl md:text-4xl font-bold text-center text-[#2E2E2E] mb-12 leading-tight tracking-wider"
+        className="text-2xl md:text-4xl font-bold text-center mb-12 leading-tight tracking-wider"
         variants={fadeInUp}
       >
         Got Stuck In Your Career? Find <br className="hidden md:block" /> Out
@@ -64,19 +64,19 @@ const Tests = ({ userId }: { userId?: string }) => {
         {INTELLIGENCE.map((data, ind) => (
           <motion.div
             key={ind}
-            className="bg-white shadow-xl flex flex-col justify-between rounded-xl p-2 md:p-8 space-y-4 transition-transform duration-300 hover:scale-[1.01] md:min-h-[580px]"
+            className="border border-muted-foreground shadow-xl flex flex-col justify-between rounded-xl p-2 md:p-8 space-y-4 transition-transform duration-300 hover:scale-[1.01] md:min-h-[580px]"
             variants={containerVariants}
           >
             <motion.div className="space-y-2 sm:space-y-5">
               <motion.div
                 className="flex items-center justify-center rounded-2xl"
-                style={{ backgroundColor: data.color }}
+                // style={{ backgroundColor: data.color }}
               >
                 <motion.img
                   variants={floatImage}
                   src={data.imageUrl}
                   alt="career"
-                  className="w-36 h-36  sm:w-78 sm:h-78 object-cover rounded-lg"
+                  className="w-36 h-36 bg-foreground sm:w-96 sm:h-72 object-cover rounded-lg"
                 />
               </motion.div>
 
@@ -103,7 +103,7 @@ const Tests = ({ userId }: { userId?: string }) => {
                 onClick={() => handleStart(data.name)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-[#EC9600] px-6 py-2 rounded-2xl text-white font-semibold text-lg"
+                className="bg-foreground px-6 py-2 rounded-2xl text-background font-semibold text-lg"
               >
                 START TEST
               </motion.button>

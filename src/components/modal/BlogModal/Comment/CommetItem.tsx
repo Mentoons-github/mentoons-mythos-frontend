@@ -35,7 +35,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, onReply }) => {
           onReply={toggleReply}
         />
 
-        <p className="text-sm text-gray-700 mt-1">{comment.comment}</p>
+        <p className="text-sm  mt-1">{comment.comment}</p>
 
         {replyingTo === comment._id && (
           <CommentInput

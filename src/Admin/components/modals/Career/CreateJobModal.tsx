@@ -15,7 +15,7 @@ interface JobForm {
   responsibilities: string[];
   requirements: string[];
   thumbnail: string | File;
-  endDescription?:string
+  endDescription?: string;
 }
 
 const CreateJobModal = ({ onClose }: { onClose: () => void }) => {
@@ -36,7 +36,7 @@ const CreateJobModal = ({ onClose }: { onClose: () => void }) => {
     requirements: [],
     skillsRequired: [],
     thumbnail: "",
-    endDescription:""
+    endDescription: "",
   });
 
   const [skillInput, setSkillInput] = useState("");
@@ -160,43 +160,41 @@ const CreateJobModal = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-40 italic">
-      <div className="bg-gradient-to-t from-[#141414] to-[#2b2b2b] rounded-lg shadow-xl p-6 px-10 max-w-4xl w-full relative hide-scrollbar overflow-y-auto will-change-scroll transform-gpu max-h-[90vh]">
-        {/* Close Button */}
+      <div className="bg-secondary rounded-lg shadow-xl p-3 md:p-6 md:px-10 max-w-[350px] md:max-w-2xl lg:max-w-4xl w-full relative hide-scrollbar overflow-y-auto will-change-scroll transform-gpu max-h-[90vh]">
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 text-gray-300 hover:text-white text-lg font-bold"
+          className="absolute top-2 right-2 hover:text-muted-foreground text-lg font-bold"
         >
           ✕
         </button>
 
-        {/* Title */}
-        <h2 className="text-2xl font-semibold mb-4 text-white border-b pb-2">
+        <h2 className="text-xl mg:text-2xl font-semibold mb-4 border-b pb-2">
           Create New Job
         </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4 text-black">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Job Title + Type */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block mb-1 text-white">Job Title</label>
+              <label className="block mb-1 font-semibold">Job Title</label>
               <input
                 type="text"
                 name="jobTitle"
                 value={form.jobTitle}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg bg-black/90 border border-black text-white h-13"
+                className="w-full p-2 rounded-lg border h-13"
                 placeholder="Enter job title"
                 required
               />
             </div>
 
             <div>
-              <label className="block mb-1 text-white">Job Type</label>
+              <label className="block mb-1 font-semibold">Job Type</label>
               <select
                 name="jobType"
                 value={form.jobType}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg bg-black/90 border border-black text-white h-13"
+                className="w-full p-2 rounded- bg-secondary border h-13"
                 required
               >
                 <option value="">Select type</option>
@@ -210,13 +208,13 @@ const CreateJobModal = ({ onClose }: { onClose: () => void }) => {
 
           {/* Job Description */}
           <div>
-            <label className="block mb-1 text-white">Job Description</label>
+            <label className="block mb-1 font-semibold">Job Description</label>
             <textarea
               name="jobDescription"
               value={form.jobDescription}
               onChange={handleChange}
               rows={5}
-              className="w-full p-2 rounded-lg border border-black bg-black/90 text-white hide-scrollbar overflow-y-auto will-change-scroll transform-gpu"
+              className="w-full p-2 rounded-lg border hide-scrollbar overflow-y-auto will-change-scroll transform-gpu"
               placeholder="Enter job description"
               required
             />
@@ -225,19 +223,21 @@ const CreateJobModal = ({ onClose }: { onClose: () => void }) => {
           <div>
             {/* Responsibilities */}
             <div>
-              <label className="block mb-1 text-white">Responsibilities</label>
+              <label className="block mb-1 font-semibold">
+                Responsibilities
+              </label>
               <div className="flex gap-2">
                 <textarea
                   rows={2}
                   value={responsibilityInput}
                   onChange={(e) => setResponsibilityInput(e.target.value)}
-                  className="flex-1 p-2 rounded-lg border border-black bg-black/90 text-white hide-scrollbar overflow-y-auto will-change-scroll transform-gpu"
+                  className="flex-1 p-2 rounded-lg border hide-scrollbar overflow-y-auto will-change-scroll transform-gpu"
                   placeholder="Enter responsibility"
                 />
                 <button
                   type="button"
                   onClick={handleAddResponsibility}
-                  className="bg-black/50 px-4 rounded-lg text-white"
+                  className="bg-foreground px-4 rounded-lg text-background hover:bg-primary/90"
                 >
                   Add
                 </button>
@@ -246,13 +246,13 @@ const CreateJobModal = ({ onClose }: { onClose: () => void }) => {
                 {form.responsibilities?.map((item, i) => (
                   <li
                     key={i}
-                    className="flex items-center bg-black/60 border border-white/30 rounded-lg px-3 py-2 text-white"
+                    className="flex items-center bg-foreground text-background border rounded-lg px-3 py-2 gap-2"
                   >
                     <span>{item}</span>
                     <button
                       type="button"
                       onClick={() => handleRemoveResponsibility(i)}
-                      className="ml-2 text-red-400 hover:text-red-600"
+                      className="text-red-600 hover:text-red-700"
                     >
                       ✕
                     </button>
@@ -263,19 +263,19 @@ const CreateJobModal = ({ onClose }: { onClose: () => void }) => {
 
             {/* Requirements */}
             <div>
-              <label className="block mb-1 text-white">Requirements</label>
+              <label className="block mb-1 font-semibold">Requirements</label>
               <div className="flex gap-2">
                 <textarea
                   rows={2}
                   value={requirementInput}
                   onChange={(e) => setRequirementInput(e.target.value)}
-                  className="flex-1 p-2 rounded-lg border border-black bg-black/90 text-white hide-scrollbar overflow-y-auto will-change-scroll transform-gpu"
+                  className="flex-1 p-2 rounded-lg border   hide-scrollbar overflow-y-auto will-change-scroll transform-gpu"
                   placeholder="Enter requirement"
                 />
                 <button
                   type="button"
                   onClick={handleAddRequirement}
-                  className="bg-black/50 px-4 rounded-lg text-white"
+                  className="bg-foreground px-4 rounded-lg text-background hover:bg-primary/90"
                 >
                   Add
                 </button>
@@ -284,13 +284,13 @@ const CreateJobModal = ({ onClose }: { onClose: () => void }) => {
                 {form.requirements?.map((item, i) => (
                   <li
                     key={i}
-                    className="flex items-center bg-black/60 border border-white/30 rounded-lg px-3 py-2 text-white"
+                    className="flex items-center bg-foreground text-background border rounded-lg px-3 py-2 gap-2"
                   >
                     <span>{item}</span>
                     <button
                       type="button"
                       onClick={() => handleRemoveRequirement(i)}
-                      className="ml-2 text-red-400 hover:text-red-600"
+                      className="text-red-600 hover:text-red-700"
                     >
                       ✕
                     </button>
@@ -300,27 +300,29 @@ const CreateJobModal = ({ onClose }: { onClose: () => void }) => {
             </div>
           </div>
 
-           <div>
-            <label className="block mb-1 text-white">Description Last Words</label>
+          <div>
+            <label className="block mb-1 font-semibold">
+              Description Last Words
+            </label>
             <textarea
               name="endDescription"
               value={form.endDescription}
               onChange={handleChange}
               rows={5}
-              className="w-full p-2 rounded-lg border border-black bg-black/90 text-white hide-scrollbar overflow-y-auto will-change-scroll transform-gpu"
+              className="w-full p-2 rounded-lg border hide-scrollbar overflow-y-auto will-change-scroll transform-gpu"
               placeholder="Enter last job description"
             />
           </div>
 
           {/* Location + Status */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block mb-1 text-white">Location</label>
+              <label className="block mb-1 font-semibold">Location</label>
               <select
                 name="jobLocation"
                 value={form.jobLocation}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg bg-black/90 border border-black text-white h-13"
+                className="w-full p-2 rounded-lg bg-secondary border h-13"
                 required
               >
                 <option value="">Select Location</option>
@@ -331,12 +333,12 @@ const CreateJobModal = ({ onClose }: { onClose: () => void }) => {
             </div>
 
             <div>
-              <label className="block mb-1 text-white">Status</label>
+              <label className="block mb-1 font-semibold">Status</label>
               <select
                 name="status"
                 value={form.status}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg bg-black/90 border border-black text-white h-13"
+                className="w-full p-2 bg-secondary rounded-lg border h-13"
                 required
               >
                 <option value="">Select status</option>
@@ -347,21 +349,23 @@ const CreateJobModal = ({ onClose }: { onClose: () => void }) => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block mb-1 text-white">Skills Required</label>
+              <label className="block mb-1 font-semibold">
+                Skills Required
+              </label>
               <div className="flex gap-2">
                 <input
                   type="text"
                   value={skillInput}
                   onChange={(e) => setSkillInput(e.target.value)}
-                  className="flex-1 p-2 rounded-lg border border-black bg-black/90 text-white h-13"
+                  className="flex-1 p-2 rounded-lg border h-13"
                   placeholder="Enter skill"
                 />
                 <button
                   type="button"
                   onClick={handleAddSkill}
-                  className="bg-black/50 px-4 rounded-lg text-white"
+                  className="bg-foreground px-4 rounded-lg text-background hover:bg-primary/90"
                 >
                   Add
                 </button>
@@ -371,13 +375,13 @@ const CreateJobModal = ({ onClose }: { onClose: () => void }) => {
                   skill ? (
                     <li
                       key={i}
-                      className="flex items-center bg-black/60 border border-white/30 rounded-lg px-3 py-2 text-white"
+                      className="flex items-center bg-foreground text-background border rounded-lg px-3 py-2 gap-2"
                     >
                       <span>{skill}</span>
                       <button
                         type="button"
                         onClick={() => handleRemoveSkill(i)}
-                        className="ml-2 text-red-400 hover:text-red-600"
+                        className="text-red-600 hover:text-red-700"
                       >
                         ✕
                       </button>
@@ -388,7 +392,7 @@ const CreateJobModal = ({ onClose }: { onClose: () => void }) => {
             </div>
 
             <div>
-              <label htmlFor="imageUpload" className="block mb-1 text-white">
+              <label htmlFor="imageUpload" className="block mb-1 font-semibold">
                 Thumbnail
               </label>
               <input
@@ -396,7 +400,7 @@ const CreateJobModal = ({ onClose }: { onClose: () => void }) => {
                 accept="image/*"
                 id="imageUpload"
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg bg-black/90 border border-black text-white h-13"
+                className="w-full p-2 rounded-lg border h-13"
                 required
               />
 
@@ -411,7 +415,7 @@ const CreateJobModal = ({ onClose }: { onClose: () => void }) => {
                   <button
                     type="button"
                     onClick={() => setFile(null)}
-                    className="absolute top-1 right-1 bg-black/70 text-white rounded-full px-2 py-0.5 text-xs hover:bg-red-600"
+                    className="absolute top-1 right-1 rounded-full px-2 py-0.5 text-xs bg-foreground text-background hover:bg-red-600"
                   >
                     ✕
                   </button>
@@ -419,13 +423,11 @@ const CreateJobModal = ({ onClose }: { onClose: () => void }) => {
               )}
             </div>
           </div>
-          
-          
 
           {/* Submit */}
           <button
             type="submit"
-            className="bg-[#E39712] px-6 py-2 rounded font-semibold text-white hover:bg-[#d58c0d]"
+            className="bg-blue-800 px-6 py-2 rounded font-semibold text-white hover:bg-blue-700"
           >
             {newJobLoading ? "Adding new Job" : " Save Job"}
           </button>

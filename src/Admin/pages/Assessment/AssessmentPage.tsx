@@ -16,7 +16,7 @@ const datasets: Record<string, Intelligence[] | Sunshine[]> = {
 
 const AssessmentPage = () => {
   const { type } = useParams<{ type: string }>();
-  const data = datasets[type?.toLowerCase() || ""] || [];
+  const data = datasets[type?.split("-")[0]?.toLowerCase() || ""] || [];
   const [modalOpen, setModalOpen] = useState(false);
 
   const dispatch = useAppDispatch();
@@ -30,10 +30,12 @@ const AssessmentPage = () => {
   };
 
   return (
-    <div className="text-white">
-      <AdminAssessment type={type || ""} />
+    <div className="pt-3 lg:p-4">
+      <AdminAssessment
+   
+      />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-2 ">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-2 ">
         {data.map((item, ind) => (
           <div
             onClick={() => handleClick(item.name)}

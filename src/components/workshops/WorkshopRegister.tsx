@@ -52,18 +52,22 @@ const WorkshopRegister = () => {
     const selectedWorkshop = workshops.find((w) => w.age === form.category);
 
     e.preventDefault();
-    dispatch(
-      workshopRegisterThunk({
-        details: finalForm,
-        workshopId: selectedWorkshop?._id as string,
-      })
-    );
+    if (!user) {
+      toast.warning("Please login to register this workshop");
+    } else {
+      dispatch(
+        workshopRegisterThunk({
+          details: finalForm,
+          workshopId: selectedWorkshop?._id as string,
+        })
+      );
+    }
   };
 
   return (
-    <div className=" mt-12   flex flex-col lg:flex-row items-center lg:p-8 md:gap-10 bg-white">
+    <div className=" mt-12   flex flex-col lg:flex-row items-center lg:p-8 md:gap-10 ">
       <div className="flex-1 text-center md:text-left ">
-        <h1 className="text-3xl md:text-5xl font-bold text-black leading-snug mb-6  md:max-w-xl">
+        <h1 className="text-3xl md:text-5xl font-bold leading-snug mb-6  md:max-w-xl">
           REGISTER FOR OUR WORKSHOP HERE!
         </h1>
         <img
@@ -73,11 +77,11 @@ const WorkshopRegister = () => {
         />
       </div>
 
-      <div className="w-full lg:w-xl p-8 rounded-2xl shadow-sm ">
+      <div className="w-full lg:w-xl p-8 rounded-2xl shadow-sm border border-muted-foreground">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="md:flex gap-6 space-y-6">
             <div className="flex-1">
-              <label className="block text-gray-700 font-bold ">
+              <label className="block  font-bold ">
                 First Name
               </label>
               <input
@@ -86,20 +90,20 @@ const WorkshopRegister = () => {
                 value={form.firstName}
                 onChange={handleChange}
                 required
-                className="w-full mt-2 px-4 h-12 py-2 border rounded-lg focus:ring-2 focus:ring-black outline-none"
+                className="w-full mt-2 px-4 h-12 py-2 border rounded-lg focus:ring-1 focus:ring-foreground outline-none"
                 placeholder="Enter your first name"
               />
             </div>
 
             <div className="flex-1">
-              <label className="block text-gray-700 font-bold">Last Name</label>
+              <label className="block font-bold">Last Name</label>
               <input
                 type="text"
                 name="lastName"
                 value={form.lastName}
                 onChange={handleChange}
                 required
-                className="w-full mt-2 px-4 py-2 h-12 border rounded-lg focus:ring-2 focus:ring-black outline-none"
+                className="w-full mt-2 px-4 py-2 h-12 border rounded-lg focus:ring-1 focus:ring-foreground outline-none"
                 placeholder="Enter your last name"
               />
             </div>
@@ -107,7 +111,7 @@ const WorkshopRegister = () => {
 
           <div className="md:flex gap-6 space-y-6">
             <div className="flex-1">
-              <label className="block text-gray-700 font-bold">
+              <label className="block font-bold">
                 Mobile Number
               </label>
               <input
@@ -116,41 +120,41 @@ const WorkshopRegister = () => {
                 value={form.mobileNumber}
                 onChange={handleChange}
                 required
-                className="w-full mt-2 px-4 py-2 h-12 border rounded-lg focus:ring-2 focus:ring-black outline-none"
+                className="w-full mt-2 px-4 py-2 h-12 border rounded-lg focus:ring-1 focus:ring-foreground outline-none"
                 placeholder="Enter your mobile number"
               />
             </div>
 
             <div className="md:flex-1">
-              <label className="block text-gray-700 font-bold">Email</label>
+              <label className="block font-bold">Email</label>
               <input
                 type="email"
                 name="email"
                 value={form.email}
                 onChange={handleChange}
                 required
-                className="w-full mt-2 px-4 py-2 h-12 border rounded-lg focus:ring-2 focus:ring-black outline-none"
+                className="w-full mt-2 px-4 py-2 h-12 border rounded-lg focus:ring-1 focus:ring-foreground outline-none"
                 placeholder="Enter your email"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-gray-700 font-bold">
+            <label className="block font-bold">
               Message (Optional)
             </label>
             <textarea
               name="message"
               value={form.message}
               onChange={handleChange}
-              className="w-full mt-2 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black outline-none"
+              className="w-full mt-2 px-4 py-2 border rounded-lg focus:ring-1 focus:ring-foreground outline-none"
               placeholder="Any special notes..."
               rows={3}
             ></textarea>
           </div>
 
           <div className="">
-            <label className="block text-gray-700 font-bold mb-2">
+            <label className="block font-bold mb-2">
               Select Category
             </label>
             <div className="gap-5 flex">
@@ -161,7 +165,7 @@ const WorkshopRegister = () => {
                   value="6-12"
                   checked={form.category === "6-12"}
                   onChange={handleChange}
-                  className="w-3 h-3 accent-black"
+                  className="w-3 h-3 accent-blue-500"
                 />
                 <span className="font-semibold">Age 6-12</span>
               </label>
@@ -173,7 +177,7 @@ const WorkshopRegister = () => {
                   value="13-19"
                   checked={form.category === "13-19"}
                   onChange={handleChange}
-                  className="w-3 h-3 accent-black"
+                  className="w-3 h-3 accent-blue-500"
                 />
                 <span className="font-semibold">Age 13-19</span>
               </label>
@@ -182,7 +186,7 @@ const WorkshopRegister = () => {
 
           <button
             type="submit"
-            className="w-full bg-black text-white text-lg font-bold py-3 rounded-lg hover:opacity-90 transition"
+            className="w-full bg-foreground text-background text-lg font-bold py-3 rounded-lg hover:opacity-90 transition"
           >
             {loading ? "Submitting details..." : "Register Now"}
           </button>

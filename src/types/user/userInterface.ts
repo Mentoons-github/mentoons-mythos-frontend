@@ -12,10 +12,13 @@ export interface IUser extends ZodiacDetails {
   profilePicture?: string | null;
   astrologyDetail?: IAstrologyDetail;
   astrologyReports?: IAstrologyReports;
-  blogs?:Blog[]
+  blogs?: Blog[];
   role?: string;
   isBlocked: boolean;
-  createdAt?:string
+  createdAt?: string;
+  takeInitialAssessment?: boolean;
+  intelligenceTypes: string[];
+  designation: string;
 }
 
 export interface IAstrologyDetail {
@@ -32,9 +35,9 @@ export interface UserResponse {
 export interface AllUserResponse {
   success: boolean;
   users: IUser[];
-  total:number;
-  page:number;
-  totalPage:number
+  total: number;
+  page: number;
+  totalPage: number;
 }
 
 export interface ZodiacDetails {

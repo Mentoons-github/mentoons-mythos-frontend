@@ -46,11 +46,11 @@ const ViewReportDetailsModal = ({
     setDeleteModal(true);
   };
   return (
-    <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50 text-white">
-      <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl shadow-lg p-8 bg-gradient-to-t from-[#141414] to-[#4a4a4b] hide-scrollbar">
+    <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50 ">
+      <div className="relative w-full max-w-[350px] md:max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl shadow-lg p-4 md:p-8 bg-secondary hide-scrollbar">
         {/* Close button */}
         <button
-          className="absolute top-4 right-4 text-gray-300 hover:text-white"
+          className="absolute top-4 right-4  hover:bg-muted-foreground"
           onClick={onClose}
         >
           <X size={22} />
@@ -59,20 +59,20 @@ const ViewReportDetailsModal = ({
         {loading ? (
           <div className="flex justify-center items-center py-10">
             <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-            <span className="ml-3 text-gray-400">
+            <span className="ml-3 ">
               Loading report details...
             </span>
           </div>
         ) : (
           <div className="space-y-6">
             {/* Title */}
-            <h2 className="text-2xl font-semibold border-b border-gray-600 pb-2">
+            <h2 className="text-2xl font-semibold border-b  pb-2">
               Report Details
             </h2>
 
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <p className="text-sm text-gray-400">Reporter</p>
+                <p className="text-sm text-muted-foreground">Reporter</p>
                 <p className="text-lg font-medium">
                   {report?.reportedBy?.firstName} {report?.reportedBy?.lastName}
                 </p>
@@ -82,27 +82,27 @@ const ViewReportDetailsModal = ({
               </div>
 
               <div>
-                <p className="text-sm text-gray-400">Reported User</p>
+                <p className="text-sm text-muted-foreground">Reported User</p>
                 <p className="text-lg font-medium">
                   {report?.userId?.firstName} {report?.userId?.lastName}
                 </p>
-                <p className="text-sm text-gray-500">{report?.userId?.email}</p>
+                <p className="text-sm text-muted-foreground">{report?.userId?.email}</p>
               </div>
 
               <div>
-                <p className="text-sm text-gray-400">Reported From</p>
+                <p className="text-sm text-muted-foreground">Reported From</p>
                 <p className="text-base break-words">{report?.from}</p>
               </div>
 
               <div>
-                <p className="text-sm text-gray-400">{report?.from} ID</p>
+                <p className="text-sm text-muted-foreground">{report?.from} ID</p>
                 <p className="text-base break-words">{report?.fromId}</p>
               </div>
             </div>
 
             <div className="flex justify-between">
               <div className="">
-                <p className="text-sm text-gray-400">Reason</p>
+                <p className="text-sm text-muted-foreground">Reason</p>
                 <p className="text-base">{report?.reason || "N/A"}</p>
               </div>
             </div>
@@ -116,7 +116,7 @@ const ViewReportDetailsModal = ({
               <button className="">Delete this {report?.from}</button>
             </div>
 
-            <div className="flex justify-between text-sm text-gray-400 border-t border-gray-600 pt-4">
+            <div className="flex justify-between text-sm text-muted-foreground border-t  pt-4">
               <span>ID: {report?._id}</span>
               <span>
                 Date:{" "}

@@ -7,8 +7,11 @@ import {
   bookSlotThunk,
 } from "../features/bookCall/bookCallThunk";
 import { toast } from "sonner";
-import { resetBookCallSlice, resetCompleteBookSlice } from "../features/bookCall/bookCallSlice";
-import { useNavigate } from "react-router-dom";
+import {
+  resetBookCallSlice,
+  resetCompleteBookSlice,
+} from "../features/bookCall/bookCallSlice";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const BookCall = () => {
   const today = new Date().toISOString().split("T")[0];
@@ -16,6 +19,7 @@ const BookCall = () => {
   const { error, loading, slots, message, success, slotsLoading, complete } =
     useAppSelector((state) => state.book_call);
   const navigate = useNavigate();
+  const { user } = useAppSelector((state) => state.user);
 
   const formik = useFormik({
     initialValues: {
@@ -51,36 +55,36 @@ const BookCall = () => {
     }
     if (error) {
       toast.error(error);
-
       dispatch(resetBookCallSlice());
     }
   }, [dispatch, error, formik, message, success]);
 
   const handleBack = () => {
-     navigate("/")
-     dispatch(resetCompleteBookSlice())
-  } 
+    navigate("/");
+    dispatch(resetCompleteBookSlice());
+  };
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
 
   return (
     <div
-      className="flex justify-center items-center min-h-screen bg-gray-100 "
-      style={{
-        backgroundImage: "url('/assets/call.webp')",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "1500px",
-        backgroundPosition: "center",
-      }}
+      className="flex justify-center items-center min-h-screen"
+ 
     >
-      <div className="bg-white/90 shadow-lg md:rounded-2xl p-8 w-full max-w-3xl">
+      <div className=" border shadow-lg md:rounded-2xl p-8 w-full max-w-3xl">
         {complete ? (
           <div className="text-center space-y-4">
-            <h1 className="text-2xl font-bold text-green-600">🎉 Thank You!</h1>
-            <p className="text-gray-700">
-              Your call has been successfully booked. We’ll send you the meeting
+            <h1 className="text-2xl font-bold text-green-600 dark:text-green-400">
+              🎉 Thank You!
+            </h1>
+            <p className="text-foreground">
+              Your call has been successfully booked. We'll send you the meeting
               link shortly via email and SMS.
             </p>
             <button
-              className="mt-4 bg-black/90 text-white font-semibold py-2 px-6 rounded-lg hover:bg-black/80 transition"
+              className="mt-4 bg-foreground text-background font-semibold py-2 px-6 rounded-lg hover:opacity-90 transition"
               onClick={handleBack}
             >
               Go back to home
@@ -88,48 +92,57 @@ const BookCall = () => {
           </div>
         ) : (
           <form onSubmit={formik.handleSubmit}>
-            <h1 className="text-2xl font-bold mb-6 text-center">
+            <h1 className="text-2xl font-bold mb-6 text-center text-foreground">
               BOOK A ONE ON ONE CALL
             </h1>
 
             <div className="md:grid grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="block mb-1 font-medium">Name</label>
+                <label className="block mb-1 font-medium text-foreground">
+                  Name
+                </label>
                 <input
                   type="text"
+                  placeholder="Enter your name"
                   name="name"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.name}
-                  className="w-full border border-black rounded-lg px-3 py-2 focus:ring focus:ring-blue-400"
+                  className="w-full border border-border bg-background text-foreground rounded-lg h-13 px-3 py-2 focus:ring focus:ring-ring focus:outline-none"
                 />
                 {formik.touched.name && formik.errors.name && (
-                  <p className="text-red-500 text-sm">{formik.errors.name}</p>
+                  <p className="text-destructive text-sm">{formik.errors.name}</p>
                 )}
               </div>
 
               <div className="mt-4 md:mt-0">
-                <label className="block mb-1 font-medium">Email</label>
+                <label className="block mb-1 font-medium text-foreground">
+                  Email
+                </label>
                 <input
                   type="email"
+                  placeholder="Enter your email"
                   name="email"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.email}
-                  className="w-full border border-black rounded-lg px-3 py-2 focus:ring focus:ring-blue-400"
+                  className="w-full border border-border bg-background text-foreground rounded-lg h-13 px-3 py-2 focus:ring focus:ring-ring focus:outline-none"
                 />
                 {formik.touched.email && formik.errors.email && (
-                  <p className="text-red-500 text-sm">{formik.errors.email}</p>
+                  <p className="text-destructive text-sm">{formik.errors.email}</p>
                 )}
               </div>
             </div>
 
             <div className="md:grid grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="block mb-1 font-medium">Mobile Number</label>
+                <label className="block mb-1 font-medium text-foreground">
+                  Mobile Number
+                </label>
                 <input
                   type="tel"
                   name="mobileNumber"
+                  placeholder="Enter your mobile number"
                   maxLength={10}
                   onChange={(e) => {
                     const value = e.target.value.replace(/[^0-9]/g, "");
@@ -137,17 +150,17 @@ const BookCall = () => {
                   }}
                   onBlur={formik.handleBlur}
                   value={formik.values.mobileNumber}
-                  className="w-full border border-black rounded-lg px-3 py-2 focus:ring focus:ring-blue-400"
+                  className="w-full border border-border bg-background text-foreground rounded-lg h-13 px-3 py-2 focus:ring focus:ring-ring focus:outline-none"
                 />
                 {formik.touched.mobileNumber && formik.errors.mobileNumber && (
-                  <p className="text-red-500 text-sm">
+                  <p className="text-destructive text-sm">
                     {formik.errors.mobileNumber}
                   </p>
                 )}
               </div>
 
               <div className="mt-4 md:mt-0">
-                <label className="block mb-1 font-medium">
+                <label className="block mb-1 font-medium text-foreground">
                   Consultation Type
                 </label>
                 <select
@@ -159,21 +172,23 @@ const BookCall = () => {
                   }}
                   onBlur={formik.handleBlur}
                   value={formik.values.type}
-                  className="w-full border border-black rounded-lg px-3 py-2 focus:ring focus:ring-blue-400"
+                  className="w-full border border-border bg-background text-foreground rounded-lg h-13 px-3 py-2 focus:ring focus:ring-ring focus:outline-none"
                 >
                   <option value="">Select a type</option>
                   <option value="psychology">Psychology</option>
                   <option value="astrology">Astrology</option>
                 </select>
                 {formik.touched.type && formik.errors.type && (
-                  <p className="text-red-500 text-sm">{formik.errors.type}</p>
+                  <p className="text-destructive text-sm">{formik.errors.type}</p>
                 )}
               </div>
             </div>
 
             <div className="md:grid grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="block mb-1 font-medium">Date</label>
+                <label className="block mb-1 font-medium text-foreground">
+                  Date
+                </label>
                 <input
                   type="date"
                   name="date"
@@ -181,23 +196,25 @@ const BookCall = () => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.date}
-                  className="w-full border border-black rounded-lg px-3 py-2 focus:ring focus:ring-blue-400"
+                  className="w-full border border-border bg-background text-foreground rounded-lg h-13 px-3 py-2 focus:ring focus:ring-ring focus:outline-none [color-scheme:light] dark:[color-scheme:dark]"
                 />
                 {formik.touched.date && formik.errors.date && (
-                  <p className="text-red-500 text-sm">{formik.errors.date}</p>
+                  <p className="text-destructive text-sm">{formik.errors.date}</p>
                 )}
               </div>
 
               <div className="mt-4 md:mt-0">
-                <label className="block mb-1 font-medium">Available Time</label>
+                <label className="block mb-1 font-medium text-foreground">
+                  Available Time
+                </label>
                 <select
                   name="time"
                   disabled={!formik.values.date || !formik.values.type}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.time}
-                  className={`w-full border border-black rounded-lg px-3 py-2 focus:ring focus:ring-blue-400 ${
-                    !formik.values.date ? "bg-gray-200 cursor-not-allowed" : ""
+                  className={`w-full border border-border bg-background text-foreground rounded-lg h-13 px-3 py-2 focus:ring focus:ring-ring focus:outline-none ${
+                    !formik.values.date ? "cursor-not-allowed opacity-50" : ""
                   }`}
                 >
                   <option value="">Select a slot</option>
@@ -214,7 +231,7 @@ const BookCall = () => {
                   )}
                 </select>
                 {formik.touched.time && formik.errors.time && (
-                  <p className="text-red-500 text-sm">{formik.errors.time}</p>
+                  <p className="text-destructive text-sm">{formik.errors.time}</p>
                 )}
               </div>
             </div>
@@ -223,12 +240,12 @@ const BookCall = () => {
               <button
                 type="submit"
                 disabled={!(formik.isValid && formik.dirty)}
-                className={`w-32 font-semibold py-2 rounded-lg transition 
-      ${
-        !(formik.isValid && formik.dirty)
-          ? "bg-black/60 cursor-not-allowed"
-          : "bg-black/90 text-white hover:bg-black/80"
-      }`}
+                className={`w-32 font-semibold py-3 rounded-lg transition 
+                  ${
+                    !(formik.isValid && formik.dirty)
+                      ? "bg-muted text-muted-foreground cursor-not-allowed"
+                      : "bg-foreground text-background hover:opacity-90"
+                  }`}
               >
                 {loading ? "Booking Call" : "Book Now"}
               </button>

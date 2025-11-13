@@ -24,6 +24,10 @@ export const getTime = (dateString: string) => {
   return format(new Date(dateString), "hh:mm a");
 };
 
+export const getNotifyTime = (dateString: string) => {
+  return format(new Date(dateString), "MMM d, yyyy, hh:mm a");
+};
+
 //assignement date format
 export const formatDate = (dateStr: string) => {
   if (!dateStr) return "";
@@ -58,12 +62,53 @@ export function formatToRealDate(dateString?: string | Date): string {
 
   const date = new Date(dateString);
 
-  return date
-    .toLocaleDateString("en-US", {
-      month: "short", 
-     day: "numeric", 
-     year: "numeric",
-    })
-    // .replace(",", ""); 
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+  // .replace(",", "");
 }
 
+export function formatDueDateWithStatus(
+  dateString?: string | Date,
+  status?: string
+) {
+  if (!dateString) return "";
+
+  const dueDate = new Date(dateString);
+  const today = new Date();
+
+  dueDate.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+
+  const diffTime = dueDate.getTime() - today.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  const formattedDate = dueDate.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+
+  // ✅ If completed → only return date
+  if (status === "Completed" || status === "Completed Late") {
+    return formattedDate;
+  }
+
+  // ✅ Otherwise append days remaining info
+  if (diffDays < 0) {
+    return `${formattedDate} (Overdue)`;
+  } else if (diffDays === 0) {
+    return `${formattedDate} (Due today)`;
+  } else {
+    return `${formattedDate} (${diffDays} day${
+      diffDays > 1 ? "s" : ""
+    } remaining)`;
+  }
+}
+
+export function getDay(dateString: string) {
+  const date = new Date(dateString);
+  return format(date, "EEEE");
+}

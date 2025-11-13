@@ -68,3 +68,18 @@ export interface AssignementSend {
   fileUrl: string;
   link?: string;
 }
+
+export interface MentorTypes {
+  userId?: string;
+  mentorType: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  mobileNumber: number;
+  whatsappNumber: number;
+  resume: string;
+  age: number;
+  gender: string;
+  status?: string;
+  socialLinks: string[];
+}

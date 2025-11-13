@@ -24,7 +24,7 @@ const CoordinateVisualization = ({
 
   return (
     <motion.div
-      className="relative bg-gray-800 rounded-lg p-4 h-32 w-full overflow-visible"
+      className="relative bg-gray-900 rounded-lg p-4 h-32 w-full overflow-visible"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}

@@ -1,31 +1,45 @@
-import { BiPhone, BiEnvelope, BiMap } from "react-icons/bi";
+import { BiPhone, BiEnvelope } from "react-icons/bi";
 
 export const CONTACT_INFO = [
   {
     icon: BiPhone,
-    value: "+919036033300",
+    value: "+91 8310224836",
   },
   {
     icon: BiEnvelope,
-    value: "metalmahesh@gmail.com",
+    value: "mentoonsmythos@gmail.com",
   },
+
+];
+
+export const ABOUT = [
   {
-    icon: BiMap,
-    value: "Domlur, Bangalore, Karnataka",
+    label:"ABOUT US",
+    url:"/about-us"
   },
+   {
+    label:"WORKSHOPS",
+    url:"/workshops"
+  },
+   {
+    label:"HIRING",
+    url:"/career"
+  },
+    
 ];
 
-export const CAREER = [
-  "CAREER GUIDANCE",
-  "WORKSHOPS",
-  "PERSONOLOGY REPORT",
-  "PSYCHOLOGISTS",
-];
-
-export const PLANET = [
-  "BIRTH SIGN",
-  "PLANETS",
-  "PSYCHOLOGISTS",
-  "PERSONAL GUIDE",
-  "MYSTIC",
+export const QUICKLINKS = [
+   {
+    label:"ASTROLGY ASSESSMENTS",
+    url:"/assessment/planet"
+  }, {
+    label:"PSYCHOLOGY ASSESSMENTS",
+    url:"/assessment/psychology"
+  }, {
+    label:"BLOGS",
+    url:"/blog"
+  }, {
+    label:"GROUPS",
+    url:"/groups"
+  },
 ];

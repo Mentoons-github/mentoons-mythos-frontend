@@ -11,7 +11,7 @@ const LeftSection = () => {
 
   useEffect(() => {
     dispatch(fetchByMostReadThunk());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="flex flex-col items-start gap-5 w-full md:-mt-80">

@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  changePasswordThunk,
+  deleteAccountThunk,
   forgotPasswordThunk,
   loginThunk,
   registerThunk,
@@ -15,6 +17,7 @@ interface Auth {
   loading: boolean;
   error: string | null | undefined;
   otpError: string | null | undefined;
+  role:string
 }
 
 const initialState: Auth = {
@@ -25,6 +28,7 @@ const initialState: Auth = {
   loading: false,
   error: null,
   otpError: null,
+  role:""
 };
 
 const authSlice = createSlice({
@@ -71,6 +75,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.message = action.payload.message;
+        state.role = action.payload.role;
         // state.accessToken = accessToken;
         // state.userId = _id;
         state.success = true;
@@ -113,7 +118,7 @@ const authSlice = createSlice({
       })
 
       //forgot-password
-       .addCase(forgotPasswordThunk.pending, (state) => {
+      .addCase(forgotPasswordThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
@@ -128,6 +133,38 @@ const authSlice = createSlice({
         state.error = action.payload;
       })
 
+      //change-password
+      .addCase(changePasswordThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(changePasswordThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.message = action.payload;
+        state.success = true;
+      })
+      .addCase(changePasswordThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.success = false;
+      })
+
+      //delete account
+      .addCase(deleteAccountThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteAccountThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.message = action.payload;
+      })
+      .addCase(deleteAccountThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 

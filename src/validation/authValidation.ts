@@ -1,20 +1,19 @@
 import * as Yup from "yup";
-import { subYears } from "date-fns";
-
-const today = new Date();
-const minimumDate = subYears(today, 13);
 
 export const signupSchema = Yup.object().shape({
   firstName: Yup.string().required("First Name is required"),
   lastName: Yup.string().required("Last Name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
-  dateOfBirth: Yup.date()
-    .max(minimumDate, "You must be at least 13 years old")
-    .required("Date of birth is required"),
+  dateOfBirth: Yup.date().required("Date of birth is required"),
   country: Yup.string().required("Country is required"),
   password: Yup.string()
-    .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
+    .min(6, "Password must have at least 6 characters")
+    .matches(/[0-9]/, "Password must contain at least one number")
+    .matches(
+      /[!@#$%^&*(),.?_":{}|<>]/,
+      "Password must contain at least one special character"
+    )
+    .required("Please enter a new password"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")], "Passwords must match")
     .required("Confirm Password is required"),
@@ -34,9 +33,31 @@ export const loginSchema = Yup.object().shape({
 export const forgotPasswordSchema = Yup.object({
   email: Yup.string().email("Invalid email").required("Email is required"),
   newPassword: Yup.string()
-    .min(6, "Password must be at least 6 characters")
-    .required("New password is required"),
+    .min(6, "Password must have at least 6 characters")
+    .matches(/[0-9]/, "Password must contain at least one number")
+    .matches(
+      /[!@#$%^&*(),.?_":{}|<>]/,
+      "Password must contain at least one special character"
+    )
+    .required("Please enter a new password"),
   confirmNewPassword: Yup.string()
     .oneOf([Yup.ref("newPassword")], "Passwords do not match")
     .required("Confirm your new password"),
+});
+
+export const changePasswordSchema = Yup.object({
+  currentPassword: Yup.string().required("Please enter the current password"),
+
+  newPassword: Yup.string()
+    .min(6, "Password must have at least 6 characters")
+    .matches(/[0-9]/, "Password must contain at least one number")
+    .matches(
+      /[!@#$%^&*(),.?_":{}|<>]/,
+      "Password must contain at least one special character"
+    )
+    .required("Please enter a new password"),
+
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("newPassword")], "Passwords must match")
+    .required("Please confirm your password"),
 });

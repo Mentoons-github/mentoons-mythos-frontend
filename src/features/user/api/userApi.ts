@@ -10,16 +10,18 @@ export const fetchAllUsersApi = (
   page: number,
   limit: number,
   sort?: string,
-  search?: string
+  search?: string,
+  filterBy?: string,
+  filterValue?: string
 ) => {
   return apiClient.get(
-    `/user/all-users?page=${page}&limit=${limit}&sort=${sort}&search=${search}`
+    `/user/all-users?page=${page}&limit=${limit}&sort=${sort}&search=${search}&filterBy=${filterBy}&filterValue=${filterValue}`
   );
 };
 
 export const fetchUserCountApi = () => {
-  return apiClient.get("/user/count")
-}
+  return apiClient.get("/user/count");
+};
 
 export const blockUserApi = (userId: string) => {
   return apiClient.put(`/user/block/${userId}`);

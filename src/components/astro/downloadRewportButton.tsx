@@ -43,7 +43,7 @@ const DownloadReportButton: React.FC<{ astrologyData: Report }> = ({
       <div className="relative">
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
-          className="px-4 py-2 border border-gray-600 rounded-lg hover:bg-gray-700 transition-colors text-sm"
+          className="px-4 py-2 border border-muted-foreground rounded-lg hover:bg-muted-foreground transition-colors text-sm"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >

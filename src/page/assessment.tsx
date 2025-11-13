@@ -80,7 +80,7 @@ const Assessment = () => {
       >
         <motion.h1
           variants={fadeInUp}
-          className="text-start text-[#E39712] text-xl md:text-2xl lg:text-3xl tracking-wider font-semibold font-montserrat max-w-2xl"
+          className="text-start text-white text-xl md:text-2xl lg:text-3xl tracking-wider font-semibold font-montserrat max-w-2xl"
         >
           GRAHA-BASED ASTROLOGICAL ASSESSMENTS
         </motion.h1>

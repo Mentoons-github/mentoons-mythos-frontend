@@ -3,26 +3,26 @@ import { Link } from "react-router-dom";
 
 const Discover = ({
   label,
-  text = "white",
+  textColor = "text-foreground", // default color class
 }: {
   label: string;
-  text?: string;
+  textColor?: string;
 }) => {
   return (
-    <Link to="#" className="flex items-center gap-2  text-white w-fit group">
+    <Link to="#" className="flex items-center gap-2 w-fit group">
       <img src="/assets/icons/star.png" alt="star-icon" className="h-3 w-3" />
       <span
-        className="font-bold text-[13px] tracking-[1.3px] font-mulish"
-        style={{ color: text }}
+        className={`font-bold text-[13px] tracking-[1.3px] font-mulish ${textColor}`}
       >
         {label}
       </span>
       <FaChevronRight
-        className="text-sm transition-transform group-hover:translate-x-2"
-        style={{ color: text }}
+        className={`text-sm transition-transform group-hover:translate-x-2 ${textColor}`}
       />
     </Link>
   );
 };
 
 export default Discover;
+
+

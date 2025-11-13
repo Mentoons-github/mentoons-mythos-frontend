@@ -19,8 +19,10 @@ export interface MythosPlan {
 }
 
 export interface FooterLists {
-  icon: IconType;
-  value: string;
+  icon?: IconType;
+  value?: string;
+  label?: string;
+  url?: string;
 }
 
 export interface News {
@@ -29,24 +31,24 @@ export interface News {
   news: string;
   name?: string;
   img?: string;
-  redirect?:string
+  redirect?: string;
 }
 
 export interface Sunshine {
-  id:string,
-  rashi:string,
-  name:string,
-  description:string,
-  imageUrl:string,
-  zodiacSign:string,
-  color:string
+  id: string;
+  rashi: string;
+  name: string;
+  description: string;
+  imageUrl: string;
+  zodiacSign: string;
+  color: string;
 }
 
 export interface Intelligence {
-  id:string,
-  name:string,
-  description:string,
-  imageUrl:string,
-  zodiacSign:string,
-  color:string
+  id: string;
+  name: string;
+  description: string;
+  imageUrl: string;
+  zodiacSign: string;
+  color: string;
 }

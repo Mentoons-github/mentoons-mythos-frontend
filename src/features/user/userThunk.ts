@@ -34,12 +34,12 @@ export const fetchUserData = createAsyncThunk<UserResponse, void>(
 
 export const fetchAllUserThunk = createAsyncThunk<
   AllUserResponse,
-  { page: number; limit: number; search?: string; sort?: string }
+  { page: number; limit: number; search?: string; sort?: string, filterBy?:string, filterValue?:string }
 >(
   "user/fetch-allusers",
-  async ({ page, limit, sort, search }, { rejectWithValue }) => {
+  async ({ page, limit, sort, search, filterBy, filterValue }, { rejectWithValue }) => {
     try {
-      const response = await fetchAllUsersApi(page, limit, sort, search);
+      const response = await fetchAllUsersApi(page, limit, sort, search, filterBy, filterValue);
       return response.data;
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;

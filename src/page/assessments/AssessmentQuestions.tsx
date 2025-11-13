@@ -36,6 +36,8 @@ const AssessmentQuestions = () => {
 
   const currentQuestion = assessmentQusetion?.questions[currentQuestionIndex];
 
+  console.log(assessmentQusetion,'asdfasd')
+
   useEffect(() => {
     if (name) {
       dispatch(assessmentFetchThunk(name));

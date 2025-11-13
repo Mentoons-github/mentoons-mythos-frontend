@@ -10,10 +10,13 @@ import CareerLayout from "../../components/Career/CareerLayout";
 import DeleteModal from "../../components/modals/deleteModal";
 import { toast } from "sonner";
 import { resetCareerSlice } from "../../../features/career/careerSlice";
-import { Eye, PenSquare, Search, Trash2 } from "lucide-react";
+import { Eye, PenSquare, Trash2 } from "lucide-react";
 import EditJobModal from "../../components/modals/Career/EditJobModal";
-import { BiSort } from "react-icons/bi";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import {
+  SearchOptions,
+  ShowSort,
+  SortButton,
+} from "../../components/SortDetails";
 
 const AdminJobs = () => {
   const [showTable, setShowTable] = useState(false);
@@ -87,163 +90,141 @@ const AdminJobs = () => {
   }, [selectedJobId, viewModal, editModal, dispatch]);
 
   return (
-    <div className="text-white p-4 ">
-      <div className="flex items-center justify-between ">
-        <h1 className="text-2xl font-bold mb-4">All Jobs</h1>
-        <CareerLayout />
-      </div>
-
+    <div className="pt-3 lg:p-4 ">
       <div className="flex mb-4 h-11 items-center space-x-4 justify-between">
-        <div
-          className="w-40 h-full px-4 flex items-center justify-between 
-                             border text-white rounded-lg cursor-pointer 
-                             shadow-md hover:bg-black/80 transition-all duration-200"
+        <SortButton
           onClick={() => setShowSort((prev) => !prev)}
-        >
-          <div className="flex items-center space-x-2">
-            <BiSort size={22} className="text-[#E39712]" />
-            <h3 className="text-[16px] font-medium">Sort By</h3>
-          </div>
-          <div className="ml-2">
-            {showSort ? (
-              <IoIosArrowUp size={20} className="text-gray-300" />
-            ) : (
-              <IoIosArrowDown size={20} className="text-gray-300" />
-            )}
-          </div>
-        </div>
+          showSort={showSort}
+        />
 
-        <div className="relative">
-          <Search
-            size={15}
-            className="absolute top-3.5 left-2 text-gray-400 "
-          />
-          <input
-            type="text"
-            value={search}
+        <div className="flex gap-2">
+          <SearchOptions
+            search={search}
             onChange={(e) => {
               setSearch(e.target.value);
               setCurrentPage(1);
             }}
-            placeholder="Search Jobs..."
-            className="w-64 px-4 py-2 rounded-lg border border-gray-600 pl-7 
-                   bg-black/40 text-white placeholder-gray-400 
-                   focus:outline-none focus:ring-2 focus:ring-[#E39712]"
           />
+          <CareerLayout />
         </div>
       </div>
       {showSort && (
-        <div className="flex gap-3 mb-2">
-          {["newest", "oldest"].map((sort) => (
-            <button
-              key={sort}
-              onClick={() => {
-                setSortOrder(sort as "newest" | "oldest");
-                setCurrentPage(1);
-              }}
-              className={`px-4 py-2 rounded-lg border transition-all duration-200 ${
-                sortOrder === sort
-                  ? "bg-[#E39712] text-white border-[#E39712]"
-                  : "bg-black/40 text-gray-300 border-gray-600 hover:bg-black/70"
-              }`}
-            >
-              {sort === "newest" ? "Newest → Oldest" : "Oldest → Newest"}
-            </button>
-          ))}
-        </div>
+        <ShowSort
+          sortOrder={sortOrder}
+          onClick={(sort) => {
+            setSortOrder(sort as "newest" | "oldest");
+            setCurrentPage(1);
+          }}
+        />
       )}
 
       {!showTable || loading ? (
         <div className="flex justify-center items-center py-10">
           <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-          <span className="ml-3 text-gray-600">Loading Job details...</span>
+          <span className="ml-3 ">Loading Job details...</span>
         </div>
       ) : jobs.length == 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 text-center text-gray-400">
+        <div className="flex flex-col items-center justify-center py-20 text-center">
           <div className="w-16 h-16 flex items-center justify-center rounded-full bg-gray-700/40 mb-4">
             📭
           </div>
-          <h2 className="text-xl font-semibold text-white">No Jobs</h2>
-          <p className="text-gray-400 mt-2">
+          <h2 className="text-xl font-semibold ">No Jobs</h2>
+          <p className="text-muted-foreground mt-2">
             It looks like there are no jobs yet.
           </p>
         </div>
       ) : (
-        <div className=" h-[calc(94vh-110px)] overflow-y-auto hide-scrollbar will-change-scroll transform-gpu mt-5">
-          <table className="min-w-full table-auto border-collapse rounded-md overflow-hidden ">
-            <thead className="bg-[#E39712] text-white">
-              <tr>
-                <th className="px-4 py-4 text-left">No</th>
-                <th className="px-4 py-4 text-left">Job Id</th>
-                <th className="px-4 py-4 text-left">Job Title</th>
-                <th className="px-4 py-4 text-left">Status</th>
-                <th className="px-4 py-4 text-left">Applications</th>
-                <th className="px-4 py-4 text-left">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="">
-              {jobs?.map((job, index) => (
-                <tr
-                  key={index}
-                  className={`border-b ${
-                    index % 2 == 0 ? "bg-black/60" : ""
-                  } border-gray-600`}
-                >
-                  <td className="px-4 py-4">{index + 1}</td>
-                  <td className="px-4 py-4">{job?._id}</td>
-                  <td className="px-4 py-4 font-semibold">{job?.jobTitle}</td>
-                  <td className="px-4 py-4 font-semibold">{job?.status}</td>
-                  <td className="px-4 py-4 font-semibold">
-                    {job?.applications?.length}
-                  </td>
-
-                  <td className="px-4 py-4 space-x-3">
-                    <button
-                      onClick={() => handleView(job?._id as string)}
-                      className=" text-white rounded-md hover:text-[#c68310]"
-                    >
-                      <Eye size={20} />
-                    </button>
-                    <button
-                      onClick={() => handleEdit(job._id as string)}
-                      className="  text-white rounded-md hover:text-[#2210c6]"
-                    >
-                      <PenSquare size={20} />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(job._id as string)}
-                      className="  text-white rounded-md hover:text-[#d32a08]"
-                    >
-                      <Trash2 size={20} />
-                    </button>
-                  </td>
+        <div className="h-[calc(90vh-110px)] overflow-x-auto overflow-y-auto hide-scrollbar will-change-scroll transform-gpu mt-5">
+          <div className="inline-block min-w-full">
+            <table className="min-w-full table-auto border-collapse rounded-md overflow-hidden ">
+              <thead className="bg-blue-800">
+                <tr className="text-white">
+                  <th className="md:px-4 px-2 py-4 text-left">No</th>
+                  <th className="md:px-4 px-2 py-4 text-left">
+                    Job Id
+                  </th>
+                  <th className="md:px-4 px-2 py-4 text-left">
+                    Job Title
+                  </th>
+                  <th className="md:px-4 px-2 py-4 text-left">
+                    Status
+                  </th>
+                  <th className="md:px-4 px-2 py-4 text-left">
+                    Applications
+                  </th>
+                  <th className="md:px-4 px-2 py-4 text-left">
+                    Actions
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          {/* Pagination */}
-          <div className="flex justify-between mt-4 ">
-            <button
-              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-              disabled={currentPage === 1}
-              className="px-5 py-2 bg-white border-2 border-black text-black rounded-2xl disabled:opacity-50"
-            >
-              Prev
-            </button>
+              </thead>
+              <tbody className="">
+                {jobs?.map((job, index) => (
+                  <tr
+                    key={index}
+                    className={`border-b ${
+                      index % 2 == 0 ? "bg-muted" : ""
+                    } border-gray-600`}
+                  >
+                    <td className="md:px-4 px-2 py-4">{index + 1}</td>
+                    <td className="md:px-4 px-2 py-4">{job?._id}</td>
+                    <td className="md:px-4 px-2 py-4 font-semibold">
+                      {job?.jobTitle}
+                    </td>
+                    <td className="md:px-4 px-2 py-4  font-semibold">
+                      {job?.status}
+                    </td>
+                    <td className="md:px-4 px-2 py-4  font-semibold">
+                      {job?.applications?.length}
+                    </td>
 
-            <span>
-              Page {jobPage} of {jobTotalPage}
-            </span>
+                    <td className="md:px-4 px-2 py-4  space-x-3 flex md:block ">
+                      <button
+                        onClick={() => handleView(job?._id as string)}
+                        className="text-blue-800 rounded-md hover:text-blue-700"
+                      >
+                        <Eye size={20} />
+                      </button>
+                      <button
+                        onClick={() => handleEdit(job._id as string)}
+                        className="text-blue-800 rounded-md hover:text-blue-700"
+                      >
+                        <PenSquare size={20} />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(job._id as string)}
+                        className="  text-red-600 rounded-md hover:text-red-700"
+                      >
+                        <Trash2 size={20} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {/* Pagination */}
+            <div className="flex justify-between mt-4 ">
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-5 py-2 hover:bg-border border-2 rounded-2xl disabled:bg-foreground/40 text-muted-foreground"
+              >
+                Prev
+              </button>
 
-            <button
-              onClick={() =>
-                setCurrentPage((p) => (p < jobTotalPage ? p + 1 : p))
-              }
-              disabled={currentPage === jobTotalPage}
-              className="px-5 py-2 bg-white border-2 border-black text-black rounded-2xl disabled:opacity-50"
-            >
-              Next
-            </button>
+              <span>
+                Page {jobPage} of {jobTotalPage}
+              </span>
+
+              <button
+                onClick={() =>
+                  setCurrentPage((p) => (p < jobTotalPage ? p + 1 : p))
+                }
+                disabled={currentPage === jobTotalPage}
+                className="px-5 py-2 hover:bg-border border-2 rounded-2xl disabled:bg-foreground/40 text-muted-foreground"
+              >
+                Next
+              </button>
+            </div>
           </div>
         </div>
       )}

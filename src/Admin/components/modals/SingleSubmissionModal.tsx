@@ -14,22 +14,22 @@ const SingleSubmissionModal: React.FC<ModalProps> = ({
 }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-40 italic">
-      <div className="bg-[#6f6c6c] rounded-2xl shadow-2xl p-6 w-full max-w-4xl relative">
+      <div className="bg-secondary rounded-2xl shadow-2xl p-6 w-full max-w-4xl relative">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-black/50 hover:text-black text-xl font-bold"
+          className="absolute top-4 right-4  hover:text-muted-foreground text-xl font-bold"
         >
           ✕
         </button>
 
-        <h2 className="text-2xl font-semibold mb-6 text-white border-b pb-3">
+        <h2 className="text-2xl font-semibold mb-6 border-b pb-3">
           Assessment Submission Details
         </h2>
 
         {singleSubmissionLoading ? (
-          <p className="text-white italic">Loading submission details...</p>
+          <p className=" italic">Loading submission details...</p>
         ) : !details || details.length === 0 ? (
-          <p className="text-center text-white italic">
+          <p className="text-center italic">
             No submission details available.
           </p>
         ) : (
@@ -37,9 +37,9 @@ const SingleSubmissionModal: React.FC<ModalProps> = ({
             {details.map((ele, index) => (
               <div
                 key={ele._id}
-                className="border rounded-lg p-5 bg-[#6f6c6c] shadow-sm"
+                className="border rounded-lg p-5 bg-muted shadow-sm"
               >
-                <h3 className="text-lg font-semibold text-white mb-3">
+                <h3 className="text-lg font-semibold mb-3">
                   Q{index + 1}. {ele.question}
                 </h3>
 
@@ -47,7 +47,7 @@ const SingleSubmissionModal: React.FC<ModalProps> = ({
                   {ele.options.map((opt, i) => (
                     <div
                       key={i}
-                      className="p-2 text-sm border rounded-md bg-[#6f6c6c] text-white"
+                      className="p-2 text-sm border rounded-md "
                     >
                       {opt}
                     </div>
@@ -55,10 +55,10 @@ const SingleSubmissionModal: React.FC<ModalProps> = ({
                 </div>
 
                 <div className="mt-2">
-                  <span className="font-semibold text-white">
+                  <span className="font-semibold ">
                     Submitted Answer:
                   </span>
-                  <span className="ml-2 px-3 py-1 rounded-md bg-amber-50 text-yellow-700 font-medium">
+                  <span className="ml-2 px-3 py-1 rounded-md bg-muted-foreground text-background font-medium">
                     {ele.answer}
                   </span>
                 </div>

@@ -100,7 +100,7 @@ const AstroForm = ({
   return (
     <motion.form
       onSubmit={onSubmit}
-      className="bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700"
+      className="bg-black bg-opacity-50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -116,7 +116,7 @@ const AstroForm = ({
             name="birthDate"
             value={formData.birthDate}
             onChange={handleChange}
-            className="w-full p-2 bg-gray-700 rounded-lg text-white"
+            className="w-full p-2 border border-gray-600 rounded-lg text-white"
           />
         </div>
         <div>
@@ -126,7 +126,7 @@ const AstroForm = ({
             name="birthTime"
             value={formData.birthTime}
             onChange={handleChange}
-            className="w-full p-2 bg-gray-700 rounded-lg text-white"
+            className="w-full p-2 border border-gray-600 rounded-lg text-white"
           />
         </div>
         <div>
@@ -136,7 +136,7 @@ const AstroForm = ({
             name="latitude"
             value={formData.latitude}
             onChange={handleChange}
-            className="w-full p-2 bg-gray-700 rounded-lg text-white"
+            className="w-full p-2 border border-gray-600 rounded-lg text-white"
             placeholder="e.g., 40.7128"
           />
         </div>
@@ -147,7 +147,7 @@ const AstroForm = ({
             name="longitude"
             value={formData.longitude}
             onChange={handleChange}
-            className="w-full p-2 bg-gray-700 rounded-lg text-white"
+            className="w-full p-2 border border-gray-600 rounded-lg text-white "
             placeholder="e.g., -74.0060"
           />
         </div>
@@ -166,7 +166,7 @@ const AstroForm = ({
         <motion.button
           type="button"
           onClick={handleGetCurrentLocation}
-          className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-500 transition-colors"
+          className="px-4 py-2 bg-black border border-gray-600 text-white rounded-lg hover:bg-gray-900 transition-colors"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -175,7 +175,7 @@ const AstroForm = ({
         <motion.button
           type="button"
           onClick={() => setShowMap(true)}
-          className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-500 transition-colors"
+          className="px-4 py-2 bg-black border border-gray-600 text-white rounded-lg hover:bg-gray-900 transition-colors"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >

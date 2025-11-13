@@ -40,7 +40,6 @@ const HiringModal = ({ setModalOpen, title, jobId }: HiringModalProps) => {
   };
 
   const dispatch = useAppDispatch();
-  const { file: uploadedFile } = useAppSelector((state) => state.upload);
   const { message, error, loading, success } = useAppSelector(
     (state) => state.career
   );
@@ -80,35 +79,34 @@ const HiringModal = ({ setModalOpen, title, jobId }: HiringModalProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const { name, email, mobileNumber, resume, gender, coverNote, cLocation } =
-      formData;
+    const { name, email, mobileNumber, resume, gender, cLocation } = formData;
 
-    if (
-      !name ||
-      !email ||
-      !mobileNumber ||
-      !resume ||
-      !gender ||
-      coverNote ||
-      !cLocation
-    ) {
+    if (!name || !email || !mobileNumber || !resume || !gender || !cLocation) {
       toast.error("Please fill in all fields ");
       return;
     }
 
-     if (!cities.some((city) => city.name === cLocation)) {
+    if (!cities.some((city) => city.name === cLocation)) {
       toast.error("Please select a valid city.");
       return;
     }
 
-    let fileUrl: string = uploadedFile ?? "";
+    let fileUrl: string = "";
 
     try {
-      fileUrl = await dispatch(
+      const result = await dispatch(
         fileUploadThunk({ file: resume, category: "career" })
       ).unwrap();
+
+      if (typeof result === "string") {
+        fileUrl = result;
+      } else if (Array.isArray(result) && result.length > 0) {
+        fileUrl = result[0].url;
+      } else {
+        throw new Error("Invalid upload response");
+      }
     } catch (err) {
-      toast.error("File upload failed. Please try again." + err);
+      toast.error("File upload failed. Please try again. " + err);
       return;
     }
 
@@ -128,20 +126,20 @@ const HiringModal = ({ setModalOpen, title, jobId }: HiringModalProps) => {
       onClick={() => setModalOpen(false)}
     >
       <div
-        className="bg-gradient-to-t from-[#b6b4b4] to-[#f2f2f6] rounded-2xl shadow-xl w-[90%] max-w-2xl p-6 relative"
+        className="bg-secondary rounded-2xl shadow-xl w-[90%] max-w-2xl p-6 relative"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           type="button"
           onClick={() => setModalOpen(false)}
-          className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
+          className="absolute top-3 right-3  hover:text-muted-foreground"
         >
           ✕
         </button>
 
         <div className="text-center">
           <h2 className="text-2xl font-extrabold mb-1">{title}</h2>
-          <p className="mb-4 text-gray-600">
+          <p className="mb-4 text-muted-foreground">
             Fill in the details below and we'll contact you
           </p>
         </div>
@@ -150,7 +148,7 @@ const HiringModal = ({ setModalOpen, title, jobId }: HiringModalProps) => {
           {/* Name + Email */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium ">
                 Name
               </label>
               <input
@@ -158,14 +156,14 @@ const HiringModal = ({ setModalOpen, title, jobId }: HiringModalProps) => {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-lg border h-11 border-gray-600 px-3 py-2 focus:ring-2 focus:ring-black"
+                className="mt-1 block w-full rounded-lg border h-11  px-3 py-2 focus:ring "
                 placeholder="Enter your full name"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium ">
                 Email Address
               </label>
               <input
@@ -173,7 +171,7 @@ const HiringModal = ({ setModalOpen, title, jobId }: HiringModalProps) => {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-lg border h-11 border-gray-600 px-3 py-2 focus:ring-2 focus:ring-black"
+                className="mt-1 block w-full rounded-lg border h-11  px-3 py-2 focus:ring"
                 placeholder="Enter your email"
                 required
               />
@@ -183,7 +181,7 @@ const HiringModal = ({ setModalOpen, title, jobId }: HiringModalProps) => {
           {/* Mobile + Gender */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium ">
                 Mobile Number
               </label>
               <input
@@ -196,26 +194,26 @@ const HiringModal = ({ setModalOpen, title, jobId }: HiringModalProps) => {
                     setFormData((prev) => ({ ...prev, mobileNumber: value }));
                   }
                 }}
-                className="mt-1 block w-full rounded-lg border h-11 border-gray-600 px-3 py-2 focus:ring-2 focus:ring-black"
+                className="mt-1 block w-full rounded-lg border h-11 px-3 py-2 focus:ring"
                 placeholder="10 digit number"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium ">
                 Gender
               </label>
               <select
                 name="gender"
                 value={formData.gender}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-lg border h-11 border-gray-600 px-3 py-2 focus:ring-2 focus:ring-black"
+                className="mt-1 block w-full rounded-lg border h-11  px-3 py-2 focus:ring"
                 required
               >
-                <option value="">Select Gender</option>
+                <option value="" className="bg-secondary">Select Gender</option>
                 {genders.map((g) => (
-                  <option key={g} value={g}>
+                  <option key={g} value={g} className="bg-secondary">
                     {g}
                   </option>
                 ))}
@@ -225,7 +223,7 @@ const HiringModal = ({ setModalOpen, title, jobId }: HiringModalProps) => {
 
           {/* Cover Note */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium ">
               Cover Note
             </label>
             <textarea
@@ -233,11 +231,11 @@ const HiringModal = ({ setModalOpen, title, jobId }: HiringModalProps) => {
               rows={3}
               value={formData.coverNote}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-lg border border-gray-600 px-3 py-2 focus:ring-2 focus:ring-black hide-scrollbar"
+              className="mt-1 block w-full rounded-lg border px-3 py-2 focus:ring hide-scrollbar"
               placeholder="Write a short cover note"
               maxLength={600}
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               {formData.coverNote.length}/600 characters
             </p>
           </div>
@@ -246,13 +244,13 @@ const HiringModal = ({ setModalOpen, title, jobId }: HiringModalProps) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Upload Resume */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium ">
                 Upload Resume
               </label>
               <label
                 className="flex items-center justify-between h-11 mt-1
                    w-full border rounded-lg cursor-pointer 
-                   bg-black text-white hover:bg-black/80 px-4 text-sm"
+                   bg-background text-foreground hover:bg-background/80 px-4 text-sm"
               >
                 {fileName ? fileName : "Choose File"}
                 <input
@@ -268,7 +266,7 @@ const HiringModal = ({ setModalOpen, title, jobId }: HiringModalProps) => {
 
             {/* Searchable City (datalist) */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium ">
                 Location
               </label>
               <input
@@ -276,13 +274,16 @@ const HiringModal = ({ setModalOpen, title, jobId }: HiringModalProps) => {
                 name="cLocation"
                 value={formData.cLocation}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-lg border h-11 border-gray-600 px-3 py-2 focus:ring-2 focus:ring-black"
+                className="mt-1 block w-full rounded-lg border h-11 px-3 py-2 focus:ring"
                 placeholder="Type or select city"
                 required
               />
               <datalist id="cityOptions">
                 {cities.map((city) => (
-                  <option key={`${city.name}-${city.stateCode}-${city.countryCode}`} value={city.name} />
+                  <option
+                    key={`${city.name}-${city.stateCode}-${city.countryCode}`}
+                    value={city.name}
+                  />
                 ))}
               </datalist>
             </div>
@@ -291,7 +292,7 @@ const HiringModal = ({ setModalOpen, title, jobId }: HiringModalProps) => {
           <button
             type="submit"
             disabled={loading}
-            className="block w-full text-center bg-black text-white py-3 rounded-lg shadow hover:bg-black/80 disabled:opacity-50"
+            className="block w-full text-center bg-foreground text-background py-3 rounded-lg shadow hover:bg-foreground/80 disabled:opacity-50"
           >
             {loading ? "Applying..." : "Submit Application"}
           </button>

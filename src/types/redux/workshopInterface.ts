@@ -19,7 +19,7 @@ export interface GetEnquiriesResponse {
 export interface WorkshopI {
   _id?:string
   age: string;
-  amount: number;
+  amount: number | string;
   focus: string;
   img: string;
   activities: string[];

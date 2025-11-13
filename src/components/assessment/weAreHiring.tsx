@@ -10,7 +10,7 @@ const WeAreHiring = () => {
   const { ref: astrologerRef, isInView: isAstrologerInView } = useInView(0.1);
   const { ref: psychologistRef, isInView: isPsychologistInView } =
     useInView(0.1);
-    const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const HiringTexts = [
     "Work with a growing community",
@@ -18,15 +18,15 @@ const WeAreHiring = () => {
     "Get featured in premium workshops",
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  };
+  // const containerVariants = {
+  //   hidden: { opacity: 0 },
+  //   visible: {
+  //     opacity: 1,
+  //     transition: {
+  //       duration: 0.5,
+  //     },
+  //   },
+  // };
 
   const titleVariants = {
     hidden: { opacity: 0, y: -30 },
@@ -94,10 +94,10 @@ const WeAreHiring = () => {
   return (
     <motion.div
       ref={sectionRef}
-      className="relative px-4 sm:px-8 md:px-12 lg:px-20 py-8 sm:py-10 md:py-12 lg:py-15 bg-white flex flex-col justify-center items-start min-h-[500px] overflow-hidden"
-      variants={containerVariants}
-      initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
+      className="relative px-4 sm:px-8 md:px-12 lg:px-20 py-8 sm:py-10 md:py-12 lg:py-1 flex flex-col justify-center items-start min-h-[500px] overflow-hidden bg-[url('/assets/background/section/stars_background.png')] bg-center"
+      // variants={containerVariants}
+      // initial="hidden"
+      // animate={isInView ? "visible" : "hidden"}
     >
       <motion.div
         ref={astrologerRef}
@@ -113,13 +113,13 @@ const WeAreHiring = () => {
         />
         <NavLink
           to="/career"
-          className="inline-block border-b-2 border-black pb-1 text-center text-base"
+          className="inline-block border-b-2 border-foreground pb-1 text-center text-base"
         >
           APPLY FOR ASTROLOGER
         </NavLink>
       </motion.div>
 
-      <div className="absolute top-1/2 right-30 w-[500px] h-1 bg-black rotate-[120deg] hidden xl:block"></div>
+      <div className="absolute top-1/2 right-30 w-[500px] h-1 bg-foreground rotate-[120deg] hidden xl:block"></div>
 
       <motion.div
         ref={psychologistRef}
@@ -135,7 +135,7 @@ const WeAreHiring = () => {
         />
         <NavLink
           to="/career"
-          className="inline-block border-b-2 border-black pb-1 text-center text-base"
+          className="inline-block border-b-2 border-foreground pb-1 text-center text-base"
         >
           APPLY FOR PSYCHOLOGIST
         </NavLink>
@@ -143,7 +143,7 @@ const WeAreHiring = () => {
 
       <motion.h1
         ref={titleRef}
-        className="font-montserrat text-2xl sm:text-3xl md:text-4xl font-bold tracking-widest text-[#1A1D3B]"
+        className="font-montserrat text-2xl sm:text-3xl md:text-4xl font-bold tracking-widest "
         variants={titleVariants}
         initial="hidden"
         animate={isTitleInView ? "visible" : "hidden"}
@@ -163,10 +163,11 @@ const WeAreHiring = () => {
           variants={listItemVariants}
         >
           Are you a passionate{" "}
-          <span className="text-[#1A1D3B] font-bold">Psychologist</span> or{" "}
-          <span className="text-[#1A1D3B] font-bold">Astrologer</span> ready to
-          guide others toward self-discovery? We're looking for talented
-          professionals to be a part of Mentoons Mythos!
+          <span className="text-muted-foreground font-bold">Psychologist</span>{" "}
+          or{" "}
+          <span className="text-muted-foreground  font-bold">Astrologer</span>{" "}
+          ready to guide others toward self-discovery? We're looking for
+          talented professionals to be a part of Mentoons Mythos!
         </motion.p>
 
         <motion.ul className="space-y-4 sm:space-y-6 md:space-y-8 mt-4 sm:mt-5 font-mulish text-base sm:text-lg md:text-xl">
@@ -183,7 +184,10 @@ const WeAreHiring = () => {
         </motion.ul>
 
         <motion.div className="mt-6 sm:mt-7 md:mt-8" variants={buttonVariants}>
-          <MythosButton label="APPLY NOW" bg="#1A1D3B" textClr="white" onClick={()=>navigate('/career')}/>
+          <MythosButton
+            label="APPLY NOW"
+            onClick={() => navigate("/career")}
+          />
         </motion.div>
       </motion.div>
 

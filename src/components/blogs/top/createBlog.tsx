@@ -11,8 +11,6 @@ import { toast } from "sonner";
 const CreateBlog = ({ userId }: { userId: string }) => {
   const dispatch = useAppDispatch();
   const { showModal } = useSignInSignUp();
-  const { file: uploadedImage } = useAppSelector((state) => state.upload);
-
   const [file, setFile] = useState<File | null>(null);
   const [touched, setTouched] = useState(false);
 
@@ -61,13 +59,20 @@ const CreateBlog = ({ userId }: { userId: string }) => {
       return;
     }
 
-    let imageUrl = uploadedImage;
+    let imageUrl = "";
 
     if (file) {
       try {
-        imageUrl = await dispatch(
+        const result = await dispatch(
           fileUploadThunk({ file, category: "blog" })
         ).unwrap();
+        if (typeof result === "string") {
+          imageUrl = result;
+        } else if (Array.isArray(result) && result.length > 0) {
+          imageUrl = result[0].url;
+        } else {
+          throw new Error("Invalid upload response");
+        }
       } catch (err) {
         alert("File upload failed: " + err);
         return;
@@ -96,7 +101,7 @@ const CreateBlog = ({ userId }: { userId: string }) => {
       viewport={{ once: true }}
     >
       <motion.h1
-        className=" text-2xl md:text-3xl ml-3 md:ml-0 font-medium mb-4"
+        className=" text-2xl md:text-3xl ml-3 md:ml-0 font-medium mb-4 "
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
@@ -118,8 +123,8 @@ const CreateBlog = ({ userId }: { userId: string }) => {
               value={input.title}
               onChange={handleChange}
               placeholder="Enter blog title"
-              maxLength={60} 
-              className="bg-white p-3 rounded w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E39712]"
+              maxLength={60}
+              className="bg-white p-3 rounded w-full border text-black border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
             />
 
             <input
@@ -128,7 +133,7 @@ const CreateBlog = ({ userId }: { userId: string }) => {
               value={input.tags}
               onChange={handleChange}
               placeholder="Enter Tags separate by coma(e.g. tech,react,ui)"
-              className="bg-white p-3 rounded w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E39712] mt-3 md:mt-0"
+              className="bg-white p-3 rounded w-full border text-black border-gray-300 focus:outline-none focus:ring-2 focus:ring-black mt-3 md:mt-0"
             />
           </div>
 
@@ -139,7 +144,7 @@ const CreateBlog = ({ userId }: { userId: string }) => {
                 <textarea
                   name="description"
                   rows={5}
-                  className="bg-white p-4 pr-4 pl-4 pb-12 rounded resize-none w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E39712]"
+                  className="bg-white p-4 pr-4 pl-4 pb-12 rounded text-black resize-none w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
                   onChange={handleChange}
                   placeholder="Start writing your thoughts here..."
                   onFocus={() => setTouched(true)}
@@ -262,7 +267,7 @@ const CreateBlog = ({ userId }: { userId: string }) => {
                   wordCount > 250
                 }
                 type="submit"
-                className="bg-[#E39712] px-6 py-2 disabled:bg-[rgb(219,179,111)] text-white rounded hover:bg-[#d3860f]"
+                className="bg-black px-6 py-2 disabled:bg-black/80 text-white rounded hover:bg-black/70"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
               >

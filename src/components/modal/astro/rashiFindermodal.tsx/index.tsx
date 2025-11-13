@@ -76,15 +76,16 @@ const RashiFinderModal = ({ onClose }: RashiFinderModalProps) => {
   const [result, setResult] = useState<RashiResultData | null>(null);
   const [selectedMode, setSelectedMode] = useState<"vedic" | "zodiac">("vedic");
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [hasRashi, setHasRashi] = useState<boolean | null>(null);
+  const [hasRashi, setHasRashi] = useState<boolean | null>(false);
   const [rashiCheckError, setRashiCheckError] = useState<string | null>(null);
-  const [isDelayed, setIsDelayed] = useState(false);
+  const [checking, setChecking] = useState(true);
+  // const [isDelayed, setIsDelayed] = useState(false);
 
   useEffect(() => {
     const rashiCheck = async () => {
       try {
         const response = await checkRashi();
-        setHasRashi(response.data.hasRashi);
+        setHasRashi(response.data);
         setRashiCheckError(null);
       } catch (err: unknown) {
         console.error("Failed to check rashi:", err);
@@ -100,22 +101,23 @@ const RashiFinderModal = ({ onClose }: RashiFinderModalProps) => {
         ) {
           dispatch(userLogout());
         }
+      } finally {
+        setChecking(false); // ✅ mark check as finished
       }
     };
 
     rashiCheck();
   }, [dispatch]);
-
-  useEffect(() => {
-    if (hasRashi === true) {
-      const timer = setTimeout(() => {
-        setIsDelayed(true);
-      }, 4000);
-      return () => clearTimeout(timer);
-    } else {
-      setIsDelayed(false);
-    }
-  }, [hasRashi]);
+  // useEffect(() => {
+  //   if (hasRashi === true) {
+  //     const timer = setTimeout(() => {
+  //       setIsDelayed(true);
+  //     }, 4000);
+  //     return () => clearTimeout(timer);
+  //   } else {
+  //     setIsDelayed(false);
+  //   }
+  // }, [hasRashi]);
 
   const handleGetCurrentLocation = () => {
     if (!navigator.geolocation) {
@@ -239,8 +241,13 @@ const RashiFinderModal = ({ onClose }: RashiFinderModalProps) => {
       setIsSubmitted(false);
     }
   };
+  useEffect(() => {
+    if (hasRashi) {
+      onClose();
+    }
+  }, [hasRashi, onClose]);
 
-  if (hasRashi === null || !hasRashi || (hasRashi && !isDelayed)) {
+  if (checking) {
     return null;
   }
 
@@ -270,28 +277,28 @@ const RashiFinderModal = ({ onClose }: RashiFinderModalProps) => {
       transition={{ duration: 0.5 }}
     >
       <motion.div
-        className="relative bg-gradient-to-br from-gray-900 via-black to-gray-800 p-8 rounded-2xl text-center space-y-6 border border-gray-600/50 shadow-2xl max-w-2xl w-full mx-4 overflow-hidden max-h-[90vh] overflow-y-auto"
+        className="relative bg-gradient-to-br from-gray-100 via-white to-gray-300 p-8 rounded-2xl text-center space-y-6 border border-gray-600/50 shadow-2xl max-w-2xl w-full mx-4 overflow-hidden max-h-[90vh] overflow-y-auto hide-scrollbar"
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors z-20"
+          className="absolute top-4 right-4 text-gray-700 hover:text-black transition-colors z-20"
         >
           <X size={24} />
         </button>
 
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <motion.div
-            className="absolute top-4 left-4 text-white"
+            className="absolute top-4 left-4 text-black"
             variants={pulseVariants}
             animate="animate"
           >
             <Star size={12} />
           </motion.div>
           <motion.div
-            className="absolute top-8 right-8 text-gray-300"
+            className="absolute top-8 right-8 text-gray-800"
             variants={bounceVariants}
             animate="animate"
             transition={{ delay: 1 }}
@@ -299,7 +306,7 @@ const RashiFinderModal = ({ onClose }: RashiFinderModalProps) => {
             <Star size={8} />
           </motion.div>
           <motion.div
-            className="absolute bottom-12 left-8 text-gray-400"
+            className="absolute bottom-12 left-8 text-gray-800"
             variants={pulseVariants}
             animate="animate"
             transition={{ delay: 2 }}
@@ -307,7 +314,7 @@ const RashiFinderModal = ({ onClose }: RashiFinderModalProps) => {
             <Star size={10} />
           </motion.div>
           <motion.div
-            className="absolute bottom-6 right-6 text-white"
+            className="absolute bottom-6 right-6 text-black"
             variants={pulseVariants}
             animate="animate"
             transition={{ delay: 3 }}

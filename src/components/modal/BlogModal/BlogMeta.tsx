@@ -7,7 +7,7 @@ interface BlogMetaProps {
 
 const BlogMeta: React.FC<BlogMetaProps> = ({ writer, createdAt }) => {
   return (
-    <p className="text-sm text-gray-600 mb-2">
+    <p className="text-sm text-muted-foreground mb-2">
       <span className="font-semibold text-purple-700">{writer}</span> •{" "}
       {createdAt && (
         <span>{format(new Date(createdAt), "dd MMM yyyy")}</span>

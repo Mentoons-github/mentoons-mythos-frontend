@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { fetchUserData } from "./features/user/userThunk";
 import { BrowserRouter } from "react-router-dom";
 import LoginModalProvider from "./context/provider/loginProvider";
+import { ThemeProvider } from "./context/ThemeContext";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -16,10 +17,12 @@ function App() {
   }, [dispatch, user]);
   return (
     <BrowserRouter>
-      <LoginModalProvider>
-        <Toaster closeButton richColors />
-        <AppRouter />
-      </LoginModalProvider>
+      <ThemeProvider>
+        <LoginModalProvider>
+          <Toaster closeButton richColors />
+          <AppRouter />
+        </LoginModalProvider>
+      </ThemeProvider>
     </BrowserRouter>
   );
 }

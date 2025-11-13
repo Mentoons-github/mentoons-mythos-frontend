@@ -57,18 +57,18 @@ const PsychologyAssessmentTop = () => {
       animate="visible"
       exit="exit"
       variants={staggerContainer}
-      className="relative p-4 md:p-8 lg:p-15 lg:px-20 space-y-4 md:space-y-10 bg-black bg-[url('/assets/background/section/stars_background.png')]"
+      className="relative p-4 md:p-8 lg:p-15 lg:px-20 space-y-4 md:space-y-10 bg-[url('/assets/background/section/stars_background.png')] bg-center"
     >
       <motion.h1
         variants={fadeInUp}
-        className="text-start text-[#E39712] text-xl md:text-2xl lg:text-3xl tracking-wider font-semibold font-montserrat max-w-2xl"
+        className="text-start text-xl md:text-2xl lg:text-3xl tracking-wider font-semibold font-montserrat max-w-2xl"
       >
         PSYCHOLOGICAL ASSESSMENTS
       </motion.h1>
 
       <motion.p
         variants={fadeInUp}
-        className="max-w-2xl lg:max-w-md xl:max-w-2xl text-[#FBF9F9] text-base md:text-md lg:text-lg font-mulish leading-6 md:leading-7"
+        className="max-w-2xl lg:max-w-md xl:max-w-2xl text-base md:text-md lg:text-lg font-mulish leading-6 md:leading-7"
       >
         Gain deeper insight into your thought patterns, behavioral traits,
         strengths, emotional intelligence, and decision-making abilities. Our
@@ -79,7 +79,7 @@ const PsychologyAssessmentTop = () => {
 
       <motion.span
         variants={fadeInUp}
-        className="text-[#E39712] text-base md:text-lg font-bold font-mulish mt-10"
+        className=" text-base md:text-lg font-bold font-mulish mt-10"
       >
         The celestial deities speak. Are you ready to listen?
       </motion.span>
