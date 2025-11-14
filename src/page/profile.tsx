@@ -1,18 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  User,
-  Star,
-  BookOpen,
-  Edit,
-  Globe,
-  Info,
-  Mail,
-  Shield,
-  Trash2,
-} from "lucide-react";
-import AstroForm from "../components/profile/astroForm";
-import AstroData from "../components/profile/astroData";
+import { User, Star, BookOpen, Edit, Mail, Shield, Trash2 } from "lucide-react";
+
 import ProfileBlogs from "../components/profile/blogs";
 import { IUser } from "../types";
 import { useAppSelector, useAppDispatch } from "../hooks/reduxHooks";
@@ -32,6 +21,7 @@ import { CgPassword } from "react-icons/cg";
 import { deleteAccountThunk } from "../features/auth/authThunk";
 import AccountDeleteModal from "../components/modal/AccountDeleteModal";
 import { toast } from "sonner";
+import ProfileData from "../components/profile/ProfileData";
 // import { getFullCountryName } from "../utils";
 
 const Profile = () => {
@@ -263,7 +253,7 @@ const Profile = () => {
 
   return (
     <motion.div
-      className="min-h-screen  p-6"
+      className="min-h-screen p-3 md:p-6"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -271,7 +261,7 @@ const Profile = () => {
       <div className="max-w-4xl mx-auto">
         <motion.div className="text-center mb-8" variants={itemVariants}>
           <motion.h1
-            className="text-4xl font-bold mb-2 "
+            className="text-2xl md:text-4xl font-bold mb-2 "
             whileHover={{ scale: 1.05 }}
           >
             Cosmic Profile
@@ -303,7 +293,7 @@ const Profile = () => {
         )}
 
         <motion.div
-          className="bg- bg-opacity-50 backdrop-blur-sm rounded-2xl p-8 mb-8 border border-muted-foreground"
+          className="bg- bg-opacity-50 backdrop-blur-sm rounded-2xl p-4 md:p-8 mb-8 border border-muted-foreground"
           variants={cardVariants}
           whileHover="hover"
         >
@@ -339,16 +329,16 @@ const Profile = () => {
 
             <div className="flex-1">
               <motion.h2
-                className="text-3xl font-bold mb-1"
+                className="text-xl md:ext-3xl font-bold mb-1"
                 variants={itemVariants}
               >
                 {`${user.firstName} ${user.lastName}`}
               </motion.h2>
               <motion.div
-                className="flex items-center space-x-2 text-muted-foreground"
+                className="flex items-center text-sm md:text-base space-x-1 md:space-x-2 text-muted-foreground"
                 variants={itemVariants}
               >
-                <Mail size={16} />
+                <Mail className="w-4 h-4 md:w-5 md:h-5 " />
                 <span>{user.email}</span>
               </motion.div>
               {user.role && user.role !== "user" && (
@@ -365,67 +355,67 @@ const Profile = () => {
         </motion.div>
 
         <motion.div
-          className="flex flex-wrap gap-3 mb-8"
+          className="flex flex-wrap gap-2 md:gap-3 mb-8"
           variants={itemVariants}
         >
           <button
             onClick={() => setActiveTab("profile")}
-            className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+            className={`px-2 md:px-3 lg:px-6 py-2 lg:py-3 rounded-lg text-sm md:text-base font-semibold md:font-medium transition-all duration-300 ${
               activeTab === "profile"
                 ? "bg-foreground text-background shadow-lg "
                 : "bg-background text-foreground border border-foreground hover:bg-foreground/80 hover:scale-105"
             }`}
           >
             <div className="flex items-center space-x-2">
-              <User size={20} />
+              <User className="w-4 h-4 md:w-5 md:h-5  lg:w-6 lg:h-6" />
               <span>Profile</span>
             </div>
           </button>
           <button
             onClick={() => setActiveTab("edit")}
-            className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+            className={`px-2 md:px-3 lg:px-6 py-2 lg:py-3 rounded-lg text-sm md:text-base font-semibold md:font-medium transition-all duration-300 ${
               activeTab === "edit"
                 ? "bg-foreground text-background shadow-lg"
                 : "bg-background text-foreground hover:bg-foreground/80 hover:scale-105 border border-foreground"
             }`}
           >
             <div className="flex items-center space-x-2">
-              <Edit size={20} />
+              <Edit className="w-4 h-4 md:w-5 md:h-5  lg:w-6 lg:h-6" />
               <span>Edit</span>
             </div>
           </button>
           <button
             onClick={() => setActiveTab("blogs")}
-            className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+            className={`px-2 md:px-3 lg:px-6 py-2 lg:py-3 rounded-lg text-sm md:text-base font-semibold md:font-medium transition-all duration-300 ${
               activeTab === "blogs"
                 ? "bg-foreground text-background shadow-lg"
                 : "bg-background text-foreground hover:bg-foreground/80 hover:scale-105 border border-foreground"
             }`}
           >
             <div className="flex items-center space-x-2">
-              <BookOpen size={20} />
+              <BookOpen className="w-4 h-4 md:w-5 md:h-5  lg:w-6 lg:h-6" />
               <span>My Blogs</span>
             </div>
           </button>
           <button
             onClick={() => setActiveTab("password")}
-            className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+            className={`px-2 md:px-3 lg:px-6 py-2 lg:py-3 rounded-lg text-sm md:text-base font-semibold md:font-medium transition-all duration-300 ${
               activeTab === "password"
                 ? "bg-foreground text-background shadow-lg"
                 : "bg-background text-foreground hover:bg-foreground/80 hover:scale-105 border border-foreground"
             }`}
           >
             <div className="flex items-center space-x-2">
-              <CgPassword size={20} />
+              <CgPassword className="w-4 h-4 md:w-5 md:h-5  lg:w-6 lg:h-6" />
               <span>Change Password</span>
             </div>
           </button>
           <button
             onClick={handleDeleteAccount}
-            className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 bg-red-600 hover:bg-red-700`}
+            className={`px-2 md:px-3 lg:px-6 py-2 lg:py-3 rounded-lg text-sm md:text-base font-semibold md:font-medium transition-all duration-300 bg-red-600 hover:bg-red-700`}
           >
             <div className="flex items-center space-x-2">
-              <Trash2 size={20} />
+              <Trash2 className="w-4 h-4 md:w-5 md:h-5  lg:w-6 lg:h-6" />
               <span>Delete Account</span>
             </div>
           </button>
@@ -433,143 +423,16 @@ const Profile = () => {
 
         <AnimatePresence mode="wait">
           {activeTab === "profile" && (
-            <motion.div
-              key="profile-content"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
-            >
-              {/* Enhanced User Details Section */}
-              <motion.div
-                className=" bg-opacity-50 backdrop-blur-sm rounded-2xl p-8 mb-8 border border-muted-foreground"
-                variants={cardVariants}
-                whileHover="hover"
-              >
-                <h3 className="text-2xl font-semibold-white mb-6 flex items-center space-x-2">
-                  <User size={24} className="" />
-                  <span>Personal Information</span>
-                </h3>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {/* Email */}
-                  <motion.div
-                    className="flex items-center space-x-3 p-4 border border-muted-foreground bg-opacity-50 rounded-xl hover:bg-opacity-70 transition-all duration-300"
-                    whileHover={{ scale: 1.02 }}
-                  >
-                    <div className="flex-shrink-0 w-10 h-10  border border-muted-foreground rounded-lg flex items-center justify-center">
-                      <Mail size={20} className="text-" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground font-medium">
-                        Email Address
-                      </p>
-                      <p className="t font-semibold">{user.email}</p>
-                    </div>
-                  </motion.div>
-
-                  {/* Country */}
-                  {user.country && (
-                    <motion.div
-                      className="flex items-center space-x-3 p-4 border border-muted-foreground rounded-xl hover:bg-opacity-70 transition-all duration-300"
-                      whileHover={{ scale: 1.02 }}
-                    >
-                      <div className="flex-shrink-0 w-10 h-10  border border-muted-foreground rounded-lg flex items-center justify-center">
-                        <Globe size={20} className="" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground font-medium">
-                          Country
-                        </p>
-                        <p className=" font-semibold">
-                          {user.country}
-                        </p>
-                      </div>
-                    </motion.div>
-                  )}
-
-                  {/* Account Type */}
-                  {user.isGoogleUser && (
-                    <motion.div
-                      className="flex items-center space-x-3 p-4 border border-muted-foreground rounded-xl hover:bg-opacity-70 transition-all duration-300"
-                      whileHover={{ scale: 1.02 }}
-                    >
-                      <div className="flex-shrink-0 w-10 h-10 border border-muted-foreground rounded-lg flex items-center justify-center">
-                        <Shield size={20} className="" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground font-medium">
-                          Account Type
-                        </p>
-                        <p className=" font-semibold">
-                          Google Account
-                        </p>
-                      </div>
-                    </motion.div>
-                  )}
-                </div>
-
-                {/* About Section */}
-                {user.about && (
-                  <motion.div
-                    className="mt-8 p-6  rounded-xl border border-gray-600"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <div className="flex items-center space-x-2 mb-4">
-                      <div className="w-8 h-8 bg-gray-500 bg-opacity-20 rounded-lg flex items-center justify-center">
-                        <Info size={18} className="text-gray-400" />
-                      </div>
-                      <h4 className="text-lg font-semibold ">
-                        About Me
-                      </h4>
-                    </div>
-                    <p className="text-muted-foreground leading-relaxed text-base">
-                      {user.about}
-                    </p>
-                  </motion.div>
-                )}
-              </motion.div>
-
-              {/* Astrology Section */}
-              <AnimatePresence mode="wait">
-                {(!user.astrologyDetail || isEditing) && !astroLoading ? (
-                  <motion.div
-                    key="form"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <AstroForm
-                      formData={formData}
-                      setFormData={setFormData}
-                      onSubmit={handleFormSubmit}
-                      isEditing={isEditing}
-                      setIsEditing={setIsEditing}
-                    />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="data"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <AstroData
-                      userProfile={{
-                        ...user,
-                        astrologyDetail:
-                          user.astrologyDetail || astrologyDetail!,
-                      }}
-                      setIsEditing={setIsEditing}
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
+            <ProfileData
+              astroLoading={astroLoading}
+              astrologyDetail={astrologyDetail ?? undefined}
+              formData={formData}
+              isEditing={isEditing}
+              onSubmit={handleFormSubmit}
+              setFormData={setFormData}
+              setIsEditing={setIsEditing}
+              user={user}
+            />
           )}
           {activeTab === "blogs" && (
             <ProfileBlogs
@@ -608,7 +471,11 @@ const Profile = () => {
       )}
 
       {showUpload && !uploadSuccess && (
-        <ProfileUpload onClose={onClose} setUploadSuccess={setUploadSuccess} />
+        <ProfileUpload
+          onClose={onClose}
+          setUploadSuccess={setUploadSuccess}
+          haveProfilePicture={user?.profilePicture ? true : false}
+        />
       )}
 
       {deleteModal && (

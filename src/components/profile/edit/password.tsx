@@ -6,8 +6,17 @@ import { motion } from "framer-motion";
 import { useFormik } from "formik";
 import { resetAuthState } from "../../../features/auth/authSlice";
 import { toast } from "sonner";
-import { changePasswordThunk } from "../../../features/auth/authThunk";
-import { changePasswordSchema } from "../../../validation/authValidation";
+import {
+  changePasswordThunk,
+  forgotPasswordThunk,
+} from "../../../features/auth/authThunk";
+import {
+  changePasswordSchema,
+  forgotPasswordSchema,
+} from "../../../validation/authValidation";
+import Input from "../../ui/Input";
+import AuthButton from "../../ui/AuthButton";
+import { updateUserPassword } from "../../../features/user/userSlice";
 
 const containerVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -54,12 +63,16 @@ interface ChangePasswordProps {
 const ChangePassword = ({ setActiveTab }: ChangePasswordProps) => {
   const user = useAppSelector((state) => state.user.user);
 
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const dispatch = useAppDispatch();
   const {
     message,
     loading,
     error,
     success: authSuccess,
+    userPassword,
   } = useAppSelector((state) => state.auth);
 
   const [showPasswords, setShowPasswords] = useState({
@@ -68,53 +81,12 @@ const ChangePassword = ({ setActiveTab }: ChangePasswordProps) => {
     confirm: false,
   });
 
-  // const [passwordStrength, setPasswordStrength] = useState(0);
-
-  // const calculatePasswordStrength = (password: string) => {
-  //   let strength = 0;
-  //   const checks = [
-  //     password.length >= 6,
-  //     /\d/.test(password),
-  //     /[!@#$%^&*(),.?":{}|<>_]/.test(password),
-  //   ];
-  //   strength = checks.filter(Boolean).length;
-  //   return strength;
-  // };
-
   const togglePasswordVisibility = (field: keyof typeof showPasswords) => {
     setShowPasswords((prev) => ({
       ...prev,
       [field]: !prev[field],
     }));
   };
-
-  // const getPasswordStrengthColor = () => {
-  //   switch (passwordStrength) {
-  //     case 0:
-  //     case 1:
-  //       return "bg-red-500";
-  //     case 2:
-  //       return "bg-yellow-500";
-  //     case 3:
-  //       return "bg-green-500";
-  //     default:
-  //       return "bg-gray-500";
-  //   }
-  // };
-
-  // const getPasswordStrengthText = () => {
-  //   switch (passwordStrength) {
-  //     case 0:
-  //     case 1:
-  //       return "Weak";
-  //     case 2:
-  //       return "Fair";
-  //     case 3:
-  //       return "Strong";
-  //     default:
-  //       return "";
-  //   }
-  // };
 
   const formik = useFormik({
     initialValues: {
@@ -138,10 +110,30 @@ const ChangePassword = ({ setActiveTab }: ChangePasswordProps) => {
     },
   });
 
+  const googleformik = useFormik({
+    initialValues: {
+      email: user?.email as string,
+      newPassword: "",
+      confirmNewPassword: "",
+    },
+    validationSchema: forgotPasswordSchema,
+    onSubmit: async (values) => {
+      dispatch(
+        forgotPasswordThunk({
+          email: values?.email,
+          newPassword: values.newPassword,
+        })
+      );
+    },
+  });
+
   useEffect(() => {
     if (authSuccess) {
       toast.success(message);
       setActiveTab("profile");
+      if (user && userPassword) {
+        dispatch(updateUserPassword(userPassword));
+      }
       setTimeout(() => {
         dispatch(resetAuthState());
       }, 100);
@@ -150,41 +142,119 @@ const ChangePassword = ({ setActiveTab }: ChangePasswordProps) => {
       toast.error(error);
       dispatch(resetAuthState());
     }
-  }, [dispatch, error, message, authSuccess, setActiveTab]);
+  }, [dispatch, error, message, authSuccess, setActiveTab, user, userPassword]);
 
-  if (user?.isGoogleUser) {
+  if (user?.isGoogleUser && !user.password) {
     return (
-      <motion.div
-        className="w-full max-w-4xl mx-auto min-h-screen flex items-center justify-center border border-muted-foreground rounded-xl"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
+      <div className="flex md:items-center justify-center min-h-screen md:px-4">
         <motion.div
-          className=" rounded-xl shadow-lg border border-gray-600 p-8 text-center"
-          whileHover={{ scale: 1.02 }}
+          className="w-full max-w-4xl mx-auto border border-muted-foreground rounded-2xl shadow-xl  backdrop-blur-md p-4 md:p-6 "
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
         >
           <motion.div
-            className="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center shadow-lg mx-auto mb-4"
-            variants={floatingVariants}
-            animate="float"
+            className="rounded-xl shadow-lg border  p-4 sm:p-8 text-center"
+            whileHover={{ scale: 1.02 }}
           >
-            <Shield className="w-8 h-8 " />
+            <motion.div
+              className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center shadow-lg mx-auto mb-4"
+              variants={floatingVariants}
+              animate="float"
+            >
+              <Shield className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+            </motion.div>
+
+            <h2 className="text-2xl sm:text-3xl font-bold mb-2 text-gray-100">
+              Google Account
+            </h2>
+            <p className="text-gray-400 text-sm sm:text-base">
+              Password changes are managed through your Google account settings.
+            </p>
           </motion.div>
-          <h2 className="text-2xl font-bold  mb-2">
-            Google Account
-          </h2>
-          <p className="text-gray-400">
-            Password changes are managed through your Google account settings.
-          </p>
+
+          <div className="mt-5">
+            <p className="text-lg">
+              - But, you can create new password for Mentoons Mythos!
+            </p>
+          </div>
+
+          <form
+            onSubmit={googleformik.handleSubmit}
+            className="w-full p-4 sm:p-8"
+          >
+            {/* New Password */}
+            <div className="relative mb-6">
+              <Input
+                label="New Password"
+                name="newPassword"
+                type={showNewPassword ? "text" : "password"}
+                placeholder="Enter new password"
+                value={googleformik.values.newPassword}
+                onChange={googleformik.handleChange}
+                onBlur={googleformik.handleBlur}
+                error={
+                  googleformik.touched.newPassword &&
+                  googleformik.errors.newPassword
+                    ? googleformik.errors.newPassword
+                    : undefined
+                }
+              />
+              <button
+                type="button"
+                onClick={() => setShowNewPassword((prev) => !prev)}
+                className="absolute right-3 top-9 text-muted-foreground hover:text-primary transition"
+              >
+                {showNewPassword ? (
+                  <EyeOff className="w-5 h-5 sm:w-6 sm:h-6" />
+                ) : (
+                  <Eye className="w-5 h-5 sm:w-6 sm:h-6" />
+                )}
+              </button>
+            </div>
+
+            {/* Confirm Password */}
+            <div className="relative mb-6">
+              <Input
+                label="Confirm New Password"
+                name="confirmNewPassword"
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirm new password"
+                value={googleformik.values.confirmNewPassword}
+                onChange={googleformik.handleChange}
+                onBlur={googleformik.handleBlur}
+                error={
+                  googleformik.touched.confirmNewPassword &&
+                  googleformik.errors.confirmNewPassword
+                    ? googleformik.errors.confirmNewPassword
+                    : undefined
+                }
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                className="absolute right-3 top-9 text-muted-foreground hover:text-primary transition"
+              >
+                {showConfirmPassword ? (
+                  <EyeOff className="w-5 h-5 sm:w-6 sm:h-6" />
+                ) : (
+                  <Eye className="w-5 h-5 sm:w-6 sm:h-6" />
+                )}
+              </button>
+            </div>
+
+            <AuthButton type="submit" className="w-full mt-4">
+              {loading ? "Loading..." : "Reset Password"}
+            </AuthButton>
+          </form>
         </motion.div>
-      </motion.div>
+      </div>
     );
   }
 
   return (
     <motion.div
-      className="w-full max-w-4xl mx-auto p-6 border border-foreground rounded-xl min-h-screen"
+      className="w-full max-w-4xl mx-auto p-4 md:p-6 border border-foreground rounded-xl min-h-screen"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -195,14 +265,14 @@ const ChangePassword = ({ setActiveTab }: ChangePasswordProps) => {
         variants={cardVariants}
       >
         <motion.div
-          className="w-12 h-12 bg-foreground rounded-xl flex items-center justify-center shadow-lg"
+          className="w-8 h-8 md:w-12 md:h-12 bg-foreground rounded-xl flex items-center justify-center shadow-lg"
           variants={floatingVariants}
           animate="float"
         >
-          <Lock className="w-8 h-8 text-background" />
+          <Lock className="w-4 h-4 md:w-8 md:h-8 text-background" />
         </motion.div>
         <div>
-          <h1 className="text-2xl font-bold flex items-center gap-2">
+          <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2">
             Change Password
             <Sparkles className="w-6 h-6 text-muted-foreground" />
           </h1>
@@ -213,7 +283,7 @@ const ChangePassword = ({ setActiveTab }: ChangePasswordProps) => {
       {/* Main Form */}
       <motion.form
         onSubmit={formik.handleSubmit}
-        className="rounded-xl shadow-lg border border-muted-foreground hover:shadow-xl transition-shadow duration-300 relative overflow-hidden p-8 space-y-8"
+        className="rounded-xl shadow-lg border border-muted-foreground hover:shadow-xl transition-shadow duration-300 relative overflow-hidden p-4 md:p-8 space-y-8"
         variants={cardVariants}
         whileHover="hover"
       >
@@ -336,10 +406,10 @@ const ChangePassword = ({ setActiveTab }: ChangePasswordProps) => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex justify-end gap-4 pt-6 border-t border-gray-600">
+        <div className="flex justify-end gap-2 md:gap-4 pt-6 border-t border-gray-600">
           <button
             type="button"
-            className="px-8 py-3  border-2 border-foreground hover:text-background hover:bg-foreground rounded-xl transition-colors font-medium flex items-center gap-2"
+            className="px-3 md:px-8 py-2 md:py-3  border-2 border-foreground hover:text-background hover:bg-foreground rounded-xl transition-colors font-medium flex items-center gap-2"
             onClick={() => {
               if (formik.dirty && !formik.isSubmitting) {
                 if (
@@ -358,7 +428,7 @@ const ChangePassword = ({ setActiveTab }: ChangePasswordProps) => {
           <button
             type="submit"
             disabled={formik.isSubmitting}
-            className={`px-8 py-3 ${
+            className={`px-3 md:px-8 py-2 md:py-3 ${
               formik.isSubmitting
                 ? "bg-gray-600 cursor-not-allowed"
                 : "bg-gradient-to-r from-gray-600 to-gray-800 hover:from-gray-500 hover:to-gray-700"

@@ -100,7 +100,7 @@ const AstroForm = ({
   return (
     <motion.form
       onSubmit={onSubmit}
-      className="bg-black bg-opacity-50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700"
+      className="bg-background bg-opacity-50 backdrop-blur-sm rounded-2xl p-4 md:p-8 border border-muted-foreground"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -110,44 +110,44 @@ const AstroForm = ({
       </h3>
       <div className="grid md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-gray-400 mb-2">Birth Date</label>
+          <label className="block text-muted-foreground mb-2">Birth Date</label>
           <input
             type="date"
             name="birthDate"
             value={formData.birthDate}
             onChange={handleChange}
-            className="w-full p-2 border border-gray-600 rounded-lg text-white"
+            className="w-full p-2 border border-gray-600 rounded-lg "
           />
         </div>
         <div>
-          <label className="block text-gray-400 mb-2">Birth Time</label>
+          <label className="block text-muted-foreground mb-2">Birth Time</label>
           <input
             type="time"
             name="birthTime"
             value={formData.birthTime}
             onChange={handleChange}
-            className="w-full p-2 border border-gray-600 rounded-lg text-white"
+            className="w-full p-2 border border-gray-600 rounded-lg "
           />
         </div>
         <div>
-          <label className="block text-gray-400 mb-2">Latitude</label>
+          <label className="block text-muted-foreground mb-2">Latitude</label>
           <input
             type="text"
             name="latitude"
             value={formData.latitude}
             onChange={handleChange}
-            className="w-full p-2 border border-gray-600 rounded-lg text-white"
+            className="w-full p-2 border border-gray-600 rounded-lg"
             placeholder="e.g., 40.7128"
           />
         </div>
         <div>
-          <label className="block text-gray-400 mb-2">Longitude</label>
+          <label className="block text-muted-foreground mb-2">Longitude</label>
           <input
             type="text"
             name="longitude"
             value={formData.longitude}
             onChange={handleChange}
-            className="w-full p-2 border border-gray-600 rounded-lg text-white "
+            className="w-full p-2 border border-gray-600 rounded-lg "
             placeholder="e.g., -74.0060"
           />
         </div>
@@ -166,7 +166,7 @@ const AstroForm = ({
         <motion.button
           type="button"
           onClick={handleGetCurrentLocation}
-          className="px-4 py-2 bg-black border border-gray-600 text-white rounded-lg hover:bg-gray-900 transition-colors"
+          className="px-4 py-2 border  border-gray-600  rounded-lg hover:bg-secondary transition-colors"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -175,7 +175,7 @@ const AstroForm = ({
         <motion.button
           type="button"
           onClick={() => setShowMap(true)}
-          className="px-4 py-2 bg-black border border-gray-600 text-white rounded-lg hover:bg-gray-900 transition-colors"
+          className="px-4 py-2 border border-gray-600 rounded-lg hover:bg-secondary transition-colors"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -196,7 +196,7 @@ const AstroForm = ({
       <div className="mt-6 flex space-x-4">
         <motion.button
           type="submit"
-          className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200"
+          className="px-4 py-2 bg-primary text-background rounded-lg hover:bg-primary/90"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -206,7 +206,7 @@ const AstroForm = ({
           <motion.button
             type="button"
             onClick={() => setIsEditing(false)}
-            className="px-4 py-2 border border-gray-600 rounded-lg hover:bg-gray-700 text-white"
+            className="px-4 py-2 border border-gray-600 rounded-lg hover:bg-secondary text-foreground"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >

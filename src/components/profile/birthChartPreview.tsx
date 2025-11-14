@@ -29,7 +29,7 @@ const BirthChartPreview = () => {
 
         {/* Center */}
         <motion.div
-          className="absolute inset-1/2 w-4 h-4 -ml-2 -mt-2 bg-white rounded-full"
+          className="absolute inset-1/2 w-4 h-4 -ml-2 -mt-2 bg- rounded-full"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ duration: 0.5, delay: 0.6 }}

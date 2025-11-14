@@ -43,7 +43,7 @@ const DownloadReportButton: React.FC<{ astrologyData: Report }> = ({
       <div className="relative">
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
-          className="px-4 py-2 border border-muted-foreground rounded-lg hover:bg-muted-foreground transition-colors text-sm"
+          className="px-3 md:px-4 py-2 border border-muted-foreground rounded-lg hover:bg-muted-foreground transition-colors text-sm"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -51,7 +51,7 @@ const DownloadReportButton: React.FC<{ astrologyData: Report }> = ({
         </motion.button>
         {isOpen && (
           <motion.div
-            className="absolute mt-2 w-48 bg-gray-800 border border-gray-600 rounded-lg shadow-lg z-5"
+            className="absolute right-0 mt-2 w-48 bg-foreground text-background border  rounded-lg shadow-lg z-5"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
@@ -61,7 +61,7 @@ const DownloadReportButton: React.FC<{ astrologyData: Report }> = ({
                 handleDownloadReport("moon");
                 setIsOpen(false);
               }}
-              className="w-full px-4 py-2 text-sm text-left hover:bg-gray-700"
+              className="w-full px-4 py-2  border-b border-background rounded-t-lg text-sm text-left hover:bg-muted-foreground"
             >
               Moon Sign Report ({moonSign})
             </button>
@@ -70,7 +70,7 @@ const DownloadReportButton: React.FC<{ astrologyData: Report }> = ({
                 handleDownloadReport("sun");
                 setIsOpen(false);
               }}
-              className="w-full px-4 py-2 text-sm text-left hover:bg-gray-700"
+              className="w-full px-4 py-2 text-sm text-left rounded-b-lg hover:bg-muted-foreground"
             >
               Sun Sign Report ({sunSign})
             </button>

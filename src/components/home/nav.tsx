@@ -11,7 +11,7 @@ import useSignInSignUp from "../../hooks/useSignInSignUpModal";
 import { IoCartOutline } from "react-icons/io5";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import ThemeToggle from "../ThemToggle";
-import { Heart } from "lucide-react";
+import { Heart, User } from "lucide-react";
 
 const MythosHeader = () => {
   const dispatch = useAppDispatch();
@@ -149,6 +149,13 @@ const MythosHeader = () => {
     userHoverTimeoutRef.current = setTimeout(() => {
       setIsUserDropdownOpen(false);
     }, 150);
+  };
+
+  const handleUserClick = () => {
+    // Only toggle dropdown if screen width < 1024px (mobile + tablet)
+    if (window.innerWidth < 1024) {
+      setIsUserDropdownOpen((prev) => !prev);
+    }
   };
 
   // Cleanup timeouts on unmount
@@ -453,17 +460,22 @@ const MythosHeader = () => {
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   transition={{ duration: 0.2, ease: "easeIn" }}
+                  onClick={handleUserClick}
                   className="flex justify-center items-center rounded-full outline-dashed outline-2 outline-gray-600 w-8 h-8 sm:w-10 sm:h-10 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-foreground cursor-pointer text-background"
                 >
                   {user.profilePicture ? (
                     <img
-                      src={user.profilePicture}
+                      src={user?.profilePicture}
                       alt="Profile"
                       className="w-full h-full rounded-full object-cover"
                     />
                   ) : (
                     <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-10 md:h-10 lg:w-12 lg:h-12 rounded-full bg-[#02599c] flex items-center justify-center text-[20px] text-white">
-                      {user?.firstName[0].toUpperCase()}
+                      {user?.firstName ? (
+                        user?.firstName[0]?.toUpperCase()
+                      ) : (
+                        <User />
+                      )}
                     </div>
                   )}
                 </motion.button>
@@ -490,6 +502,7 @@ const MythosHeader = () => {
                         </div>
 
                         <Link
+                          onClick={() => setIsUserDropdownOpen(false)}
                           to="/profile"
                           className="block px-4 py-3  hover:bg-foreground hover:text-background transition-all duration-200 text-sm font-medium"
                         >
@@ -500,6 +513,7 @@ const MythosHeader = () => {
                         </Link>
 
                         <Link
+                          onClick={() => setIsUserDropdownOpen(false)}
                           to="/orders"
                           className="block px-4 py-3 hover:bg-foreground hover:text-background transition-all duration-200 text-sm font-medium"
                         >
@@ -534,6 +548,7 @@ const MythosHeader = () => {
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   transition={{ duration: 0.2, ease: "easeIn" }}
+                  onClick={handleUserClick}
                   className="flex justify-center items-center rounded-full outline-dashed outline-2 outline-gray-600 w-8 h-8 sm:w-10 sm:h-10 md:w-10 md:h-10 lg:w-12 lg:h-12 cursor-pointer "
                 >
                   <FaUser className="text-sm sm:text-lg" />

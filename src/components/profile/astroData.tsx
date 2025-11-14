@@ -84,16 +84,16 @@ const AstroData = ({ userProfile, setIsEditing }: AstroDataProps) => {
 
       {/* Birth Details */}
       <motion.div
-        className="border border-muted-foreground backdrop-blur-sm rounded-2xl p-8 mb-6 "
+        className="border border-muted-foreground backdrop-blur-sm rounded-2xl p-4 md:p-8 mb-6 "
         variants={cardVariants}
         whileHover="hover"
       >
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-2xl font-semibold">Birth Details</h3>
-          <div className="flex items-center justify-center gap-5">
+          <h3 className="text-xl md:text-2xl font-semibold">Birth Details</h3>
+          <div className="flex items-center justify-center gap-3 md:gap-5">
             <motion.button
               onClick={() => setIsEditing(true)}
-              className="px-4 py-2 border border-muted-foreground rounded-lg hover:bg-muted-foreground transition-colors text-sm"
+              className="px-3 md:px-4 py-2 border border-muted-foreground rounded-lg hover:bg-muted-foreground transition-colors text-sm"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -105,7 +105,7 @@ const AstroData = ({ userProfile, setIsEditing }: AstroDataProps) => {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           <motion.div
             className="text-center p-4  border border-muted-foreground  rounded-lg"
             variants={cardVariants}
@@ -184,7 +184,7 @@ const AstroData = ({ userProfile, setIsEditing }: AstroDataProps) => {
       >
         {hasSunSign && (
           <motion.div
-            className=" bg-opacity-50 backdrop-blur-sm rounded-2xl p-8 border border-muted-foreground"
+            className=" bg-opacity-50 backdrop-blur-sm rounded-2xl p-4 md:p-8 border border-muted-foreground"
             variants={cardVariants}
             whileHover="hover"
           >
@@ -230,7 +230,7 @@ const AstroData = ({ userProfile, setIsEditing }: AstroDataProps) => {
 
         {hasMoonSign && (
           <motion.div
-            className=" bg-opacity-50 backdrop-blur-sm rounded-2xl p-8 border border-muted-foreground"
+            className=" bg-opacity-50 backdrop-blur-sm rounded-2xl p-4 md:p-8 border border-muted-foreground"
             variants={cardVariants}
             whileHover="hover"
           >
@@ -275,7 +275,7 @@ const AstroData = ({ userProfile, setIsEditing }: AstroDataProps) => {
       </div>
 
       <motion.div
-        className="bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-2xl p-8 mt-6 border border-gray-700"
+        className=" bg-opacity-50 backdrop-blur-sm rounded-2xl p-8 mt-6 border border-gray-700"
         variants={cardVariants}
         whileHover="hover"
       >

@@ -1,15 +1,18 @@
 import { useState, memo } from "react";
 import { Plus, X } from "lucide-react";
-import { useAppSelector } from "../../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import FileUploadLoader from "../loader/fileUploader";
 import ImageCropperModal from "./cropper";
+import { updateUserData } from "../../features/user/userThunk";
 
 const ProfileUpload = ({
   onClose,
   setUploadSuccess,
+  haveProfilePicture,
 }: {
   onClose: (success?: boolean) => void;
   setUploadSuccess: (value: boolean) => void;
+  haveProfilePicture?: boolean;
 }) => {
   const [profile, setProfile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -17,6 +20,7 @@ const ProfileUpload = ({
   const [validationError, setValidationError] = useState<string | null>(null);
   const [showCropper, setShowCropper] = useState(false);
   const { error: reduxError, loading } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch()
 
   const MAX_FILE_SIZE = 3 * 1024 * 1024;
 
@@ -92,6 +96,14 @@ const ProfileUpload = ({
     setValidationError(null);
     setShowCropper(false);
     onClose(false);
+  };
+
+  const handleRemoveImage = async() => {
+    await dispatch(
+      updateUserData({ user: { profilePicture: "" } })
+    ).unwrap();
+    setUploadSuccess(true);
+    onClose(true);
   };
 
   if (loading) {
@@ -196,7 +208,15 @@ const ProfileUpload = ({
 
           <div className="border-t-2 border-dashed border-gray-300"></div>
 
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-2">
+            {haveProfilePicture && (
+              <button
+                onClick={handleRemoveImage}
+                className=" text-blue-800 hover:text-blue-700 font-semibold tracking-wide "
+              >
+                Remove image
+              </button>
+            )}
             <button
               onClick={handleClose}
               className="px-6 py-3 border-2 border-black text-black font-bold tracking-wide hover:bg-black hover:text-white transition-all duration-200"

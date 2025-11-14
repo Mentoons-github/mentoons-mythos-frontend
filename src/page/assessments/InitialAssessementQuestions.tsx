@@ -109,7 +109,7 @@ const InitialAssessmentQuestions = () => {
   const currentQuestion = initialQuestions[currentIndex];
 
   return (
-    <div className="relative flex items-center justify-center min-h-screen px-4 text-gray-700">
+    <div className="relative flex items-center justify-center min-h-screen px-4 ">
       {isFinished ? (
         <div className="flex flex-col justify-around items-center h-[60vh] text-center border p-4 max-w-2xl">
           <h1 className="text-2xl font-bold text-yellow-700">
@@ -135,7 +135,7 @@ const InitialAssessmentQuestions = () => {
           </button>
         </div>
       ) : (
-        <div className="bg-white shadow-lg rounded-xl p-6 w-full max-w-2xl font-serif">
+        <div className="border border-foreground shadow-lg rounded-xl p-6 w-full max-w-2xl font-serif">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-1">
               <LuNotebookPen />
@@ -157,8 +157,8 @@ const InitialAssessmentQuestions = () => {
                   key={idx}
                   className={`p-3 border rounded-lg cursor-pointer transition ${
                     selectedAnswers[currentIndex] === option
-                      ? "bg-yellow-100 border-yellow-600"
-                      : "hover:bg-yellow-50"
+                      ? "bg-yellow-100 border-yellow-600 text-black"
+                      : "hover:bg-yellow-50 hover:text-black"
                   }`}
                 >
                   <input

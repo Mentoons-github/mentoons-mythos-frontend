@@ -192,7 +192,7 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
 
   return (
     <motion.div
-      className="w-full max-w-4xl mx-auto p-6 border border-muted-foreground rounded-xl min-h-screen"
+      className="w-full max-w-4xl mx-auto p-4 md:p-6 border border-muted-foreground rounded-xl min-h-screen"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -202,11 +202,11 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
         variants={cardVariants}
       >
         <motion.div
-          className="w-12 h-12 bg-foreground rounded-xl flex items-center justify-center shadow-lg"
+          className="w-8 h-8 md:w-12 md:h-12 bg-foreground rounded-md md:rounded-xl flex items-center justify-center shadow-lg"
           variants={floatingVariants}
           animate="float"
         >
-          <Edit className="w-8 h-8 text-background" />
+          <Edit className="w-4 h-4 md:w-8 md:h-8 text-background" />
         </motion.div>
         <div>
           <h1 className="text-2xl font-bold  flex items-center gap-2">
@@ -247,7 +247,7 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gray-300 via-gray-600 to-gray-800"></div>
 
         <form>
-          <div className="p-8">
+          <div className="p-4 md:p-8">
             <div className="space-y-8">
               {errors.length > 0 && (
                 <motion.div
@@ -473,7 +473,7 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
               >
                 <motion.button
                   type="button"
-                  className="px-8 py-3  border-2 border-foreground rounded-xl hover:bg-foreground hover:text-background transition-colors font-medium flex items-center gap-2"
+                  className="px-4 md:px-8 py-3  border-2 border-foreground rounded-xl hover:bg-foreground hover:text-background transition-colors font-medium flex items-center gap-2"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setActiveTab("profile")}
@@ -485,7 +485,7 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
                   type="submit"
                   disabled={isLoading}
                   onClick={handleSubmit}
-                  className={`px-8 py-3 ${
+                  className={`px-4 md:px-8 py-3 ${
                     isLoading
                       ? "bg-gray-600 cursor-not-allowed"
                       : "bg-gradient-to-r from-gray-600 to-gray-800 hover:from-gray-500 hover:to-gray-700"

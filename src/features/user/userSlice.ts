@@ -65,6 +65,11 @@ const userSlice = createSlice({
       state.singleUserLoading = false;
       state.logoutSuccess = false;
     },
+    updateUserPassword: (state, action) => {
+      if (state.user) {
+        state.user = { ...state.user, password: action.payload };
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -207,6 +212,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { resetUserSlice } = userSlice.actions;
+export const { resetUserSlice, updateUserPassword } = userSlice.actions;
 
 export default userSlice.reducer;

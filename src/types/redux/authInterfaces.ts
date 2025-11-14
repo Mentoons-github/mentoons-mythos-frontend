@@ -1,3 +1,4 @@
+
 export interface RegisterResponse {
   message: string;
 }
@@ -16,7 +17,7 @@ export interface RegisterPayload {
 
 export interface LoginResponse {
   message: string;
-  role:string;
+  role: string;
   user: {
     accessToken: string;
     _id: string;
@@ -51,6 +52,7 @@ export interface ForgotPasswordPayload {
 }
 
 export interface ForgotPasswordResponse {
+  newPassword: string;
   message: string;
   success: boolean;
 }

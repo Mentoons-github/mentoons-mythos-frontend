@@ -46,6 +46,7 @@ const MapSelector = ({ onSelect }: MapSelectorProps) => {
     return position ? <Marker position={position} /> : null;
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchSuggestions = useCallback(
     debounce(async (query: string) => {
       if (query.length < 3) {

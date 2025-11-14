@@ -270,35 +270,35 @@ const RashiFinderModal = ({ onClose }: RashiFinderModalProps) => {
   // Render the modal if hasRashi is true and delay is complete
   return (
     <motion.div
-      className="fixed inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm z-50"
+      className="fixed inset-0 flex items-center justify-center bg-black/70  z-50"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
       <motion.div
-        className="relative bg-gradient-to-br from-gray-100 via-white to-gray-300 p-8 rounded-2xl text-center space-y-6 border border-gray-600/50 shadow-2xl max-w-2xl w-full mx-4 overflow-hidden max-h-[90vh] overflow-y-auto hide-scrollbar"
+        className="relative bg-secondary p-4 md:p-8 rounded-2xl text-center space-y-6 border  shadow-2xl max-w-2xl w-full mx-4 overflow-hidden max-h-[90vh] overflow-y-auto hide-scrollbar"
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-700 hover:text-black transition-colors z-20"
+          className="absolute top-4 right-4  hover:text-muted-foreground transition-colors z-20"
         >
           <X size={24} />
         </button>
 
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <motion.div
-            className="absolute top-4 left-4 text-black"
+            className="absolute top-4 left-4 "
             variants={pulseVariants}
             animate="animate"
           >
             <Star size={12} />
           </motion.div>
           <motion.div
-            className="absolute top-8 right-8 text-gray-800"
+            className="absolute top-8 right-8 "
             variants={bounceVariants}
             animate="animate"
             transition={{ delay: 1 }}
@@ -306,7 +306,7 @@ const RashiFinderModal = ({ onClose }: RashiFinderModalProps) => {
             <Star size={8} />
           </motion.div>
           <motion.div
-            className="absolute bottom-12 left-8 text-gray-800"
+            className="absolute bottom-12 left-8 "
             variants={pulseVariants}
             animate="animate"
             transition={{ delay: 2 }}
@@ -314,7 +314,7 @@ const RashiFinderModal = ({ onClose }: RashiFinderModalProps) => {
             <Star size={10} />
           </motion.div>
           <motion.div
-            className="absolute bottom-6 right-6 text-black"
+            className="absolute bottom-6 right-6 "
             variants={pulseVariants}
             animate="animate"
             transition={{ delay: 3 }}
@@ -328,8 +328,8 @@ const RashiFinderModal = ({ onClose }: RashiFinderModalProps) => {
           variants={spinVariants}
           animate="animate"
         >
-          <div className="w-full h-full rounded-full border-2 border-white/20 flex items-center justify-center">
-            <Star className="text-white/60" size={20} />
+          <div className="w-full h-full rounded-full border-2 border-foreground/20 flex items-center justify-center">
+            <Star className="text-foreground/60" size={20} />
           </div>
         </motion.div>
 
@@ -362,7 +362,7 @@ const RashiFinderModal = ({ onClose }: RashiFinderModalProps) => {
         </div>
 
         <motion.div
-          className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/5 via-gray-500/10 to-white/5 pointer-events-none"
+          className="absolute inset-0 rounded-2xl pointer-events-none"
           variants={borderPulseVariants}
           animate="animate"
         />

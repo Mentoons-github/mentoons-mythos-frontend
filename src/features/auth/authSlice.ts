@@ -17,7 +17,8 @@ interface Auth {
   loading: boolean;
   error: string | null | undefined;
   otpError: string | null | undefined;
-  role:string
+  role: string;
+  userPassword: string;
 }
 
 const initialState: Auth = {
@@ -28,7 +29,8 @@ const initialState: Auth = {
   loading: false,
   error: null,
   otpError: null,
-  role:""
+  role: "",
+  userPassword: "",
 };
 
 const authSlice = createSlice({
@@ -126,6 +128,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.message = action.payload.message;
+        state.userPassword = action.payload.newPassword;
         state.success = action.payload.success;
       })
       .addCase(forgotPasswordThunk.rejected, (state, action) => {
