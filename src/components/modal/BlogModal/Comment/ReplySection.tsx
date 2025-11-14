@@ -28,7 +28,7 @@ const RepliesSection: React.FC<RepliesSectionProps> = ({ replies }) => {
       </button>
       
       {isVisible && (
-        <ul className="mt-3 space-y-2 pl-6 border-l-2 border-gray-200">
+        <ul className="mt-3 space-y-2 pl-6 border-l-2 ">
           {replies.map((reply, index) => (
             <ReplyItem key={index} reply={reply} />
           ))}

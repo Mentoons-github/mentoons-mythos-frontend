@@ -18,13 +18,13 @@ const Input: React.FC<InputProps> = ({
 }) => {
   return (
     <div className={`mb-4 ${className}`}> 
-      <label className="block mb-1 text-sm font-bold text-[#3B3D41]">{label}</label>
+      <label className="block mb-1 text-sm font-bold text-primary">{label}</label>
       <input
         type={type}
         placeholder={placeholder}
-        className={`w-full p-2 border-2 border-gray-300 rounded-xl ${
+        className={`w-full p-2 border-2 border-border rounded-xl ${
           error ? "border-red-500" : ""
-        } placeholder-gray-500`} 
+        } placeholder-muted-foreground`} 
         name={name}
         value={value}
         onChange={onChange}

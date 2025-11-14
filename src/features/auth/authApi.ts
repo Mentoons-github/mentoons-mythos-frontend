@@ -25,9 +25,13 @@ export const verifyOtpApi = (data: VerifyOtpPayload) => {
 };
 
 export const forgotPasswordApi = (data: ForgotPasswordPayload) => {
-  return apiClient.post("auth/forgot-password", data);
+  return apiClient.patch("auth/forgot-password", data);
 };
 
-export const changePassword = (data: ChangePassword) => {
-  return apiClient.put("/auth/change-password", data);
+export const changePasswordApi = (data: ChangePassword, userId: string) => {
+  return apiClient.patch(`/auth/change-password/${userId}`, data);
+};
+
+export const deleteAccountApi = () => {
+  return apiClient.post("/auth/delete");
 };

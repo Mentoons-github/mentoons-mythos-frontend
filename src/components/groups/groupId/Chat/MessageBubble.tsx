@@ -1,5 +1,5 @@
 import { Chat } from "../../../../types/redux/chatInterfaces";
-import { getTime } from "../../../../utils/chateDateFormate";
+import { getTime } from "../../../../utils/DateFormate";
 
 interface MessageBubbleProps {
   message: Chat;

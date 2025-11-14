@@ -26,9 +26,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
       variants={itemVariants}
       whileHover={{
         y: -5,
-        boxShadow: "0 10px 25px rgba(227, 151, 18, 0.3)",
+       boxShadow: "0 10px 25px rgba(255, 255, 255, 0.3)",
       }}
-      className="bg-gray-900 rounded-lg overflow-hidden transition-all relative mt-10"
+      className=" rounded-lg overflow-hidden transition-all relative mt-10 border border-muted-foreground"
     >
       {/* <div className="absolute inset-0  bg-black/70 bg-opacity-60 flex items-center justify-center z-10">
         <span className="text-[#E39712] text-lg md:text-xl font-semibold opacity-90">
@@ -36,7 +36,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </span>
       </div> */}
 
-      <div className="z-0">
+      <div className="z-0 ">
         <motion.img
           src={product.image}
           alt={product.name}
@@ -45,10 +45,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
           transition={{ duration: 0.3 }}
         />
         <div className="p-3 md:p-4">
-          <h3 className="text-base md:text-lg font-semibold text-white">
+          <h3 className="text-base md:text-lg font-semibold ">
             {product.name}
           </h3>
-          <p className="text-gray-400 text-xs md:text-sm mt-1 truncate">
+          <p className=" text-xs md:text-sm mt-1 truncate">
             {product.description}
           </p>
            {/* <p className="text-gray-400 text-2xl mt-1 truncate">

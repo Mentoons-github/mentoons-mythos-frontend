@@ -249,7 +249,7 @@ const MusicAndChants = () => {
         initial="hidden"
         animate={isButtonInView ? "visible" : "hidden"}
       >
-        <MythosButton label="EXPLORE NOW" textClr="text-black" />
+        <MythosButton label="EXPLORE NOW"  />
       </motion.div>
     </motion.div>
   );

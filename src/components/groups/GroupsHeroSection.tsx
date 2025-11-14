@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 const GroupsHeroSection = () => {
   return (
-    <div className="flex flex-col md:flex-row items-center justify-center gap-6 sm:gap-8 md:gap-10 bg-black bg-[url('/assets/background/section/stars_background.png')] bg-center p-4 sm:p-5 md:p-6 py-12 sm:py-16 md:py-20">
+    <div className="flex flex-col md:flex-row items-center justify-center gap-6 sm:gap-8 md:gap-10 bg-[url('/assets/background/section/stars_background.png')] bg-center p-4 sm:p-5 md:p-6 py-12 sm:py-16 md:py-20">
       <motion.div
         className="flex flex-col items-center md:items-start justify-center w-full md:flex-[0.6] px-4 sm:px-8 md:pl-12"
         initial={{ opacity: 0, x: -50 }}
@@ -11,7 +11,7 @@ const GroupsHeroSection = () => {
       >
         <div className="w-full">
           <motion.h1
-            className="text-2xl sm:text-3xl md:text-4xl  font-semibold text-[#E39712] pb-3 md:pb-4 md:text-left"
+            className="text-2xl sm:text-3xl md:text-4xl  font-bold pb-3 md:pb-10 md:text-left"
             initial={{ y: -30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -19,7 +19,7 @@ const GroupsHeroSection = () => {
             CONNECT WITH LIKE-MINDED SOUL
           </motion.h1>
           <motion.p
-            className="pb-4 sm:pb-6 md:pb-8 text-base sm:text-lg text-white w-full md:w-[90%] lg:w-[80%] md:text-left"
+            className="pb-4 sm:pb-6 md:pb-8 text-base sm:text-lg w-full md:w-[90%] lg:w-[80%] md:text-left"
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
@@ -37,7 +37,7 @@ const GroupsHeroSection = () => {
             transition={{ duration: 0.8, delay: 0.6 }}
           >
             <motion.h3
-              className="text-xl font-semibold text-white sm:text-2xl md:text-left"
+              className="text-xl font-semibold  sm:text-2xl md:text-left"
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.7 }}
@@ -45,7 +45,7 @@ const GroupsHeroSection = () => {
               🚀 How to join?
             </motion.h3>
             <motion.ul
-              className="flex flex-col gap-2 mt-2 text-white sm:gap-3 md:gap-4 sm:mt-3"
+              className="flex flex-col gap-2 mt-2 sm:gap-3 md:gap-4 sm:mt-3"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.8 }}
@@ -57,7 +57,7 @@ const GroupsHeroSection = () => {
                 transition={{ duration: 0.4, delay: 0.9 }}
               >
                 <div className="flex items-center gap-2 text-sm sm:gap-3 md:gap-4 sm:text-base">
-                  <div className="w-[8px] h-[8px] sm:w-[10px] sm:h-[10px] rotate-45 bg-blue-600" />
+                  <div className="w-[8px] h-[8px] sm:w-2 sm:h-2 rotate-45 bg-primary" />
                   <span>
                     Available for 3-Month and 6-month plan Subscriptions
                   </span>
@@ -70,7 +70,7 @@ const GroupsHeroSection = () => {
                 transition={{ duration: 0.4, delay: 1.0 }}
               >
                 <div className="flex items-center gap-2 text-sm sm:gap-3 md:gap-4 sm:text-base">
-                  <div className="w-[8px] h-[8px] sm:w-2 sm:h-2 rotate-45 bg-blue-600" />
+                  <div className="w-[8px] h-[8px] sm:w-2 sm:h-2 rotate-45 bg-primary" />
                   <span>Instant access upon sign-up</span>
                 </div>
               </motion.li>
@@ -81,7 +81,7 @@ const GroupsHeroSection = () => {
                 transition={{ duration: 0.4, delay: 1.1 }}
               >
                 <div className="flex items-center gap-2 text-sm sm:gap-3 md:gap-4 sm:text-base">
-                  <div className="w-[8px] h-[8px] sm:w-2 sm:h-2 rotate-45 bg-blue-600" />
+                  <div className="w-[8px] h-[8px] sm:w-2 sm:h-2 rotate-45 bg-primary" />
                   <span>Connect via the Mentoons Mythos Portal</span>
                 </div>
               </motion.li>
@@ -92,7 +92,7 @@ const GroupsHeroSection = () => {
                 transition={{ duration: 0.4, delay: 1.2 }}
               >
                 <div className="flex items-center gap-2 text-sm sm:gap-3 md:gap-4 sm:text-base">
-                  <div className="w-[8px] h-[8px] sm:w-2 sm:h-2 rotate-45 bg-blue-600" />
+                  <div className="w-[8px] h-[8px] sm:w-2 sm:h-2 rotate-45 bg-primary" />
                   <span>Get notified about exclusive group events</span>
                 </div>
               </motion.li>

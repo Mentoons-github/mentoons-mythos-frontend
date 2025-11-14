@@ -1,62 +1,48 @@
-import { CAREER, CONTACT_INFO, PLANET } from "../../constants";
-import { BiLogoInstagramAlt } from "react-icons/bi";
-import { FaFacebookF, FaLinkedinIn, FaTwitter } from "react-icons/fa";
+import { CONTACT_INFO } from "../../constants";
 import FooterLinks from "./footerLinks";
+import { ABOUT, QUICKLINKS } from "../../constants/footer";
+import NewsLetter from "../footer/NewsLetter";
 
 const MythosFooter = () => {
   return (
-    <footer className="w-full py-10 px-5 md:px-20 flex justify-center items-center bg-black border-t border-t-[#FEE898]">
-      <div className="flex flex-col-reverse md:grid md:grid-cols-4 md:gap-16 w-full max-w-7xl gap-8">
+    <footer className="w-full  border-t ">
+      <div className="py-10 px-5 flex justify-center items-center">
+        <div className="flex flex-col-reverse md:grid md:grid-cols-3 lg:grid-cols-4 md:gap-10 w-full gap-8">
+          <div className="block md:hidden">
+            <NewsLetter />
+          </div>
 
-        {[CONTACT_INFO, CAREER, PLANET].map((items, index) => (
-          <FooterLinks
-            key={index}
-            Links={items}
-            label={
-              index === 0 ? "CONTACT INFO" : index === 1 ? "CAREER" : "PLANET"
-            }
-          />
-        ))}
-        <div className="w-full space-y-6 text-center sm:text-left">
-          <h1 className="font-forum text-[18px] sm:text-[20px] md:text-[24px] text-[#FEE898] tracking-wide">
-            SIGN-UP FOR OUR NEWSLETTER
-          </h1>
-          <div className="flex flex-col items-center w-full gap-2 sm:items-start">
-            <div className="flex w-full max-w-xs sm:max-w-sm">
-              <input
-                type="text"
-                placeholder="Email..."
-                className="w-full p-3 border border-[#FEE898] outline-none text-[#FEE898]"
-              />
-              <button className="flex items-center gap-2 px-4 py-3 bg-[#9FE9FF] border border-[#FEE898] border-l-0">
-                <span className="text-[#FEE898]">✦</span>
-                <span className="font-medium font-mulish text-[13px]">
-                  SUBMIT
-                </span>
-              </button>
-            </div>
-            <span className="text-xs text-[#FEE898] sm:text-sm">
-              We promise not to spam you
-            </span>
+          {[CONTACT_INFO, ABOUT, QUICKLINKS].map((items, index) => (
+            <FooterLinks
+              key={index}
+              Links={items}
+              label={
+                index === 0
+                  ? "CONTACT INFO"
+                  : index === 1
+                  ? "ABOUT"
+                  : "QUICK LINKS"
+              }
+            />
+          ))}
+
+          <div className="hidden md:block">
+            <NewsLetter />
           </div>
-          <div className="mt-10 md:mt-0">
-            <h1 className="font-forum text-[18px] sm:text-[20px] md:text-[24px] text-[#FEE898] tracking-wide ">
-              SOCIAL MEDIA
-            </h1>
-            <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-start">
-              {[FaFacebookF, FaTwitter, FaLinkedinIn, BiLogoInstagramAlt].map(
-                (Icon, index) => (
-                  <div
-                    key={index}
-                    className="w-10 h-10 flex items-center justify-center rounded-full bg-[#9FE9FF]"
-                  >
-                    <Icon />
-                  </div>
-                )
-              )}
-            </div>
-          </div>
+
         </div>
+      </div>
+
+      <div className="border-t border-t-muted-foreground px-5 py-4 flex flex-col sm:flex-row justify-center items-center text-xs sm:text-sm ">
+        <p>© {new Date().getFullYear()} Mentoons Mythos. All rights reserved.</p>
+        {/* <div className="flex gap-4 mt-2 sm:mt-0">
+          <a href="/privacy-policy" className="hover:underline">
+            Privacy Policy
+          </a>
+          <a href="/terms" className="hover:underline">
+            Terms & Conditions
+          </a>
+        </div> */}
       </div>
     </footer>
   );

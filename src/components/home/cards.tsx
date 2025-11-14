@@ -17,7 +17,7 @@ const MythosCards = ({
       initial={{ opacity: 0, y: 30 * index }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="w-[99.5%] h-[300px] md:h-[400px] lg:h-[550px] p-4 md:p-8 lg:p-14 flex flex-col items-center justify-between text-center bg-[#E39712]"
+      className="w-[99.5%] h-[300px] md:h-[400px] lg:h-[550px] p-4 md:p-8 lg:p-14 flex flex-col items-center justify-between text-center  border-2 "
     >
       <div className="flex items-center justify-center flex-1">
         <img
@@ -26,11 +26,11 @@ const MythosCards = ({
           alt={`Step ${index} icon`}
         />
       </div>
-      <h1 className="font-montserrat font-semibold text-3xl md:text-4xl lg:text-5xl text-[#1A1D3B] my-4">
+      <h1 className="font-montserrat font-semibold text-3xl md:text-4xl lg:text-5xl  my-4">
         STEP {index}
       </h1>
       <div className="flex items-center justify-center flex-1">
-        <p className="font-mulish font-semibold text-xl md:text-2xl lg:text-4xl leading-tight md:leading-[36px] lg:leading-[40px] text-white">
+        <p className="font-mulish font-semibold text-xl md:text-2xl lg:text-4xl leading-tight md:leading-[36px] lg:leading-[40px] ">
           {data.description}
         </p>
       </div>

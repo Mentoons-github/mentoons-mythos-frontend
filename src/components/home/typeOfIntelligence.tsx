@@ -44,7 +44,7 @@ const TypeOfIntelligence = () => {
           ))}
         </ul>
         <div className="mt-4 sm:mt-5">
-          <MythosButton label="LEARN MORE" bg="#FEE898" onClick={()=>navigate('/assessment/psychology')}/>
+          <MythosButton label="LEARN MORE"  onClick={()=>navigate('/assessment/psychology')}/>
         </div>
       </div>
       <motion.div

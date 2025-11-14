@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fileUploadThunk} from "./fileUploadThunk";
+import { fileUploadThunk } from "./fileUploadThunk";
 
 type FileUploadState = {
   loading: boolean;
   error: string | null;
   success: boolean;
-  file: string | null ;
+  file: string | null | [{ url: string; originalName: string }];
 };
 
 const initialState: FileUploadState = {
@@ -16,11 +16,11 @@ const initialState: FileUploadState = {
 };
 
 export const fileUploadSlice = createSlice({
-    name:'upload',
-    initialState,
-    reducers:{},
-    extraReducers: (builder) => {
-        builder.addCase(fileUploadThunk.pending, (state) => {
+  name: "upload",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(fileUploadThunk.pending, (state) => {
       state.loading = true;
       state.error = null;
       state.success = false;
@@ -35,8 +35,7 @@ export const fileUploadSlice = createSlice({
       state.loading = false;
       state.error = (action.payload as string) || "Something went wrong!";
     });
-
-    }
+  },
 });
 
-export default fileUploadSlice.reducer
+export default fileUploadSlice.reducer;

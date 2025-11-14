@@ -1,0 +1,304 @@
+import React, { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
+import { WorkshopI } from "../../../../types/redux/workshopInterface";
+import { toast } from "sonner";
+import { fileUploadThunk } from "../../../../features/upload/fileUploadThunk";
+import { updateWorkshopThunk } from "../../../../features/workshop/workshopThunk";
+import { resetWorkshopSlice } from "../../../../features/workshop/workshopSlice";
+
+const EditWorkshopModal = ({
+  onClose,
+  workshop,
+  loading,
+}: {
+  onClose: () => void;
+  workshop: WorkshopI | null;
+  loading: boolean;
+}) => {
+  const { updateLoading, updateSuccess, message, error } = useAppSelector(
+    (state) => state.workshop
+  );
+  const dispatch = useAppDispatch();
+
+  const [file, setFile] = useState<File | null>(null);
+
+  const [form, setForm] = useState<WorkshopI>({
+    age: "",
+    focus: "",
+    amount: "",
+    activities: [],
+    img: "",
+  });
+
+  const [activitiesInput, setActivitiesInput] = useState("");
+
+  useEffect(() => {
+    if (workshop) {
+      setForm({
+        age: workshop.age,
+        focus: workshop.focus,
+        amount: workshop.amount,
+        activities: workshop.activities || [],
+        img: workshop.img,
+      });
+      setFile(null);
+    }
+  }, [workshop]);
+
+  useEffect(() => {
+    if (updateSuccess) {
+      toast.success(message);
+      dispatch(resetWorkshopSlice());
+      onClose();
+    }
+    if (error) {
+      toast.error(error);
+      dispatch(resetWorkshopSlice());
+    }
+  }, [dispatch, error, message, onClose, updateSuccess]);
+
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const target = e.target;
+
+    if (
+      target instanceof HTMLInputElement &&
+      target.type === "file" &&
+      target.files?.[0]
+    ) {
+      setFile(target.files[0]);
+    } else {
+      setForm((prev) => ({ ...prev, [target.name]: target.value }));
+    }
+  };
+
+  // add skill
+  const handleAddActivities = () => {
+    if (activitiesInput.trim()) {
+      setForm((prev) => ({
+        ...prev,
+        activities: [...prev.activities, activitiesInput.trim()],
+      }));
+      setActivitiesInput("");
+    }
+  };
+
+  const handleRemoveActivitis = (index: number) => {
+    setForm((prev) => ({
+      ...prev,
+      activities: prev.activities.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    let imageUrl = "";
+
+    if (file) {
+      try {
+        const result = await dispatch(
+          fileUploadThunk({ file, category: "job" })
+        ).unwrap();
+
+        if (typeof result === "string") {
+          imageUrl = result;
+        } else if (Array.isArray(result) && result.length > 0) {
+          imageUrl = result[0].url;
+        } else {
+          throw new Error("Invalid upload response");
+        }
+      } catch (err) {
+        alert("File upload failed: " + err);
+        return;
+      }
+    }
+
+    const formattedForm = {
+      ...form,
+      img: imageUrl as string,
+    };
+
+    dispatch(
+      updateWorkshopThunk({
+        workshop: formattedForm,
+        workshopId: workshop?._id as string,
+      })
+    );
+  };
+  return (
+    <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50 ">
+      <div className="bg-secondary rounded-lg shadow-xl p-4 md:p-6 md:px-10 max-w-[350px] md:max-w-2xl lg:max-w-4xl w-full relative hide-scrollbar overflow-y-auto will-change-scroll transform-gpu max-h-[95vh]">
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-2  hover:text-muted-foreground text-lg font-bold"
+        >
+          ✕
+        </button>
+
+        <h2 className="text-2xl font-semibold mb-4 border-b pb-2">
+          Update Job
+        </h2>
+
+        {loading || !workshop ? (
+          <div className="flex justify-center items-center py-10">
+            <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+            <span className="ml-3">Loading Job details...</span>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4 ">
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <div>
+                  <label className="block mb-1 font-semibold">
+                    Workshop Category
+                  </label>
+                  <select
+                    name="age"
+                    value={form.age}
+                    onChange={handleChange}
+                    className="w-full p-2 rounded-lg border bg-secondary h-13 mb-1"
+                    required
+                  >
+                    <option value="">Select type</option>
+                    <option value="6-12">6-12</option>
+                    <option value="13-19">13-19</option>
+                  </select>
+                </div>
+                <div className="mt-4">
+                  <label className="block mb-1 font-semibold">Amount</label>
+                  <input
+                    type="text"
+                    name="amount"
+                    value={form.amount}
+                    onChange={handleChange}
+                    className="w-full p-2 rounded-lg border h-13"
+                    placeholder="Enter amount"
+                  />
+                </div>
+                <div className="mt-4">
+                  <label className="block mb-1 font-semibold">Activities</label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={activitiesInput}
+                      onChange={(e) => setActivitiesInput(e.target.value)}
+                      className="w-full p-2 rounded-lg border h-13"
+                      placeholder="Enter Activities"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleAddActivities}
+                      className="bg-foreground px-4 rounded-lg text-background hover:bg-primary/90"
+                    >
+                      Add
+                    </button>
+                  </div>
+                  <ul className="mt-3 flex flex-wrap gap-2">
+                    {form.activities.map((item, i) => (
+                      <li
+                        key={i}
+                        className="flex items-center bg-foreground text-background border rounded-lg px-3 py-2 gap-2"
+                      >
+                        <span>{item}</span>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveActivitis(i)}
+                          className="text-red-600 hover:text-red-700"
+                        >
+                          ✕
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* focus */}
+              <div className="block md:hidden">
+                <label className="block mb-1 font-semibold">Focus on</label>
+                <textarea
+                  name="focus"
+                  value={form.focus}
+                  onChange={handleChange}
+                  rows={3}
+                  className="w-full p-2 rounded-lg border hide-scrollbar overflow-y-auto will-change-scroll transform-gpu"
+                  placeholder="Enter what focus on"
+                  required
+                />
+              </div>
+              {/* image */}
+              <div className="md:flex justify-around ">
+                <div>
+                  <label className="block mb-1 font-semibold">Image</label>
+
+                  <input
+                    type="file"
+                    accept="image/*"
+                    id="imageUpload"
+                    onChange={handleChange}
+                    className="hidden"
+                  />
+
+                  <label
+                    htmlFor="imageUpload"
+                    className="inline-block border hover:bg-primary hover:text-secondary font-semibold px-4 py-3 rounded-lg cursor-pointer h-13"
+                  >
+                    Change File
+                  </label>
+
+                  {(file || form.img) && (
+                    <div className="mt-3 relative max-w-60 max-h-60">
+                      <img
+                        src={
+                          file
+                            ? URL.createObjectURL(file)
+                            : typeof form.img === "string"
+                            ? form.img
+                            : ""
+                        }
+                        alt="Preview"
+                        className="w-full h-full object-cover rounded-lg"
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div className="hidden md:block">
+              <label className="block mb-1 font-semibold">Focus on</label>
+              <textarea
+                name="focus"
+                value={form.focus}
+                onChange={handleChange}
+                rows={3}
+                className="w-full p-2 rounded-lg border hide-scrollbar overflow-y-auto will-change-scroll transform-gpu"
+                placeholder="Enter what focus on"
+                required
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4"></div>
+
+            {/* Submit */}
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                className="bg-blue-800 hover:bg-blue-700 px-6 py-2 rounded font-semibold text-white"
+              >
+                {updateLoading ? "Updating.." : "Edit"}
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default EditWorkshopModal;

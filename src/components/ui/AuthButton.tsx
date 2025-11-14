@@ -18,7 +18,7 @@ const AuthButton: React.FC<AuthButtonProps> = ({
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`px-6 py-2 bg-[#1A1D3B] text-white rounded-xl transition-all disabled:cursor-not-allowed ${className}`}
+      className={`px-6 py-2 font-semibold border bg-foreground text-background hover:bg-primary hover:text-primary-foreground cursor-pointer rounded-xl transition-all disabled:cursor-not-allowed ${className}`}
       type={type}
       form={form}
       name={name}

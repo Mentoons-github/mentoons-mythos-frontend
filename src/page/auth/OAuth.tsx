@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import { CheckCircle, XCircle, Loader2, AlertCircle } from "lucide-react";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const OAuthResult = () => {
   const [isProcessing, setIsProcessing] = useState(true);
 
   const urlParams = new URLSearchParams(window.location.search);
   const status = urlParams.get("status");
-  const error = urlParams.get("error");
+  // const error = urlParams.get("error");
+  const message = urlParams.get("message");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -18,12 +22,14 @@ const OAuthResult = () => {
 
   useEffect(() => {
     if (status === "success") {
-
       setTimeout(() => {
         window.location.href = "/";
       }, 2000);
+    } else if (status === "error") {
+      toast.error(message || "Login failed");
+      navigate("/login");
     }
-  }, [status]);
+  }, [message, navigate, status]);
 
   const getErrorMessage = (errorCode: string | null) => {
     const errorMessages: Record<string, string> = {
@@ -103,7 +109,9 @@ const OAuthResult = () => {
                 <p className="text-sm font-medium text-red-800 mb-1">
                   Error Details:
                 </p>
-                <p className="text-sm text-red-700">{getErrorMessage(error)}</p>
+                <p className="text-sm text-red-700">
+                  {getErrorMessage(message)}
+                </p>
               </div>
             </div>
           </div>
@@ -122,7 +130,7 @@ const OAuthResult = () => {
               If this problem persists, please contact our support team with
               error code:{" "}
               <span className="font-mono bg-gray-100 px-1 rounded">
-                {error || "unknown"}
+                {message || "unknown"}
               </span>
             </p>
           </div>

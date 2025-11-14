@@ -1,5 +1,5 @@
-import { Route, Routes } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { lazy, Suspense, useEffect, useState } from "react";
 import MythosLayout from "./layout/mythos";
 import NotFound from "./components/NotFound";
 import Loader from "./components/loader/Loader";
@@ -15,14 +15,38 @@ import AdminLayout from "./Admin/layout/AdminLayout";
 import Dashboard from "./Admin/pages/Dashboard";
 import Users from "./Admin/pages/Users";
 import AssessmentQuestions from "./page/assessments/AssessmentQuestions";
-import RequireAdmin from "./Admin/components/RequireAdmin";
 import { AuthGuard, ProtectedRoute } from "./components/ProtectedRoutes";
 import ForgotPassword from "./page/auth/ForgotPassword";
 // import AstrologyReport from "./components/astro/report";
-import EmployeeLayout from "./layout/employee";
-import EmployeeDashboard from "./page/employee/dashboard";
+// import EmployeeLayout from "./layout/employee";
+import EmployeeDashboard from "./employee/pages/dashboard";
 import EmployeeLogin from "./page/employee/login";
-import LeaveManagement from "./page/employee/leaveManagement";
+import LeaveManagement from "./employee/pages/EmployeeLeaveManagement";
+
+import AssessmentPage from "./Admin/pages/Assessment/AssessmentPage";
+import AssessmentSubmissions from "./Admin/pages/Assessment/AssessmentSubmissions";
+import AdminJobs from "./Admin/pages/Career/AdminJobs";
+import AdminApplications from "./Admin/pages/Career/AdminApplications";
+import WelcomeScreen from "./components/Welcome";
+import AllWorkshops from "./Admin/pages/Workshops/AllWorkshops";
+import WorkshopEnquiries from "./Admin/pages/Workshops/WorkshopEnquiries";
+import AllBlogs from "./Admin/pages/Blogs/AllBlogs";
+import AdminReport from "./Admin/pages/Report&Block/AdminReport";
+import InitialAssessmentQuestions from "./page/assessments/InitialAssessementQuestions";
+import Comments from "./Admin/pages/Comments&NewsLetter/Comments";
+import NewsLetter from "./Admin/pages/Comments&NewsLetter/NewsLetter";
+import InitialSubmissions from "./Admin/pages/Assessment/InitialSubmissions";
+import AstroQuestions from "./page/astroQuestions";
+import RequireRole from "./Admin/components/RequireAdmin";
+import AllEmployees from "./Admin/pages/employees/AllEmployees";
+import AttendanceLeave from "./Admin/pages/employees/Attendance";
+import TaskAssignemnts from "./Admin/pages/employees/TaskAssignemnts";
+import EmployeeLayout from "./employee/layout/EmployeeLayout";
+import EmployeeProfile from "./employee/pages/EmployeeProfile";
+import EmployeeTasks from "./employee/pages/EmployeeTasks";
+import EmployeeAttendance from "./employee/pages/EmployeeAttendance";
+import BecomeMentor from "./page/becomeMentor";
+import AdminEmployeeLeaveManagement from "./Admin/pages/employees/AdminEmployeeLeaveManagement";
 
 const MythosHome = lazy(() => import("./page/home"));
 const MythosAbout = lazy(() => import("./page/about"));
@@ -42,8 +66,28 @@ const MythosContactUs = lazy(() => import("./page/contactUs"));
 const MythosPsychologyAssessments = lazy(
   () => import("./page/assessments/psychologyAssessment")
 );
+const MythosBookCall = lazy(() => import("./page/bookCall"));
+const MythosWorkshops = lazy(() => import("./page/workshops"));
+const MythosCareerGPS = lazy(() => import("./page/careerGPS"));
 
 const AppRouter = () => {
+  const [showWelcome, setShowWelcome] = useState(false);
+
+  useEffect(() => {
+    const hasVisited = sessionStorage.getItem("hasVisitedMythos");
+    if (!hasVisited) {
+      setShowWelcome(true);
+      sessionStorage.setItem("hasVisitedMythos", "true");
+    }
+  }, []);
+
+  const handleWelcomeComplete = () => {
+    setShowWelcome(false);
+  };
+
+  if (showWelcome) {
+    return <WelcomeScreen onComplete={handleWelcomeComplete} />;
+  }
   return (
     <>
       <Suspense fallback={<Loader />}>
@@ -117,10 +161,19 @@ const AppRouter = () => {
             <Route path="assessment/planet" element={<MythosAssessments />} />
             <Route path="details" element={<MythosDetails />} />
             <Route path="products-details" element={<MythosProductDetail />} />
-            <Route path="hiring" element={<MythosHiring />} />
+            <Route path="career" element={<MythosHiring />} />
             <Route path="profile" element={<MythosProfile />} />
             <Route path="contactUs" element={<MythosContactUs />} />
             {/* <Route path="report" element={<AstrologyReport />} /> */}
+            <Route path="book-call" element={<MythosBookCall />} />
+            <Route path="workshops" element={<MythosWorkshops />} />
+            <Route path="become-mentor" element={<BecomeMentor />} />
+            <Route path="career-gps" element={<MythosCareerGPS />} />
+            <Route
+              path="initialassessment"
+              element={<InitialAssessmentQuestions />}
+            />
+            <Route path="astroquiz" element={<AstroQuestions />} />
             <Route
               path="cart"
               element={
@@ -151,27 +204,74 @@ const AppRouter = () => {
               element={<MythosPsychologyAssessments />}
             />
           </Route>
+
+          {/* admin routes */}
           <Route
             path="/admin"
             // element={<AdminLayout />}
             element={
-              <RequireAdmin>
+              <RequireRole allowedRoles={["admin"]}>
                 <AdminLayout />
-              </RequireAdmin>
+              </RequireRole>
             }
           >
-            <Route index element={<Dashboard />} />
+            {/* <Route index element={<Dashboard />} /> */}
+            <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="users" element={<Users />} />
+
+            <Route path="assessments/:type" element={<AssessmentPage />} />
+            <Route
+              path="assessments/assessment-submissions"
+              element={<AssessmentSubmissions />}
+            />
+            <Route
+              path="assessments/initial-submissions"
+              element={<InitialSubmissions />}
+            />
+            <Route path="career/jobs" element={<AdminJobs />} />
+            <Route path="career/applications" element={<AdminApplications />} />
+            <Route path="workshops/workshops" element={<AllWorkshops />} />
+            <Route path="workshops/enquiries" element={<WorkshopEnquiries />} />
+            <Route path="blogs/blogs" element={<AllBlogs />} />
+            <Route path="report&blocks/reports" element={<AdminReport />} />
+            {/* <Route path="report&blocks/blocks" element = {<AdminReport/>}/> */}
+            <Route
+              path="comments&newsletter/comments-from-about"
+              element={<Comments />}
+            />
+            <Route
+              path="comments&newsletter/newsletter"
+              element={<NewsLetter />}
+            />
+            <Route path="employee/all-employees" element={<AllEmployees />} />
+            <Route path="employee/tasks" element={<TaskAssignemnts />} />
+            <Route path="employee/attendance" element={<AttendanceLeave />} />
+            <Route
+              path="employee/leave-management"
+              element={<AdminEmployeeLeaveManagement />}
+            />
+
             <Route path="*" element={<Users />} />
             {/* <Route path="orders" element={<Orders />} />
             <Route path="products" element={<Products />} /> */}
           </Route>
 
           {/*Employee Route*/}
-          <Route path="/employee" element={<EmployeeLayout />}>
-            <Route index element={<EmployeeDashboard />} />
+          <Route
+            path="/employee"
+            element={
+              <RequireRole allowedRoles={["employee"]}>
+                <EmployeeLayout />
+              </RequireRole>
+            }
+          >
+            <Route index element={<Navigate to="dashboard" replace />} />
+            <Route path="dashboard" element={<EmployeeDashboard />} />
             <Route path="leave-management" element={<LeaveManagement />} />
+            <Route path="profile" element={<EmployeeProfile />} />
+            <Route path="tasks" element={<EmployeeTasks />} />
+            <Route path="attendance" element={<EmployeeAttendance />} />
           </Route>
           <Route path="/employee/login" element={<EmployeeLogin />} />
         </Routes>

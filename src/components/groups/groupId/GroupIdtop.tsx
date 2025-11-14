@@ -48,7 +48,7 @@ const GroupIdtop = ({
 
   return (
     <motion.div
-      className="px-6 md:px-20 py-10 flex flex-col lg:flex-row items-center justify-around gap-10 bg-white"
+      className="px-6 md:px-20 py-10 flex flex-col lg:flex-row items-center justify-around gap-10 "
       initial="hidden"
       whileInView="visible"
       viewport={{ once: false, amount: 0.1 }}

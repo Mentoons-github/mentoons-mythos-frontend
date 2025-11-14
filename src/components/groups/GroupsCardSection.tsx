@@ -26,10 +26,7 @@ const GroupsCardSection = () => {
   return (
     <motion.section
       ref={ref}
-      className="px-4 lg:px-16 xl:px-24 py-10 flex flex-col items-start gap-6 overflow-hidden"
-      initial={{ opacity: 0, y: 50 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="px-4 lg:px-16 xl:px-24 py-10 flex flex-col items-start gap-6 overflow-hidden  bg-[url('/assets/background/section/stars_background.png')] bg-center"
     >
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -37,14 +34,14 @@ const GroupsCardSection = () => {
         transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
       >
         {/* <Heading /> */}
-        <h1 className="text-lg -mb-10 md:-mb-0 md:text-3xl font-bold font-montserrat text-[#E39712]">TAKE OUR ASSESSMENT AND GET YOUR PERSONAL REPORT </h1>
+        <h1 className="text-lg -mb-10 md:-mb-0 md:text-4xl font-bold font-montserrat ">TAKE OUR ASSESSMENT AND GET YOUR PERSONAL REPORT </h1>
       </motion.div>
     <div className="flex flex-wrap justify-start items-stretch md:px-16 gap-10 md:gap-40 w-full mt-10">
       {cardData.map((group, index) => (
         <motion.div
           key={index}
-          className="flex flex-col justify-between gap-4 p-6 rounded-xl shadow-md min-h-[460px] w-full max-w-lg"
-          style={{ backgroundColor: group.bg }}
+          className="flex flex-col justify-between gap-4 p-6 rounded-xl shadow-md min-h-[460px] w-full max-w-lg border "
+          // style={{ backgroundColor: group.bg }}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={
             isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }
@@ -73,7 +70,7 @@ const GroupsCardSection = () => {
               )
             }
           >
-            <MythosButton label="EXPLORE MORE" bg="white" />
+            <MythosButton label="EXPLORE MORE"  />
           </div>
           <motion.img
             src={group.img}

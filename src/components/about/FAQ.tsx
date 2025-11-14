@@ -20,15 +20,15 @@ const FAQ = () => {
     },
   };
 
-  const fadeIn = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 0.8,
-      },
-    },
-  };
+  // const fadeIn = {
+  //   hidden: { opacity: 0 },
+  //   visible: {
+  //     opacity: 1,
+  //     transition: {
+  //       duration: 0.8,
+  //     },
+  //   },
+  // };
 
   const staggerContainer = {
     hidden: { opacity: 0 },
@@ -46,18 +46,18 @@ const FAQ = () => {
       ref={faqRef}
       initial="hidden"
       animate={faqInView ? "visible" : "hidden"}
-      variants={fadeIn}
-      className="py-8 md:py-10 md:p-8 md:px-28 bg-black "
+      // variants={fadeIn}
+      className="py-8 lg:py-10 md:p-8 lg:px-28 bg-[url('/assets/background/section/stars_background.png')] bg-center"
     >
       <motion.h2
         variants={fadeInUp}
-        className="pb-8 text-xl font-semibold text-[#E39712]  tracking-widest md:text-4xl ml-2"
+        className="pb-8 text-xl font-semibold  tracking-widest md:text-4xl ml-2"
       >
         FREQUENTLY ASKED QUESTIONS
       </motion.h2>
       <motion.div
         variants={fadeInUp}
-        className="md:flex md:gap-8 w-[90%] md:w-[80%] mx-auto"
+        className="md:flex md:gap-8 w-[90%] lg:w-[80%] mx-auto"
       >
         <motion.div
           variants={staggerContainer}

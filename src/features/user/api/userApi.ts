@@ -6,8 +6,21 @@ export const fetchUserDetails = () => {
   return apiClient.get("/user");
 };
 
-export const fetchAllUsersApi = () => {
-  return apiClient.get("/user/all-users");
+export const fetchAllUsersApi = (
+  page: number,
+  limit: number,
+  sort?: string,
+  search?: string,
+  filterBy?: string,
+  filterValue?: string
+) => {
+  return apiClient.get(
+    `/user/all-users?page=${page}&limit=${limit}&sort=${sort}&search=${search}&filterBy=${filterBy}&filterValue=${filterValue}`
+  );
+};
+
+export const fetchUserCountApi = () => {
+  return apiClient.get("/user/count");
 };
 
 export const blockUserApi = (userId: string) => {
@@ -24,4 +37,8 @@ export const reportUserApi = (data: ReportResponse, userId: string) => {
 
 export const updateUser = (data: Partial<IUser>) => {
   return apiClient.put("/user/update-profile", { data });
+};
+
+export const fetchSingleUserApi = (userId: string) => {
+  return apiClient.get(`/user/single-user/${userId}`);
 };

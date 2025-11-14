@@ -20,9 +20,9 @@ const MessageInput = ({
   onEmojiSelect
 }: MessageInputProps) => {
   return (
-    <div className="flex items-center bg-black/80 mt-0 p-2 md:rounded-b-lg space-x-2 relative">
+    <div className="flex items-center bg- mt-0 p-2 md:rounded-b-lg space-x-2 relative">
       <BsEmojiSmile
-        className="absolute left-4 cursor-pointer text-xl text-white"
+        className="absolute left-4 cursor-pointer text-xl "
         onClick={onToggleEmojiPicker}
       />
 
@@ -42,13 +42,13 @@ const MessageInput = ({
           }
         }}
         rows={1}
-        className="flex-1 pl-10 px-4 py-2 border text-white border-white rounded-md focus:outline-none resize-none"
+        className="flex-1 pl-10 px-4 py-2 border bg-input border-whborderte rounded-md focus:outline-none resize-none"
       />
 
       <button
         disabled={!text.trim()}
         onClick={onSend}
-        className="text-white bg-[#E39712] rounded-full p-2 transition disabled:bg-[#f8c162]"
+        className=" bg-[#E39712] rounded-full p-2 transition disabled:bg-[#f8c162]"
       >
         <IoIosSend className="text-2xl" />
       </button>

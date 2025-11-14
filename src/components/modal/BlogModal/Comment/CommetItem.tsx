@@ -28,17 +28,18 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, onReply }) => {
 
       <div className="flex-1">
         <CommentHeader
-        commentId = {comment._id}
-        userId = {comment.userId}
+          commentId={comment._id}
+          userId={comment.userId}
           username={comment.username}
           createdAt={comment.createdAt}
           onReply={toggleReply}
         />
 
-        <p className="text-sm text-gray-700 mt-1">{comment.comment}</p>
+        <p className="text-sm  mt-1">{comment.comment}</p>
 
         {replyingTo === comment._id && (
           <CommentInput
+            onCancel={() => setReplyingTo(null)}
             isOpen={true}
             onSubmit={handleReplySubmit}
             placeholder={`Replying to ${comment.username}`}

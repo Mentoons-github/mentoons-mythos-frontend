@@ -56,8 +56,6 @@ const SinglePostModal: React.FC<SinglePostModalProps> = ({
     dispatch(likeBlogThunk(blogId));
   };
 
-
-
   const handleCommentSubmit = (comment: string) => {
     if (!blogId) return;
 
@@ -69,13 +67,12 @@ const SinglePostModal: React.FC<SinglePostModalProps> = ({
   };
 
   const handleReplyComment = (commentId: string, replyText: string) => {
-  if (!blogId) return;
+    if (!blogId) return;
 
-  dispatch(replyCommentThunk({commentId, replyText })).then(() => {
-    dispatch(getCommentBlogThunk(blogId));
-  });
-};
-
+    dispatch(replyCommentThunk({ commentId, replyText })).then(() => {
+      dispatch(getCommentBlogThunk(blogId));
+    });
+  };
 
   const isLiked = currentPost?.likes?.includes(userId) || false;
   const likesCount = currentPost?.likes?.length || 0;
@@ -84,13 +81,18 @@ const SinglePostModal: React.FC<SinglePostModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
       <motion.div
-        className="bg-white p-5 rounded-lg w-full max-w-xl shadow-xl max-h-[100vh]"
+        className="bg-secondary p-5 rounded-lg w-full max-w-xl shadow-xl max-h-[100vh]"
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
         onClick={(e) => e.stopPropagation()}
       >
-        <ModalHeader title={post.title} onClose={onClose} userId = {post.writerId} postId = {post._id}/>
+        <ModalHeader
+          title={post.title}
+          onClose={onClose}
+          userId={post.writerId}
+          postId={post._id}
+        />
 
         <BlogImage src={post.file} alt={post.title} />
 
@@ -101,17 +103,21 @@ const SinglePostModal: React.FC<SinglePostModalProps> = ({
             <CommentsList
               comments={comments}
               onClose={() => setCommentOpen(false)}
-              handleReplyComment = {handleReplyComment}
+              handleReplyComment={handleReplyComment}
             />
           ) : (
             <BlogContent description={post.description} tags={post.tags} />
           )}
         </div>
 
-        <CommentInput isOpen={inputOpen} onSubmit={handleCommentSubmit} />
+        <CommentInput
+          isOpen={inputOpen}
+          onSubmit={handleCommentSubmit}
+          onCancel={() => setInputOpen(false)}
+        />
 
         <BlogActions
-        commentsOff = {currentPost.commentsOff}
+          commentsOff={currentPost.commentsOff}
           isLiked={isLiked}
           likesCount={likesCount}
           commentsCount={commentsCount}

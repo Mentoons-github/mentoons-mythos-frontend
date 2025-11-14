@@ -62,6 +62,7 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const [countries, setCountries] = useState<Country[] | null>(null);
+  const [isSelectFocused, setIsSelectFocused] = useState(false);
 
   const [profile, setProfile] = useState<Partial<IUser>>({
     firstName: user?.firstName ?? "",
@@ -170,7 +171,8 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
     () =>
       countries?.map((country) => ({
         value: country.code,
-        label: (
+        label: country.name,
+        displayLabel: (
           <div className="flex items-center gap-2">
             <img
               src={country.flag}
@@ -184,9 +186,13 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
     [countries]
   );
 
+  const selectedCountry = countryOptions.find(
+    (option) => option.label === profile.country
+  );
+
   return (
     <motion.div
-      className="w-full max-w-4xl mx-auto p-6 bg-gradient-to-br from-gray-800 via-gray-900 to-black min-h-screen"
+      className="w-full max-w-4xl mx-auto p-4 md:p-6 border border-muted-foreground rounded-xl min-h-screen"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -196,18 +202,18 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
         variants={cardVariants}
       >
         <motion.div
-          className="w-12 h-12 bg-gradient-to-br from-gray-300 to-gray-800 rounded-xl flex items-center justify-center shadow-lg"
+          className="w-8 h-8 md:w-12 md:h-12 bg-foreground rounded-md md:rounded-xl flex items-center justify-center shadow-lg"
           variants={floatingVariants}
           animate="float"
         >
-          <Edit className="w-8 h-8 text-white" />
+          <Edit className="w-4 h-4 md:w-8 md:h-8 text-background" />
         </motion.div>
         <div>
-          <h1 className="text-2xl font-bold text-gray-100 flex items-center gap-2">
+          <h1 className="text-2xl font-bold  flex items-center gap-2">
             Edit Profile
-            <Sparkles className="w-6 h-6 text-gray-400" />
+            <Sparkles className="w-6 h-6 text-muted-foreground" />
           </h1>
-          <p className="text-gray-400">Update your cosmic identity</p>
+          <p className="text-muted-foreground">Update your cosmic identity</p>
         </div>
       </motion.div>
 
@@ -234,14 +240,14 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
       )}
 
       <motion.div
-        className="bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 rounded-xl shadow-lg border border-gray-600 hover:shadow-xl transition-shadow duration-300 relative overflow-hidden"
+        className=" rounded-xl shadow-lg border border-gray-600 hover:shadow-xl transition-shadow duration-300 relative overflow-hidden"
         variants={cardVariants}
         whileHover="hover"
       >
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gray-300 via-gray-600 to-gray-800"></div>
 
         <form>
-          <div className="p-8">
+          <div className="p-4 md:p-8">
             <div className="space-y-8">
               {errors.length > 0 && (
                 <motion.div
@@ -266,8 +272,8 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <motion.div className="space-y-6" variants={cardVariants}>
-                  <h3 className="text-gray-100 text-xl font-semibold border-b border-gray-600 pb-2 flex items-center gap-2">
-                    <Sparkles className="w-5 h-5 text-gray-400" />
+                  <h3 className=" text-xl font-semibold border-b border-muted-foreground pb-2 flex items-center gap-2">
+                    <Sparkles className="w-5 h-5 text-muted-foreground" />
                     Personal Information
                   </h3>
 
@@ -295,13 +301,13 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
 
                   {profile.isGoogleUser ? (
                     <motion.div
-                      className="relative w-full bg-gray-900 border border-gray-600 rounded-lg p-4"
+                      className="relative w-full bg- border border-border rounded-lg p-4"
                       whileHover={{ scale: 1.02 }}
                       transition={{ duration: 0.2 }}
                     >
                       <div className="flex items-center gap-2 mb-2">
                         <div className="w-3 h-3 bg-green-400 rounded-full"></div>
-                        <span className="text-gray-100 text-sm font-medium">
+                        <span className=" text-sm font-medium">
                           Google Account
                         </span>
                       </div>
@@ -309,9 +315,9 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
                         value={profile.email ?? ""}
                         type="email"
                         readOnly
-                        className="w-full bg-transparent text-gray-400 text-sm border-none outline-none cursor-not-allowed"
+                        className="w-full bg-transparent text-muted-foreground text-sm border-none outline-none cursor-not-allowed"
                       />
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-muted-foreground mt-1">
                         Email cannot be changed for Google accounts
                       </p>
                     </motion.div>
@@ -324,7 +330,7 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
                         label="Email Address"
                         type="email"
                         value={profile.email ?? ""}
-                        onChange={handleInputChange("email")}
+                        // onChange={handleInputChange("email")}
                       />
                     </motion.div>
                   )}
@@ -336,45 +342,53 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
                   >
                     <label
                       htmlFor="country"
-                      className="text-gray-100 text-sm font-medium block mb-2"
+                      className="text-muted-foreground text-sm font-medium block mb-2"
                     >
                       Country
                     </label>
                     <Select
                       id="country"
                       options={countryOptions}
-                      value={
-                        countryOptions.find(
-                          (option) => option.value === profile.country
-                        ) ?? null
-                      }
+                      value={selectedCountry ?? null}
                       onChange={(option) => {
                         setProfile((prev) => ({
                           ...prev,
-                          country: option?.value ?? "",
+                          country: option?.label ?? "",
                         }));
                         setErrors([]);
                         setSuccessMessage("");
+                        setIsSelectFocused(false);
                       }}
-                      placeholder="Select a country"
+                      onFocus={() => setIsSelectFocused(true)}
+                      onBlur={() => setIsSelectFocused(false)}
+                      placeholder="Search and select a country"
                       isLoading={countries === null}
                       isDisabled={countries === null}
-                      className="text-gray-100"
+                      isSearchable={true}
+                      isClearable={false}
+                      filterOption={(option, inputValue) => {
+                        if (!inputValue) return true;
+                        return option.label
+                          .toLowerCase()
+                          .includes(inputValue.toLowerCase());
+                      }}
+                      className=""
                       menuPortalTarget={document.body}
+                      formatOptionLabel={(option) => option.displayLabel}
                       styles={{
                         control: (base) => ({
                           ...base,
-                          backgroundColor: "#1F2937",
+                          backgroundColor: "var(--background)", 
                           borderColor: errors.includes("Country is required")
                             ? "#EF4444"
-                            : "#4B5563",
+                            : "var(--border)", 
                           borderRadius: "0.75rem",
                           padding: "0.5rem",
                           boxShadow: "none",
                           "&:hover": {
                             borderColor: errors.includes("Country is required")
                               ? "#EF4444"
-                              : "#9CA3AF",
+                              : "var(--muted-foreground)",
                           },
                         }),
                         menu: (base) => ({
@@ -397,11 +411,19 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
                         }),
                         singleValue: (base) => ({
                           ...base,
+                          color: "var(--foreground)", // Uses your CSS variable for text color
+                          opacity: isSelectFocused ? 0 : 1,
+                          transition: "opacity 0.2s ease",
+                        }),
+                        input: (base) => ({
+                          ...base,
                           color: "#F3F4F6",
                         }),
                         placeholder: (base) => ({
                           ...base,
                           color: "#9CA3AF",
+                          opacity: isSelectFocused || !selectedCountry ? 1 : 0,
+                          transition: "opacity 0.2s ease",
                         }),
                         dropdownIndicator: (base) => ({
                           ...base,
@@ -420,7 +442,7 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
                 </motion.div>
 
                 <motion.div className="space-y-6" variants={cardVariants}>
-                  <h3 className="text-gray-100 text-xl font-semibold border-b border-gray-600 pb-2 flex items-center gap-2">
+                  <h3 className=" text-xl font-semibold border-b border-muted-foreground pb-2 flex items-center gap-2">
                     <Star className="w-5 h-5 text-gray-400" />
                     Additional Details
                   </h3>
@@ -430,35 +452,16 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
                     whileHover={{ scale: 1.02 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <label className="text-gray-100 text-sm font-medium">
+                    <label className=" text-sm font-medium">
                       About Me
                     </label>
                     <textarea
                       value={profile.about ?? ""}
                       onChange={handleInputChange("about")}
-                      className="w-full h-32 p-4 bg-gray-900 text-gray-100 placeholder-gray-400 border border-gray-600 rounded-xl focus:border-gray-400 focus:outline-none resize-none transition-colors"
+                      className="w-full h-32 p-4 placeholder-gray-400 border-border border-2 rounded-xl focus:border-foreground focus:outline-none resize-none transition-colors"
                       placeholder="Share your cosmic story..."
                     />
                   </motion.div>
-
-                  {profile.isGoogleUser && (
-                    <motion.div
-                      className="bg-gradient-to-r from-green-900 to-blue-900 border border-gray-600 rounded-xl p-4"
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.5 }}
-                    >
-                      <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 bg-green-400 rounded-full"></div>
-                        <span className="text-gray-100 text-sm font-medium">
-                          Google Account
-                        </span>
-                      </div>
-                      <p className="text-gray-400 text-xs mt-1">
-                        This account is connected via Google Sign-In
-                      </p>
-                    </motion.div>
-                  )}
                 </motion.div>
               </div>
 
@@ -470,7 +473,7 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
               >
                 <motion.button
                   type="button"
-                  className="px-8 py-3 text-gray-100 border-2 border-gray-500 rounded-xl hover:bg-gray-600 transition-colors font-medium flex items-center gap-2"
+                  className="px-4 md:px-8 py-3  border-2 border-foreground rounded-xl hover:bg-foreground hover:text-background transition-colors font-medium flex items-center gap-2"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setActiveTab("profile")}
@@ -482,7 +485,7 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
                   type="submit"
                   disabled={isLoading}
                   onClick={handleSubmit}
-                  className={`px-8 py-3 ${
+                  className={`px-4 md:px-8 py-3 ${
                     isLoading
                       ? "bg-gray-600 cursor-not-allowed"
                       : "bg-gradient-to-r from-gray-600 to-gray-800 hover:from-gray-500 hover:to-gray-700"
@@ -517,12 +520,12 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
       </motion.div>
 
       <motion.div
-        className="bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 border border-gray-600 rounded-xl p-6 mt-6 shadow-lg hover:shadow-xl transition-shadow duration-300"
+        className=" border border-muted-foreground rounded-xl p-6 mt-6 shadow-lg hover:shadow-xl transition-shadow duration-300"
         variants={cardVariants}
         whileHover="hover"
       >
-        <h3 className="text-gray-100 text-lg font-semibold mb-4 flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-gray-400" />
+        <h3 className=" text-lg font-semibold mb-4 flex items-center gap-2">
+          <Sparkles className="w-5 h-5 text-muted-foreground" />
           Account Information
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
@@ -531,20 +534,20 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
             whileHover={{ x: 5 }}
             transition={{ duration: 0.2 }}
           >
-            <span className="text-gray-400">Account Type:</span>
-            <p className="text-gray-100 font-medium flex items-center gap-2">
+            <span className="text-muted-foreground">Account Type:</span>
+            <div className=" font-medium flex items-center gap-2">
               {profile.isGoogleUser ? (
                 <>
-                  <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                  <p className="w-2 h-2 bg-blue-400 rounded-full"></p>
                   Google Account
                 </>
               ) : (
                 <>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                  <p className="w-2 h-2 bg-gray-400 rounded-full"></p>
                   Regular Account
                 </>
               )}
-            </p>
+            </div>
           </motion.div>
           <motion.div
             className="space-y-2"
@@ -558,7 +561,7 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               />
-              <span className="text-gray-100 font-medium">Active</span>
+              <span className=" font-medium">Active</span>
             </div>
           </motion.div>
         </div>

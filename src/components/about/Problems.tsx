@@ -19,9 +19,9 @@ const Problems = () => {
     },
   ];
   return (
-    <div className="bg-black p-4 md:p-6 pb-12 md:pb-24">
+    <div className="p-4 md:p-6 pb-12 md:pb-24 bg-[url('/assets/background/section/stars_background.png')] bg-center overflow-hidden">
       <motion.h2
-        className="text-2xl font-semibold text-[#E39712] tracking-widest md:px-12 pb-8 md:pb-12 md:text-4xl lg:text-5xl"
+        className="text-2xl font-semibold tracking-widest md:px-12 pb-8 md:pb-12 md:text-3xl lg:text-5xl"
         initial={{ opacity: 0, y: -30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
@@ -30,7 +30,7 @@ const Problems = () => {
         THE PROBLEMS FACED BY THE PEOPLE{" "}
       </motion.h2>
       <motion.div
-        className="flex items-center justify-between gap-4 w-[80%] mx-auto flex-wrap"
+        className="flex items-center justify-between gap-4 lg:w-[80%] mx-auto flex-wrap"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.3 }}
@@ -39,8 +39,8 @@ const Problems = () => {
         {problems.map((problem, index) => (
           <motion.div
             key={problem.description}
-            className="flex flex-col items-center p-4 transition-transform rounded-lg shadow-md hover:scale-105 w-full sm:w-[30%]"
-            style={{ backgroundColor: problem.backgroundColor }}
+            className="flex flex-col items-center p-4 transition-transform rounded-lg shadow-md hover:scale-105 w-full sm:w-[30%] border border-muted-foreground"
+            // style={{ backgroundColor: problem.backgroundColor }}
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 * (index + 1) }}
@@ -90,7 +90,7 @@ const Problems = () => {
               )}
             </motion.div>
             <motion.p
-              className="p-2 text-lg font-medium text-center text-black md:text-xl w-[80%]"
+              className="p-2 text-lg font-medium text-center md:text-xl w-[80%]"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.5 * (index + 1) }}

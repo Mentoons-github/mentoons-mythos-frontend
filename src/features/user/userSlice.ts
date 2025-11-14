@@ -6,6 +6,8 @@ import {
   reportUserThunk,
   userLogout,
   updateUserData,
+  fetchSingleUserThunk,
+  fetchAllUserCountThunk,
 } from "./userThunk";
 import { IUser } from "../../types";
 
@@ -18,17 +20,33 @@ export interface UserData {
   reportSuccess: boolean;
   allUsers: IUser[];
   blockMessage: string;
+  blockSuccess: boolean;
+  singleUser: IUser | null;
+  singleUserLoading: boolean;
+  total: number;
+  page: number;
+  totalPage: number;
+  userCount: number;
+  logoutSuccess: boolean;
 }
 
 const initialState: UserData = {
   user: null,
   error: null,
-  loading: true,
+  loading: false,
   success: false,
   reportMessage: "",
   reportSuccess: false,
   allUsers: [],
   blockMessage: "",
+  blockSuccess: false,
+  singleUser: null,
+  singleUserLoading: false,
+  total: 0,
+  page: 0,
+  totalPage: 0,
+  userCount: 0,
+  logoutSuccess: false,
 };
 
 const userSlice = createSlice({
@@ -42,6 +60,15 @@ const userSlice = createSlice({
       state.reportSuccess = false;
       state.success = false;
       state.blockMessage = "";
+      state.blockSuccess = false;
+      state.singleUser = null;
+      state.singleUserLoading = false;
+      state.logoutSuccess = false;
+    },
+    updateUserPassword: (state, action) => {
+      if (state.user) {
+        state.user = { ...state.user, password: action.payload };
+      }
     },
   },
   extraReducers: (builder) => {
@@ -66,12 +93,30 @@ const userSlice = createSlice({
         state.allUsers = action.payload.users;
         state.error = null;
         state.loading = false;
+        state.total = action.payload.total;
+        state.page = action.payload.page;
+        state.totalPage = action.payload.totalPage;
       })
       .addCase(fetchAllUserThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchAllUserThunk.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.loading = false;
+      })
+
+      //fetch user count
+      .addCase(fetchAllUserCountThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAllUserCountThunk.fulfilled, (state, action) => {
+        state.userCount = action.payload;
+        state.error = null;
+        state.loading = false;
+      })
+      .addCase(fetchAllUserCountThunk.rejected, (state, action) => {
         state.error = action.payload as string;
         state.loading = false;
       })
@@ -86,7 +131,7 @@ const userSlice = createSlice({
           state.allUsers[index].isBlocked = updatedUser.isBlocked;
         }
         state.blockMessage = action.payload.message;
-        state.success = action.payload.success;
+        state.blockSuccess = action.payload.success;
         state.error = null;
         state.loading = false;
       })
@@ -102,17 +147,20 @@ const userSlice = createSlice({
       //logout
       .addCase(userLogout.fulfilled, (state) => {
         state.user = null;
-        state.success = false;
+        state.success = true;
         state.loading = false;
         state.error = null;
+        state.logoutSuccess = true;
       })
       .addCase(userLogout.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.logoutSuccess = false;
       })
       .addCase(userLogout.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+        state.logoutSuccess = false;
       })
 
       //retportUser
@@ -145,10 +193,25 @@ const userSlice = createSlice({
       .addCase(updateUserData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+
+      //fetch single user
+      .addCase(fetchSingleUserThunk.pending, (state) => {
+        state.singleUserLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchSingleUserThunk.fulfilled, (state, action) => {
+        state.singleUser = action.payload.user;
+        state.error = null;
+        state.singleUserLoading = false;
+      })
+      .addCase(fetchSingleUserThunk.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.singleUserLoading = false;
       });
   },
 });
 
-export const { resetUserSlice } = userSlice.actions;
+export const { resetUserSlice, updateUserPassword } = userSlice.actions;
 
 export default userSlice.reducer;

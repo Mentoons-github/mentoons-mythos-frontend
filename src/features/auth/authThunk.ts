@@ -1,6 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { forgotPasswordApi, loginApi, registerApi, sendOtpApi, verifyOtpApi } from "./authApi";
 import {
+  changePasswordApi,
+  deleteAccountApi,
+  forgotPasswordApi,
+  loginApi,
+  registerApi,
+  sendOtpApi,
+  verifyOtpApi,
+} from "./authApi";
+import {
+  ChangePassword,
   ForgotPasswordPayload,
   ForgotPasswordResponse,
   LoginPayload,
@@ -14,6 +23,7 @@ import {
 } from "../../types/redux/authInterfaces";
 import { AxiosError } from "axios";
 
+//register
 export const registerThunk = createAsyncThunk<
   RegisterResponse,
   RegisterPayload,
@@ -30,6 +40,7 @@ export const registerThunk = createAsyncThunk<
   }
 });
 
+//login
 export const loginThunk = createAsyncThunk<
   LoginResponse,
   LoginPayload,
@@ -44,6 +55,7 @@ export const loginThunk = createAsyncThunk<
   }
 });
 
+//sed otp
 export const sendOtpThunk = createAsyncThunk<
   SendOtpResponse,
   SendOtpPayload,
@@ -60,6 +72,7 @@ export const sendOtpThunk = createAsyncThunk<
   }
 });
 
+//verify otp
 export const verifyOtpThunk = createAsyncThunk<
   VerifyOtpResponse,
   VerifyOtpPayload,
@@ -76,6 +89,7 @@ export const verifyOtpThunk = createAsyncThunk<
   }
 });
 
+//forgot password
 export const forgotPasswordThunk = createAsyncThunk<
   ForgotPasswordResponse,
   ForgotPasswordPayload,
@@ -86,6 +100,47 @@ export const forgotPasswordThunk = createAsyncThunk<
     return res.data;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
-    return rejectWithValue(error?.response?.data?.message || "Forgot Password Failed");
+    return rejectWithValue(
+      error?.response?.data?.message || "Forgot Password Failed"
+    );
   }
 });
+
+//change password
+export const changePasswordThunk = createAsyncThunk<
+  string,
+  { passwords: ChangePassword; userId: string },
+  { rejectValue: string }
+>(
+  "auth/change-password",
+  async ({ passwords, userId }, { rejectWithValue }) => {
+    try {
+      const res = await changePasswordApi(passwords, userId);
+      return res.data.message;
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      return rejectWithValue(
+        error?.response?.data?.message || "Forgot Password Failed"
+      );
+    }
+  }
+);
+
+export const deleteAccountThunk = createAsyncThunk<
+  string,
+  void,
+  { rejectValue: string }
+>(
+  "auth/delete-account",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await deleteAccountApi();
+      return res.data.message;
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      return rejectWithValue(
+        error?.response?.data?.message || "Delete account Failed"
+      );
+    }
+  }
+);

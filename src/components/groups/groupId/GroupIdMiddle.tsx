@@ -3,7 +3,7 @@ import PlaneteryTrends from "./PlanetaryTrends";
 import SkillTips from "./SkillTips";
 const GroupIdMiddle = ({isIntelligence}:{isIntelligence:boolean}) => {
   return (
-    <motion.div className="flex flex-col md:flex-row bg-black md:space-x-10 md:px-10 md:py-10">
+    <motion.div className="flex flex-col md:flex-row md:space-x-10 md:px-10 md:py-10">
       <div className="md:w-3/5">
         <PlaneteryTrends isIntelligence = {isIntelligence}/>
       </div>

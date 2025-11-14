@@ -4,20 +4,42 @@ import { fileUploadThunk } from "../../../features/upload/fileUploadThunk";
 import { applyCareerThunk } from "../../../features/career/careerThunk";
 import { resetCareerSlice } from "../../../features/career/careerSlice";
 import { toast } from "sonner";
+import { City } from "country-state-city";
 
 type HiringModalProps = {
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   title: string;
+  jobId: string;
 };
 
-const HiringModal = ({ setModalOpen, title }: HiringModalProps) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [mobileNumber, setMobileNumber] = useState("");
-  const [resume, setResume] = useState<File | null>(null);
+const genders = ["Male", "Female", "Other", "Prefer not to say"];
+
+const HiringModal = ({ setModalOpen, title, jobId }: HiringModalProps) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    mobileNumber: "",
+    gender: "",
+    coverNote: "",
+    cLocation: "",
+    resume: null as File | null,
+  });
+  const [fileName, setFileName] = useState<string>("");
+
+  // ✅ Fetch Indian cities from country-state-city
+  const cities = City.getCitiesOfCountry("IN") || [];
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFileName(e.target.files[0].name);
+      setFormData((prev) => ({ ...prev, resume: e.target.files![0] }));
+    } else {
+      setFileName("");
+      setFormData((prev) => ({ ...prev, resume: null }));
+    }
+  };
 
   const dispatch = useAppDispatch();
-  const { file: uploadedFile } = useAppSelector((state) => state.upload);
   const { message, error, loading, success } = useAppSelector(
     (state) => state.career
   );
@@ -28,7 +50,7 @@ const HiringModal = ({ setModalOpen, title }: HiringModalProps) => {
     if (success) {
       toast.success(message || "Application submitted successfully!");
       dispatch(resetCareerSlice());
-      setModalOpen(false); 
+      setModalOpen(false);
     } else if (error) {
       toast.error(error);
       dispatch(resetCareerSlice());
@@ -42,130 +64,237 @@ const HiringModal = ({ setModalOpen, title }: HiringModalProps) => {
     };
   }, []);
 
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name || !email || !resume || !mobileNumber) {
-      toast.error("Please fill in all fields and upload your resume.");
+    const { name, email, mobileNumber, resume, gender, cLocation } = formData;
+
+    if (!name || !email || !mobileNumber || !resume || !gender || !cLocation) {
+      toast.error("Please fill in all fields ");
       return;
     }
 
-    let fileUrl: string = uploadedFile ?? "";
+    if (!cities.some((city) => city.name === cLocation)) {
+      toast.error("Please select a valid city.");
+      return;
+    }
+
+    let fileUrl: string = "";
 
     try {
-      fileUrl = await dispatch(
-        fileUploadThunk({ file: resume, category: "career" }) 
+      const result = await dispatch(
+        fileUploadThunk({ file: resume, category: "career" })
       ).unwrap();
+
+      if (typeof result === "string") {
+        fileUrl = result;
+      } else if (Array.isArray(result) && result.length > 0) {
+        fileUrl = result[0].url;
+      } else {
+        throw new Error("Invalid upload response");
+      }
     } catch (err) {
-      toast.error("File upload failed. Please try again." + err);
+      toast.error("File upload failed. Please try again. " + err);
       return;
     }
 
-    dispatch(
-      applyCareerThunk({
-        name,
-        email,
-        mobileNumber: Number(mobileNumber), 
-        resume: fileUrl,
-        position,
-      })
-    );
+    const data = {
+      ...formData,
+      mobileNumber: Number(mobileNumber),
+      resume: fileUrl,
+      position,
+    };
+
+    dispatch(applyCareerThunk({ data, jobId }));
   };
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-black/70 z-50"
+      className="fixed inset-0 flex items-center justify-center bg-black/70 z-50 font-mulish"
       onClick={() => setModalOpen(false)}
     >
       <div
-        className="bg-white rounded-2xl shadow-xl w-[90%] max-w-lg p-6 relative"
+        className="bg-secondary rounded-2xl shadow-xl w-[90%] max-w-2xl p-6 relative"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           type="button"
           onClick={() => setModalOpen(false)}
-          className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
+          className="absolute top-3 right-3  hover:text-muted-foreground"
         >
           ✕
         </button>
 
-        <h2 className="text-2xl font-bold mb-4">{title}</h2>
-        <p className="text-gray-600 mb-4">
-          We’re looking for passionate people to join our company. Apply now and
-          grow with us!
-        </p>
+        <div className="text-center">
+          <h2 className="text-2xl font-extrabold mb-1">{title}</h2>
+          <p className="mb-4 text-muted-foreground">
+            Fill in the details below and we'll contact you
+          </p>
+        </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Name
-            </label>
-            <input
-              type="text"
-              className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-black"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Enter your full name"
-              required
-            />
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Name + Email */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium ">
+                Name
+              </label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-lg border h-11  px-3 py-2 focus:ring "
+                placeholder="Enter your full name"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium ">
+                Email Address
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-lg border h-11  px-3 py-2 focus:ring"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Email Address
-            </label>
-            <input
-              type="email"
-              className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-black"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email address"
-              required
-            />
+          {/* Mobile + Gender */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium ">
+                Mobile Number
+              </label>
+              <input
+                type="tel"
+                name="mobileNumber"
+                value={formData.mobileNumber}
+                onChange={(e) => {
+                  const value = e.target.value.replace(/\D/g, "");
+                  if (value.length <= 10) {
+                    setFormData((prev) => ({ ...prev, mobileNumber: value }));
+                  }
+                }}
+                className="mt-1 block w-full rounded-lg border h-11 px-3 py-2 focus:ring"
+                placeholder="10 digit number"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium ">
+                Gender
+              </label>
+              <select
+                name="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-lg border h-11  px-3 py-2 focus:ring"
+                required
+              >
+                <option value="" className="bg-secondary">Select Gender</option>
+                {genders.map((g) => (
+                  <option key={g} value={g} className="bg-secondary">
+                    {g}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
+          {/* Cover Note */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Mobile Number
+            <label className="block text-sm font-medium ">
+              Cover Note
             </label>
-            <input
-              type="tel"
-              className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-black"
-              value={mobileNumber}
-              onChange={(e) => {
-                const value = e.target.value.replace(/\D/g, "");
-                if (value.length <= 10) {
-                  setMobileNumber(value);
-                }
-              }}
-              maxLength={10}
-              pattern="\d{10}"
-              placeholder="Enter 10 digit number"
-              required
+            <textarea
+              name="coverNote"
+              rows={3}
+              value={formData.coverNote}
+              onChange={handleChange}
+              className="mt-1 block w-full rounded-lg border px-3 py-2 focus:ring hide-scrollbar"
+              placeholder="Write a short cover note"
+              maxLength={600}
             />
+            <p className="text-xs text-muted-foreground mt-1">
+              {formData.coverNote.length}/600 characters
+            </p>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Upload Resume
-            </label>
-            <input
-              type="file"
-              accept=".pdf,.doc,.docx"
-              className="mt-1 block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-black file:text-white hover:file:bg-gray-800"
-              onChange={(e) =>
-                setResume(e.target.files ? e.target.files[0] : null)
-              }
-              required
-            />
+          {/* Resume + Location */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Upload Resume */}
+            <div>
+              <label className="block text-sm font-medium ">
+                Upload Resume
+              </label>
+              <label
+                className="flex items-center justify-between h-11 mt-1
+                   w-full border rounded-lg cursor-pointer 
+                   bg-background text-foreground hover:bg-background/80 px-4 text-sm"
+              >
+                {fileName ? fileName : "Choose File"}
+                <input
+                  type="file"
+                  name="resume"
+                  accept=".pdf,.doc,.docx"
+                  onChange={handleFileChange}
+                  className="hidden"
+                  required
+                />
+              </label>
+            </div>
+
+            {/* Searchable City (datalist) */}
+            <div>
+              <label className="block text-sm font-medium ">
+                Location
+              </label>
+              <input
+                list="cityOptions"
+                name="cLocation"
+                value={formData.cLocation}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-lg border h-11 px-3 py-2 focus:ring"
+                placeholder="Type or select city"
+                required
+              />
+              <datalist id="cityOptions">
+                {cities.map((city) => (
+                  <option
+                    key={`${city.name}-${city.stateCode}-${city.countryCode}`}
+                    value={city.name}
+                  />
+                ))}
+              </datalist>
+            </div>
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="block w-full text-center bg-black text-white py-2 rounded-lg shadow hover:bg-gray-800 disabled:opacity-50"
+            className="block w-full text-center bg-foreground text-background py-3 rounded-lg shadow hover:bg-foreground/80 disabled:opacity-50"
           >
-            {loading ? "Applying..." : "Apply Now"}
+            {loading ? "Applying..." : "Submit Application"}
           </button>
         </form>
       </div>

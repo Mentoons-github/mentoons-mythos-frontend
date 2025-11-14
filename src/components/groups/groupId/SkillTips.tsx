@@ -34,7 +34,7 @@ const floatImage = {
 const SkillTips = () => {
   return (
     <motion.section
-      className="md:bg-[#FEE898] md:mt-24 rounded-2xl md:px-20 md:mx-auto py-10 text-white md:text-black"
+      className="md:border border-primary md:mt-24 rounded-lg md:px-20 md:mx-auto py-10  md:text-black"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: false, amount: 0.1 }}

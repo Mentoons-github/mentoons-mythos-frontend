@@ -1,17 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  User,
-  Star,
-  BookOpen,
-  Edit,
-  Globe,
-  Info,
-  Mail,
-  Shield,
-} from "lucide-react";
-import AstroForm from "../components/profile/astroForm";
-import AstroData from "../components/profile/astroData";
+import { User, Star, BookOpen, Edit, Mail, Shield, Trash2 } from "lucide-react";
+
 import ProfileBlogs from "../components/profile/blogs";
 import { IUser } from "../types";
 import { useAppSelector, useAppDispatch } from "../hooks/reduxHooks";
@@ -28,7 +18,11 @@ import SuccessLoader from "../components/loader/successLoader";
 import EditProfile from "../components/profile/edit/editProfile";
 import ChangePassword from "../components/profile/edit/password";
 import { CgPassword } from "react-icons/cg";
-import { getFullCountryName } from "../utils";
+import { deleteAccountThunk } from "../features/auth/authThunk";
+import AccountDeleteModal from "../components/modal/AccountDeleteModal";
+import { toast } from "sonner";
+import ProfileData from "../components/profile/ProfileData";
+// import { getFullCountryName } from "../utils";
 
 const Profile = () => {
   const dispatch = useAppDispatch();
@@ -58,6 +52,7 @@ const Profile = () => {
     heading: "",
     description: "",
   });
+  const [deleteModal, setDeleteModal] = useState(false);
 
   const [formData, setFormData] = useState({
     birthDate: user?.dateOfBirth
@@ -101,7 +96,7 @@ const Profile = () => {
     return () => {
       debouncedFetchUserData.cancel();
     };
-  }, [user, userLoading]);
+  }, [debouncedFetchUserData, user, userLoading]);
 
   useEffect(() => {
     if (
@@ -135,7 +130,14 @@ const Profile = () => {
     return () => {
       debouncedFetchUserBlogs.cancel();
     };
-  }, [user, activeTab, blogsLoading, userBlogs.length, blogError]);
+  }, [
+    user,
+    activeTab,
+    blogsLoading,
+    userBlogs.length,
+    blogError,
+    debouncedFetchUserBlogs,
+  ]);
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -191,6 +193,24 @@ const Profile = () => {
     });
   };
 
+  const handleDeleteAccount = () => {
+    setDeleteModal(true);
+  };
+
+  const confirmDelete = () => {
+    dispatch(deleteAccountThunk())
+      .unwrap()
+      .then((message) => {
+        sessionStorage.clear();
+        toast.success(message);
+        window.location.replace("/");
+      })
+      .catch((error) => {
+        toast.error(error);
+        console.error(error);
+      });
+  };
+
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -214,14 +234,14 @@ const Profile = () => {
   if (userLoading || !user) {
     return (
       <motion.div
-        className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white p-6"
+        className="min-h-screen p-6"
         initial="hidden"
         animate="visible"
         variants={containerVariants}
       >
         <div className="max-w-4xl mx-auto text-center">
           <motion.h1
-            className="text-4xl font-bold mb-2 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent"
+            className="text-4xl font-bold mb-2  bg-clip-text text-transparent"
             variants={itemVariants}
           >
             {userLoading ? "Loading Profile..." : "Please log in"}
@@ -233,7 +253,7 @@ const Profile = () => {
 
   return (
     <motion.div
-      className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white p-6"
+      className="min-h-screen p-3 md:p-6"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -241,13 +261,13 @@ const Profile = () => {
       <div className="max-w-4xl mx-auto">
         <motion.div className="text-center mb-8" variants={itemVariants}>
           <motion.h1
-            className="text-4xl font-bold mb-2 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent"
+            className="text-2xl md:text-4xl font-bold mb-2 "
             whileHover={{ scale: 1.05 }}
           >
             Cosmic Profile
           </motion.h1>
           <motion.div
-            className="w-24 h-1 bg-gradient-to-r from-gray-400 to-white mx-auto"
+            className="w-24 h-1 bg-muted-foreground mx-auto"
             initial={{ width: 0 }}
             animate={{ width: 96 }}
             transition={{ duration: 1, delay: 0.5 }}
@@ -273,13 +293,13 @@ const Profile = () => {
         )}
 
         <motion.div
-          className="bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-2xl p-8 mb-8 border border-gray-700"
+          className="bg- bg-opacity-50 backdrop-blur-sm rounded-2xl p-4 md:p-8 mb-8 border border-muted-foreground"
           variants={cardVariants}
           whileHover="hover"
         >
           <div className="flex items-center space-x-6 mb-6">
             <div className="relative">
-              <div className="relative w-24 h-24 bg-gradient-to-br from-gray-600 to-gray-800 rounded-full flex items-center justify-center border-2 border-gray-500">
+              <div className="relative w-24 h-24 rounded-full flex items-center justify-center border-2 border-muted-foreground">
                 {user.profilePicture ? (
                   <img
                     src={user.profilePicture}
@@ -287,38 +307,38 @@ const Profile = () => {
                     className="w-full h-full rounded-full object-cover"
                   />
                 ) : (
-                  <User size={36} className="text-gray-300" />
+                  <User size={36} className="" />
                 )}
                 <motion.button
                   whileHover={{ y: 3 }}
                   transition={{ duration: 0.3, ease: "easeIn" }}
                   onClick={() => setShowUpload(true)}
-                  className="absolute bottom-0 right-0 bg-gradient-to-r from-gray-500 to-gray-900 cursor-pointer rounded-full w-6 h-6 flex justify-center items-center border-2 border-gray-800"
+                  className="absolute bottom-0 right-0 bg-background cursor-pointer rounded-full w-6 h-6 flex justify-center items-center border border-muted-foreground"
                 >
-                  <FaPlus className="text-xs text-white" />
+                  <FaPlus className="text-xs text-" />
                 </motion.button>
               </div>
               <motion.div
-                className="absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center"
+                className="absolute -top-1 -right-1 w-6 h-6 bg-foreground rounded-full flex items-center justify-center"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
               >
-                <Star size={14} className="text-gray-900" />
+                <Star size={14} className="text-background" />
               </motion.div>
             </div>
 
             <div className="flex-1">
               <motion.h2
-                className="text-3xl font-bold text-white mb-1"
+                className="text-xl md:ext-3xl font-bold mb-1"
                 variants={itemVariants}
               >
                 {`${user.firstName} ${user.lastName}`}
               </motion.h2>
               <motion.div
-                className="flex items-center space-x-2 text-gray-400"
+                className="flex items-center text-sm md:text-base space-x-1 md:space-x-2 text-muted-foreground"
                 variants={itemVariants}
               >
-                <Mail size={16} />
+                <Mail className="w-4 h-4 md:w-5 md:h-5 " />
                 <span>{user.email}</span>
               </motion.div>
               {user.role && user.role !== "user" && (
@@ -335,202 +355,84 @@ const Profile = () => {
         </motion.div>
 
         <motion.div
-          className="flex flex-wrap gap-3 mb-8"
+          className="flex flex-wrap gap-2 md:gap-3 mb-8"
           variants={itemVariants}
         >
           <button
             onClick={() => setActiveTab("profile")}
-            className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+            className={`px-2 md:px-3 lg:px-6 py-2 lg:py-3 rounded-lg text-sm md:text-base font-semibold md:font-medium transition-all duration-300 ${
               activeTab === "profile"
-                ? "bg-white text-black shadow-lg"
-                : "bg-gray-800 text-white hover:bg-gray-700 hover:scale-105"
+                ? "bg-foreground text-background shadow-lg "
+                : "bg-background text-foreground border border-foreground hover:bg-foreground/80 hover:scale-105"
             }`}
           >
             <div className="flex items-center space-x-2">
-              <User size={20} />
+              <User className="w-4 h-4 md:w-5 md:h-5  lg:w-6 lg:h-6" />
               <span>Profile</span>
             </div>
           </button>
           <button
             onClick={() => setActiveTab("edit")}
-            className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+            className={`px-2 md:px-3 lg:px-6 py-2 lg:py-3 rounded-lg text-sm md:text-base font-semibold md:font-medium transition-all duration-300 ${
               activeTab === "edit"
-                ? "bg-white text-black shadow-lg"
-                : "bg-gray-800 text-white hover:bg-gray-700 hover:scale-105"
+                ? "bg-foreground text-background shadow-lg"
+                : "bg-background text-foreground hover:bg-foreground/80 hover:scale-105 border border-foreground"
             }`}
           >
             <div className="flex items-center space-x-2">
-              <Edit size={20} />
+              <Edit className="w-4 h-4 md:w-5 md:h-5  lg:w-6 lg:h-6" />
               <span>Edit</span>
             </div>
           </button>
           <button
             onClick={() => setActiveTab("blogs")}
-            className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+            className={`px-2 md:px-3 lg:px-6 py-2 lg:py-3 rounded-lg text-sm md:text-base font-semibold md:font-medium transition-all duration-300 ${
               activeTab === "blogs"
-                ? "bg-white text-black shadow-lg"
-                : "bg-gray-800 text-white hover:bg-gray-700 hover:scale-105"
+                ? "bg-foreground text-background shadow-lg"
+                : "bg-background text-foreground hover:bg-foreground/80 hover:scale-105 border border-foreground"
             }`}
           >
             <div className="flex items-center space-x-2">
-              <BookOpen size={20} />
+              <BookOpen className="w-4 h-4 md:w-5 md:h-5  lg:w-6 lg:h-6" />
               <span>My Blogs</span>
             </div>
           </button>
           <button
             onClick={() => setActiveTab("password")}
-            className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+            className={`px-2 md:px-3 lg:px-6 py-2 lg:py-3 rounded-lg text-sm md:text-base font-semibold md:font-medium transition-all duration-300 ${
               activeTab === "password"
-                ? "bg-white text-black shadow-lg"
-                : "bg-gray-800 text-white hover:bg-gray-700 hover:scale-105"
+                ? "bg-foreground text-background shadow-lg"
+                : "bg-background text-foreground hover:bg-foreground/80 hover:scale-105 border border-foreground"
             }`}
           >
             <div className="flex items-center space-x-2">
-              <CgPassword size={20} />
+              <CgPassword className="w-4 h-4 md:w-5 md:h-5  lg:w-6 lg:h-6" />
               <span>Change Password</span>
+            </div>
+          </button>
+          <button
+            onClick={handleDeleteAccount}
+            className={`px-2 md:px-3 lg:px-6 py-2 lg:py-3 rounded-lg text-sm md:text-base font-semibold md:font-medium transition-all duration-300 bg-red-600 hover:bg-red-700`}
+          >
+            <div className="flex items-center space-x-2">
+              <Trash2 className="w-4 h-4 md:w-5 md:h-5  lg:w-6 lg:h-6" />
+              <span>Delete Account</span>
             </div>
           </button>
         </motion.div>
 
         <AnimatePresence mode="wait">
           {activeTab === "profile" && (
-            <motion.div
-              key="profile-content"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
-            >
-              {/* Enhanced User Details Section */}
-              <motion.div
-                className="bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-2xl p-8 mb-8 border border-gray-700"
-                variants={cardVariants}
-                whileHover="hover"
-              >
-                <h3 className="text-2xl font-semibold text-white mb-6 flex items-center space-x-2">
-                  <User size={24} className="text-blue-400" />
-                  <span>Personal Information</span>
-                </h3>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {/* Email */}
-                  <motion.div
-                    className="flex items-center space-x-3 p-4 bg-gradient-to-r from-gray-700 to-gray-600 bg-opacity-50 rounded-xl hover:bg-opacity-70 transition-all duration-300"
-                    whileHover={{ scale: 1.02 }}
-                  >
-                    <div className="flex-shrink-0 w-10 h-10 bg-blue-500 bg-opacity-20 rounded-lg flex items-center justify-center">
-                      <Mail size={20} className="text-blue-400" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-400 font-medium">
-                        Email Address
-                      </p>
-                      <p className="text-white font-semibold">{user.email}</p>
-                    </div>
-                  </motion.div>
-
-                  {/* Country */}
-                  {user.country && (
-                    <motion.div
-                      className="flex items-center space-x-3 p-4 bg-gradient-to-r from-green-700 to-green-600 bg-opacity-50 rounded-xl hover:bg-opacity-70 transition-all duration-300"
-                      whileHover={{ scale: 1.02 }}
-                    >
-                      <div className="flex-shrink-0 w-10 h-10 bg-green-500 bg-opacity-20 rounded-lg flex items-center justify-center">
-                        <Globe size={20} className="text-green-400" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-400 font-medium">
-                          Country
-                        </p>
-                        <p className="text-white font-semibold">
-                          {getFullCountryName(user.country)}
-                        </p>
-                      </div>
-                    </motion.div>
-                  )}
-
-                  {/* Account Type */}
-                  {user.isGoogleUser && (
-                    <motion.div
-                      className="flex items-center space-x-3 p-4 bg-gradient-to-r from-red-700 to-red-600 bg-opacity-50 rounded-xl hover:bg-opacity-70 transition-all duration-300"
-                      whileHover={{ scale: 1.02 }}
-                    >
-                      <div className="flex-shrink-0 w-10 h-10 bg-red-500 bg-opacity-20 rounded-lg flex items-center justify-center">
-                        <Shield size={20} className="text-red-400" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-400 font-medium">
-                          Account Type
-                        </p>
-                        <p className="text-white font-semibold">
-                          Google Account
-                        </p>
-                      </div>
-                    </motion.div>
-                  )}
-                </div>
-
-                {/* About Section */}
-                {user.about && (
-                  <motion.div
-                    className="mt-8 p-6 bg-gradient-to-r from-gray-700 to-gray-600 bg-opacity-30 rounded-xl border border-gray-600"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <div className="flex items-center space-x-2 mb-4">
-                      <div className="w-8 h-8 bg-gray-500 bg-opacity-20 rounded-lg flex items-center justify-center">
-                        <Info size={18} className="text-gray-400" />
-                      </div>
-                      <h4 className="text-lg font-semibold text-white">
-                        About Me
-                      </h4>
-                    </div>
-                    <p className="text-gray-300 leading-relaxed text-base">
-                      {user.about}
-                    </p>
-                  </motion.div>
-                )}
-              </motion.div>
-
-              {/* Astrology Section */}
-              <AnimatePresence mode="wait">
-                {(!user.astrologyDetail || isEditing) && !astroLoading ? (
-                  <motion.div
-                    key="form"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <AstroForm
-                      formData={formData}
-                      setFormData={setFormData}
-                      onSubmit={handleFormSubmit}
-                      isEditing={isEditing}
-                      setIsEditing={setIsEditing}
-                    />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="data"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <AstroData
-                      userProfile={{
-                        ...user,
-                        astrologyDetail:
-                          user.astrologyDetail || astrologyDetail!,
-                      }}
-                      setIsEditing={setIsEditing}
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
+            <ProfileData
+              astroLoading={astroLoading}
+              astrologyDetail={astrologyDetail ?? undefined}
+              formData={formData}
+              isEditing={isEditing}
+              onSubmit={handleFormSubmit}
+              setFormData={setFormData}
+              setIsEditing={setIsEditing}
+              user={user}
+            />
           )}
           {activeTab === "blogs" && (
             <ProfileBlogs
@@ -543,27 +445,12 @@ const Profile = () => {
             <EditProfile
               success={() => {
                 setUploadSuccess(true);
-                setSuccessMessage({
-                  heading: "Profile updated successfully",
-                  description:
-                    "Your changes have been saved and are now visible on your profile.",
-                });
               }}
               setActiveTab={setActiveTab}
             />
           )}
           {activeTab === "password" && (
-            <ChangePassword
-              setActiveTab={() => setActiveTab("password")}
-              success={() => {
-                setUploadSuccess(true);
-                setSuccessMessage({
-                  heading: "Profile updated successfully",
-                  description:
-                    "Your changes have been saved and are now visible on your profile.",
-                });
-              }}
-            />
+            <ChangePassword setActiveTab={setActiveTab} />
           )}
         </AnimatePresence>
       </div>
@@ -584,7 +471,18 @@ const Profile = () => {
       )}
 
       {showUpload && !uploadSuccess && (
-        <ProfileUpload onClose={onClose} setUploadSuccess={setUploadSuccess} />
+        <ProfileUpload
+          onClose={onClose}
+          setUploadSuccess={setUploadSuccess}
+          haveProfilePicture={user?.profilePicture ? true : false}
+        />
+      )}
+
+      {deleteModal && (
+        <AccountDeleteModal
+          onClose={() => setDeleteModal(false)}
+          onConfirm={confirmDelete}
+        />
       )}
     </motion.div>
   );

@@ -1,6 +1,5 @@
 import useInView from "../../hooks/useInView";
 import { motion } from "framer-motion";
-import ReactPlayer from "react-player";
 import { useNavigate } from "react-router-dom";
 import MythosButton from "./button";
 
@@ -11,14 +10,14 @@ const AboutMythos = () => {
   return (
     <section
       ref={ref}
-      className="p-6 -mt-28 md:-mt-0 md:p-16 flex flex-col md:flex-row justify-between items-start gap-8 md:gap-14 lg:gap-20 bg-white bg-center"
+      className="p-6  md:-mt-0 md:p-16  justify-between items-start gap-8 md:gap-14 lg:gap-20  bg-center"
     >
-      <div className="w-full space-y-6 md:w-1/2 lg:w-lg md:space-y-10">
+      <div className="w-full space-y-6  md:space-y-10">
         <motion.h1
           initial={{ opacity: 0, y: -30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -30 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="text-[#E39712] font-semibold text-xl sm:text-3xl md:text-4xl tracking-wide font-montserrat w-3/4"
+          className=" font-bold text-xl sm:text-3xl md:text-4xl tracking-wide font-montserrat w-3/4"
         >
           ABOUT MENTOONS MYTHOS
         </motion.h1>
@@ -28,7 +27,7 @@ const AboutMythos = () => {
             isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }
           }
           transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-          className="font-mulish text-base md:text-lg  text-black  w-[520px] max-w-full"
+          className="font-mulish text-base md:text-xl    "
         >
           Mentoons Mythos isn’t just about reports; it’s a thriving community of
           individuals seeking purpose, clarity, and cosmic guidance. Whether
@@ -44,7 +43,7 @@ const AboutMythos = () => {
             navigate("/about-us");
           }}
         >
-          <MythosButton label="EXPLORE MORE" bg="#FEE898" />
+          <MythosButton label="EXPLORE MORE" />
         </motion.div>
       </div>
       <motion.div
@@ -54,7 +53,7 @@ const AboutMythos = () => {
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
         className="flex justify-center w-full md:w-1/2"
       >
-        <div className="relative w-full pb-[56.25%] max-w-[100%] sm:max-w-[90%] md:max-w-full">
+        {/* <div className="relative w-full pb-[56.25%] max-w-[100%] sm:max-w-[90%] md:max-w-full">
           <ReactPlayer
             url="/assets/about.mp4"
             className="absolute inset-0"
@@ -71,7 +70,7 @@ const AboutMythos = () => {
               },
             }}
           />
-        </div>
+        </div> */}
       </motion.div>
     </section>
   );

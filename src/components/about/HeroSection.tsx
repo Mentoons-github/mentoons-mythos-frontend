@@ -3,15 +3,15 @@ import ReactPlayer from "react-player";
 
 const HeroSection = () => {
   return (
-    <div className="bg-black bg-[url('/assets/background/section/stars_background.png')] bg-center p-4 md:p-6 pb-12 md:pb-24">
+    <div className="bg-[url('/assets/background/section/stars_background.png')] bg-center md:pt-10 p-4 md:p-6 pb-12 md:pb-24 flex flex-col lg:flex-row overflow-hidden">
       <motion.div
-        className="w-full md:w-[80%] lg:w-[60%] mx-auto"
+        className="w-full  lg:w-2xl mx-auto"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
       >
         <motion.h1
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-[#E39712] py-6 md:py-10"
+          className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold py-6 md:py-10 lg:mt-6"
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -19,7 +19,7 @@ const HeroSection = () => {
           ABOUT MENTOONS MYTHOS
         </motion.h1>
         <motion.p
-          className="pb-8 text-lg tracking-wide text-white md:pb-12 sm:text-xl md:text-2xl md:tracking-widest"
+          className="pb-8 text-lg tracking-wide font-semibold md:pb-12 sm:text-lg md:text-xl md:tracking-wide"
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.4 }}
@@ -31,7 +31,7 @@ const HeroSection = () => {
         </motion.p>
       </motion.div>
       <motion.div
-        className="relative w-[95%] sm:w-[90%] md:w-[80%] mx-auto h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] pb-12 md:pb-24"
+        className="relative w-[95%] sm:w-[500px] md:w-[600px] mx-auto h-[220px] sm:h-[200px]  md:h-[360px] pb-12 md:pb-24"
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 0.6 }}

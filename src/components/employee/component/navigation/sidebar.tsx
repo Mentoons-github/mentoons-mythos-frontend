@@ -17,11 +17,9 @@ interface SidebarItem {
   href: string;
 }
 
-interface EmployeeSidebarProps {
-  sidebarOpen: boolean;
-}
 
-const EmployeeSidebar: React.FC<EmployeeSidebarProps> = ({ sidebarOpen }) => {
+
+const EmployeeSidebar = () => {
   const [activeSidebar, setActiveSidebar] = useState(0);
   const sidebarItems: SidebarItem[] = [
     { icon: Home, label: "Dashboard", href: "/employee" },
@@ -37,9 +35,7 @@ const EmployeeSidebar: React.FC<EmployeeSidebarProps> = ({ sidebarOpen }) => {
 
   return (
     <aside
-      className={`fixed left-0 top-16 h-[calc(100vh-4rem)] bg-black text-white transition-all duration-300 z-40 ${
-        sidebarOpen ? "w-64" : "w-16"
-      }`}
+      className={`fixed left-0 top-16 h-[calc(100vh-4rem)] bg-black text-white transition-all duration-300 z-40 ${"w-64"}`}
     >
       <nav className="p-4 space-y-2">
         {sidebarItems.map((item, index) => (
@@ -54,14 +50,13 @@ const EmployeeSidebar: React.FC<EmployeeSidebarProps> = ({ sidebarOpen }) => {
             }`}
           >
             <item.icon size={20} className="flex-shrink-0" />
-            {sidebarOpen && (
-              <>
-                <span className="font-medium">{item.label}</span>
-                {activeSidebar == index && (
-                  <ChevronRight size={16} className="ml-auto" />
-                )}
-              </>
-            )}
+
+            <>
+              <span className="font-medium">{item.label}</span>
+              {activeSidebar == index && (
+                <ChevronRight size={16} className="ml-auto" />
+              )}
+            </>
           </Link>
         ))}
       </nav>
@@ -72,7 +67,7 @@ const EmployeeSidebar: React.FC<EmployeeSidebarProps> = ({ sidebarOpen }) => {
           className="w-full flex items-center gap-3 p-3 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition-colors"
         >
           <LogOut size={20} className="flex-shrink-0" />
-          {sidebarOpen && <span className="font-medium">Logout</span>}
+          <span className="font-medium">Logout</span>
         </Link>
       </div>
     </aside>

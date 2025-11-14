@@ -1,55 +1,67 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-const MythosLoginModal = ({ set }: { set: (val: boolean) => void }) => {
+interface MythosLoginModalProps {
+  onClose: () => void;
+}
+
+const MythosLoginModal = ({ onClose }: MythosLoginModalProps) => {
   const navigate = useNavigate();
 
   return (
-    <motion.div
-      initial={{ scaleY: 0, opacity: 0.7 }}
-      animate={{ scaleY: 1, opacity: 1 }}
-      exit={{ scaleY: 0, opacity: 0 }}
-      transition={{ duration: 0.5, ease: "easeInOut" }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
-      onClick={() => set(false)}
-    >
+    <AnimatePresence>
       <motion.div
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.5 }}
-        transition={{ duration: 0.4, ease: "easeOut", delay: 0.2 }}
-        className="w-lg h-auto p-5 bg-[#FEE898] rounded-lg shadow-lg relative inter"
-        onClick={(e) => e.stopPropagation()}
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+        onClick={() => onClose()}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5 }}
       >
-        <button
-          className="absolute text-2xl font-bold cursor-pointer top-2 right-2"
-          onClick={() => set(false)}
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="bg-gradient-to-br from-gray-900 via-black to-gray-800 rounded-2xl shadow-2xl w-full md:max-w-lg p-8 space-y-6 relative border border-gray-700"
+          onClick={(e) => e.stopPropagation()}
         >
-          ×
-        </button>
-        <h1 className="text-center font-semibold text-5xl text-[#2D2E2E]">
-          Start Your Cosmic Journey With Us
-        </h1>
-        <p className="text-center mt-5 text-[#2D2E2E]">
-          Sign Up with us to get a detailed report of your personalogy
-          assessment and improve your life and career.
-        </p>
-        <div className="mt-5 space-y-2">
+          {/* Close Button */}
           <button
-            className="w-full py-2 bg-[#1A1D3B] text-white inter font-medium text-lg rounded-md"
-            onClick={() => navigate("/register")}
+            className="absolute text-2xl font-bold top-3 right-3 text-[#ebdfdf] hover:text-white transition"
+            onClick={onClose}
+            aria-label="Close Modal"
           >
-            Sign Up
+            ×
           </button>
-          <button
-            className="w-full py-2 text-lg font-medium bg-white border border-gray-800 rounded-md inter"
-            onClick={() => navigate("/login")}
-          >
-            Login
-          </button>
-        </div>
+
+          <h1 className="font-semibold text-3xl  font-serif text-[#ebdfdf] text-center">
+            Start Your Cosmic Journey With Us
+          </h1>
+
+          {/* Description */}
+          <p className="mt-4 text-[#dcdcdc] text-base md:text-[16px] ">
+            Sign up with us to get a detailed report of your personalogy
+            assessment and improve your life and career.
+          </p>
+
+          {/* Actions */}
+          <div className="mt-6 space-y-3">
+            <button
+              className="w-full py-3 bg-[#000000] border text-white font-medium text-lg rounded-md hover:bg-[#1b1a1a] transition"
+              onClick={() => navigate("/register")}
+            >
+              Sign Up
+            </button>
+            <button
+              className="w-full py-3 text-lg font-medium bg-white text-black border border-gray-800 rounded-md hover:bg-white/80 transition"
+              onClick={() => navigate("/login")}
+            >
+              Login
+            </button>
+          </div>
+        </motion.div>
       </motion.div>
-    </motion.div>
+    </AnimatePresence>
   );
 };
 

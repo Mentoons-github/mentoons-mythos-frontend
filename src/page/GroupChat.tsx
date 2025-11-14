@@ -1,4 +1,4 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { useEffect, useState } from "react";
 import { Chat } from "../types/redux/chatInterfaces";
@@ -13,20 +13,61 @@ import ChatHeader from "../components/groups/groupId/Chat/ChatHeader";
 import MessagesList from "../components/groups/groupId/Chat/MessageList";
 import MessageInput from "../components/groups/groupId/Chat/MessageInput";
 import ChatRightSide from "../components/groups/groupId/Chat/ChatRightSide";
+import { toast } from "sonner";
+import { SUNSHINE } from "../constants";
+import { INTELLIGENCE } from "../constants/intelligence";
+import { Intelligence, Sunshine } from "../types/interface";
 
 const GroupChat = () => {
   const dispatch = useAppDispatch();
   const { data: chatData } = useAppSelector((state) => state.chat);
   const { user } = useAppSelector((state) => state.user);
   const { groupId } = useParams();
-  const location = useLocation();
-  const details = location.state?.details;
+  // const location = useLocation();
+  // const details = location.state?.details;
   const navigate = useNavigate();
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
-  // useEffect(() => {
-  //   dispatch(fetchUserData());
-  // }, [dispatch]);
+  const details =
+    SUNSHINE.find((item) => item.id === groupId) ||
+    INTELLIGENCE.find((item) => item.id === groupId);
+
+  const isSunshine = (
+    details: Sunshine | Intelligence
+  ): details is Sunshine => {
+    return (details as Sunshine).rashi !== undefined;
+  };
+
+  useEffect(() => {
+    if (!details) {
+      toast.warning("Group not found");
+      navigate("/groups"); 
+      return;
+    }
+
+    if (!user) {
+      toast.warning("Please login to access this group");
+      navigate("/login");
+      return;
+    }
+
+    if (isSunshine(details)) {
+      if (
+        user.astrologyDetail?.sunSign !== details.rashi &&
+        user.astrologyDetail?.moonSign !== details.rashi
+      ) {
+        toast.warning("You cannot access this group");
+        navigate("/groups");
+        return;
+      }
+    } else {
+      if (!user.intelligenceTypes.includes(details.name)) {
+        toast.warning("You cannot access this group");
+        navigate("/groups");
+        return;
+      }
+    }
+  }, [details, user, navigate]);
 
   const [messages, setMessages] = useState<Chat[]>([]);
   const [text, setText] = useState("");
@@ -123,7 +164,7 @@ const GroupChat = () => {
         />
       </div>
       <div className="w-[30%] hidden md:block">
-        <ChatRightSide/>
+        <ChatRightSide />
       </div>
     </div>
   );

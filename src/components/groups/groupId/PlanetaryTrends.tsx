@@ -40,7 +40,7 @@ const floatImage = {
       variants={containerVariants}
       >
         <motion.h1
-          className="mt-4 text-xl text-center md:text-5xl font-bold text-[#FEE898]"
+          className="mt-4 text-xl text-center md:text-5xl font-bold "
           variants={fadeInUp}
         >
           {isIntelligence ? "Topics To Discuss" : "Planetary Trends in Aries" }
@@ -63,7 +63,7 @@ const floatImage = {
                 variants={fadeInUp}
               >
                 <motion.p
-                  className="text-sm text-gray-500 md:font-medium"
+                  className="text-sm text-muted-foreground md:font-medium"
                   variants={fadeInUp}
                 >
                   <span className="text-purple-700">{post.writere}</span> •{" "}
@@ -71,13 +71,13 @@ const floatImage = {
                 </motion.p>
 
                 <motion.h2
-                  className="text-white md:text-lg font-semibold mt-1"
+                  className=" md:text-lg font-semibold mt-1"
                   variants={fadeInUp}
                 >
                   {post.title}
                 </motion.h2>
                 <motion.p
-                  className="text-xs md:text-base text-white mt-1 line-clamp-3"
+                  className="text-xs md:text-base  mt-1 line-clamp-3"
                   variants={fadeInUp}
                 >
                   {post.description}

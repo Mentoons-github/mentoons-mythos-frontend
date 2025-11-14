@@ -3,6 +3,8 @@ import { AxiosError } from "axios";
 import {
   blockUserApi,
   fetchAllUsersApi,
+  fetchSingleUserApi,
+  fetchUserCountApi,
   fetchUserDetails,
   logout,
   reportUserApi,
@@ -30,12 +32,34 @@ export const fetchUserData = createAsyncThunk<UserResponse, void>(
   }
 );
 
-export const fetchAllUserThunk = createAsyncThunk<AllUserResponse, void>(
+export const fetchAllUserThunk = createAsyncThunk<
+  AllUserResponse,
+  { page: number; limit: number; search?: string; sort?: string, filterBy?:string, filterValue?:string }
+>(
   "user/fetch-allusers",
+  async ({ page, limit, sort, search, filterBy, filterValue }, { rejectWithValue }) => {
+    try {
+      const response = await fetchAllUsersApi(page, limit, sort, search, filterBy, filterValue);
+      return response.data;
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      return rejectWithValue(
+        error?.response?.data?.message || "Fetching all users failed"
+      );
+    }
+  }
+);
+
+//feth all user count
+export const fetchAllUserCountThunk = createAsyncThunk<
+  number,
+  void
+>(
+  "user/fetchuser-count",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetchAllUsersApi();
-      return response.data;
+      const response = await fetchUserCountApi();
+      return response.data.count;
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
       return rejectWithValue(
@@ -97,6 +121,21 @@ export const updateUserData = createAsyncThunk<IUser, { user: Partial<IUser> }>(
       const error = err as AxiosError<{ message: string }>;
       return rejectWithValue(
         error?.response?.data?.message || "failed update user"
+      );
+    }
+  }
+);
+
+export const fetchSingleUserThunk = createAsyncThunk<UserResponse, string>(
+  "user/fetch-singleuser",
+  async (userId, { rejectWithValue }) => {
+    try {
+      const response = await fetchSingleUserApi(userId);
+      return response.data;
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      return rejectWithValue(
+        error?.response?.data?.message || "User profile fetch failed"
       );
     }
   }

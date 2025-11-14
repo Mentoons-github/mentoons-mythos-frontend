@@ -18,11 +18,11 @@ const ShareOption = ({ blogUrl, onClose }: ShareOptionProps) => {
   };
 
   return (
-    <div className="absolute z-10 bottom-10 mt-2 p-2 bg-white border rounded shadow-md w-48">
+    <div className="absolute z-10 bottom-10 mt-2 p-2 bg-secondary border rounded shadow-md w-48">
       <div className="relative">
         <button
           onClick={onClose}
-          className="absolute top-1 right-1 text-gray-600 hover:text-red-500"
+          className="absolute top-1 right-1 text-primary hover:text-muted-foreground"
         >
           <IoMdClose size={20} />
         </button>

@@ -26,27 +26,37 @@ const OTPInputPage = () => {
   const location = useLocation();
   const { userData } = location.state || {};
 
-  console.log(userData);
+  useEffect(() => {
+    if (!userData) {
+      navigate("/register", { replace: true });
+    }
+  }, [userData, navigate]);
 
   useEffect(() => {
-  // Redirect if userData is not provided (direct access to OTP page)
-  if (!userData) {
-    navigate("/register", { replace: true });
-  }
-}, [userData, navigate]);
+    const handleOtpSuccess = async () => {
+      if (otpSuccess && userData) {
+        try {
+          await dispatch(registerThunk(userData)).unwrap();
 
-  useEffect(() => {
-    if (otpSuccess) {
-      toast.success(message);
-      dispatch(registerThunk(userData));
-      dispatch(resetAuthState());
-      navigate("/");
-    }
-    if (otpError) {
-      //   alert(error);
-      console.log(otpError, "error");
-      dispatch(resetAuthState());
-    }
+          await new Promise((res) => setTimeout(res, 1000));
+          toast.success(message);
+          await dispatch(resetAuthState());
+
+          navigate("/");
+        } catch (err) {
+          console.error("Registration failed:", err);
+        } finally {
+          dispatch(resetAuthState());
+        }
+      }
+
+      if (otpError) {
+        console.log(otpError, "error");
+        dispatch(resetAuthState());
+      }
+    };
+
+    handleOtpSuccess();
   }, [dispatch, message, navigate, otpError, otpSuccess, userData]);
 
   useEffect(() => {
@@ -112,17 +122,16 @@ const OTPInputPage = () => {
     inputRefs.current[0]?.focus();
   };
 
-
   return (
     <div className="min-h-screen flex">
-      <div className="w-1/2 bg-[#1A1D3B] hidden md:flex items-center justify-center">
+      <div className="w-1/2 bg-foreground hidden lg:flex items-center justify-center">
         <AuthLayout />
       </div>
-      <div className="w-full md:w-1/2 bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center justify-center">
+      <div className="w-full lg:w-1/2  rounded-2xl shadow-xl p-8 flex flex-col items-center justify-center">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 bg-foreground rounded-full flex items-center justify-center mx-auto mb-4">
             <svg
-              className="w-8 h-8 text-[#1A1D3B]"
+              className="w-8 h-8 text-background"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -135,10 +144,10 @@ const OTPInputPage = () => {
               />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+          <h1 className="text-2xl font-bold  mb-2">
             Verify Your Account
           </h1>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             We've sent a 6-digit verification code to your email address
           </p>
         </div>
@@ -166,7 +175,7 @@ const OTPInputPage = () => {
                 className={`w-12 h-12 text-center text-xl font-semibold border-2 rounded-lg transition-all duration-200 ${
                   otpError
                     ? "border-red-300 focus:border-red-500"
-                    : "border-gray-300 focus:border-[#1A1D3B]"
+                    : "border-border focus:border-muted-foreground"
                 } focus:outline-none focus:ring-2 focus:ring-blue-500/20`}
                 disabled={loading}
               />
@@ -184,14 +193,14 @@ const OTPInputPage = () => {
             disabled={loading || otp.join("").length < 6}
             className={`w-full py-3 px-4 rounded-lg font-semibold transition-all duration-200 ${
               loading || otp.join("").length < 6
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : "bg-[#1A1D3B] text-white hover:bg-[#1A1D3C] active:scale-95"
+                ? "bg-muted-foreground text- cursor-not-allowed"
+                : "bg-foreground text-background hover:bg-[#1A1D3C] active:scale-95"
             }`}
           >
             {loading ? (
               <div className="flex items-center justify-center">
                 <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 "
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -219,13 +228,13 @@ const OTPInputPage = () => {
         </form>
 
         <div className="mt-6 text-center">
-          <p className="text-gray-600 text-sm mb-2">Didn't receive the code?</p>
+          <p className="text-muted-foreground text-sm mb-2">Didn't receive the code?</p>
           <button
             onClick={handleResend}
             disabled={resendCooldown > 0}
             className={`text-sm font-semibold transition-colors ${
               resendCooldown > 0
-                ? "text-gray-400 cursor-not-allowed"
+                ? "text-muted-foreground cursor-not-allowed"
                 : "text-blue-600 hover:text-blue-700"
             }`}
           >

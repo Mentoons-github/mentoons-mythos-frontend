@@ -30,30 +30,30 @@ const ModalHeader: React.FC<ModalHeaderProps> = ({
       <div className="flex items-center justify-center gap-5 relative">
         <BsThreeDots className="mt-1 text-2xl" onClick={handleShowOption} />
         {showOption && (
-          <div className="absolute top-7 right-12 w-32 bg-white shadow-md border rounded-md z-50">
+          <div className="absolute top-7 right-12 w-32 bg-secondary shadow-md border rounded-md z-50">
             <div
-              className="p-2 px-4 hover:bg-gray-100 text-sm text-gray-800 cursor-pointer rounded-t-md transition"
+              className="p-2 px-4 hover:bg-muted-foreground text-sm  cursor-pointer rounded-t-md transition"
               onClick={handleReportOption}
             >
               Report
             </div>
-            <div className="p-2 px-4 hover:bg-red-100 text-sm text-red-600 cursor-pointer rounded-b-md transition border-t">
+            <div className="p-2 px-4 hover:bg-muted-foreground text-sm text-red-600 cursor-pointer rounded-b-md transition border-t">
               Block
             </div>
           </div>
         )}
-       {reportModal && (
-         <div className="absolute top-6 right-5 z-50">
-          <ReportOptions
-            from="blog"
-            userId={userId}
-            Id={postId}
-            onClose={() => setReportModal(false)}
-          />
-        </div>
-       )}
+        {reportModal && (
+          <div className="absolute top-6 right-5 z-50">
+            <ReportOptions
+              from="blog"
+              userId={userId}
+              Id={postId}
+              onClose={() => setReportModal(false)}
+            />
+          </div>
+        )}
         <button
-          className="text-gray-500 hover:text-red-500 text-2xl"
+          className=" hover:text-muted-foreground text-2xl"
           onClick={onClose}
         >
           &times;

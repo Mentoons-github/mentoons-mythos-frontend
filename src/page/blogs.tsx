@@ -33,7 +33,7 @@ const Blogs = () => {
     }, 500);
 
     return () => clearTimeout(delayDebounce);
-  }, [search]);
+  }, [dispatch, search]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -41,7 +41,7 @@ const Blogs = () => {
 
   return (
     <motion.section
-      className="flex flex-col md:px-20 py-12 justify-between items-center bg-[#FEFEF6] relative"
+      className="flex flex-col md:px-20 py-12 justify-between items-center relative"
       initial="hidden"
       animate="show"
       variants={fadeInUp}
@@ -52,7 +52,7 @@ const Blogs = () => {
         transition={{ delay: 0.1 }}
       >
         <motion.h1
-          className="font-montserrat ml-3 md:ml-0 text-2xl md:text-4xl font-semibold text-[#E39712] tracking-wider"
+          className="font-montserrat ml-3 md:ml-0 text-2xl md:text-4xl font-semibold tracking-wider"
           variants={fadeInUp}
         >
           CREATE, CONNECT & EXPAND
@@ -70,8 +70,8 @@ const Blogs = () => {
             className="outline-none p-3 px-5 font-semibold bg-[#33364F] text-white"
             onChange={handleChange}
           />
-          <button className="w-12 h-12 flex items-center justify-center bg-[#FFC367]">
-            <FaSearch />
+          <button className="w-12 h-12 flex items-center justify-center bg-primary">
+            <FaSearch className="text-background"/>
           </button>
         </motion.div>
       </motion.div>

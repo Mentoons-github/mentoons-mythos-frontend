@@ -21,14 +21,14 @@ const itemVariant = {
 const MissingOutProducts = () => {
   return (
     <motion.div
-      className="p-10 w-full bg-[#404874] space-y-10"
+      className="p-10 w-full border border-muted-foreground space-y-10"
       variants={containerVariant}
       initial="hidden"
       whileInView="show"
       viewport={{ once: true }}
     >
       <motion.h1
-        className="font-mulish font-bold text-4xl text-[#E39712] md:w-96"
+        className="font-mulish font-bold text-4xl md:w-96"
         variants={itemVariant}
       >
         Products You are missing out on!
@@ -46,7 +46,7 @@ const MissingOutProducts = () => {
       </motion.div>
 
       <motion.p
-        className="font-inter font-semibold text-xl text-[#1A1D3B] mt-5 text-center"
+        className="font-inter font-semibold text-xl mt-5 text-center"
         variants={itemVariant}
       >
         Conversation Starter Cards

@@ -7,13 +7,23 @@ export const joinGroup = (groupId: string) => {
 export const sendGroupMessage = (
   groupId: string,
   message: string,
-  senderId:string
+  senderId: string
 ) => {
   socket.emit("send-group-message", { groupId, message, senderId });
 };
 
 export const listenToGroupMessages = (
-  callback: (data: { sender: {_id:string, firstName:string, lastName:string, profilePicture:string}; message: string; groupId: string; createdAt: string }) => void
+  callback: (data: {
+    sender: {
+      _id: string;
+      firstName: string;
+      lastName: string;
+      profilePicture: string;
+    };
+    message: string;
+    groupId: string;
+    createdAt: string;
+  }) => void
 ) => {
   socket.on("receive-group-message", callback);
 };

@@ -31,7 +31,6 @@ const BlogActions: React.FC<BlogActionsProps> = ({
   return (
     <div className="flex justify-between mt-2">
   <div className="flex space-x-5">
-    {/* Like */}
     <div
       className="flex items-center space-x-2 cursor-pointer"
       onClick={onLike}
@@ -39,12 +38,11 @@ const BlogActions: React.FC<BlogActionsProps> = ({
       {isLiked ? (
         <AiFillLike className="text-2xl" />
       ) : (
-        <AiOutlineLike className="text-2xl text-gray-700" />
+        <AiOutlineLike className="text-2xl " />
       )}
       <p className="text-sm font-medium">{isLiked ? "Unlike" : "Like"}</p>
     </div>
 
-    {/* Comment - only show if comments are not turned off */}
     {!commentsOff && (
       <div
         className="flex space-x-1 cursor-pointer"
@@ -73,7 +71,6 @@ const BlogActions: React.FC<BlogActionsProps> = ({
 
   <div className="flex space-x-6">
     <div>{likesCount || 0} Likes</div>
-    {/* Comments Count - only show if comments are not turned off */}
     {!commentsOff && (
       <div className="cursor-pointer" onClick={onToggleCommentsList}>
         {commentsCount || 0} Comments
