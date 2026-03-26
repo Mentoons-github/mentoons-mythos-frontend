@@ -73,7 +73,7 @@ const RecentPosts = ({ userId }: { userId: string }) => {
   };
 
   return (
-    <div>
+    <div className="">
       <motion.h1
         className="text-2xl font-semibold "
         initial={{ y: -20, opacity: 0 }}

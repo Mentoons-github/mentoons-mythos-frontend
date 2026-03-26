@@ -1,5 +1,5 @@
 import FAQ from "../components/about/FAQ";
-import GroupsCardSection from "../components/groups/GroupsCardSection";
+// import GroupsCardSection from "../components/groups/GroupsCardSection";
 import GroupsHeroSection from "../components/groups/GroupsHeroSection";
 import GroupsSunshineCardSection from "../components/groups/GroupsSunshineCardSection";
 import { SUNSHINE } from "../constants";
@@ -8,7 +8,7 @@ const MythosGroups = () => {
   return (
     <div>
       <GroupsHeroSection />
-      <GroupsCardSection />
+      {/* <GroupsCardSection /> */}
       <GroupsSunshineCardSection props = {SUNSHINE}/>
       <GroupsSunshineCardSection props =  {INTELLIGENCE}/>
       {/* <CreateGroupSection /> */}

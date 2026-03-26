@@ -68,7 +68,7 @@ const PsychologyAssessmentTop = () => {
 
       <motion.p
         variants={fadeInUp}
-        className="max-w-2xl lg:max-w-md xl:max-w-2xl text-base md:text-md lg:text-lg font-mulish leading-6 md:leading-7"
+        className="max-w-xl lg:max-w-md xl:max-w-2xl text-base md:text-md lg:text-lg font-mulish leading-6 md:leading-7"
       >
         Gain deeper insight into your thought patterns, behavioral traits,
         strengths, emotional intelligence, and decision-making abilities. Our

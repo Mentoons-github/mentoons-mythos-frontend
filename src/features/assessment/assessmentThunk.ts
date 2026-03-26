@@ -25,7 +25,7 @@ import { AxiosError } from "axios";
 
 //assessment submit
 export const assessmentSubmitTunk = createAsyncThunk<
-  { message: string; assessment: Assessment },
+  { message: string; assessment: Assessment; reward: { points: number } },
   Assessment,
   { rejectValue: string }
 >("assessment/submit", async (details, { rejectWithValue }) => {
@@ -133,7 +133,7 @@ export const fetchInitialQuestionsThunk = createAsyncThunk<
 
 //initial assessment submit
 export const initialAssessmentSubmitThunk = createAsyncThunk<
-  { message: string; assessment: Assessment },
+  { message: string; assessment: Assessment; reward: { points: number } },
   { details: InitialAssessmentSubmission; userId: string },
   { rejectValue: string }
 >(

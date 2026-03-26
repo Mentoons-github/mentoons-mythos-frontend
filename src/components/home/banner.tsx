@@ -8,6 +8,7 @@ import SlidingSheet from "./SlidingSheet";
 import RashiFinderModal from "../modal/astro/rashiFindermodal.tsx";
 import AlreadyCheckModal from "../modal/astro/rashiFindermodal.tsx/AlreadyCheckModal.tsx";
 import MythosLoginModal from "../modals/mythosLogin.tsx";
+import { SMARTS } from "../../constants/smarts.ts";
 
 const MythosBanner = () => {
   const { user } = useAppSelector((state) => state.user);
@@ -17,8 +18,6 @@ const MythosBanner = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [checkedModal, setCheckedModal] = useState(false);
   const [loginModal, setLoginModal] = useState(false);
-
-
 
   const handlePathClick = (from: string) => {
     if (!user) {
@@ -124,7 +123,7 @@ const MythosBanner = () => {
       ))}
 
       {/* Twinkling Stars */}
-      {[...Array(20)].map((_, i) => (
+      {[...Array(10)].map((_, i) => (
         <motion.div
           key={`star-${i}`}
           className="absolute w-1 h-1 bg-yellow-300 rounded-full"
@@ -237,7 +236,7 @@ const MythosBanner = () => {
       />
 
       {/* Main Content */}
-      <div className="relative space-y-3 lg:ml-16 sm:space-y-4 md:space-y-5 p-3 sm:p-4 md:p-5 text-center flex flex-col md:mt-16 md:pt-0 justify-start items-start w-full z-10">
+      <div className="relative space-y-3 lg:ml-16 sm:space-y-4 md:space-y-5 p-3 sm:p-4 md:p-5 text-center flex flex-col md:mt-5 md:pt-0 justify-start items-start w-full z-10">
         <motion.h1
           initial={{ opacity: 0, y: 50, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -252,49 +251,138 @@ const MythosBanner = () => {
           LET THE PLANETS GUIDE YOUR CAREER
         </motion.h1>
 
-        <div className="flex flex-col lg:flex-row xl:pr-52 w-full gap-5">
-          <div className="w-full lg:w-1/2 space-y-8 sm:space-y-14 mt-5 sm:mt-14">
-            {/* First Test */}
+        <div className="flex flex-col lg:flex-row xl:pr-52 w-full gap-5 text-black">
+          <div className="w-full lg:w-1/2 mt-5 sm:mt-14 space-y-12">
+            {/* Parent animation container */}
             <motion.div
-              className="md:w-md"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false }}
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: { staggerChildren: 0.25 },
+                },
+              }}
+              className="space-y-10"
             >
-              <div className="font-semibold text-left text-base sm:text-lg md:text-xl md:text-black font-mulish drop-shadow-sm">
-                Feeling stuck in career? Find which intelligence belongs you
-                are.{" "}
-                <motion.button
-                  onClick={() => handlePathClick("psychology")}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-foreground text-background md:bg-black inline-flex items-center md:text-white px-3 py-2 rounded-md !text-sm whitespace-nowrap align-middle gap-1"
-                >
-                  <span className="text-sm">Take a Test</span>
-                  <GrNext className="inline text-sm" />
-                </motion.button>
-              </div>
-            </motion.div>
+              {/* Block 1 */}
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: 40 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+              >
+                <motion.div className="font-semibold font-mulish drop-shadow-sm space-y-4 ">
+                  <div>
+                    <h4 className="text-lg sm:text-xl md:text-2xl font-bold">
+                      Become a smart kid!
+                    </h4>
+                    <motion.h4
+                      className="text-sm sm:text-base text-gray-600"
+                      animate={{ opacity: [1, 0.5, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      Find out your smartness
+                    </motion.h4>
+                  </div>
 
-            <motion.div
-              className="md:w-md ml-5 lg:ml-0"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
-            >
-              <div className="font-semibold text-left text-base sm:text-lg md:text-xl md:text-black font-mulish drop-shadow-sm">
-                Feeling stuck in life? Let your birth sign find solutions to all
-                your problems.{" "}
-                <motion.button
-                  onClick={() => handlePathClick("astrology")}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-foreground text-background md:bg-black inline-flex items-center md:text-white px-3 py-2 rounded-md !text-sm whitespace-nowrap align-middle gap-1"
-                >
-                  <span className="text-sm">Find My Rashi</span>
-                  <GrNext className="inline text-sm" />
-                </motion.button>
-              </div>
+                  {/* Animated list */}
+                  <div className="grid grid-cols-3 gap-1">
+                    {SMARTS.map((ele, ind) => (
+                      <motion.div
+                        key={ind}
+                        variants={{
+                          hidden: { opacity: 0, x: -20 },
+                          visible: { opacity: 1, x: 0 },
+                        }}
+                        whileHover={{ scale: 1.1, x: 3 }}
+                        transition={{ type: "spring", stiffness: 200 }}
+                        className="cursor-default"
+                      >
+                        <li className="text-sm sm:text-base list-none">
+                          • {ele}
+                        </li>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  <div className="flex justify-center">
+                    <motion.button
+                      onClick={() => handlePathClick("psychology")}
+                      whileTap={{ scale: 0.95 }}
+                      animate={{
+                        scale: [1, 1.03, 1],
+                        boxShadow: [
+                          "0 0 0px rgba(0,0,0,0)",
+                          "0 0 12px rgba(0,200,255,0.4)",
+                          "0 0 0px rgba(0,0,0,0)",
+                        ],
+                      }}
+                      transition={{
+                        duration: 2.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
+                      className="bg-black text-white hover:text-black hover:bg-white border border-black px-4 py-2 rounded-lg text-sm flex items-center gap-2"
+                    >
+                      <span>Take a Test</span>
+                      <GrNext />
+                    </motion.button>
+                  </div>
+                </motion.div>
+              </motion.div>
+
+              {/* Block 2 */}
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: 40 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+                transition={{ duration: 0.9, ease: "easeOut" }}
+              >
+                <motion.div className="font-semibold font-mulish drop-shadow-sm space-y-4 pl-3">
+                  <div>
+                    <h4 className="text-lg sm:text-xl md:text-2xl font-bold text-center">
+                      Feeling stuck in Family, Relationships, Career & Money
+                      issues?
+                    </h4>
+                    <motion.h4
+                      className="text-sm sm:text-base text-gray-600"
+                      animate={{ opacity: [1, 0.5, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      Let your Birth sign find solution to Relationships,
+                      Career, Finance
+                    </motion.h4>
+                  </div>
+                  <div className="flex justify-center">
+                    <motion.button
+                      onClick={() => handlePathClick("astrology")}
+                      whileTap={{ scale: 0.95 }}
+                      animate={{
+                        scale: [1, 1.03, 1],
+                        boxShadow: [
+                          "0 0 0px rgba(0,0,0,0)",
+                          "0 0 12px rgba(0,200,255,0.4)",
+                          "0 0 0px rgba(0,0,0,0)",
+                        ],
+                      }}
+                      transition={{
+                        duration: 2.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
+                      className="bg-black text-white hover:text-black hover:bg-white border border-black px-4 py-2 rounded-lg text-sm flex items-center gap-2"
+                    >
+                      <span>Find My Rashi</span>
+                      <GrNext />
+                    </motion.button>
+                  </div>
+                </motion.div>
+              </motion.div>
             </motion.div>
           </div>
 
@@ -306,6 +394,9 @@ const MythosBanner = () => {
                 width="100%"
                 height="100%"
                 controls
+                playing={true}
+                muted={true}
+                loop={false}
                 config={{
                   file: {
                     attributes: {
@@ -375,7 +466,7 @@ const MythosBanner = () => {
       {checkedModal && (
         <AlreadyCheckModal
           onClose={() => setCheckedModal(false)}
-          onResults={() => navigate("profile")}
+          onResults={() => navigate("/rashi-details")}
         />
       )}
 

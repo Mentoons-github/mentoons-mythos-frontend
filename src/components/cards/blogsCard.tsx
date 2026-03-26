@@ -30,9 +30,9 @@ const BlogsCard = ({ blogs, userId }: { blogs: Blog[]; userId: string }) => {
     navigate(`?id=${post._id}`);
   };
   return (
-    <div className="flex flex-col gap-8 w-full md:w-[50rem]">
+    <div className="flex flex-col gap-8 w-full lg:w-[50rem]">
       <div>
-        <h1 className="text-3xl font-semibold -mb-4 ">Popular Blogs</h1>
+        <h1 className="text-2xl md:text-3xl font-semibold -mb-4 ml-2 md:ml-0">Popular Blogs</h1>
       </div>
 
       {blogs.map((blog, index) => (
@@ -46,7 +46,7 @@ const BlogsCard = ({ blogs, userId }: { blogs: Blog[]; userId: string }) => {
           variants={fadeUp}
         >
           {blog.file && (
-            <div className="w-full h-[450px] overflow-hidden">
+            <div className="w-full lg:h-[450px] overflow-hidden">
               <img
                 src={blog.file}
                 alt={blog.title}

@@ -14,7 +14,7 @@ const LeftSection = () => {
   }, [dispatch]);
 
   return (
-    <div className="flex flex-col items-start gap-5 w-full md:-mt-80">
+    <div className="flex flex-col items-start gap-5 w-full lg:-mt-80">
       <BlogsCard blogs={mostReadBlogs} userId = {userId??""}/>
     </div>
   );

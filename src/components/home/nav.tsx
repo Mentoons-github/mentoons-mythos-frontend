@@ -12,10 +12,15 @@ import { IoCartOutline } from "react-icons/io5";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import ThemeToggle from "../ThemToggle";
 import { Heart, User } from "lucide-react";
+import RewardModal from "../modal/RewardModal";
 
 const MythosHeader = () => {
   const dispatch = useAppDispatch();
-  const { user, loading: userLoading } = useAppSelector((state) => state.user);
+  const {
+    user,
+    loading: userLoading,
+    rewardPoints,
+  } = useAppSelector((state) => state.user);
   const { showModal } = useSignInSignUp();
 
   const headerText = [
@@ -58,6 +63,8 @@ const MythosHeader = () => {
   const userHoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
     null
   );
+  const [rewardModalOpen, setRewardModalOpen] = useState(false);
+  const [rewardPointShow, setRewardPointShow] = useState(0);
 
   const assessmentItems = [
     { name: "Psychology", path: "/assessment/psychology" },
@@ -69,6 +76,14 @@ const MythosHeader = () => {
     { name: "Astrology", path: "/become-mentor" },
     { name: "Spiritual", path: "/become-mentor" },
   ];
+
+  useEffect(() => {
+    if (rewardPoints > 0) {
+      setRewardPointShow(rewardPoints);
+      setRewardModalOpen(true);
+      console.log();
+    }
+  }, [rewardPointShow, rewardPoints]);
 
   useEffect(() => {
     let isMounted = true;
@@ -232,7 +247,7 @@ const MythosHeader = () => {
       <motion.header
         animate={controls}
         initial={{ y: 0 }}
-        className={`w-full bg-background z-50 font-akshar border-b border-border ${
+        className={`w-full bg-background z-40 font-akshar border-b border-border ${
           isScrolled ? "fixed top-0 left-0 shadow-lg" : "relative"
         }`}
       >
@@ -615,6 +630,15 @@ const MythosHeader = () => {
           />
         )}
       </AnimatePresence>
+
+      {rewardModalOpen && (
+        <RewardModal
+          points={rewardPointShow}
+          onClose={() => {
+            setRewardModalOpen(false);
+          }}
+        />
+      )}
     </>
   );
 };

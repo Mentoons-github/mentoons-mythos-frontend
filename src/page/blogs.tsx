@@ -41,7 +41,7 @@ const Blogs = () => {
 
   return (
     <motion.section
-      className="flex flex-col md:px-20 py-12 justify-between items-center relative"
+      className="flex flex-col px-2 md:px-10 lg:px-20 py-12 justify-between items-center relative"
       initial="hidden"
       animate="show"
       variants={fadeInUp}
@@ -52,7 +52,7 @@ const Blogs = () => {
         transition={{ delay: 0.1 }}
       >
         <motion.h1
-          className="font-montserrat ml-3 md:ml-0 text-2xl md:text-4xl font-semibold tracking-wider"
+          className="font-montserrat ml-3 lg:ml-0 text-2xl lg:text-4xl font-semibold tracking-wider"
           variants={fadeInUp}
         >
           CREATE, CONNECT & EXPAND
@@ -85,7 +85,7 @@ const Blogs = () => {
       </motion.div>
 
       <motion.div
-        className="md:flex justify-between items-start w-full mt-10 gap-4"
+        className="lg:flex justify-between items-start w-full mt-10 gap-4"
         variants={fadeInUp}
         transition={{ delay: 0.4 }}
       >

@@ -7,12 +7,14 @@ import { resetBlogSlice } from "../../../features/blog/blogSlice";
 import { fileUploadThunk } from "../../../features/upload/fileUploadThunk";
 import useSignInSignUp from "../../../hooks/useSignInSignUpModal";
 import { toast } from "sonner";
+import RewardModal from "../../modal/RewardModal";
 
 const CreateBlog = ({ userId }: { userId: string }) => {
   const dispatch = useAppDispatch();
   const { showModal } = useSignInSignUp();
   const [file, setFile] = useState<File | null>(null);
   const [touched, setTouched] = useState(false);
+  const [rewardModalOpen, setRewardModalOpen] = useState(false);
 
   const [input, setInput] = useState({
     title: "",
@@ -20,22 +22,22 @@ const CreateBlog = ({ userId }: { userId: string }) => {
     description: "",
     commentsOff: false,
   });
-  const { error, loading, message, createblogSuccess } = useAppSelector(
-    (state) => state.blog
-  );
+  const { error, loading, message, createblogSuccess, rewardPoints } =
+    useAppSelector((state) => state.blog);
 
   const wordCount = input.description.trim().split(/\s+/).length;
 
   useEffect(() => {
     if (createblogSuccess) {
       toast.success(message);
-      dispatch(resetBlogSlice());
+      setRewardModalOpen(true);
+      console.log(rewardPoints, "reeeee");
     }
     if (error) {
       toast.error(error);
       dispatch(resetBlogSlice());
     }
-  }, [createblogSuccess, dispatch, error, message]);
+  }, [createblogSuccess, dispatch, error, message, rewardPoints]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -277,6 +279,15 @@ const CreateBlog = ({ userId }: { userId: string }) => {
           </motion.div>
         </form>
       </motion.div>
+      {rewardModalOpen && (
+        <RewardModal
+          points={rewardPoints}
+          onClose={() => {
+            setRewardModalOpen(false);
+            dispatch(resetBlogSlice());
+          }}
+        />
+      )}
     </motion.div>
   );
 };

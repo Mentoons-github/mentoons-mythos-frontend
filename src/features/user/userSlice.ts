@@ -28,6 +28,7 @@ export interface UserData {
   totalPage: number;
   userCount: number;
   logoutSuccess: boolean;
+  rewardPoints: number;
 }
 
 const initialState: UserData = {
@@ -47,6 +48,7 @@ const initialState: UserData = {
   totalPage: 0,
   userCount: 0,
   logoutSuccess: false,
+  rewardPoints: 0,
 };
 
 const userSlice = createSlice({
@@ -64,6 +66,7 @@ const userSlice = createSlice({
       state.singleUser = null;
       state.singleUserLoading = false;
       state.logoutSuccess = false;
+      state.rewardPoints = 0;
     },
     updateUserPassword: (state, action) => {
       if (state.user) {
@@ -79,6 +82,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchUserData.fulfilled, (state, action) => {
         state.user = action.payload.user;
+        state.rewardPoints = action.payload.reward;
         state.success = action.payload.success;
         state.error = null;
         state.loading = false;

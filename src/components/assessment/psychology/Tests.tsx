@@ -60,7 +60,7 @@ const Tests = ({ userId }: { userId?: string }) => {
         The Right Path For You
       </motion.h1>
 
-      <motion.div className="grid grid-cols-2  md:grid-cols-3 gap-2 md:gap-12 ">
+      <motion.div className="grid grid-cols-2  lg:grid-cols-3 gap-2 md:gap-12 ">
         {INTELLIGENCE.map((data, ind) => (
           <motion.div
             key={ind}
@@ -76,16 +76,16 @@ const Tests = ({ userId }: { userId?: string }) => {
                   variants={floatImage}
                   src={data.imageUrl}
                   alt="career"
-                  className="w-36 h-36 bg-foreground sm:w-96 sm:h-72 object-cover rounded-lg"
+                  className="w-36 h-36 bg-white sm:w-96 sm:h-72 object-cover rounded-lg"
                 />
               </motion.div>
 
               <motion.h2
                 variants={fadeInUp}
-                className="md:text-2xl font-bold tracking-wider flex gap-2"
+                className="md:text-2xl font-bold tracking-wider lg:flex gap-2"
               >
                 {data.name}{" "}
-                <span className="hidden sm:block">Intelligence</span>
+                <span className="hidden md:block lg:inline">Intelligence</span>
               </motion.h2>
 
               <motion.p variants={fadeInUp} className="md:text-lg ">

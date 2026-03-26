@@ -20,7 +20,7 @@ const FindIntelligenceModal = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <motion.div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 "
+      className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 "
       onClick={() => onClose()}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

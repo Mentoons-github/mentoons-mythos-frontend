@@ -26,7 +26,7 @@ const EmployeeLayout = () => {
   return (
     <div className="flex h-screen ">
       <aside
-        className={`fixed z-40 left-0 top-0 h-full w-72 border-r-4 border-blue-800 bg-white transition-transform duration-300 transform 
+        className={`fixed z-40 left-0 top-0 h-full w-72 border-r-4 border-blue-800  transition-transform duration-300 transform 
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} 
         lg:translate-x-0`}
       >

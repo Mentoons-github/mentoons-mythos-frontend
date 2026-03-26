@@ -10,16 +10,20 @@ import { resetAuthState } from "../../features/auth/authSlice";
 import AuthLayout from "./AuthLayout";
 import AuthButton from "../../components/ui/AuthButton";
 import { toast } from "sonner";
+import RewardModal from "../../components/modal/RewardModal";
 
 const OTPInputPage = () => {
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
 
   const [resendCooldown, setResendCooldown] = useState(0);
+  const [rewardModalOpen, setRewardModalOpen] = useState(false);
+  const [modalPoints, setModalPoints] = useState(0);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const hasRegistered = useRef(false);
 
-  const { loading, otpSuccess, message, otpError } = useAppSelector(
+  const { loading, otpSuccess, otpError } = useAppSelector(
     (state) => state.auth
   );
 
@@ -33,31 +37,35 @@ const OTPInputPage = () => {
   }, [userData, navigate]);
 
   useEffect(() => {
-    const handleOtpSuccess = async () => {
-      if (otpSuccess && userData) {
+    if (otpSuccess && userData && !hasRegistered.current) {
+      hasRegistered.current = true; // ✅ PREVENTS DOUBLE CALL
+
+      const runRegister = async () => {
         try {
-          await dispatch(registerThunk(userData)).unwrap();
+          const res = await dispatch(registerThunk(userData)).unwrap();
 
-          await new Promise((res) => setTimeout(res, 1000));
-          toast.success(message);
-          await dispatch(resetAuthState());
+          toast.success(res.message || "Registered successfully");
 
+          if (res.reward.points) {
+            setModalPoints(res.reward.points);
+            setRewardModalOpen(true);
+          }
+
+          dispatch(resetAuthState());
           navigate("/");
         } catch (err) {
           console.error("Registration failed:", err);
-        } finally {
-          dispatch(resetAuthState());
         }
-      }
+      };
 
-      if (otpError) {
-        console.log(otpError, "error");
-        dispatch(resetAuthState());
-      }
-    };
+      runRegister();
+    }
 
-    handleOtpSuccess();
-  }, [dispatch, message, navigate, otpError, otpSuccess, userData]);
+    if (otpError) {
+      toast.error(otpError);
+      dispatch(resetAuthState());
+    }
+  }, [otpSuccess, otpError, userData, dispatch, navigate]);
 
   useEffect(() => {
     if (resendCooldown > 0) {
@@ -144,9 +152,7 @@ const OTPInputPage = () => {
               />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold  mb-2">
-            Verify Your Account
-          </h1>
+          <h1 className="text-2xl font-bold  mb-2">Verify Your Account</h1>
           <p className="text-muted-foreground">
             We've sent a 6-digit verification code to your email address
           </p>
@@ -228,7 +234,9 @@ const OTPInputPage = () => {
         </form>
 
         <div className="mt-6 text-center">
-          <p className="text-muted-foreground text-sm mb-2">Didn't receive the code?</p>
+          <p className="text-muted-foreground text-sm mb-2">
+            Didn't receive the code?
+          </p>
           <button
             onClick={handleResend}
             disabled={resendCooldown > 0}
@@ -244,6 +252,15 @@ const OTPInputPage = () => {
           </button>
         </div>
       </div>
+
+      {rewardModalOpen && (
+        <RewardModal
+          points={modalPoints}
+          onClose={() => {
+            setRewardModalOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 };

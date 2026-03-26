@@ -22,8 +22,8 @@ const WorkshopCard = () => {
         .swiper-button-prev {
           color: #111111 !important;
           background: #ffffff !important;
-          width: 50px !important;
-          height: 50px !important;
+          width: 40px !important;
+          height: 40px !important;
           border-radius: 50%;
           transition: all 0.3s ease;
           box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
@@ -37,7 +37,7 @@ const WorkshopCard = () => {
         
         .swiper-button-next::after,
         .swiper-button-prev::after {
-          font-size: 22px !important;
+          font-size: 16px !important;
           font-weight: bold;
         }
 
@@ -83,31 +83,31 @@ const WorkshopCard = () => {
             {workshops.map((workshop, idx) => (
               <SwiperSlide key={idx}>
                 <div className="min-w-full flex flex-col lg:flex-row items-center justify-between rounded-2xl px-4 lg:px-24">
-                  <div className="md:p-8 p-4 flex-1">
-                    <h1 className="text-3xl md:text-4xl font-bold">
+                  <div className="lg:p-8 p-4 flex-1">
+                    <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold">
                       Workshop Held for{" "}
                       <span className="font-extrabold block lg:inline">
                         Age {workshop.age}
                       </span>
                     </h1>
-                    <p className="text-muted-foreground mb-6 text-lg md:text-xl mt-5">
+                    <p className="text-muted-foreground mb-6 text-[16px] md:text-xl mt-5">
                       <span className="font-semibold">Focus:</span>{" "}
                       {workshop.focus}
                     </p>
                     <div>
-                      <h2 className="text-xl font-semibold mb-4">
+                      <h2 className="md:text-xl font-semibold mb-4">
                         Activities:
                       </h2>
                       <ul className="space-y-1 list-disc list-inside ml-5">
                         {workshop.activities.map((act, ind) => (
-                          <li key={ind} className="text-[17px] font-medium">
+                          <li key={ind} className="text-sm md:text-[17px] font-medium">
                             {act}
                           </li>
                         ))}
                       </ul>
                     </div>
                     <div className="mt-6">
-                      <div className="inline-block bg-foreground text-background font-semibold text-lg px-5 py-2 rounded-full shadow-md">
+                      <div className="inline-block bg-foreground text-background font-semibold md:text-lg px-5 py-2 rounded-full shadow-md">
                         ₹{workshop.amount} / 6 Weeks
                       </div>
                     </div>

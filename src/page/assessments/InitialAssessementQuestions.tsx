@@ -10,24 +10,28 @@ import { InitialAssessmentSubmission } from "../../types/redux/assessmentInterfa
 import { toast } from "sonner";
 import { resetAssessmentSlice } from "../../features/assessment/assessmentSlice";
 import { useNavigate } from "react-router-dom";
+import RewardModal from "../../components/modal/RewardModal";
 
 const InitialAssessmentQuestions = () => {
   const dispatch = useAppDispatch();
   //   const navigate = useNavigate();
 
-  const { initialQuestions, loading, success, message, error } = useAppSelector(
-    (state) => state.assessment
-  );
+  const { initialQuestions, loading, success, message, error, rewardPoints } =
+    useAppSelector((state) => state.assessment);
   const { user } = useAppSelector((state) => state.user);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
   const [isFinished, setIsFinished] = useState(false);
+  const [rewardModalOpen, setRewardModalOpen] = useState(false);
+  const [modalPoints, setModalPoints] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (success) {
       toast.success(message);
+      setModalPoints(rewardPoints);
+      setRewardModalOpen(true);
       setIsFinished(true);
       dispatch(resetAssessmentSlice());
     }
@@ -35,7 +39,7 @@ const InitialAssessmentQuestions = () => {
       toast.error(error);
       dispatch(resetAssessmentSlice());
     }
-  }, [dispatch, error, message, success]);
+  }, [dispatch, error, message, rewardPoints, success]);
 
   useEffect(() => {
     dispatch(fetchInitialQuestionsThunk());
@@ -74,7 +78,7 @@ const InitialAssessmentQuestions = () => {
         assessmentName: q.name,
         question: q.question,
         answer: selectedOption,
-        options:q.options,
+        options: q.options,
         optionNo,
       };
     });
@@ -196,6 +200,16 @@ const InitialAssessmentQuestions = () => {
             </button>
           </div>
         </div>
+      )}
+
+      {rewardModalOpen && (
+        <RewardModal
+          points={modalPoints}
+          onClose={() => {
+            setRewardModalOpen(false);
+            dispatch(resetAssessmentSlice());
+          }}
+        />
       )}
     </div>
   );

@@ -159,7 +159,7 @@ const WeAreHiring = () => {
         className="z-20"
       >
         <motion.p
-          className="font-mulish max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mt-3 sm:mt-4 md:mt-5 text-base sm:text-lg md:text-xl"
+          className="font-mulish w-full lg:max-w-lg mt-3 sm:mt-4 md:mt-5 text-base sm:text-lg md:text-xl"
           variants={listItemVariants}
         >
           Are you a passionate{" "}

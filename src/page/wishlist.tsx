@@ -118,7 +118,7 @@ const PremiumWishlist = () => {
   // }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white relative overflow-hidden">
+    <div className="min-h-screen  relative overflow-hidden">
       {/* Animated Background Elements */}
       {/* <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white opacity-5 rounded-full blur-3xl animate-pulse"></div>
@@ -129,13 +129,13 @@ const PremiumWishlist = () => {
       <WishListHeader itemsLength={0} />
 
       <div className="text-center py-16">
-            <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center">
-              <Package className="w-12 h-12 text-gray-400" />
+            <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-foreground/10 to-foreground/5 flex items-center justify-center">
+              <Package className="w-12 h-12 text-muted-foreground" />
             </div>
-            <h3 className="text-xl font-semibold text-white mb-2">
+            <h3 className="text-xl font-semibold mb-2">
               No Items found in wishlist
             </h3>
-            <p className="text-gray-400">
+            <p className="text-muted-foreground">
               You don't have any item with this status yet.
             </p>
           </div>

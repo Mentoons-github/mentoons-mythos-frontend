@@ -253,7 +253,7 @@ const RashiFinderModal = ({ onClose }: RashiFinderModalProps) => {
 
   if (rashiCheckError) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm z-50">
+      <div className="fixed inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm z-40">
         <div className="bg-gray-900 p-6 rounded-lg text-white">
           <p className="text-red-400">{rashiCheckError}</p>
           <button

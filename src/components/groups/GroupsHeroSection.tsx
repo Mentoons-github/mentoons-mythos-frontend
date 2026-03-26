@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 const GroupsHeroSection = () => {
   return (
-    <div className="flex flex-col md:flex-row items-center justify-center gap-6 sm:gap-8 md:gap-10 bg-[url('/assets/background/section/stars_background.png')] bg-center p-4 sm:p-5 md:p-6 py-12 sm:py-16 md:py-20">
+    <div className="flex flex-col lg:flex-row items-center justify-center gap-6 sm:gap-8 md:gap-10 bg-[url('/assets/background/section/stars_background.png')] bg-center p-4 lg:p-6 py-12 sm:py-16 md:py-20">
       <motion.div
         className="flex flex-col items-center md:items-start justify-center w-full md:flex-[0.6] px-4 sm:px-8 md:pl-12"
         initial={{ opacity: 0, x: -50 }}
@@ -11,7 +11,7 @@ const GroupsHeroSection = () => {
       >
         <div className="w-full">
           <motion.h1
-            className="text-2xl sm:text-3xl md:text-4xl  font-bold pb-3 md:pb-10 md:text-left"
+            className="text-2xl md:text-3xl lg:text-4xl  font-bold pb-3 md:pb-10 md:text-left"
             initial={{ y: -30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}

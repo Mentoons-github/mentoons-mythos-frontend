@@ -43,7 +43,7 @@ const GroupsSunshineCardSection = ({
     >
       <div>
         <motion.h2
-          className="text-2xl md:text-5xl font-semibold text-start mb-8 md:mb-16  md:px-24"
+          className="text-2xl md:text-3xl lg:text-5xl font-semibold text-start mb-8 md:mb-16 md:px-10 lg:px-24"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -54,7 +54,7 @@ const GroupsSunshineCardSection = ({
         </motion.h2>
 
         <motion.div
-          className="grid gap-2 md:gap-8 grid-cols-2 md:grid-cols-3 md:w-[85%] mx-auto"
+          className="grid gap-2 md:gap-8 grid-cols-2 lg:grid-cols-3 lg:w-[85%] mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, staggerChildren: 0.1 }}
@@ -101,13 +101,13 @@ const GroupsSunshineCardSection = ({
 
               {/* Text Content */}
               <motion.div
-                className="flex items-start justify-start gap-1 md:gap-2 md:p-8 mt-3 md:mt-0"
+                className="flex items-start justify-start gap-1 md:gap-2 p-3 md:p-4 lg:p-8 mt-3 md:mt-0"
                 initial={{ y: 20, opacity: 0 }}
                 viewport={{ once: true }}
                 whileInView={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
               >
-                <motion.div
+                {/* <motion.div
                   className="flex-shrink-0 mt-1 md:mt-2"
                   initial={{ rotate: -10, opacity: 0 }}
                   viewport={{ once: true }}
@@ -119,9 +119,9 @@ const GroupsSunshineCardSection = ({
                     alt={`${item.name} symbol`}
                     className="object-contain w-full h-full opacity-90"
                   />
-                </motion.div>
+                </motion.div> */}
 
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-1 ">
                   <motion.h3
                     className="text-xl md:text-3xl font-bold "
                     initial={{ x: -20, opacity: 0 }}

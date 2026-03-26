@@ -28,11 +28,11 @@ const IntaligentTypes = () => {
             initial={{ opacity: 0, y: 50 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-xl sm:text-2xl md:text-4xl font-bold mb-6 font-montserrat w-full leading-[1.8] tracking-wider"
+            className="text-xl  md:text-2xl lg:text-4xl font-bold mb-6 font-montserrat w-full leading-[1.8] tracking-wider"
           >
             WHAT TYPE OF INTELLIGENCE ARE YOU?
           </motion.h1>
-          <ul className="space-y-4 sm:space-y-6 mb-6 sm:mb-8 mulish mt-4 sm:mt-6 w-full">
+          <ul className="space-y-4 sm:space-y-6 mb-6 sm:mb-8 mulish mt-4 lg:mt-6 w-full">
             {intelligence.map((item, index) => (
               <motion.li
                 key={index}

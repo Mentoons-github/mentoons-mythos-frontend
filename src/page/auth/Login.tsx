@@ -22,8 +22,6 @@ const Login = () => {
     (state) => state.auth
   );
 
-  console.log(role,'roleeee')
-
   // console.log(accessToken, userId);
   useEffect(() => {
     if (success) {

@@ -16,6 +16,7 @@ export interface Blog {
 export interface CreateBlogResponse {
   message: string;
   blog: Blog;
+  reward: { points: number };
 }
 
 export interface GetBlogResponse {

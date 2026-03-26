@@ -44,14 +44,14 @@ const Cart = () => {
   // };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden">
       <div className="max-w-8xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {/* Header */}
         <div className="text-center mb-7 sm:mb-8 md:mb-12">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">
             MY CART
           </h1>
-          <div className="w-16 sm:w-20 md:w-24 h-px bg-white mx-auto mt-3 sm:mt-4" />
+          <div className="w-16 sm:w-20 md:w-24 h-px bg-foreground mx-auto mt-3 sm:mt-4" />
         </div>
 
         {/* <div className="grid grid-cols-1 xl:grid-cols-6 gap-6 sm:gap-8 xl:gap-10">
@@ -97,12 +97,12 @@ const Cart = () => {
 
         <div className="text-center py-16">
             <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center">
-              <Package className="w-12 h-12 text-gray-400" />
+              <Package className="w-12 h-12 text-muted-foreground" />
             </div>
             <h3 className="text-xl font-semibold text-white mb-2">
               No Item found in cart
             </h3>
-            <p className="text-gray-400">
+            <p className="text-muted-foreground">
               You don't have any item with this status yet.
             </p>
           </div>

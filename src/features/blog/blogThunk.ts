@@ -31,7 +31,6 @@ export const createBlogThunk = createAsyncThunk<
   Blog,
   { rejectValue: string }
 >("blog/create", async (data, { rejectWithValue }) => {
-  console.log(data.tags, "dataaaaaaaa");
   try {
     const res = await createBlogApi(data);
     return res.data;
