@@ -41,6 +41,7 @@ interface AssessmentSlice {
   submissionTotalPages: number;
   deleteSuccess: boolean;
   deleteLoading: boolean;
+  rewardPoints: number;
 }
 
 const initialState: AssessmentSlice = {
@@ -63,6 +64,7 @@ const initialState: AssessmentSlice = {
   submissionTotalPages: 0,
   deleteLoading: false,
   deleteSuccess: false,
+  rewardPoints: 0,
 };
 
 const assessmentSlice = createSlice({
@@ -76,7 +78,8 @@ const assessmentSlice = createSlice({
       state.loading = false;
       state.success = false;
       state.deleteLoading = false;
-      state.deleteSuccess = false
+      state.deleteSuccess = false;
+      state.rewardPoints = 0;
     },
   },
   extraReducers: (builder) => {
@@ -92,6 +95,7 @@ const assessmentSlice = createSlice({
         state.error = null;
         state.data = action.payload.assessment;
         state.message = action.payload.message;
+        state.rewardPoints = action.payload.reward.points;
         state.success = true;
       })
       .addCase(assessmentSubmitTunk.rejected, (state, action) => {
@@ -194,6 +198,7 @@ const assessmentSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.message = action.payload.message;
+        state.rewardPoints = action.payload.reward.points;
         state.success = true;
       })
       .addCase(initialAssessmentSubmitThunk.rejected, (state, action) => {

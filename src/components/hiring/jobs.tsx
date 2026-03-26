@@ -16,8 +16,6 @@ const Jobs = () => {
   const limit = 10;
   const { user } = useAppSelector((state) => state.user);
 
-  console.log(jobs, "jobsss");
-
   useEffect(() => {
     dispatch(
       getJobsThunk({ page: currentPage, limit, sort: "newest", search: "" })

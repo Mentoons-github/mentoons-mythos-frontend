@@ -22,6 +22,8 @@ const BecomeMentor = () => {
 
   const mentor = location?.state?.mentorType || "";
 
+  console.log(mentor, "mmmmmmeeeeeeee");
+
   const [mentorType, setMentorType] = useState<string>(mentor || "");
   const [socialLinks, setSocialLinks] = useState(["", "", ""]);
   const [formData, setFormData] = useState({
@@ -159,12 +161,12 @@ const BecomeMentor = () => {
   };
 
   return (
-    <div className="border rounded-2xl p-2 md:p-10 lg:px-32  bg-background">
+    <div className=" rounded-2xl p-2 md:p-10 lg:px-32  bg-background">
       <div className="text-center mb-10 space-y-2">
-        <h1 className="text-3xl sm:text-4xl font-bold text-foreground">
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground">
           Become a Guiding Light
         </h1>
-        <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
+        <p className="text-muted-foreground text-sm md:text-lg max-w-2xl mx-auto">
           Inspire and uplift others by sharing your wisdom, insights, and
           experience. Join our community of mentors and start making a
           meaningful impact today.
@@ -186,7 +188,7 @@ const BecomeMentor = () => {
               type="button"
               onClick={() => setMentorType(type)}
               className={`border rounded-lg py-3 font-medium md:text-lg transition-all duration-200 ${
-                mentorType === type
+                mentorType === type || mentorType === type.split(" ")[0]
                   ? "bg-foreground text-background shadow-lg"
                   : "hover:bg-muted"
               }`}

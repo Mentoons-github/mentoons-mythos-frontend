@@ -30,6 +30,7 @@ export interface IAstrologyDetail {
 export interface UserResponse {
   success: boolean;
   user: IUser;
+  reward:number
 }
 
 export interface AllUserResponse {

@@ -47,12 +47,14 @@ import EmployeeTasks from "./employee/pages/EmployeeTasks";
 import EmployeeAttendance from "./employee/pages/EmployeeAttendance";
 import BecomeMentor from "./page/becomeMentor";
 import AdminEmployeeLeaveManagement from "./Admin/pages/employees/AdminEmployeeLeaveManagement";
+import RashiDetails from "./page/RashiDetails";
 
 const MythosHome = lazy(() => import("./page/home"));
 const MythosAbout = lazy(() => import("./page/about"));
 const MythosGroups = lazy(() => import("./page/groups"));
 const MythosShop = lazy(() => import("./page/shop"));
 const MythosQuiz = lazy(() => import("./page/quiz/quizHome"));
+const MythosQuizQuestion = lazy(() => import("./page/quiz/quizQuestion"));
 const MythosCart = lazy(() => import("./page/cart"));
 const MythosDetails = lazy(() => import("./page/details"));
 const MythosAssessments = lazy(() => import("./page/assessment"));
@@ -64,7 +66,7 @@ const MythosOrder = lazy(() => import("./page/myOrders"));
 const MythosSearch = lazy(() => import("./page/globalSearch"));
 const MythosContactUs = lazy(() => import("./page/contactUs"));
 const MythosPsychologyAssessments = lazy(
-  () => import("./page/assessments/psychologyAssessment")
+  () => import("./page/assessments/psychologyAssessment"),
 );
 const MythosBookCall = lazy(() => import("./page/bookCall"));
 const MythosWorkshops = lazy(() => import("./page/workshops"));
@@ -149,6 +151,7 @@ const AppRouter = () => {
               </ProtectedRoute>
             }
           />
+          <Route path="quiz/:category" element={<MythosQuizQuestion />} />
           <Route path="/" element={<MythosLayout />}>
             <Route index element={<MythosHome />} />
             <Route path="about-us" element={<MythosAbout />} />
@@ -158,6 +161,7 @@ const AppRouter = () => {
             <Route path="*" element={<NotFound />} />
             <Route path="shop" element={<MythosShop />} />
             <Route path="quiz" element={<MythosQuiz />} />
+
             <Route path="assessment/planet" element={<MythosAssessments />} />
             <Route path="details" element={<MythosDetails />} />
             <Route path="products-details" element={<MythosProductDetail />} />
@@ -169,6 +173,7 @@ const AppRouter = () => {
             <Route path="workshops" element={<MythosWorkshops />} />
             <Route path="become-mentor" element={<BecomeMentor />} />
             <Route path="career-gps" element={<MythosCareerGPS />} />
+            <Route path="rashi-details" element={<RashiDetails />} />
             <Route
               path="initialassessment"
               element={<InitialAssessmentQuestions />}

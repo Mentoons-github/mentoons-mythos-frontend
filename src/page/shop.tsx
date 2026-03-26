@@ -238,17 +238,17 @@ const Shop = () => {
         </div>
       </motion.div>
 
-      <motion.div className="flex pr-6 bg-[url('/assets/background/section/stars_background.png')] bg-center">
+      <motion.div className="flex p-3 md:p-6 lg:p-0 lg:pr-6 bg-[url('/assets/background/section/stars_background.png')] bg-center">
         <motion.div
           ref={tattoosRef}
           initial="hidden"
           animate={tattoosInView ? "visible" : "hidden"}
           variants={fadeInUp}
-          className="flex flex-col justify-center items-center gap-5 md:gap-10  py-6 md:py-10 md:w-2/3"
+          className="flex flex-col justify-center items-center gap-5 md:gap-10  py-6 md:py-10 lg:w-2/3"
         >
           <motion.h1
             variants={fadeInUp}
-            className="text-xl sm:text-2xl md:text-3xl tracking-[1.5px] md:tracking-[2.5px] font-bold text-center"
+            className="text-xl sm:text-2xl md:text-3xl tracking-[1.5px] md:tracking-[2.5px] font-bold lg:text-center"
           >
             TATTOOS YOU WOULD LIKE TO HAVE!
           </motion.h1>

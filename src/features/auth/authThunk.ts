@@ -126,6 +126,7 @@ export const changePasswordThunk = createAsyncThunk<
   }
 );
 
+//delete account
 export const deleteAccountThunk = createAsyncThunk<
   string,
   void,

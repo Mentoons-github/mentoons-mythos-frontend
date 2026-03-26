@@ -1,6 +1,8 @@
-
 export interface RegisterResponse {
   message: string;
+  reward: {
+    points: number;
+  };
 }
 
 export interface RegisterPayload {

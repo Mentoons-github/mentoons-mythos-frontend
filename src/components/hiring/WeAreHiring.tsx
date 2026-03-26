@@ -13,7 +13,7 @@ const WeAreHiring = ({ hiring }: { hiring: Hiring[] }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="hidden md:flex flex-col items-center w-1/3 gap-4 px-2 md:gap-6 md:px-0 py-6">
+    <div className="hidden lg:flex flex-col items-center w-1/3 gap-4 px-2 md:gap-6 md:px-0 py-6">
       {hiring.map((job, index) => (
         <div
           key={index}

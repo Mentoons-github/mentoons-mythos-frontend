@@ -83,7 +83,6 @@ const AstrologyOrdersPage = () => {
   //     deliveryDate: "2024-07-05",
   //   },
   // ];
-  
 
   // const getStatusColor = (status: string) => {
   //   switch (status) {
@@ -112,7 +111,7 @@ const AstrologyOrdersPage = () => {
   // };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white relative overflow-hidden">
+    <div className="min-h-screen  relative overflow-hidden">
       {/* Animated Stars Background */}
       {/* <div className="absolute inset-0 overflow-hidden">
         {[...Array(50)].map((_, i) => (
@@ -134,15 +133,15 @@ const AstrologyOrdersPage = () => {
       <div className="relative z-10 max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-12">
-          <div className="flex justify-center items-center mb-4">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex items-center justify-center backdrop-blur-sm border border-white/10">
-              <Star className="w-8 h-8 text-white" />
+          <div className="flex justify-center items-center gap-3 mb-4">
+            <div className="w-8 h-8 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-foreground/20 to-foreground/5 flex items-center justify-center backdrop-blur-sm border border-foreground/10">
+              <Star className="w-4 h-4 md:w-8 md:h-8 " />
             </div>
+            <h1 className="text-2xl md:text-5xl font-bold ">
+              My Purchases
+            </h1>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-            My Purchases
-          </h1>
-          <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Track your merchandise orders
           </p>
         </div>
@@ -247,22 +246,22 @@ const AstrologyOrdersPage = () => {
 
         {/* Empty State */}
         {/* {products.length === 0 && ( */}
-          <div className="text-center py-16">
-            <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center">
-              <Package className="w-12 h-12 text-gray-400" />
-            </div>
-            <h3 className="text-xl font-semibold text-white mb-2">
-              No orders found
-            </h3>
-            <p className="text-gray-400">
-              You don't have any orders with this status yet.
-            </p>
+        <div className="text-center py-16">
+          <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center">
+            <Package className="w-12 h-12 text-muted-foreground" />
           </div>
+          <h3 className="text-xl font-semibold mb-2">
+            No orders found
+          </h3>
+          <p className="text-muted-foreground">
+            You don't have any orders with this status yet.
+          </p>
+        </div>
         {/* )} */}
 
         {/* Footer */}
-        <div className="text-center mt-16 pt-8 border-t border-white/10">
-          <p className="text-gray-400">
+        <div className="text-center mt-16 pt-8 border-t ">
+          <p className="text-muted-foreground">
             Need help? Contact our cosmic support team
           </p>
         </div>

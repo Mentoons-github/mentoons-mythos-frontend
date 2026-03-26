@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const ExplorePodcast = () => {
   return (
     <motion.div
-      className="p-6 flex flex-col border border-muted-foreground md:w-[490px] rounded-lg shadow-md"
+      className="p-6 flex flex-col border border-muted-foreground lg:w-[490px] mt-10 lg:mt-0 shadow-md"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}

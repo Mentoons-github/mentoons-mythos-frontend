@@ -11,8 +11,8 @@ interface RashiResultData {
 
 interface RashiResultProps {
   result: RashiResultData;
-  selectedMode: "vedic" | "zodiac";
-  setResult: React.Dispatch<React.SetStateAction<RashiResultData | null>>;
+  selectedMode?: "vedic" | "zodiac";
+  setResult?: React.Dispatch<React.SetStateAction<RashiResultData | null>>;
   onClose: () => void;
 }
 

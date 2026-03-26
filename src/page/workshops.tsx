@@ -3,12 +3,12 @@ import WorkshopRegister from "../components/workshops/WorkshopRegister";
 
 const Workshops = () => {
   return (
-    <div className="min-h-screen  bg-[url('/assets/background/section/stars_background.png')] bg-center md:px-16 lg:px-28 md:py-12">
+    <div className="min-h-screen  bg-[url('/assets/background/section/stars_background.png')] bg-center md:px-10 lg:px-28 md:py-12">
       <div className="lg:flex justify-between p-4 md:p-0 ">
         <div className="  mb-12">
-          <h1 className="text-3xl md:text-4xl font-extrabold text-muted-foreground mb-4">
+          <h1 className="text-xl md:text-3xl lg:text-4xl font-extrabold text-muted-foreground mb-4">
             🌿 Workshop:
-            <span className="block text-4xl md:text-5xl  mt-2">
+            <span className="block text-2xl md:text-4xl lg:text-5xl  mt-2">
               Early Introduction to Spirituality
             </span>
           </h1>

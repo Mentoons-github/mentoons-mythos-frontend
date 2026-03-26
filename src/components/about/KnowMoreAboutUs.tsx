@@ -71,10 +71,10 @@ const KnowMoreAboutUs = () => {
   };
 
   return (
-    <div className=" bg-[url('/assets/background/section/stars_background.png')] bg-center p-4 md:p-6 pb-12 md:pb-24 flex items-center">
+    <div className=" bg-[url('/assets/background/section/stars_background.png')] bg-center  md:p-6 pb-12 md:pb-24 flex items-center">
       <div className="w-[90%] mx-auto flex flex-col lg:flex-row items-start justify-start gap-8 md:gap-12 pt-12">
         <motion.div
-          className="w-full lg:w-[50%] flex flex-col items-start justify-center px-4 md:px-12"
+          className="w-full lg:w-[50%] flex flex-col items-start justify-center  lg:px-12"
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}

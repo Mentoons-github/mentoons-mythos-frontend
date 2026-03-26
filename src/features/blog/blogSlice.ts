@@ -37,7 +37,8 @@ interface SliceBlog {
   deleteLoading: boolean;
   deleteSuccess: boolean;
   deleteMessage: string;
-  blogCount:number
+  blogCount: number;
+  rewardPoints: number;
 }
 
 const initialState: SliceBlog = {
@@ -60,7 +61,8 @@ const initialState: SliceBlog = {
   deleteLoading: false,
   deleteMessage: "",
   deleteSuccess: false,
-  blogCount:0
+  blogCount: 0,
+  rewardPoints: 0,
 };
 
 export const blogSlice = createSlice({
@@ -80,6 +82,7 @@ export const blogSlice = createSlice({
       state.deleteLoading = false;
       state.deleteMessage = "";
       state.deleteSuccess = false;
+      state.rewardPoints = 0;
     },
   },
   extraReducers: (builder) => {
@@ -94,6 +97,7 @@ export const blogSlice = createSlice({
         state.message = action.payload.message;
         state.data.unshift(action.payload.blog);
         state.createblogSuccess = true;
+        state.rewardPoints = action.payload.reward.points;
       })
       .addCase(createBlogThunk.rejected, (state, action) => {
         state.error = action.payload;
@@ -114,7 +118,7 @@ export const blogSlice = createSlice({
           new Map(mergedPosts.map((item) => [item._id, item])).values()
         );
         state.data = uniquePosts;
-        state.adminBlog = action.payload.blogs; 
+        state.adminBlog = action.payload.blogs;
         state.total = action.payload.total;
         state.userId = action.payload.userId;
       })
@@ -123,7 +127,7 @@ export const blogSlice = createSlice({
         state.error = action.payload;
       })
 
-      //fetch blog count 
+      //fetch blog count
       .addCase(fetcheBlogCountThunk.pending, (state) => {
         state.fetchBlogLoading = true;
         state.error = null;
@@ -131,7 +135,7 @@ export const blogSlice = createSlice({
       .addCase(fetcheBlogCountThunk.fulfilled, (state, action) => {
         state.fetchBlogLoading = false;
         state.error = null;
-       state.blogCount = action.payload
+        state.blogCount = action.payload;
       })
       .addCase(fetcheBlogCountThunk.rejected, (state, action) => {
         state.fetchBlogLoading = false;

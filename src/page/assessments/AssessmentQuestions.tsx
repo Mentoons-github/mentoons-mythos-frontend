@@ -11,15 +11,15 @@ import { toast } from "sonner";
 import { resetAssessmentSlice } from "../../features/assessment/assessmentSlice";
 import PaymentModal from "../../components/modal/paymentModal/paymentModal";
 import { useNavigate } from "react-router-dom";
+import RewardModal from "../../components/modal/RewardModal";
 
 const AssessmentQuestions = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const paid = searchParams.get("paid") === "true";
-  const { message, error, success, assessmentQusetion } = useAppSelector(
-    (state) => state.assessment
-  );
+  const { message, error, success, assessmentQusetion, rewardPoints } =
+    useAppSelector((state) => state.assessment);
   const { name, type } = useParams<{ name: string; type: string }>();
   // const questions = QUESTIONS[name as keyof typeof QUESTIONS];
   const initialIndex = sessionStorage.getItem(`${name}_currentIndex`);
@@ -33,10 +33,12 @@ const AssessmentQuestions = () => {
     [key: number]: string;
   }>(storedAnswers ? JSON.parse(storedAnswers) : {});
   const [isFinished, setIsFinished] = useState(false);
+  const [rewardModalOpen, setRewardModalOpen] = useState(false);
+  const [modalPoints, setModalPoints] = useState(0);
 
   const currentQuestion = assessmentQusetion?.questions[currentQuestionIndex];
 
-  console.log(assessmentQusetion,'asdfasd')
+  console.log(assessmentQusetion, "asdfasd");
 
   useEffect(() => {
     if (name) {
@@ -47,13 +49,15 @@ const AssessmentQuestions = () => {
   useEffect(() => {
     if (success) {
       toast.success(message);
+      setModalPoints(rewardPoints);
+      setRewardModalOpen(true);
       dispatch(resetAssessmentSlice());
     }
     if (error) {
       toast.error(error);
       dispatch(resetAssessmentSlice());
     }
-  }, [dispatch, error, message, success]);
+  }, [dispatch, error, message, rewardPoints, success]);
 
   const handleOptionSelect = (option: string) => {
     setSelectedAnswers((prev) => ({
@@ -255,6 +259,16 @@ const AssessmentQuestions = () => {
           heading="Assessment"
           price={9}
           description="To access the full assessment, a one-time payment of ₹9 is required. This small fee helps us maintain the quality of the platform and provide you with the best experience."
+        />
+      )}
+
+      {rewardModalOpen && (
+        <RewardModal
+          points={modalPoints}
+          onClose={() => {
+            setRewardModalOpen(false);
+            dispatch(resetAssessmentSlice());
+          }}
         />
       )}
     </div>

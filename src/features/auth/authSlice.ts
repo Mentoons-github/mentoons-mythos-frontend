@@ -19,6 +19,7 @@ interface Auth {
   otpError: string | null | undefined;
   role: string;
   userPassword: string;
+  rewardPoint: number;
 }
 
 const initialState: Auth = {
@@ -31,6 +32,7 @@ const initialState: Auth = {
   otpError: null,
   role: "",
   userPassword: "",
+  rewardPoint: 0,
 };
 
 const authSlice = createSlice({
@@ -44,6 +46,7 @@ const authSlice = createSlice({
       state.success = false;
       state.otpSuccess = false;
       state.userId = null;
+      state.rewardPoint = 0;
     },
   },
   extraReducers: (builder) => {
@@ -58,6 +61,7 @@ const authSlice = createSlice({
         state.error = null;
         state.message = action.payload.message;
         state.success = true;
+        state.rewardPoint = action.payload.reward.points;
       })
       .addCase(registerThunk.rejected, (state, action) => {
         state.loading = false;
