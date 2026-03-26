@@ -22,8 +22,8 @@ const RashiDetails = () => {
   const dispatch = useAppDispatch();
   const {
     result: astrologyDetail,
-    error: astroError,
-    loading: astroLoading,
+    // error: astroError,
+    // loading: astroLoading,
   } = useAppSelector((state) => state.astro);
   const [displayMode, setDisplayMode] = useState<"english" | "indian">(
     "english"
