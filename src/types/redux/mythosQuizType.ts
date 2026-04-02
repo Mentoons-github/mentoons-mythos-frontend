@@ -4,4 +4,4 @@ export type QuizQuestion = {
   options: string[];
   answer: string;
 };
-export type QuizCategory = "ramayan";
+export type QuizCategory = "ramayan" | "mahabharat" | "quran" | "bible";

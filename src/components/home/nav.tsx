@@ -26,7 +26,7 @@ const MythosHeader = () => {
   const headerText = [
     "ASSESSMENTS",
     "WORKSHOPS",
-    "SHOP",
+    "QUIZ",
     "BLOG",
     "ABOUT-US",
     "CAREER",
@@ -44,6 +44,7 @@ const MythosHeader = () => {
     useState(false);
 
   const [becomeMentorDropdown, setBecomeMentorDropdown] = useState(false);
+  const [workshopDropdown, setWorkshopDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -61,7 +62,7 @@ const MythosHeader = () => {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const userDropdownRef = useRef<HTMLDivElement>(null);
   const userHoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
-    null
+    null,
   );
   const [rewardModalOpen, setRewardModalOpen] = useState(false);
   const [rewardPointShow, setRewardPointShow] = useState(0);
@@ -75,6 +76,16 @@ const MythosHeader = () => {
     { name: "Psychology", path: "/become-mentor" },
     { name: "Astrology", path: "/become-mentor" },
     { name: "Spiritual", path: "/become-mentor" },
+  ];
+
+  const workshopItems = [
+    { name: "Music Ancient", sub: "6-12, 13-19, 20+", path: "/workshops" },
+    {
+      name: "Mythology Story Telling",
+      sub: "6-12, 13-19, 20+",
+      path: "/workshops",
+    },
+    { name: "Painting Workshops", sub: "6-12, 13-19", path: "/workshops" },
   ];
 
   useEffect(() => {
@@ -137,8 +148,16 @@ const MythosHeader = () => {
     }
     if (from == "assessment") {
       setIsAssessmentsDropdownOpen(true);
+      setWorkshopDropdown(false);
+      setBecomeMentorDropdown(false);
+    } else if (from == "workshop") {
+      setWorkshopDropdown(true);
+      setBecomeMentorDropdown(false);
+      setIsAssessmentsDropdownOpen(false);
     } else {
       setBecomeMentorDropdown(true);
+      setIsAssessmentsDropdownOpen(false);
+      setWorkshopDropdown(false);
     }
   };
 
@@ -146,6 +165,8 @@ const MythosHeader = () => {
     hoverTimeoutRef.current = setTimeout(() => {
       if (from == "assessment") {
         setIsAssessmentsDropdownOpen(false);
+      } else if (from == "workshop") {
+        setWorkshopDropdown(false);
       } else {
         setBecomeMentorDropdown(false);
       }
@@ -255,9 +276,9 @@ const MythosHeader = () => {
           <div className="flex justify-center items-center">
             <Link to="/" className="flex justify-center items-center">
               <img
-                src="/assets/logo/image 2.png"
+                src="/assets/logo/Mentoons Mythos.png"
                 alt="company logo"
-                className="w-20 md:w-24 lg:w-32 h-11 md:h-14 lg:h-16"
+                className="w-10 md:w-12 lg:w-16 "
               />
             </Link>
           </div>
@@ -386,6 +407,81 @@ const MythosHeader = () => {
                                     {item.name}
                                   </div>
                                 </button>
+                              </motion.div>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ) : text === "WORKSHOPS" ? (
+                  <div
+                    className="relative w-full"
+                    ref={dropdownRef}
+                    onMouseEnter={() => handleMouseEnter("workshop")}
+                    onMouseLeave={() => handleMouseLeave("workshop")}
+                  >
+                    <div className="relative flex items-center gap-1  cursor-pointer">
+                      <img
+                        src="/assets/icons/star.png"
+                        alt="star"
+                        className="w-3 h-3 lg:w-4 lg:h-4"
+                      />
+                      {text}
+                      <motion.div
+                        animate={{
+                          rotate: workshopDropdown ? 180 : 0,
+                        }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <FaChevronDown className="text-xs ml-" />
+                      </motion.div>
+                      <span className="absolute left-1/2 -bottom-1 lg:-bottom-2 h-[2px] w-0 bg-gray-500 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
+                    </div>
+
+                    <AnimatePresence>
+                      {workshopDropdown && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                          transition={{ duration: 0.2, ease: "easeOut" }}
+                          className="absolute top-full left-0 mt-2 w-56 bg-background border border-border rounded-lg shadow-2xl overflow-hidden z-[60]"
+                        >
+                          <div className="py-2">
+                            {workshopItems.map((item, itemIndex) => (
+                              <motion.div
+                                key={item.name}
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: itemIndex * 0.05 }}
+                              >
+                                <Link
+                                  to={item.path}
+                                  className="block px-4 py-3 rounded-md hover:bg-muted transition-all duration-200"
+                                >
+                                  <div className="flex items-start gap-3">
+                                    {/* ICON */}
+                                    <img
+                                      src="/assets/icons/star.png"
+                                      alt="star"
+                                      className="w-4 h-4 mt-1"
+                                    />
+
+                                    {/* TEXT */}
+                                    <div className="flex flex-col">
+                                      <span className="text-sm font-semibold text-foreground">
+                                        {item.name}
+                                      </span>
+
+                                      {/* SUBTEXT */}
+                                      <span className="text-xs text-muted-foreground mt-0.5">
+                                        {item.sub}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </Link>
+                                
                               </motion.div>
                             ))}
                           </div>
