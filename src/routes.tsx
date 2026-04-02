@@ -48,6 +48,7 @@ import EmployeeAttendance from "./employee/pages/EmployeeAttendance";
 import BecomeMentor from "./page/becomeMentor";
 import AdminEmployeeLeaveManagement from "./Admin/pages/employees/AdminEmployeeLeaveManagement";
 import RashiDetails from "./page/RashiDetails";
+import NewLanding from "./page/landing/NewLanding";
 
 const MythosHome = lazy(() => import("./page/home"));
 const MythosAbout = lazy(() => import("./page/about"));
@@ -153,6 +154,7 @@ const AppRouter = () => {
           />
           <Route path="quiz/:category" element={<MythosQuizQuestion />} />
           <Route path="/" element={<MythosLayout />}>
+            <Route path="landing" element={<NewLanding />} />
             <Route index element={<MythosHome />} />
             <Route path="about-us" element={<MythosAbout />} />
             <Route path="blog" element={<Blogs />} />

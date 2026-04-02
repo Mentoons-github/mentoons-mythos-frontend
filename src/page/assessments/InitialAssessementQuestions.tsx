@@ -9,12 +9,11 @@ import { LuNotebookPen } from "react-icons/lu";
 import { InitialAssessmentSubmission } from "../../types/redux/assessmentInterface";
 import { toast } from "sonner";
 import { resetAssessmentSlice } from "../../features/assessment/assessmentSlice";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import RewardModal from "../../components/modal/RewardModal";
 
 const InitialAssessmentQuestions = () => {
   const dispatch = useAppDispatch();
-  //   const navigate = useNavigate();
 
   const { initialQuestions, loading, success, message, error, rewardPoints } =
     useAppSelector((state) => state.assessment);
@@ -26,6 +25,8 @@ const InitialAssessmentQuestions = () => {
   const [rewardModalOpen, setRewardModalOpen] = useState(false);
   const [modalPoints, setModalPoints] = useState(0);
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from;
 
   useEffect(() => {
     if (success) {
@@ -94,13 +95,15 @@ const InitialAssessmentQuestions = () => {
       initialAssessmentSubmitThunk({
         details: payload,
         userId: user?._id as string,
-      })
+      }),
     );
   };
 
-  if (user?.takeInitialAssessment == true) {
-    navigate("/");
-  }
+  useEffect(() => {
+    if (user?.takeInitialAssessment && from !== "workshops") {
+      navigate("/");
+    }
+  }, [user, from, navigate]);
 
   if (loading || !initialQuestions?.length) {
     return (
@@ -132,10 +135,12 @@ const InitialAssessmentQuestions = () => {
           </div>
 
           <button
-            onClick={() => navigate("/")}
+            onClick={() =>
+              from === "workshops" ? navigate("/workshops") : navigate("/")
+            }
             className="bg-yellow-600 text-white px-6 py-2 rounded hover:opacity-90"
           >
-            Go Home
+            {from === "workshops" ? "Go to Workshops" : "Go Home"}
           </button>
         </div>
       ) : (

@@ -42,7 +42,6 @@ const Profile = () => {
     loading: blogsLoading,
   } = useAppSelector((state) => state.blog);
 
-  console.log(astrologyDetail,'asssssstttttttrooooooooo')
 
   const [activeTab, setActiveTab] = useState<
     "profile" | "blogs" | "edit" | "password"
