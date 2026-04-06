@@ -22,6 +22,7 @@ import { deleteAccountThunk } from "../features/auth/authThunk";
 import AccountDeleteModal from "../components/modal/AccountDeleteModal";
 import { toast } from "sonner";
 import ProfileData from "../components/profile/ProfileData";
+import { useLocation } from "react-router-dom";
 // import { getFullCountryName } from "../utils";
 
 const Profile = () => {
@@ -42,7 +43,6 @@ const Profile = () => {
     loading: blogsLoading,
   } = useAppSelector((state) => state.blog);
 
-
   const [activeTab, setActiveTab] = useState<
     "profile" | "blogs" | "edit" | "password"
   >("profile");
@@ -54,6 +54,16 @@ const Profile = () => {
     description: "",
   });
   const [deleteModal, setDeleteModal] = useState(false);
+  const intelligenceRef = useRef<HTMLDivElement>(null);
+  const location = useLocation();
+  const from = location.state?.from;
+
+  if (from == "homeAssessment") {
+    intelligenceRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
 
   const [formData, setFormData] = useState({
     birthDate: user?.dateOfBirth
@@ -67,13 +77,13 @@ const Profile = () => {
   const debouncedFetchUserData = useRef(
     debounce(() => {
       dispatch(fetchUserData());
-    }, 1000)
+    }, 1000),
   ).current;
 
   const debouncedFetchUserBlogs = useRef(
     debounce(() => {
       dispatch(fetchCurrentUserBlog());
-    }, 1000)
+    }, 1000),
   ).current;
 
   useEffect(() => {
@@ -433,6 +443,7 @@ const Profile = () => {
               setFormData={setFormData}
               setIsEditing={setIsEditing}
               user={user}
+              intelligenceRef={intelligenceRef}
             />
           )}
           {activeTab === "blogs" && (
