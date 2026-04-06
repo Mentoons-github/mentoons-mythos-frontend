@@ -41,7 +41,7 @@ const plans = [
 
 const WorkshopDurationCard = () => {
   return (
-    <div className="min-h-screen bg-background rounded-md shadow-lg px-4 py-5  lg:py-10">
+    <div className="min-h-screen bg-background rounded-md px-4 py-5  lg:py-10">
       <h1 className="text-4xl md:text-4xl text-foreground/90 md:pl-5 text-left font-extrabold mb-6 lg:mb-16">
         Select your workshop plan
       </h1>
@@ -129,7 +129,7 @@ const WorkshopDurationCard = () => {
                   : "border border-foreground hover:bg-foreground/20 hover:text-foreground"
               }`}
               >
-                Enroll Now
+                Book Now
               </button>
             </div>
           ))}

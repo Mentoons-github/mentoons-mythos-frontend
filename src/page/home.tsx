@@ -1,5 +1,5 @@
 import AboutMythos from "../components/home/about";
-import MythosBanner from "../components/home/banner";
+// import MythosBanner from "../components/home/banner";
 import BlogsForYou from "../components/home/blogsForYou";
 import GroupsSuggested from "../components/home/groupsSuggested/groupsSuggested";
 import MembershipPlans from "../components/home/membershipPlans";
@@ -10,12 +10,14 @@ import StepsGuide from "../components/home/stepGuide";
 import { PROBLEMS_FACED_ASTROLOGY } from "../constants";
 import { PROBLEMS_FACED_PSYCHOLOGY } from "../constants/problemsFaced";
 import { useAppSelector } from "../hooks/reduxHooks";
+import NewLanding from "./landing/NewLanding";
 
 const MythosHome = () => {
   const { user } = useAppSelector((state) => state.user);
   return (
     <div>
-      <MythosBanner />
+      {/* <MythosBanner /> */}
+      <NewLanding/>
       <AboutMythos />
       {/* <div className="grid lg:grid-cols-2 space-y-3 lg:space-x-3 ">
         <div className=" md:px-8">

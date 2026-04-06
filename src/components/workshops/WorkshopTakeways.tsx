@@ -10,15 +10,14 @@ const takeaways = [
 
 const WorkshopTakeaways = () => {
   return (
-    <section className="py-20 px-6 ">
+    <section className=" md:px-6">
       <div className="grid lg:grid-cols-2 gap-12 items-center">
         <div className="max-w-2xl">
-
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          {/* <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
             What Participants Take Away
-          </h2>
+          </h2> */}
 
-          <p className="text-gray-500 text-lg leading-relaxed mb-6">
+          <p className="text-foreground/80 text-lg leading-relaxed mb-6">
             After attending a Mythos workshop, participants walk away with
             meaningful insights that help them understand themselves and the
             world more deeply.
@@ -28,11 +27,13 @@ const WorkshopTakeaways = () => {
           <ul className="space-y-4">
             {takeaways.map((item, index) => (
               <li key={index} className="flex items-start gap-3">
-                <div className="mt-1 w-5 h-5 flex items-center justify-center rounded-full bg-gray-100 text-gray-700 text-xs flex-shrink-0">
+                <div className="mt-1 w-5 h-5 flex items-center justify-center rounded-full bg-muted text-foreground/70 text-xs flex-shrink-0">
                   <FaCheck />
                 </div>
 
-                <p className="text-base text-gray-700 leading-relaxed">{item}</p>
+                <p className="text-base text-foreground/80 leading-relaxed">
+                  {item}
+                </p>
               </li>
             ))}
           </ul>

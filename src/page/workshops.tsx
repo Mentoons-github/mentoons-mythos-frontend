@@ -1,7 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import ChooseWorkshop from "../components/workshops/ChooseWorkshop";
 import JoyfulGurukul from "../components/workshops/JoyfulGurukul";
-import WorkshopCard from "../components/workshops/WorkshopCard";
 import WorkshopRegister from "../components/workshops/WorkshopRegister";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { fetchUserData } from "../features/user/userThunk";
@@ -10,26 +9,59 @@ import WorkshopDurationCard from "../components/workshops/WorkshopDurationCard";
 import WorkshopLearningExperience from "../components/workshops/WorkshopLearningExperience";
 import WhoAreTheWorskhopsFor from "../components/workshops/WhoAreTheWorskhopsFor";
 import WorkshopTakeaways from "../components/workshops/WorkshopTakeways";
+import { FaChevronDown } from "react-icons/fa";
+import MythicArchitypes from "../components/workshops/MythicArchitypes";
 
 const Workshops = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
+
   useEffect(() => {
     dispatch(fetchUserData());
-  }, []);
+  }, [dispatch]);
+
+  const [openSection, setOpenSection] = useState<number | null>(null);
+  const durationRef = useRef<HTMLDivElement | null>(null);
+
+  const workshops = [
+    {
+      title: "The Mythos Learning Experience",
+      component: <WorkshopLearningExperience />,
+    },
+    {
+      title: "The 9 Mythic Archetypes of Human Intelligence",
+      component: <MythicArchitypes />,
+    },
+    {
+      title: "Who Are These Workshops For?",
+      component: <WhoAreTheWorskhopsFor />,
+    },
+    {
+      title: "What Participants Take Away",
+      component: <WorkshopTakeaways />,
+    },
+  ];
+
+  const clickViewMore = () => {
+    durationRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
 
   return (
-    <div className="min-h-screen  bg-[url('/assets/background/section/stars_background.png')] bg-center md:px-10 lg:px-28 md:py-12">
+    <div className="min-h-screen bg-[url('/assets/background/section/stars_background.png')] bg-center md:px-10 lg:px-28 md:py-12">
+      {/* HERO */}
       <div className="lg:flex justify-between p-4 md:p-0 ">
-        <div className="  mb-12">
+        <div className=" mb-12 ">
           <h1 className="text-xl md:text-3xl lg:text-4xl font-extrabold text-muted-foreground mb-4">
             🌿 Workshop:
-            <span className="block text-2xl md:text-4xl lg:text-5xl  mt-2">
+            <span className="block text-2xl md:text-4xl lg:text-5xl md:mb-6 mt-2">
               Early Introduction to Spirituality
             </span>
           </h1>
-          <div className="lg:max-w-lg md:mb-16 space-y-10">
-            <p className=" md:text-xl leading-relaxed lg:max-w-lg">
+          <div className="lg:max-w-xl md:mb-16 space-y-10 ">
+            <p className=" md:text-xl leading-relaxed ">
               At <span className="font-bold ">Mentoons Mythos</span>, we conduct
               informative and interactive workshops that provide an effective
               and transformative experience for our participants.
@@ -44,23 +76,86 @@ const Workshops = () => {
           </div>
         </div>
 
-        <div className=" flex items-center justify-center">
+        <div className=" flex items-center justify-center ">
           <img
             src="assets/workshops/Workshop illustration.png"
             alt=""
-            className="w-96"
+            className="w-[650px]"
           />
         </div>
       </div>
 
-      <JoyfulGurukul />
-      {/* <JoyfulGurukalCard/> */}
-      <WorkshopLearningExperience />
-      <ChooseWorkshop user={user as IUser} />
-      <WhoAreTheWorskhopsFor/>
-      <WorkshopTakeaways/>
-      <WorkshopDurationCard />
-      <WorkshopCard />
+      <JoyfulGurukul clickViewMore={clickViewMore} />
+
+      <div className="space-y-4 p-3">
+        {workshops.map((item, index) => {
+          const isOpen = openSection === index;
+
+          return (
+            <div
+              key={index}
+              className={`group rounded-2xl border transition-all duration-300 overflow-hidden
+        ${
+          isOpen
+            ? "bg-background shadow-xl "
+            : "bg-background/80 border-gray-200 hover:shadow-lg hover:-translate-y-1"
+        }`}
+            >
+              {/* HEADER */}
+              <div
+                onClick={() => setOpenSection(isOpen ? null : index)}
+                className="flex justify-between items-center p-4 md:p-6 cursor-pointer"
+              >
+                <h2
+                  className={`text-xl md:text-2xl font-bold transition ${
+                    isOpen
+                      ? "text-foreground/70"
+                      : "text-foreground/80 group-hover:text-foreground/60"
+                  }`}
+                >
+                  {item.title}
+                </h2>
+
+                <div
+                  className={`w-10 h-10 flex items-center justify-center rounded-full transition-all
+            ${
+              isOpen
+                ? "bg-muted-foreground text-background"
+                : "bg-gray-100 text-gray-500 group-hover:bg-muted-foreground group-hover:text-background"
+            }`}
+                >
+                  <FaChevronDown
+                    className={`transition-transform duration-300 ${
+                      isOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </div>
+              </div>
+
+              {/* CONTENT */}
+              <div
+                className={`transition-all duration-500 overflow-hidden ${
+                  isOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
+                }`}
+              >
+                <div className="px-4 md:px-6 pb-6 pt-0 ">
+                  {item.component}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* OTHER COMPONENTS */}
+      <div className="mt-16">
+        <ChooseWorkshop user={user as IUser} />
+      </div>
+
+      <div ref={durationRef}>
+        <WorkshopDurationCard />
+      </div>
+
       <WorkshopRegister />
     </div>
   );

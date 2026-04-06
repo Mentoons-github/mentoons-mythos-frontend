@@ -49,8 +49,8 @@ const ChooseWorkshop = ({ user }: Props) => {
   };
 
   return (
-    <div className=" bg-muted/30 px-6 py-10 font-montserrat ">
-      <div className=" grid md:grid-cols-2 gap-10 items-center">
+    <div className="  px-4 md:px-6 py-10 font-montserrat ">
+      <div className=" grid lg:grid-cols-2 gap-10 items-center">
         {/* LEFT SECTION */}
         <div className="flex flex-col justify-center">
           <div className="mb-6">
@@ -63,7 +63,7 @@ const ChooseWorkshop = ({ user }: Props) => {
           </div>
 
           {/* Card */}
-          <div className="w-full border border-muted bg-background p-6 rounded-2xl shadow-md">
+          <div className="w-full border border-muted bg-background p-4 md:p-6 rounded-2xl shadow-md">
             {/* Options */}
             <div className="grid grid-cols-2 gap-3">
               {options.map((item) => {
@@ -73,7 +73,7 @@ const ChooseWorkshop = ({ user }: Props) => {
                   <button
                     key={item.name}
                     onClick={() => setWorkshop(item.name)}
-                    className={`px-4 py-3 rounded-xl border text-sm font-medium transition-all duration-200
+                    className={`px-2 md:px-4 py-3 rounded-xl border text-sm font-medium transition-all duration-200
                       ${
                         selected
                           ? "bg-foreground text-background scale-[1.02] shadow"

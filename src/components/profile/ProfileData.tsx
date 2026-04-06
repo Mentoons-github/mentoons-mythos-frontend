@@ -1,9 +1,9 @@
-import { Globe, Info, Mail, Shield, User } from "lucide-react";
+import { Brain, Globe, Info, Mail, Shield, User } from "lucide-react";
 import AstroData from "./astroData";
 import { motion, AnimatePresence } from "framer-motion";
 import AstroForm from "./astroForm";
 import { IAstrologyDetail, IUser } from "../../types";
-import { FormEvent } from "react";
+import { FormEvent, RefObject } from "react";
 
 interface ProfileDataProps {
   user: IUser;
@@ -26,6 +26,7 @@ interface ProfileDataProps {
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   astroLoading: boolean;
   astrologyDetail?: IAstrologyDetail;
+  intelligenceRef: RefObject<HTMLDivElement | null>;
 }
 
 const cardVariants = {
@@ -43,6 +44,7 @@ const ProfileData = ({
   setIsEditing,
   astroLoading,
   astrologyDetail,
+  intelligenceRef,
 }: ProfileDataProps) => {
   return (
     <motion.div
@@ -134,6 +136,35 @@ const ProfileData = ({
           </motion.div>
         )}
       </motion.div>
+
+      {user.takeInitialAssessment && user.intelligenceTypes.length > 0 && (
+        <motion.div
+          className=" bg-opacity-50 backdrop-blur-sm rounded-2xl p-4 md:p-8 mb-8 border border-muted-foreground"
+          variants={cardVariants}
+          whileHover="hover"
+          ref={intelligenceRef}
+        >
+          <div className="mb-6">
+            <h3 className="text-2xl font-semibold-white  flex items-center space-x-2">
+              <Brain size={24} className="" />
+              <span>Your Intelligence types</span>
+            </h3>
+            <p className="text-xs text-muted-foreground ">
+              *Based on initial assessment result.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {user.intelligenceTypes.map((type, ind) => (
+              <div
+                key={ind}
+                className="flex items-center space-x-3 p-4 border border-muted-foreground bg-opacity-50 rounded-xl hover:bg-opacity-70 transition-all duration-300"
+              >
+                <p className="text-lg font-semibold">{type}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      )}
 
       {/* Astrology Section */}
       <AnimatePresence mode="wait">

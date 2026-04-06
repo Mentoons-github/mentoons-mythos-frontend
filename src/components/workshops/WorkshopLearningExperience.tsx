@@ -38,19 +38,17 @@ const LandingIssues = [
 
 const WorkshopLearningExperience = () => {
   return (
-    <section className="py-20  bg-white">
-      <div className="grid lg:grid-cols-5 gap-16 items-center">
-        {/* LEFT SIDE */}
-        <div className="lg:col-span-3 flex flex-col justify-center">
-          {/* Header */}
+    <section className=" md:px-6 ">
+      <div className="grid lg:grid-cols-7 gap-16 items-center">
+        <div className="lg:col-span-4 flex flex-col justify-center">
           <div className="mb-10">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight mb-4">
+            {/* <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight mb-4">
               The Mythos Learning Experience
-            </h2>
+            </h2> */}
 
-            <p className="text-base text-gray-500 leading-relaxed">
+            <p className="text-lg text-foreground/80 leading-relaxed">
               Our workshops combine{" "}
-              <span className="font-medium text-gray-700">
+              <span className="font-medium text-foreground">
                 storytelling, reflection, and creativity
               </span>{" "}
               to create meaningful learning experiences.
@@ -62,27 +60,27 @@ const WorkshopLearningExperience = () => {
             {LandingIssues.map((issue, ind) => (
               <div
                 key={ind}
-                className="rounded-xl border border-gray-200 bg-white p-5 hover:shadow-sm transition"
+                className="rounded-xl border  bg-background p-3 md:p-5 hover:shadow-sm transition"
               >
                 <div className="flex items-start gap-4">
                   {/* Icon */}
-                  <div className="w-10 h-10 flex items-center justify-center rounded-md bg-gray-100 text-gray-700 flex-shrink-0 mt-1">
+                  <div className="w-10 h-10 flex items-center justify-center rounded-md bg-muted text-foreground/80 flex-shrink-0 mt-1">
                     {issue.icon}
                   </div>
 
                   {/* Content */}
                   <div className="space-y-1.5">
-                    <h3 className="text-lg font-semibold text-gray-900">
+                    <h3 className="text-lg font-semibold text-foreground/90">
                       {issue.title}
                     </h3>
 
                     {issue.text2 && (
-                      <p className="text-base text-gray-700 leading-relaxed">
+                      <p className="text-base text-muted-foreground leading-relaxed">
                         {issue.subText || issue.text2}
                       </p>
                     )}
 
-                    <p className="text-base text-gray-700 leading-relaxed">
+                    <p className="text-base text-muted-foreground leading-relaxed">
                       {issue.text}
                     </p>
 
@@ -91,9 +89,9 @@ const WorkshopLearningExperience = () => {
                       {issue.points.map((point, i) => (
                         <li
                           key={i}
-                          className="text-base text-gray-600 flex items-center gap-2"
+                          className="text-base text-muted-foreground flex items-center gap-2"
                         >
-                          <span className="w-1.5 h-1.5 bg-gray-600 rounded-full" />
+                          <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full" />
                           {point}
                         </li>
                       ))}
@@ -112,7 +110,7 @@ const WorkshopLearningExperience = () => {
         </div>
 
         {/* RIGHT SIDE */}
-        <div className="lg:col-span-2 flex flex-col justify-center">
+        <div className="lg:col-span-3 flex flex-col justify-center">
           {/* Image */}
           <div className="rounded-xl overflow-hidden">
             <img
