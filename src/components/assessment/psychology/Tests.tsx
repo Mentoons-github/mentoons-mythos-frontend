@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { INTELLIGENCE } from "../../../constants/intelligence";
 import { useNavigate } from "react-router-dom";
 import useSignInSignUp from "../../../hooks/useSignInSignUpModal";
+import { IUser } from "../../../types";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -33,12 +34,12 @@ const floatImage = {
   },
 };
 
-const Tests = ({ userId }: { userId?: string }) => {
+const Tests = ({ user }: { user?: IUser | null }) => {
   const { showModal } = useSignInSignUp();
 
   const navigate = useNavigate();
   const handleStart = (name: string) => {
-    if (!userId) {
+    if (!user?._id) {
       showModal("Assessment");
       return;
     }
@@ -53,11 +54,63 @@ const Tests = ({ userId }: { userId?: string }) => {
       variants={containerVariants}
     >
       <motion.h1
-        className="text-2xl md:text-5xl font-bold text-foreground/80 mb-12 leading-tight tracking-wider"
+        className="text-2xl md:text-5xl font-bold text-foreground/80 mb-6 md:mb-12 leading-tight tracking-wider"
         variants={fadeInUp}
       >
-        Discover Your Intelligence Type
+        Take Our Assessment
       </motion.h1>
+
+      <motion.div variants={fadeInUp} className="mb-10">
+        {user?.takeInitialAssessment ? (
+          <div className="border border-border rounded-2xl p-6 shadow-md">
+            <h2 className="text-xl md:text-2xl font-semibold text-foreground mb-4">
+              Your Intelligence Profile
+            </h2>
+
+            <p className="text-muted-foreground mb-4">
+              Based on your initial assessment, here are your top intelligence
+              areas:
+            </p>
+
+            <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-3">
+                {user.intelligenceTypes.map((type, index) => {
+                  const matched = INTELLIGENCE.find(
+                    (item) => item.intelligence === type,
+                  );
+
+                  return (
+                    <span
+                      key={index}
+                      className="px-4 py-2 rounded-full bg-foreground text-background text-sm font-medium shadow-sm"
+                    >
+                      {matched?.name || type}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className=" border border-dashed border-border rounded-2xl p-6 text-center">
+            <h2 className="text-lg md:text-xl font-semibold text-foreground mb-2">
+              Discover Your Intelligence Type
+            </h2>
+
+            <p className="text-muted-foreground mb-4">
+              Take the initial assessment to unlock your personalized
+              intelligence profile.
+            </p>
+
+            <button
+              onClick={() => handleStart("/initialassessment")}
+              className="bg-foreground text-background px-6 py-2 rounded-xl font-medium hover:opacity-90 transition"
+            >
+              Take Initial Assessment
+            </button>
+          </div>
+        )}
+      </motion.div>
 
       <motion.div className="grid grid-cols-2  lg:grid-cols-3 gap-2 md:gap-12 ">
         {INTELLIGENCE.map((data, ind) => (
@@ -65,6 +118,7 @@ const Tests = ({ userId }: { userId?: string }) => {
             key={ind}
             className="border border-muted-foreground shadow-xl flex flex-col justify-between rounded-xl p-2 md:p-8 space-y-4 transition-transform duration-300 hover:scale-[1.01] md:min-h-[580px]"
             variants={containerVariants}
+            onClick={() => handleStart(data.intelligence)}
           >
             <motion.div className="space-y-2 sm:space-y-5">
               <motion.div
@@ -103,7 +157,6 @@ const Tests = ({ userId }: { userId?: string }) => {
 
             <div className="sm:flex justify-end">
               <motion.button
-                onClick={() => handleStart(data.intelligence)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="bg-foreground px-6 py-2 rounded-2xl text-background font-semibold text-lg"

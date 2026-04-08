@@ -275,9 +275,9 @@ const MythosSidebar = ({
                                           </div>
 
                                           {/* SUBTEXT */}
-                                          <span className="text-xs text-muted-foreground mt-0.5 ml-5">
+                                          {/* <span className="text-xs text-muted-foreground mt-0.5 ml-5">
                                             {item.sub}
-                                          </span>
+                                          </span> */}
                                         </div>
                                       </Link>
                                     </motion.div>

@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { resetAssessmentSlice } from "../../features/assessment/assessmentSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 import RewardModal from "../../components/modal/RewardModal";
+import { fetchUserData } from "../../features/user/userThunk";
 
 const InitialAssessmentQuestions = () => {
   const dispatch = useAppDispatch();
@@ -33,14 +34,16 @@ const InitialAssessmentQuestions = () => {
       toast.success(message);
       setModalPoints(rewardPoints);
       setRewardModalOpen(true);
+      navigate("/assessment/psychology");
       setIsFinished(true);
       dispatch(resetAssessmentSlice());
+      dispatch(fetchUserData());
     }
     if (error) {
       toast.error(error);
       dispatch(resetAssessmentSlice());
     }
-  }, [dispatch, error, message, rewardPoints, success]);
+  }, [dispatch, error, message, navigate, rewardPoints, success]);
 
   useEffect(() => {
     dispatch(fetchInitialQuestionsThunk());
@@ -100,10 +103,10 @@ const InitialAssessmentQuestions = () => {
   };
 
   useEffect(() => {
-    if (user?.takeInitialAssessment && from !== "workshops") {
+    if (user?.takeInitialAssessment && !isFinished && from !== "workshops") {
       navigate("/");
     }
-  }, [user, from, navigate]);
+  }, [user, from, navigate, isFinished]);
 
   if (loading || !initialQuestions?.length) {
     return (
@@ -117,95 +120,67 @@ const InitialAssessmentQuestions = () => {
 
   return (
     <div className="relative flex items-center justify-center min-h-screen px-4 ">
-      {isFinished ? (
-        <div className="flex flex-col justify-around items-center h-[60vh] text-center border p-4 max-w-2xl">
-          <h1 className="text-2xl font-bold text-yellow-700">
-            🎉 Thank you for completing the assessment!
-          </h1>
-
-          <div>
-            <p className=" mb-4">
-              We've recorded your responses and will share personalized insights
-              with you shortly based on your answers.
-            </p>
-            <p className="">
-              Our team will analyze your inputs to tailor insights and share
-              them with you soon.
-            </p>
+      <div className="border border-foreground shadow-lg rounded-xl p-6 w-full max-w-2xl font-serif">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-1">
+            <LuNotebookPen />
+            <h1 className="font-bold text-sm">Initial Assessment</h1>
           </div>
+          <h2 className="text-sm">
+            {currentIndex + 1} of {initialQuestions.length}
+          </h2>
+        </div>
+
+        <div>
+          <h3 className="text-lg font-semibold mb-4">
+            {currentQuestion?.question}
+          </h3>
+
+          <div className="flex flex-col space-y-3">
+            {currentQuestion?.options?.map((option: string, idx: number) => (
+              <label
+                key={idx}
+                className={`p-3 border rounded-lg cursor-pointer transition ${
+                  selectedAnswers[currentIndex] === option
+                    ? "bg-yellow-100 border-yellow-600 text-black"
+                    : "hover:bg-yellow-50 hover:text-black"
+                }`}
+              >
+                <input
+                  type="radio"
+                  value={option}
+                  checked={selectedAnswers[currentIndex] === option}
+                  onChange={() => handleOptionSelect(option)}
+                  className="hidden"
+                />
+                {option}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex justify-between mt-6">
+          <button
+            onClick={handlePrevious}
+            disabled={currentIndex === 0}
+            className="bg-yellow-600 hover:opacity-90 text-white px-4 py-2 rounded disabled:opacity-50"
+          >
+            Previous
+          </button>
 
           <button
             onClick={() =>
-              from === "workshops" ? navigate("/workshops") : navigate("/")
+              currentIndex < initialQuestions.length - 1
+                ? handleNext()
+                : handleFinish()
             }
-            className="bg-yellow-600 text-white px-6 py-2 rounded hover:opacity-90"
+            disabled={!selectedAnswers[currentIndex]}
+            className="bg-yellow-600 hover:opacity-90 text-white px-4 py-2 rounded disabled:opacity-50"
           >
-            {from === "workshops" ? "Go to Workshops" : "Go Home"}
+            {currentIndex === initialQuestions.length - 1 ? "Finish" : "Next"}
           </button>
         </div>
-      ) : (
-        <div className="border border-foreground shadow-lg rounded-xl p-6 w-full max-w-2xl font-serif">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-1">
-              <LuNotebookPen />
-              <h1 className="font-bold text-sm">Initial Assessment</h1>
-            </div>
-            <h2 className="text-sm">
-              {currentIndex + 1} of {initialQuestions.length}
-            </h2>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-semibold mb-4">
-              {currentQuestion?.question}
-            </h3>
-
-            <div className="flex flex-col space-y-3">
-              {currentQuestion?.options?.map((option: string, idx: number) => (
-                <label
-                  key={idx}
-                  className={`p-3 border rounded-lg cursor-pointer transition ${
-                    selectedAnswers[currentIndex] === option
-                      ? "bg-yellow-100 border-yellow-600 text-black"
-                      : "hover:bg-yellow-50 hover:text-black"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    value={option}
-                    checked={selectedAnswers[currentIndex] === option}
-                    onChange={() => handleOptionSelect(option)}
-                    className="hidden"
-                  />
-                  {option}
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex justify-between mt-6">
-            <button
-              onClick={handlePrevious}
-              disabled={currentIndex === 0}
-              className="bg-yellow-600 hover:opacity-90 text-white px-4 py-2 rounded disabled:opacity-50"
-            >
-              Previous
-            </button>
-
-            <button
-              onClick={() =>
-                currentIndex < initialQuestions.length - 1
-                  ? handleNext()
-                  : handleFinish()
-              }
-              disabled={!selectedAnswers[currentIndex]}
-              className="bg-yellow-600 hover:opacity-90 text-white px-4 py-2 rounded disabled:opacity-50"
-            >
-              {currentIndex === initialQuestions.length - 1 ? "Finish" : "Next"}
-            </button>
-          </div>
-        </div>
-      )}
+      </div>
 
       {rewardModalOpen && (
         <RewardModal

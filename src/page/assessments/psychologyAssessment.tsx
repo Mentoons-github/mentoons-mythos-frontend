@@ -13,7 +13,7 @@ const PsychologyAssessment = () => {
       <IntaligentTypes/> */}
       {/* <LogicalMathmatical/> */}
       {/* <StuckCareer/> */}
-      <Tests userId = {user?._id}/>
+      <Tests user = {user }/>
       {/* <CareerBlog/> */}
       {/* <WeAreHiring/>
       <FAQ/> */}
