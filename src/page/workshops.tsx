@@ -11,10 +11,22 @@ import WhoAreTheWorskhopsFor from "../components/workshops/WhoAreTheWorskhopsFor
 import WorkshopTakeaways from "../components/workshops/WorkshopTakeways";
 import { FaChevronDown } from "react-icons/fa";
 import MythicArchitypes from "../components/workshops/MythicArchitypes";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { WorkshopPlan } from "../types/workshop/workshopPlan";
+
 
 const Workshops = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
+  const [selectedWorkshop, setSelectedWorkshop] = useState<string>("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user && user.takeInitialAssessment) {
+      setSelectedWorkshop(user.intelligenceTypes[0]);
+    }
+  }, [user]);
 
   useEffect(() => {
     dispatch(fetchUserData());
@@ -22,6 +34,7 @@ const Workshops = () => {
 
   const [openSection, setOpenSection] = useState<number | null>(null);
   const durationRef = useRef<HTMLDivElement | null>(null);
+  const ChooseWorkshopRef = useRef<HTMLDivElement | null>(null);
 
   const workshops = [
     {
@@ -44,6 +57,24 @@ const Workshops = () => {
 
   const clickViewMore = () => {
     durationRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
+  const handleBook = (plan:WorkshopPlan) => {
+    if (selectedWorkshop) {
+      navigate("/workshops-payment", {
+        state: { workshop: selectedWorkshop, plan },
+      });
+    } else {
+      handleNoteSelected();
+    }
+  };
+
+  const handleNoteSelected = () => {
+    toast.warning("Select a mythology-based workshop for Booking")
+    ChooseWorkshopRef.current?.scrollIntoView({
       behavior: "smooth",
       block: "start",
     });
@@ -138,9 +169,7 @@ const Workshops = () => {
                   isOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
                 }`}
               >
-                <div className="px-4 md:px-6 pb-6 pt-0 ">
-                  {item.component}
-                </div>
+                <div className="px-4 md:px-6 pb-6 pt-0 ">{item.component}</div>
               </div>
             </div>
           );
@@ -148,12 +177,22 @@ const Workshops = () => {
       </div>
 
       {/* OTHER COMPONENTS */}
-      <div className="mt-16">
-        <ChooseWorkshop user={user as IUser} />
-      </div>
+      <div className="border rounded-3xl md:p-3 mt-10 mx-3">
+        <div className="mt-" ref={ChooseWorkshopRef}>
+          <ChooseWorkshop
+            handleWorkshopSelect={(item: string) => setSelectedWorkshop(item)}
+            user={user as IUser}
+            selectedWorkshop={selectedWorkshop}
+            handleContinue={clickViewMore}
+          />
+        </div>
 
-      <div ref={durationRef}>
-        <WorkshopDurationCard />
+        <div ref={durationRef}>
+          <WorkshopDurationCard
+            selectedWorkshop={selectedWorkshop}
+            handleBook={handleBook}
+          />
+        </div>
       </div>
 
       <WorkshopRegister />

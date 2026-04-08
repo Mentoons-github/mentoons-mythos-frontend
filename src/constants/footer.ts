@@ -3,7 +3,7 @@ import { BiPhone, BiEnvelope } from "react-icons/bi";
 export const CONTACT_INFO = [
   {
     icon: BiPhone,
-    value: "+91 8310224836",
+    value: "+91 7892858593",
   },
   {
     icon: BiEnvelope,
@@ -29,11 +29,12 @@ export const ABOUT = [
 ];
 
 export const QUICKLINKS = [
+  //  {
+  //   label:"ASTROLGY ASSESSMENTS",
+  //   url:"/assessment/planet"
+  // },
    {
-    label:"ASTROLGY ASSESSMENTS",
-    url:"/assessment/planet"
-  }, {
-    label:"PSYCHOLOGY ASSESSMENTS",
+    label:"ASSESSMENTS",
     url:"/assessment/psychology"
   }, {
     label:"BLOGS",

@@ -63,7 +63,7 @@ export const SUNSHINE:Sunshine[] = [
   },
   {
     id: "su_07",
-    rashi:"Kanya",
+    rashi:"Tula",
     name: "Libra",
     description:
       "Charming and diplomatic, known for their love of beauty and harmony.",
@@ -73,7 +73,7 @@ export const SUNSHINE:Sunshine[] = [
   },
   {
     id: "su_08",
-    rashi:"Kanya",
+    rashi:"Vrischika",
     name: "Scorpio",
     description:
       "Intense and passionate, known for their depth of emotion and transformative nature.",
@@ -83,7 +83,7 @@ export const SUNSHINE:Sunshine[] = [
   },
   {
     id: "su_09",
-    rashi:"Kanya",
+    rashi:"Dhanu",
     name: "Sagittarius",
     description:
       "Adventurous and optimistic, known for their love of freedom and exploration.",
@@ -93,7 +93,7 @@ export const SUNSHINE:Sunshine[] = [
   },
   {
     id: "su_10",
-    rashi:"Kanya",
+    rashi:"Makara",
     name: "Capricorn",
     description:
       "Disciplined and ambitious, known for their practicality and strong work ethic.",
@@ -103,7 +103,7 @@ export const SUNSHINE:Sunshine[] = [
   },
   {
     id: "su_11",
-    rashi:"Kanya",
+    rashi:"Kumba",
     name: "Aquarius",
     description:
       "Innovative and independent, known for their humanitarian spirit and unconventional ideas.",
@@ -113,7 +113,7 @@ export const SUNSHINE:Sunshine[] = [
   },
   {
     id: "su_12",
-    rashi:"Kanya",
+    rashi:"Meena",
     name: "Pisces",
     description:
       "Compassionate and artistic, known for their empathy and dreamy nature.",

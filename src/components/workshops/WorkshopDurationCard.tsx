@@ -1,6 +1,7 @@
 import { CheckIcon } from "lucide-react";
+import { WorkshopPlan } from "../../types/workshop/workshopPlan";
 
-const plans = [
+const plans: WorkshopPlan[] = [
   {
     title: "1 Month Workshop",
     duration: "4 Weeks",
@@ -39,7 +40,12 @@ const plans = [
   },
 ];
 
-const WorkshopDurationCard = () => {
+interface Props {
+  selectedWorkshop: string;
+  handleBook: (plan: WorkshopPlan) => void;
+}
+
+const WorkshopDurationCard = ({ handleBook }: Props) => {
   return (
     <div className="min-h-screen bg-background rounded-md px-4 py-5  lg:py-10">
       <h1 className="text-4xl md:text-4xl text-foreground/90 md:pl-5 text-left font-extrabold mb-6 lg:mb-16">
@@ -122,6 +128,7 @@ const WorkshopDurationCard = () => {
 
               {/* CTA */}
               <button
+                onClick={() => handleBook(plan)}
                 className={`w-full py-3 rounded-xl font-semibold transition-all duration-300 
               ${
                 plan.highlight

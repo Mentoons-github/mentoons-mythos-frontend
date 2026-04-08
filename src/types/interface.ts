@@ -47,6 +47,8 @@ export interface Sunshine {
 export interface Intelligence {
   id: string;
   name: string;
+  sub: string;
+  intelligence: string;
   description: string;
   imageUrl: string;
   zodiacSign: string;
