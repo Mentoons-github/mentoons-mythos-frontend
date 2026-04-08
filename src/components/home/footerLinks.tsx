@@ -1,6 +1,5 @@
 import { MdLocationOn } from "react-icons/md";
 import { FooterLists } from "../../types/interface";
-import MapComponent from "../footer/Map";
 import { useNavigate } from "react-router-dom";
 
 const FooterLinks = ({
