@@ -6,7 +6,7 @@ import NewsLetter from "../footer/NewsLetter";
 const MythosFooter = () => {
   return (
     <footer className="w-full  border-t ">
-      <div className="py-10 px-5 flex justify-center items-center">
+      <div className="py-10 md:py-20 px-5 md:px-20 flex justify-center items-center">
         <div className="flex flex-col-reverse md:grid md:grid-cols-3 lg:grid-cols-4 md:gap-10 w-full gap-8">
           <div className="block md:hidden">
             <NewsLetter />

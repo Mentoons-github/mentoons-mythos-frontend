@@ -30,7 +30,7 @@ const AssignmentAlreadyTakenHome = ({ onClose, viewDetails }: Props) => {
         {/* Content */}
         <div className="flex flex-col gap-2">
           <h1 className="font-bold text-2xl leading-tight">
-            Assessment Already Completed
+            Initial Assessment Already Completed
           </h1>
           <p className="text-muted-foreground text-sm leading-relaxed max-w-xs mx-auto">
             You've already completed the initial assessment. Your personalized
@@ -52,7 +52,7 @@ const AssignmentAlreadyTakenHome = ({ onClose, viewDetails }: Props) => {
             onClick={viewDetails}
             className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-border font-medium hover:bg-foreground/5 transition text-sm"
           >
-            View Results
+            Go to Assessment
           </button>
         </div>
       </motion.div>

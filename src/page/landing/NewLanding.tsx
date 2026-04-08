@@ -39,6 +39,13 @@ const NewLanding = () => {
       <div className="min-h-screen relative grid grid-cols-1 lg:grid-cols-3 px-6 md:px-12 lg:px-24 py-10 lg:py-20 ">
         {/* Logo - centered at top */}
         <div className="absolute flex flex-col items-center top-4 md:top-6 inset-x-0">
+          <div>
+            {/* {user?.intelligenceTypes.map((ele,ind)=>(
+              <div>
+                {}
+              </div>
+            ))} */}
+          </div>
           <img
             src="/assets/logo/Mentoons Mythos logo.png"
             alt="company logo"
@@ -50,9 +57,9 @@ const NewLanding = () => {
         </div>
 
         {/* LEFT CONTENT */}
-        <div className="col-span-2 flex flex-col justify-center max-w-3xl pt-24 pr-12">
+        <div className="col-span-2 flex flex-col justify-center max-w-3xl pt-24 md:pr-12">
           {/* Heading */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-foreground/80 mb-5">
+          <h1 className="text-3xl md:text-5xl  lg:text-6xl font-bold leading-tight text-foreground/80 mb-5">
             Discover Yourself Through{" "}
             <span className="text-[#1fad95]">Ancient Myths</span>
           </h1>
@@ -181,7 +188,7 @@ const NewLanding = () => {
         <AssignmentAlreadyTakenHome
           onClose={() => setAlreadyTakeModal(false)}
           viewDetails={() =>
-            navigate("/profile", {
+            navigate("/assessment/psychology", {
               state: { from: "homeAssessment" },
             })
           }

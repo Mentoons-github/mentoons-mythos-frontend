@@ -77,13 +77,16 @@ const MythosHeader = () => {
   ];
 
   const workshopItems = [
-    { name: "Music Ancient", sub: "6-12, 13-19, 20+", path: "/workshops" },
     {
-      name: "Mythology Story Telling",
-      sub: "6-12, 13-19, 20+",
+      name: "The Joyful Gurukul (6-12)",
+      sub: "1 Month, 3 Month",
       path: "/workshops",
     },
-    { name: "Painting Workshops", sub: "6-12, 13-19", path: "/workshops" },
+    {
+      name: "The Joyful Gurukul (13-19)",
+      sub: "1 Month, 3 Month",
+      path: "/workshops",
+    },
   ];
 
   useEffect(() => {
@@ -446,7 +449,7 @@ const MythosHeader = () => {
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: -10, scale: 0.95 }}
                             transition={{ duration: 0.2, ease: "easeOut" }}
-                            className="absolute top-full left-0 mt-2 w-56 bg-background border border-border rounded-lg shadow-2xl overflow-hidden z-[60]"
+                            className="absolute top-full left-0 mt-2 w-60 bg-background border border-border rounded-lg shadow-2xl overflow-hidden z-[60]"
                           >
                             <div className="py-2">
                               {workshopItems.map((item, itemIndex) => (
@@ -475,9 +478,9 @@ const MythosHeader = () => {
                                         </span>
 
                                         {/* SUBTEXT */}
-                                        <span className="text-xs text-muted-foreground mt-0.5">
+                                        {/* <span className="text-xs text-muted-foreground mt-0.5">
                                           {item.sub}
-                                        </span>
+                                        </span> */}
                                       </div>
                                     </div>
                                   </Link>

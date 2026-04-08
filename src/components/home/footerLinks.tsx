@@ -69,7 +69,7 @@ const FooterLinks = ({
               <MdLocationOn className="text-lg sm:text-xl" />
               Domlur, Bangalore{" "}
             </div>{" "}
-            <MapComponent />{" "}
+            {/* <MapComponent />{" "} */}
           </div>
         )}
       </ul>

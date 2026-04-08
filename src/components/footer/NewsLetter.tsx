@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { BiLogoInstagramAlt } from "react-icons/bi";
-import { FaFacebookF, FaLinkedinIn, FaTwitter } from "react-icons/fa";
+import { FaFacebookF, FaLinkedinIn } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { subscribeNewsletterThunk } from "../../features/about&newsletter/about&newsletterThunk";
 import { toast } from "sonner";
@@ -60,7 +61,7 @@ const NewsLetter = () => {
           SOCIAL MEDIA
         </h1>
         <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-start">
-          {[FaFacebookF, FaTwitter, FaLinkedinIn, BiLogoInstagramAlt].map(
+          {[FaFacebookF, FaXTwitter, FaLinkedinIn, BiLogoInstagramAlt].map(
             (Icon, index) => (
               <div
                 key={index}
@@ -68,7 +69,7 @@ const NewsLetter = () => {
               >
                 <Icon className="text-card" />
               </div>
-            )
+            ),
           )}
         </div>
       </div>
