@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense } from "react";
 import MythosLayout from "./layout/mythos";
 import NotFound from "./components/NotFound";
 import Loader from "./components/loader/Loader";
@@ -27,7 +27,6 @@ import AssessmentPage from "./Admin/pages/Assessment/AssessmentPage";
 import AssessmentSubmissions from "./Admin/pages/Assessment/AssessmentSubmissions";
 import AdminJobs from "./Admin/pages/Career/AdminJobs";
 import AdminApplications from "./Admin/pages/Career/AdminApplications";
-import WelcomeScreen from "./components/Welcome";
 import AllWorkshops from "./Admin/pages/Workshops/AllWorkshops";
 import WorkshopEnquiries from "./Admin/pages/Workshops/WorkshopEnquiries";
 import AllBlogs from "./Admin/pages/Blogs/AllBlogs";
@@ -48,7 +47,7 @@ import EmployeeAttendance from "./employee/pages/EmployeeAttendance";
 import BecomeMentor from "./page/becomeMentor";
 import AdminEmployeeLeaveManagement from "./Admin/pages/employees/AdminEmployeeLeaveManagement";
 import RashiDetails from "./page/RashiDetails";
-import NewLanding from "./page/landing/NewLanding";
+import WorkshopPayment from "./page/WorkshopPayment";
 
 const MythosHome = lazy(() => import("./page/home"));
 const MythosAbout = lazy(() => import("./page/about"));
@@ -74,23 +73,23 @@ const MythosWorkshops = lazy(() => import("./page/workshops"));
 const MythosCareerGPS = lazy(() => import("./page/careerGPS"));
 
 const AppRouter = () => {
-  const [showWelcome, setShowWelcome] = useState(false);
+  // const [showWelcome, setShowWelcome] = useState(false);
 
-  useEffect(() => {
-    const hasVisited = sessionStorage.getItem("hasVisitedMythos");
-    if (!hasVisited) {
-      setShowWelcome(true);
-      sessionStorage.setItem("hasVisitedMythos", "true");
-    }
-  }, []);
+  // useEffect(() => {
+  //   const hasVisited = sessionStorage.getItem("hasVisitedMythos");
+  //   if (!hasVisited) {
+  //     setShowWelcome(true);
+  //     sessionStorage.setItem("hasVisitedMythos", "true");
+  //   }
+  // }, []);
 
-  const handleWelcomeComplete = () => {
-    setShowWelcome(false);
-  };
+  // const handleWelcomeComplete = () => {
+  //   setShowWelcome(false);
+  // };
 
-  if (showWelcome) {
-    return <WelcomeScreen onComplete={handleWelcomeComplete} />;
-  }
+  // if (showWelcome) {
+  //   return <WelcomeScreen onComplete={handleWelcomeComplete} />;
+  // }
   return (
     <>
       <Suspense fallback={<Loader />}>
@@ -154,7 +153,7 @@ const AppRouter = () => {
           />
           <Route path="quiz/:category" element={<MythosQuizQuestion />} />
           <Route path="/" element={<MythosLayout />}>
-            <Route path="landing" element={<NewLanding />} />
+            {/* <Route path="landing" element={<NewLanding />} /> */}
             <Route index element={<MythosHome />} />
             <Route path="about-us" element={<MythosAbout />} />
             <Route path="blog" element={<Blogs />} />
@@ -173,6 +172,7 @@ const AppRouter = () => {
             {/* <Route path="report" element={<AstrologyReport />} /> */}
             <Route path="book-call" element={<MythosBookCall />} />
             <Route path="workshops" element={<MythosWorkshops />} />
+            <Route path="workshops-payment" element={<WorkshopPayment />} />
             <Route path="become-mentor" element={<BecomeMentor />} />
             <Route path="career-gps" element={<MythosCareerGPS />} />
             <Route path="rashi-details" element={<RashiDetails />} />

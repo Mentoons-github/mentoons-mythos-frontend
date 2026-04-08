@@ -8,6 +8,7 @@ interface MythosSidebarProps {
   setSidebar: (val: boolean) => void;
   navItems: string[];
   mentorItems: { name: string; path: string }[];
+  workshopItems: { name: string; sub: string; path: string }[];
 }
 
 const MythosSidebar = ({
@@ -15,10 +16,12 @@ const MythosSidebar = ({
   setSidebar,
   navItems,
   mentorItems,
+  workshopItems,
 }: MythosSidebarProps) => {
   const sidebarRef = useRef<HTMLDivElement>(null);
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
+  // const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [isMentorDropdownOpen, setIsMentorDropdown] = useState(false);
+  const [isWorkshopDropdownOpen, setIsWorkshopDropdown] = useState(false);
   const navigate = useNavigate();
   const handleClickOutside = useCallback(
     (e: MouseEvent) => {
@@ -30,7 +33,7 @@ const MythosSidebar = ({
         setSidebar(false);
       }
     },
-    [isOpen, setSidebar]
+    [isOpen, setSidebar],
   );
 
   useEffect(() => {
@@ -103,68 +106,69 @@ const MythosSidebar = ({
             <nav className="flex-1 flex items-center justify-center">
               <ul className="space-y-7 font-semibold text-xl md:text-2xl mulish">
                 {navItems.map((item, index) => {
-                  if (item.toLowerCase() === "assessments") {
-                    return (
-                      <motion.li
-                        key={index}
-                        className="relative px-6 py-2 border-l-4 border-transparent hover:border-foreground"
-                      >
-                        {/* Toggle Dropdown on Click */}
-                        <span
-                          onClick={() => setDropdownOpen((prev) => !prev)}
-                          className="block cursor-pointer transition hover:text-muted-foreground focus:outline-none focus:text-gray-600"
-                        >
-                          {item}
-                        </span>
+                  // if (item.toLowerCase() === "assessments") {
+                  //   return (
+                  //     <motion.li
+                  //       key={index}
+                  //       className="relative px-6 py-2 border-l-4 border-transparent hover:border-foreground"
+                  //     >
+                  //       {/* Toggle Dropdown on Click */}
+                  //       <span
+                  //         onClick={() => setDropdownOpen((prev) => !prev)}
+                  //         className="block cursor-pointer transition hover:text-muted-foreground focus:outline-none focus:text-gray-600"
+                  //       >
+                  //         {item}
+                  //       </span>
 
-                        <AnimatePresence>
-                          {isDropdownOpen && (
-                            <motion.ul
-                              initial={{ opacity: 0, y: -10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: -10 }}
-                              className="absolute left-0 mt-2 bg-background border text-base shadow-md rounded-md py-2 w-60 z-50"
-                            >
-                              <li className="px-4 py-2 hover:bg-secondary ">
-                                <Link
-                                  className=" flex items-center gap-2"
-                                  to="/assessment/psychology"
-                                  onClick={() => {
-                                    setSidebar(false);
-                                    setDropdownOpen(false);
-                                  }}
-                                >
-                                  <img
-                                    src="/assets/icons/star.png"
-                                    alt="star"
-                                    className="w-3 h-3"
-                                  />
-                                  Psychology
-                                </Link>
-                              </li>
-                              <li className="px-4 py-2 hover:bg-secondary">
-                                <Link
-                                  className="flex items-center gap-2"
-                                  to="/assessment/planet"
-                                  onClick={() => {
-                                    setSidebar(false);
-                                    setDropdownOpen(false);
-                                  }}
-                                >
-                                  <img
-                                    src="/assets/icons/star.png"
-                                    alt="star"
-                                    className="w-3 h-3"
-                                  />
-                                  Astrology
-                                </Link>
-                              </li>
-                            </motion.ul>
-                          )}
-                        </AnimatePresence>
-                      </motion.li>
-                    );
-                  } else if (item == "BECOME MENTOR") {
+                  //       <AnimatePresence>
+                  //         {isDropdownOpen && (
+                  //           <motion.ul
+                  //             initial={{ opacity: 0, y: -10 }}
+                  //             animate={{ opacity: 1, y: 0 }}
+                  //             exit={{ opacity: 0, y: -10 }}
+                  //             className="absolute left-0 mt-2 bg-background border text-base shadow-md rounded-md py-2 w-60 z-50"
+                  //           >
+                  //             <li className="px-4 py-2 hover:bg-secondary ">
+                  //               <Link
+                  //                 className=" flex items-center gap-2"
+                  //                 to="/assessment/psychology"
+                  //                 onClick={() => {
+                  //                   setSidebar(false);
+                  //                   setDropdownOpen(false);
+                  //                 }}
+                  //               >
+                  //                 <img
+                  //                   src="/assets/icons/star.png"
+                  //                   alt="star"
+                  //                   className="w-3 h-3"
+                  //                 />
+                  //                 Psychology
+                  //               </Link>
+                  //             </li>
+                  //             <li className="px-4 py-2 hover:bg-secondary">
+                  //               <Link
+                  //                 className="flex items-center gap-2"
+                  //                 to="/assessment/planet"
+                  //                 onClick={() => {
+                  //                   setSidebar(false);
+                  //                   setDropdownOpen(false);
+                  //                 }}
+                  //               >
+                  //                 <img
+                  //                   src="/assets/icons/star.png"
+                  //                   alt="star"
+                  //                   className="w-3 h-3"
+                  //                 />
+                  //                 Astrology
+                  //               </Link>
+                  //             </li>
+                  //           </motion.ul>
+                  //         )}
+                  //       </AnimatePresence>
+                  //     </motion.li>
+                  //   );
+                  // } else
+                  if (item == "BECOME MENTOR") {
                     return (
                       <motion.li
                         key={index}
@@ -219,6 +223,72 @@ const MythosSidebar = ({
                         </AnimatePresence>
                       </motion.li>
                     );
+                  } else if (item == "WORKSHOPS") {
+                    return (
+                      <motion.li
+                        key={index}
+                        className="relative px-6 py-2 border-l-4 border-transparent hover:border-foreground "
+                      >
+                        {/* Toggle Dropdown on Click */}
+                        <span
+                          onClick={() => setIsWorkshopDropdown((pre) => !pre)}
+                          className="block cursor-pointer transition hover:text-muted-foreground focus:outline-none focus:text-gray-600"
+                        >
+                          {item}
+                        </span>
+
+                        <AnimatePresence>
+                          {isWorkshopDropdownOpen && (
+                            <motion.ul
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -10 }}
+                              className="absolute left-0 bottom-10 mt-2 bg-background border  shadow-md rounded-md py-2 w-60 z-50"
+                            >
+                              <li className=" hover:bg-">
+                                <div className="py">
+                                  {workshopItems.map((item, itemIndex) => (
+                                    <motion.div
+                                      key={item.name}
+                                      initial={{ opacity: 0, x: -20 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      transition={{ delay: itemIndex * 0.05 }}
+                                    >
+                                      <Link
+                                        to={item.path}
+                                        onClick={() => {
+                                          setIsWorkshopDropdown(false);
+                                          setSidebar(false);
+                                        }}
+                                        className="flex hover:bg-secondary w-full px-4 py-3 hover:text-foreground/70 transition-all duration-200 text-base font-medium"
+                                      >
+                                        <div className="flex flex-col">
+                                          <div className="flex items-center gap-2">
+                                            <img
+                                              src="/assets/icons/star.png"
+                                              alt="star"
+                                              className="w-3 h-3"
+                                            />
+                                            <span className="text-sm font-semibold text-foreground">
+                                              {item.name}
+                                            </span>
+                                          </div>
+
+                                          {/* SUBTEXT */}
+                                          <span className="text-xs text-muted-foreground mt-0.5 ml-5">
+                                            {item.sub}
+                                          </span>
+                                        </div>
+                                      </Link>
+                                    </motion.div>
+                                  ))}
+                                </div>
+                              </li>
+                            </motion.ul>
+                          )}
+                        </AnimatePresence>
+                      </motion.li>
+                    );
                   } else {
                     // Normal nav item
                     return (
@@ -229,7 +299,13 @@ const MythosSidebar = ({
                         className="px-6 py-2 border-l-4 border-transparent hover:border-foreground"
                       >
                         <Link
-                          to={item === "HOME" ? "/" : `/${item.toLowerCase()}`}
+                          to={
+                            item === "HOME"
+                              ? "/"
+                              : item === "ASSESSMENTS"
+                                ? "/assessment/psychology"
+                                : `/${item.toLowerCase()}`
+                          }
                           className="block transition hover:text-muted-foreground focus:outline-none focus:text-gray-600"
                           onClick={() => setSidebar(false)}
                         >

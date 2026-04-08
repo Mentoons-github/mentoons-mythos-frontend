@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { IUser } from "../../types";
 import { useNavigate } from "react-router-dom";
 import { BrainCircuit } from "lucide-react";
@@ -7,6 +7,9 @@ import AlreadyAssessmentTakeModal from "../modal/Workshops/AlreadyAssessmentTake
 
 interface Props {
   user?: IUser;
+  selectedWorkshop: string;
+  handleWorkshopSelect: (workshop: string) => void;
+  handleContinue: () => void;
 }
 
 const options = [
@@ -24,17 +27,15 @@ const options = [
   { title: "The Mystic (Existential Intelligence)", name: "Existential" },
 ];
 
-const ChooseWorkshop = ({ user }: Props) => {
-  const [workshop, setWorkshop] = useState<string>("");
+const ChooseWorkshop = ({
+  user,
+  selectedWorkshop,
+  handleWorkshopSelect,
+  handleContinue,
+}: Props) => {
   const [loginModal, setLoginModal] = useState(false);
   const [alreadyTakeModal, setAlreadyTakeModal] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (user && user.takeInitialAssessment) {
-      setWorkshop(user.intelligenceTypes[0]);
-    }
-  }, [user]);
 
   const handleTake = () => {
     if (!user) {
@@ -67,12 +68,12 @@ const ChooseWorkshop = ({ user }: Props) => {
             {/* Options */}
             <div className="grid grid-cols-2 gap-3">
               {options.map((item) => {
-                const selected = workshop.includes(item.name);
+                const selected = selectedWorkshop.includes(item.name);
 
                 return (
                   <button
                     key={item.name}
-                    onClick={() => setWorkshop(item.name)}
+                    onClick={() => handleWorkshopSelect(item.name)}
                     className={`px-2 md:px-4 py-3 rounded-xl border text-sm font-medium transition-all duration-200
                       ${
                         selected
@@ -88,7 +89,8 @@ const ChooseWorkshop = ({ user }: Props) => {
 
             {/* Continue */}
             <button
-              disabled={!workshop}
+              onClick={handleContinue}
+              disabled={!selectedWorkshop}
               className="mt-6 w-full py-3 rounded-xl bg-foreground text-background disabled:bg-foreground/40 disabled:cursor-not-allowed font-medium hover:bg-foreground/80 transition"
             >
               Continue

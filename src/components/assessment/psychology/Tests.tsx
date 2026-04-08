@@ -53,11 +53,10 @@ const Tests = ({ userId }: { userId?: string }) => {
       variants={containerVariants}
     >
       <motion.h1
-        className="text-2xl md:text-4xl font-bold text-center mb-12 leading-tight tracking-wider"
+        className="text-2xl md:text-5xl font-bold text-foreground/80 mb-12 leading-tight tracking-wider"
         variants={fadeInUp}
       >
-        Got Stuck In Your Career? Find <br className="hidden md:block" /> Out
-        The Right Path For You
+        Discover Your Intelligence Type
       </motion.h1>
 
       <motion.div className="grid grid-cols-2  lg:grid-cols-3 gap-2 md:gap-12 ">
@@ -80,27 +79,31 @@ const Tests = ({ userId }: { userId?: string }) => {
                 />
               </motion.div>
 
-              <motion.h2
-                variants={fadeInUp}
-                className="md:text-2xl font-bold tracking-wider lg:flex gap-2"
-              >
-                {data.name}{" "}
-                <span className="hidden md:block lg:inline">Intelligence</span>
-              </motion.h2>
+              <motion.div variants={fadeInUp}>
+                <motion.h2
+                  // variants={fadeInUp}
+                  className="md:text-2xl font-bold tracking-wider lg:flex gap-2"
+                >
+                  {data.name}{" "}
+                </motion.h2>
+                <p className="text-sm md:text-lg font-medium text-muted-foreground">
+                  {data.sub}
+                </p>
+              </motion.div>
 
               <motion.p variants={fadeInUp} className="md:text-lg ">
                 🕒 <span className="font-semibold">Time:</span> Approximately 10
                 minutes
               </motion.p>
 
-              <motion.p variants={fadeInUp} className="md:text-lg ">
+              {/* <motion.p variants={fadeInUp} className="md:text-lg ">
                 🎯 <span className="font-semibold">Ages:</span> 20+
-              </motion.p>
+              </motion.p> */}
             </motion.div>
 
             <div className="sm:flex justify-end">
               <motion.button
-                onClick={() => handleStart(data.name)}
+                onClick={() => handleStart(data.intelligence)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="bg-foreground px-6 py-2 rounded-2xl text-background font-semibold text-lg"

@@ -7,11 +7,9 @@ import { useNavigate } from "react-router-dom";
 import MythosSearch from "../modal/search";
 import { useAppSelector, useAppDispatch } from "../../hooks/reduxHooks";
 import { fetchUserData, userLogout } from "../../features/user/userThunk";
-import useSignInSignUp from "../../hooks/useSignInSignUpModal";
-import { IoCartOutline } from "react-icons/io5";
-import { HiOutlineShoppingBag } from "react-icons/hi";
+// import useSignInSignUp from "../../hooks/useSignInSignUpModal";
 import ThemeToggle from "../ThemToggle";
-import { Heart, User } from "lucide-react";
+import { User } from "lucide-react";
 import RewardModal from "../modal/RewardModal";
 
 const MythosHeader = () => {
@@ -21,16 +19,16 @@ const MythosHeader = () => {
     loading: userLoading,
     rewardPoints,
   } = useAppSelector((state) => state.user);
-  const { showModal } = useSignInSignUp();
+  // const { showModal } = useSignInSignUp();
 
   const headerText = [
     "ASSESSMENTS",
     "WORKSHOPS",
     "QUIZ",
     "BLOG",
-    "ABOUT-US",
-    "CAREER",
-    "GROUPS",
+    // "ABOUT-US",
+    // "CAREER",
+    // "GROUPS",
     "BECOME MENTOR",
   ];
 
@@ -40,8 +38,8 @@ const MythosHeader = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   // Dropdown
-  const [isAssessmentsDropdownOpen, setIsAssessmentsDropdownOpen] =
-    useState(false);
+  // const [isAssessmentsDropdownOpen, setIsAssessmentsDropdownOpen] =
+  //   useState(false);
 
   const [becomeMentorDropdown, setBecomeMentorDropdown] = useState(false);
   const [workshopDropdown, setWorkshopDropdown] = useState(false);
@@ -67,10 +65,10 @@ const MythosHeader = () => {
   const [rewardModalOpen, setRewardModalOpen] = useState(false);
   const [rewardPointShow, setRewardPointShow] = useState(0);
 
-  const assessmentItems = [
-    { name: "Psychology", path: "/assessment/psychology" },
-    { name: "Astrology", path: "/assessment/planet" },
-  ];
+  // const assessmentItems = [
+  //   { name: "Psychology", path: "/assessment/psychology" },
+  //   { name: "Astrology", path: "/assessment/planet" },
+  // ];
 
   const mentorItems = [
     { name: "Psychology", path: "/become-mentor" },
@@ -147,16 +145,16 @@ const MythosHeader = () => {
       clearTimeout(hoverTimeoutRef.current);
     }
     if (from == "assessment") {
-      setIsAssessmentsDropdownOpen(true);
+      // setIsAssessmentsDropdownOpen(true);
       setWorkshopDropdown(false);
       setBecomeMentorDropdown(false);
     } else if (from == "workshop") {
       setWorkshopDropdown(true);
       setBecomeMentorDropdown(false);
-      setIsAssessmentsDropdownOpen(false);
+      // setIsAssessmentsDropdownOpen(false);
     } else {
       setBecomeMentorDropdown(true);
-      setIsAssessmentsDropdownOpen(false);
+      // setIsAssessmentsDropdownOpen(false);
       setWorkshopDropdown(false);
     }
   };
@@ -164,7 +162,7 @@ const MythosHeader = () => {
   const handleMouseLeave = (from: string) => {
     hoverTimeoutRef.current = setTimeout(() => {
       if (from == "assessment") {
-        setIsAssessmentsDropdownOpen(false);
+        // setIsAssessmentsDropdownOpen(false);
       } else if (from == "workshop") {
         setWorkshopDropdown(false);
       } else {
@@ -241,21 +239,21 @@ const MythosHeader = () => {
     return () => document.removeEventListener("keydown", handleEscape);
   }, [isSearchOpen]);
 
-  const handleWishList = () => {
-    if (!user?._id) {
-      showModal("Wishlist");
-      return;
-    }
-    navigate("/wishlist");
-  };
+  // const handleWishList = () => {
+  //   if (!user?._id) {
+  //     showModal("Wishlist");
+  //     return;
+  //   }
+  //   navigate("/wishlist");
+  // };
 
-  const handleCart = () => {
-    if (!user?._id) {
-      showModal("Cart");
-      return;
-    }
-    navigate("/cart");
-  };
+  // const handleCart = () => {
+  //   if (!user?._id) {
+  //     showModal("Cart");
+  //     return;
+  //   }
+  //   navigate("/cart");
+  // };
 
   const handleMentorClick = (type: string) => {
     navigate("/become-mentor", {
@@ -290,219 +288,227 @@ const MythosHeader = () => {
                 key={index}
                 className={`relative font-bold text-[14px] tracking group`}
               >
-                {text === "ASSESSMENTS" ? (
-                  <div
-                    className="relative"
-                    ref={dropdownRef}
-                    onMouseEnter={() => handleMouseEnter("assessment")}
-                    onMouseLeave={() => handleMouseLeave("assessment")}
-                  >
-                    <div className="relative flex items-center gap-1  cursor-pointer">
-                      <img
-                        src="/assets/icons/star.png"
-                        alt="star"
-                        className="w-3 h-3 lg:w-4 lg:h-4"
-                      />
-                      {text}
-                      <motion.div
-                        animate={{
-                          rotate: isAssessmentsDropdownOpen ? 180 : 0,
-                        }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <FaChevronDown className="text-xs ml-" />
-                      </motion.div>
-                      <span className="absolute left-1/2 -bottom-1 lg:-bottom-2 h-[2px] w-0 bg-gray-500 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
-                    </div>
+                {
+                  // text === "ASSESSMENTS" ? (
+                  //   <div
+                  //     className="relative"
+                  //     ref={dropdownRef}
+                  //     onMouseEnter={() => handleMouseEnter("assessment")}
+                  //     onMouseLeave={() => handleMouseLeave("assessment")}
+                  //   >
+                  //     <div className="relative flex items-center gap-1  cursor-pointer">
+                  //       <img
+                  //         src="/assets/icons/star.png"
+                  //         alt="star"
+                  //         className="w-3 h-3 lg:w-4 lg:h-4"
+                  //       />
+                  //       {text}
+                  //       <motion.div
+                  //         animate={{
+                  //           rotate: isAssessmentsDropdownOpen ? 180 : 0,
+                  //         }}
+                  //         transition={{ duration: 0.3 }}
+                  //       >
+                  //         <FaChevronDown className="text-xs ml-" />
+                  //       </motion.div>
+                  //       <span className="absolute left-1/2 -bottom-1 lg:-bottom-2 h-[2px] w-0 bg-gray-500 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
+                  //     </div>
 
-                    <AnimatePresence>
-                      {isAssessmentsDropdownOpen && (
+                  //     <AnimatePresence>
+                  //       {isAssessmentsDropdownOpen && (
+                  //         <motion.div
+                  //           initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                  //           animate={{ opacity: 1, y: 0, scale: 1 }}
+                  //           exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                  //           transition={{ duration: 0.2, ease: "easeOut" }}
+                  //           className="absolute top-full left-0 mt-2 w-48 bg-background border border-border rounded-lg shadow-2xl overflow-hidden z-[60]"
+                  //         >
+                  //           <div className="py-2">
+                  //             {/* {assessmentItems.map((item, itemIndex) => (
+                  //               <motion.div
+                  //                 key={item.name}
+                  //                 initial={{ opacity: 0, x: -20 }}
+                  //                 animate={{ opacity: 1, x: 0 }}
+                  //                 transition={{ delay: itemIndex * 0.05 }}
+                  //               >
+                  //                 <Link
+                  //                   to={item.path}
+                  //                   className="block px-4 py-3  hover:text-foreground/70 transition-all duration-200 text-sm font-medium"
+                  //                 >
+                  //                   <div className="flex items-center gap-2">
+                  //                     <img
+                  //                       src="/assets/icons/star.png"
+                  //                       alt="star"
+                  //                       className="w-3 h-3"
+                  //                     />
+                  //                     {item.name}
+                  //                   </div>
+                  //                 </Link>
+                  //               </motion.div>
+                  //             ))} */}
+                  //           </div>
+                  //         </motion.div>
+                  //       )}
+                  //     </AnimatePresence>
+                  //   </div>
+                  // ) :
+                  text === "BECOME MENTOR" ? (
+                    <div
+                      className="relative"
+                      ref={dropdownRef}
+                      onMouseEnter={() => handleMouseEnter("mentor")}
+                      onMouseLeave={() => handleMouseLeave("mentor")}
+                    >
+                      <div className="relative flex items-center gap-1  cursor-pointer">
+                        <img
+                          src="/assets/icons/star.png"
+                          alt="star"
+                          className="w-3 h-3 lg:w-4 lg:h-4"
+                        />
+                        {text}
                         <motion.div
-                          initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                          transition={{ duration: 0.2, ease: "easeOut" }}
-                          className="absolute top-full left-0 mt-2 w-48 bg-background border border-border rounded-lg shadow-2xl overflow-hidden z-[60]"
+                          animate={{
+                            rotate: becomeMentorDropdown ? 180 : 0,
+                          }}
+                          transition={{ duration: 0.3 }}
                         >
-                          <div className="py-2">
-                            {assessmentItems.map((item, itemIndex) => (
-                              <motion.div
-                                key={item.name}
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: itemIndex * 0.05 }}
-                              >
-                                <Link
-                                  to={item.path}
-                                  className="block px-4 py-3  hover:text-foreground/70 transition-all duration-200 text-sm font-medium"
-                                >
-                                  <div className="flex items-center gap-2">
-                                    <img
-                                      src="/assets/icons/star.png"
-                                      alt="star"
-                                      className="w-3 h-3"
-                                    />
-                                    {item.name}
-                                  </div>
-                                </Link>
-                              </motion.div>
-                            ))}
-                          </div>
+                          <FaChevronDown className="text-xs ml-" />
                         </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ) : text === "BECOME MENTOR" ? (
-                  <div
-                    className="relative"
-                    ref={dropdownRef}
-                    onMouseEnter={() => handleMouseEnter("mentor")}
-                    onMouseLeave={() => handleMouseLeave("mentor")}
-                  >
-                    <div className="relative flex items-center gap-1  cursor-pointer">
-                      <img
-                        src="/assets/icons/star.png"
-                        alt="star"
-                        className="w-3 h-3 lg:w-4 lg:h-4"
-                      />
-                      {text}
-                      <motion.div
-                        animate={{
-                          rotate: becomeMentorDropdown ? 180 : 0,
-                        }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <FaChevronDown className="text-xs ml-" />
-                      </motion.div>
-                      <span className="absolute left-1/2 -bottom-1 lg:-bottom-2 h-[2px] w-0 bg-gray-500 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
-                    </div>
+                        <span className="absolute left-1/2 -bottom-1 lg:-bottom-2 h-[2px] w-0 bg-gray-500 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
+                      </div>
 
-                    <AnimatePresence>
-                      {becomeMentorDropdown && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                          transition={{ duration: 0.2, ease: "easeOut" }}
-                          className="absolute top-full left-0 mt-2 w-48 bg-background border border-border rounded-lg shadow-2xl overflow-hidden z-[60]"
-                        >
-                          <div className="py-2">
-                            {mentorItems.map((item, itemIndex) => (
-                              <motion.div
-                                key={item.name}
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: itemIndex * 0.05 }}
-                              >
-                                <button
-                                  onClick={() => handleMentorClick(item.name)}
-                                  className="block px-4 py-3  hover:text-foreground/70 transition-all duration-200 text-sm font-medium"
+                      <AnimatePresence>
+                        {becomeMentorDropdown && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                            transition={{ duration: 0.2, ease: "easeOut" }}
+                            className="absolute top-full left-0 mt-2 w-48 bg-background border border-border rounded-lg shadow-2xl overflow-hidden z-[60]"
+                          >
+                            <div className="py-2">
+                              {mentorItems.map((item, itemIndex) => (
+                                <motion.div
+                                  key={item.name}
+                                  initial={{ opacity: 0, x: -20 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  transition={{ delay: itemIndex * 0.05 }}
                                 >
-                                  <div className="flex items-center gap-2">
-                                    <img
-                                      src="/assets/icons/star.png"
-                                      alt="star"
-                                      className="w-3 h-3"
-                                    />
-                                    {item.name}
-                                  </div>
-                                </button>
-                              </motion.div>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ) : text === "WORKSHOPS" ? (
-                  <div
-                    className="relative w-full"
-                    ref={dropdownRef}
-                    onMouseEnter={() => handleMouseEnter("workshop")}
-                    onMouseLeave={() => handleMouseLeave("workshop")}
-                  >
-                    <div className="relative flex items-center gap-1  cursor-pointer">
-                      <img
-                        src="/assets/icons/star.png"
-                        alt="star"
-                        className="w-3 h-3 lg:w-4 lg:h-4"
-                      />
-                      {text}
-                      <motion.div
-                        animate={{
-                          rotate: workshopDropdown ? 180 : 0,
-                        }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <FaChevronDown className="text-xs ml-" />
-                      </motion.div>
-                      <span className="absolute left-1/2 -bottom-1 lg:-bottom-2 h-[2px] w-0 bg-gray-500 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
-                    </div>
-
-                    <AnimatePresence>
-                      {workshopDropdown && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                          transition={{ duration: 0.2, ease: "easeOut" }}
-                          className="absolute top-full left-0 mt-2 w-56 bg-background border border-border rounded-lg shadow-2xl overflow-hidden z-[60]"
-                        >
-                          <div className="py-2">
-                            {workshopItems.map((item, itemIndex) => (
-                              <motion.div
-                                key={item.name}
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: itemIndex * 0.05 }}
-                              >
-                                <Link
-                                  to={item.path}
-                                  className="block px-4 py-3 rounded-md hover:bg-muted transition-all duration-200"
-                                >
-                                  <div className="flex items-start gap-3">
-                                    {/* ICON */}
-                                    <img
-                                      src="/assets/icons/star.png"
-                                      alt="star"
-                                      className="w-4 h-4 mt-1"
-                                    />
-
-                                    {/* TEXT */}
-                                    <div className="flex flex-col">
-                                      <span className="text-sm font-semibold text-foreground">
-                                        {item.name}
-                                      </span>
-
-                                      {/* SUBTEXT */}
-                                      <span className="text-xs text-muted-foreground mt-0.5">
-                                        {item.sub}
-                                      </span>
+                                  <button
+                                    onClick={() => handleMentorClick(item.name)}
+                                    className="block px-4 py-3  hover:text-foreground/70 transition-all duration-200 text-sm font-medium"
+                                  >
+                                    <div className="flex items-center gap-2">
+                                      <img
+                                        src="/assets/icons/star.png"
+                                        alt="star"
+                                        className="w-3 h-3"
+                                      />
+                                      {item.name}
                                     </div>
-                                  </div>
-                                </Link>
-                                
-                              </motion.div>
-                            ))}
-                          </div>
+                                  </button>
+                                </motion.div>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ) : text === "WORKSHOPS" ? (
+                    <div
+                      className="relative w-full"
+                      ref={dropdownRef}
+                      onMouseEnter={() => handleMouseEnter("workshop")}
+                      onMouseLeave={() => handleMouseLeave("workshop")}
+                    >
+                      <div className="relative flex items-center gap-1  cursor-pointer">
+                        <img
+                          src="/assets/icons/star.png"
+                          alt="star"
+                          className="w-3 h-3 lg:w-4 lg:h-4"
+                        />
+                        {text}
+                        <motion.div
+                          animate={{
+                            rotate: workshopDropdown ? 180 : 0,
+                          }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <FaChevronDown className="text-xs ml-" />
                         </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ) : (
-                  <Link
-                    to={text === "HOME" ? "/" : `/${text.toLowerCase()}`}
-                    className="relative flex items-center gap-1"
-                  >
-                    <img
-                      src="/assets/icons/star.png"
-                      alt="star"
-                      className="w-3 h-3 lg:w-4 lg:h-4"
-                    />
-                    {text === "ABOUT-US" ? "ABOUT" : text}
-                    <span className="absolute left-1/2 -bottom-1 lg:-bottom-2 h-[2px] w-0 bg-gray-500 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
-                  </Link>
-                )}
+                        <span className="absolute left-1/2 -bottom-1 lg:-bottom-2 h-[2px] w-0 bg-gray-500 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
+                      </div>
+
+                      <AnimatePresence>
+                        {workshopDropdown && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                            transition={{ duration: 0.2, ease: "easeOut" }}
+                            className="absolute top-full left-0 mt-2 w-56 bg-background border border-border rounded-lg shadow-2xl overflow-hidden z-[60]"
+                          >
+                            <div className="py-2">
+                              {workshopItems.map((item, itemIndex) => (
+                                <motion.div
+                                  key={item.name}
+                                  initial={{ opacity: 0, x: -20 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  transition={{ delay: itemIndex * 0.05 }}
+                                >
+                                  <Link
+                                    to={item.path}
+                                    className="block px-4 py-3 rounded-md hover:bg-muted transition-all duration-200"
+                                  >
+                                    <div className="flex items-start gap-3">
+                                      {/* ICON */}
+                                      <img
+                                        src="/assets/icons/star.png"
+                                        alt="star"
+                                        className="w-4 h-4 mt-1"
+                                      />
+
+                                      {/* TEXT */}
+                                      <div className="flex flex-col">
+                                        <span className="text-sm font-semibold text-foreground">
+                                          {item.name}
+                                        </span>
+
+                                        {/* SUBTEXT */}
+                                        <span className="text-xs text-muted-foreground mt-0.5">
+                                          {item.sub}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </Link>
+                                </motion.div>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ) : (
+                    <Link
+                      to={
+                        text === "HOME"
+                          ? "/"
+                          : text === "ASSESSMENTS"
+                            ? "/assessment/psychology"
+                            : `/${text.toLowerCase()}`
+                      }
+                      className="relative flex items-center gap-1"
+                    >
+                      <img
+                        src="/assets/icons/star.png"
+                        alt="star"
+                        className="w-3 h-3 lg:w-4 lg:h-4"
+                      />
+                      {text === "ABOUT-US" ? "ABOUT" : text}
+                      <span className="absolute left-1/2 -bottom-1 lg:-bottom-2 h-[2px] w-0 bg-gray-500 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
+                    </Link>
+                  )
+                }
               </li>
             ))}
           </ul>
@@ -526,7 +532,7 @@ const MythosHeader = () => {
 
             {/* Cart Button */}
             <ThemeToggle />
-            <motion.button
+            {/* <motion.button
               whileHover={{ scale: 1.1 }}
               transition={{ duration: 0.2, ease: "easeIn" }}
               onClick={handleCart}
@@ -537,10 +543,10 @@ const MythosHeader = () => {
               <span className="absolute -top-1 -right-1 md:-top-2 md:right-0  w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 bg-foreground rounded-full text-background flex items-center justify-center text-[10px] sm:text-xs">
                 0
               </span>
-            </motion.button>
+            </motion.button> */}
 
             {/* Wishlist Button */}
-            {user && (
+            {/* {user && (
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 transition={{ duration: 0.2, ease: "easeIn" }}
@@ -549,13 +555,9 @@ const MythosHeader = () => {
                 className="flex justify-center items-center rounded-full w-8 h-8 sm:w-10 sm:h-10 md:w-10 md:h-10 lg:w-12 lg:h-12 outline-dashed outline-2 outline-gray-600 cursor-pointer"
               >
                 <Heart size={20} />
-                {/* <img
-                  src="/assets/icons/Vector (2).png"
-                  alt="wishlist-icon"
-                  className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6"
-                /> */}
+              
               </motion.button>
-            )}
+            )} */}
 
             {/* Auth Section */}
             {userLoading ? (
@@ -623,7 +625,7 @@ const MythosHeader = () => {
                           </div>
                         </Link>
 
-                        <Link
+                        {/* <Link
                           onClick={() => setIsUserDropdownOpen(false)}
                           to="/orders"
                           className="block px-4 py-3 hover:bg-foreground hover:text-background transition-all duration-200 text-sm font-medium"
@@ -632,7 +634,7 @@ const MythosHeader = () => {
                             <HiOutlineShoppingBag />
                             My Orders
                           </div>
-                        </Link>
+                        </Link> */}
 
                         <button
                           onClick={handleLogout}
@@ -712,6 +714,7 @@ const MythosHeader = () => {
           navItems={headerText}
           setSidebar={setSidebarOpen}
           mentorItems={mentorItems}
+          workshopItems={workshopItems}
         />
       </motion.header>
 
