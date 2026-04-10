@@ -36,7 +36,7 @@ export const plans: WorkshopPlan[] = [
       "Create your own myth / story project",
       "Group discussions & role-playing mythic characters",
       "Portfolio + presentation of final myth project",
-      "Certificate + mentorship guidance",
+    //   "Certificate + mentorship guidance",
     ],
   },
 ];

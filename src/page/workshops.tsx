@@ -71,10 +71,10 @@ const Workshops = () => {
     }
   }, [from]);
 
-  const handleBook = (plan: string) => {
+  const handleBook = (plan: string, mode: string, age: string) => {
     if (selectedWorkshop) {
       navigate("/workshops-payment", {
-        state: { workshop: selectedWorkshop, planTitle:plan },
+        state: { workshop: selectedWorkshop, planTitle: plan, mode, age },
       });
     } else {
       handleNoteSelected();
