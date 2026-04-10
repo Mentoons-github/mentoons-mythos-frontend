@@ -6,6 +6,7 @@ import AlreadyCheckModal from "../../components/modal/astro/rashiFindermodal.tsx
 import MythosLoginModal from "../../components/modals/mythosLogin";
 import RashiFinderModal from "../../components/modal/astro/rashiFindermodal.tsx";
 import AssignmentAlreadyTakenHome from "../../components/modal/assessment/AssignmentAlreadyTakenHome.tsx";
+import { motion } from "framer-motion";
 
 const NewLanding = () => {
   const videoRef = useRef<HTMLDivElement>(null);
@@ -61,7 +62,7 @@ const NewLanding = () => {
           {/* Heading */}
           <h1 className="text-3xl md:text-5xl  lg:text-6xl font-bold leading-tight text-foreground/80 mb-5">
             Discover Yourself Through{" "}
-            <span className="text-[#1fad95]">Ancient Myths</span>
+            <span className="text-[#df6d0c]">Ancient Myths</span>
           </h1>
 
           {/* Intro */}
@@ -75,8 +76,31 @@ const NewLanding = () => {
 
           {/* Section block */}
           <div className="space-y-4 mb-6">
-            <h3 className="text-2xl font-semibold text-foreground/80">
-              Introducing The Joyful Gurukul
+            <h3 className="text-xl md:text-2xl space-x-2 font-semibold text-foreground/80 overflow-hidden">
+              <motion.span
+                initial={{ opacity: 0, y: 20 }}
+                animate={{
+                  opacity: [1, 0.4, 1],
+                  y: 0,
+                }}
+                transition={{
+                  duration: 1.8,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className=" text-2xl uppercase tracking-widest text-[#df6d0c] mb-1"
+              >
+                Introducing
+              </motion.span>
+
+              <motion.span
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className=" block md:inline text-3xl md:text-4xl font-bold text-foreground/80"
+              >
+                “The Joyful Gurukul”
+              </motion.span>
             </h3>
 
             <p className="text-lg text-foreground/70 leading-relaxed">
@@ -84,25 +108,23 @@ const NewLanding = () => {
               through interactive experiences that help people explore human
               intelligence, emotions, and personal growth.
             </p>
-
             <p className="text-lg text-foreground/70 leading-relaxed">
               Through storytelling, discussion, and creative activities,
               participants uncover deeper meanings behind myths from cultures
               across the world.
             </p>
+
+            {/* <p className="text-xs">*Batches starts from next week</p> */}
           </div>
 
-          {/* Highlight quote */}
-          <p className="text-base font-semibold text-foreground italic border-l-4 border-foreground/80 pl-4">
-            Myths are not just stories — they are mirrors of the human mind.
-          </p>
-          {/* CTA */}
-          <div className="mt-8 flex items-center gap-4">
+          <div className="flex items-center gap-4">
             <button
-              onClick={() => navigate("/workshops")}
+              onClick={() =>
+                navigate("/workshops", { state: { from: "knowmore" } })
+              }
               className="bg-foreground/90 text-background px-6 py-3 rounded-lg font-semibold shadow-md hover:shadow-lg hover:scale-[1.03] transition-all duration-300"
             >
-              Join Workshop →
+              Know More →
             </button>
           </div>
         </div>
@@ -131,9 +153,12 @@ const NewLanding = () => {
               />
             </div>
           </div>
+          <div className="mt-6">
+            <h2 className="text-2xl font-bold text-center">Get Started</h2>
+          </div>
           <div className="mt-6 relative">
             {/* FREE Badge */}
-            <div className="absolute flex items-center justify-center -top-3 -right-3 h-18 w-18 bg-[#1fad95] text-white rounded-full shadow-lg z-10 px-4 py-1.5">
+            <div className="absolute flex items-center justify-center -top-3 -right-3 h-18 w-18 bg-[#df6d0c] text-white rounded-full shadow-lg z-10 px-4 py-1.5">
               <p className="text-xl font-extrabold">FREE</p>
             </div>
 
@@ -157,7 +182,7 @@ const NewLanding = () => {
 
                 <div className="py-7  transition px-4 bg-foreground rounded-b-2xl border-b">
                   <h2 className="text-lg font-semibold text-background/80">
-                    Know your birth sign
+                    Know your birth sign <span className="text-sm">(Optional)</span>
                   </h2>
                   <p className="text-sm text-muted mt-1">
                     Explore personality insights based on your zodiac.
@@ -166,10 +191,32 @@ const NewLanding = () => {
                     onClick={() => handlePathClick("astrology")}
                     className="mt-3 bg-background text-foreground text-sm font-medium px-4 py-2 rounded-md hover:bg-background/80 transition"
                   >
-                    Find My Rashi
+                    Find My Rashi 
                   </button>
                 </div>
               </div>
+            </div>
+            <div className="py-7 mt-5  transition px-4 bg-foreground rounded-2xl border-b relative">
+              <div className="absolute flex flex-col items-center justify-center -top-4 -right-4 h-20 w-20 bg-[#df6d0c] text-white rounded-full shadow-lg z-10 text-center px-2">
+                <span className="text-[10px] uppercase tracking-wide font-bold">
+                  Ages
+                </span>
+                <span className="text-xs font-bold leading-tight">6–12</span>
+                <span className="text-xs font-bold leading-tight">13–19</span>
+              </div>
+
+              <h2 className="text-lg font-semibold text-background/80">
+                Join our workshop
+              </h2>
+              <p className="text-sm text-muted mt-1">
+                Bring the ancient Gurukul to life in a joyful modern way.
+              </p>
+              <button
+                onClick={() => navigate("workshops")}
+                className="mt-3 bg-background text-foreground text-sm font-medium px-4 py-2 rounded-md hover:bg-background/80 transition"
+              >
+                Join Now
+              </button>
             </div>
           </div>
         </div>

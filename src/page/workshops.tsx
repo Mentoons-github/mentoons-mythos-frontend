@@ -11,16 +11,20 @@ import WhoAreTheWorskhopsFor from "../components/workshops/WhoAreTheWorskhopsFor
 import WorkshopTakeaways from "../components/workshops/WorkshopTakeways";
 import { FaChevronDown } from "react-icons/fa";
 import MythicArchitypes from "../components/workshops/MythicArchitypes";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { WorkshopPlan } from "../types/workshop/workshopPlan";
-
 
 const Workshops = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
   const [selectedWorkshop, setSelectedWorkshop] = useState<string>("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from;
+  const [openSection, setOpenSection] = useState<number | null>(null);
+  const durationRef = useRef<HTMLDivElement | null>(null);
+  const ChooseWorkshopRef = useRef<HTMLDivElement | null>(null);
+  const joyfullGurukulRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (user && user.takeInitialAssessment) {
@@ -31,10 +35,6 @@ const Workshops = () => {
   useEffect(() => {
     dispatch(fetchUserData());
   }, [dispatch]);
-
-  const [openSection, setOpenSection] = useState<number | null>(null);
-  const durationRef = useRef<HTMLDivElement | null>(null);
-  const ChooseWorkshopRef = useRef<HTMLDivElement | null>(null);
 
   const workshops = [
     {
@@ -62,10 +62,19 @@ const Workshops = () => {
     });
   };
 
-  const handleBook = (plan:WorkshopPlan) => {
+  useEffect(() => {
+    if (from === "knowmore") {
+      joyfullGurukulRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [from]);
+
+  const handleBook = (plan: string) => {
     if (selectedWorkshop) {
       navigate("/workshops-payment", {
-        state: { workshop: selectedWorkshop, plan },
+        state: { workshop: selectedWorkshop, planTitle:plan },
       });
     } else {
       handleNoteSelected();
@@ -73,7 +82,7 @@ const Workshops = () => {
   };
 
   const handleNoteSelected = () => {
-    toast.warning("Select a mythology-based workshop for Booking")
+    toast.warning("Select a mythology-based workshop for Booking");
     ChooseWorkshopRef.current?.scrollIntoView({
       behavior: "smooth",
       block: "start",
@@ -116,7 +125,9 @@ const Workshops = () => {
         </div>
       </div>
 
-      <JoyfulGurukul clickViewMore={clickViewMore} />
+      <div ref={joyfullGurukulRef}>
+        <JoyfulGurukul clickViewMore={clickViewMore} />
+      </div>
 
       <div className="space-y-4 p-3">
         {workshops.map((item, index) => {

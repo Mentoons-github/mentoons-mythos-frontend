@@ -7,25 +7,23 @@ export const CONTACT_INFO = [
   },
   {
     icon: BiEnvelope,
-    value: "mentoonsmythos@gmail.com",
+    value: "info@mentoonsmythos.com",
   },
-
 ];
 
 export const ABOUT = [
   {
-    label:"ABOUT US",
-    url:"/about-us"
+    label: "Mentoons Mythos About",
+    url: "/about-us",
   },
-   {
-    label:"WORKSHOPS",
-    url:"/workshops"
+  {
+    label: "WORKSHOPS",
+    url: "/workshops",
   },
-   {
-    label:"HIRING",
-    url:"/career"
+  {
+    label: "Join our Team",
+    url: "/career",
   },
-    
 ];
 
 export const QUICKLINKS = [
@@ -33,14 +31,16 @@ export const QUICKLINKS = [
   //   label:"ASTROLGY ASSESSMENTS",
   //   url:"/assessment/planet"
   // },
-   {
-    label:"ASSESSMENTS",
-    url:"/assessment/psychology"
-  }, {
-    label:"BLOGS",
-    url:"/blog"
-  }, {
-    label:"GROUPS",
-    url:"/groups"
+  {
+    label: "Take an Assessment",
+    url: "/assessment/psychology",
+  },
+  {
+    label: "Start Blogging",
+    url: "/blog",
+  },
+  {
+    label: "Join our Groups",
+    url: "/groups",
   },
 ];
