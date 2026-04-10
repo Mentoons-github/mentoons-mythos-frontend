@@ -12,20 +12,20 @@ interface Props {
   handleContinue: () => void;
 }
 
-const options = [
-  { title: "The Warrior (Bodily Intelligence)", name: "Sports" },
-  { title: "The Musician (Musical Intelligence)", name: "Music" },
-  { title: "The Storyteller (Linguistic Intelligence)", name: "Linguistic" },
-  { title: "The Strategist (Logical Intelligence)", name: "Logical" },
-  { title: "The Creator (Spatial Intelligence)", name: "Spatial" },
-  { title: "The Leader (Interpersonal Intelligence)", name: "Interpersonal" },
-  { title: "The Seeker (Intrapersonal Intelligence)", name: "Intrapersonal" },
-  {
-    title: "The Guardian of Nature (Naturalistic Intelligence)",
-    name: "Naturalistic",
-  },
-  { title: "The Mystic (Existential Intelligence)", name: "Existential" },
-];
+  const options = [
+    { title: "The Warrior (Bodily Intelligence)", name: "Sports" },
+    { title: "The Musician (Musical Intelligence)", name: "Music" },
+    { title: "The Storyteller (Linguistic Intelligence)", name: "Linguistic" },
+    { title: "The Strategist (Logical Intelligence)", name: "Logical" },
+    { title: "The Creator (Spatial Intelligence)", name: "Spatial" },
+    { title: "The Leader (Interpersonal Intelligence)", name: "Interpersonal" },
+    { title: "The Seeker (Intrapersonal Intelligence)", name: "Intrapersonal" },
+    {
+      title: "The Guardian of Nature (Naturalistic Intelligence)",
+      name: "Naturalistic",
+    },
+    { title: "The Mystic (Existential Intelligence)", name: "Existential" },
+  ];
 
 const ChooseWorkshop = ({
   user,

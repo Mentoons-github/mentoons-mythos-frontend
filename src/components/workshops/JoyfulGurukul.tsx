@@ -1,51 +1,33 @@
-// const featureIcons = {
-//   "Storytelling & Imagination": <BookOpen size={18} />,
-//   "Music & Rhythm": <Music size={18} />,
-//   "Art & Crafts": <Palette size={18} />,
-//   "Laughter & Games": <Smile size={18} />,
-//   "Values & Life Skills": <Leaf size={18} />,
-// };
 
-const weeks = [
-  {
-    number: "01",
-    title: "Discover & Imagine",
-    value: "Curiosity",
-    desc: "Spark wonder through stories and open-ended exploration of ideas.",
-  },
-  {
-    number: "02",
-    title: "Kind Hearts",
-    value: "Kindness & Empathy",
-    desc: "Build emotional awareness through role play and group activities.",
-  },
-  {
-    number: "03",
-    title: "Courage & Confidence",
-    value: "Self-belief",
-    desc: "Express, perform, and grow through safe creative challenges.",
-  },
-  {
-    number: "04",
-    title: "Creativity & Celebration",
-    value: "Expression",
-    desc: "Showcase learning through art, music, and a joyful culmination.",
-  },
-];
 
-// const features = Object.keys(featureIcons) as (keyof typeof featureIcons)[];
-
-// const ageGroups = [
-//   { range: "6–12", label: "Children" },
-//   { range: "13–19", label: "Teens" },
-//   { range: "20+", label: "Adults" },
+// const weeks = [
+//   {
+//     number: "01",
+//     title: "Discover & Imagine",
+//     value: "Curiosity",
+//     desc: "Spark wonder through stories and open-ended exploration of ideas.",
+//   },
+//   {
+//     number: "02",
+//     title: "Kind Hearts",
+//     value: "Kindness & Empathy",
+//     desc: "Build emotional awareness through role play and group activities.",
+//   },
+//   {
+//     number: "03",
+//     title: "Courage & Confidence",
+//     value: "Self-belief",
+//     desc: "Express, perform, and grow through safe creative challenges.",
+//   },
+//   {
+//     number: "04",
+//     title: "Creativity & Celebration",
+//     value: "Expression",
+//     desc: "Showcase learning through art, music, and a joyful culmination.",
+//   },
 // ];
 
-// const meta = [
-//   { icon: <Calendar size={14} />, label: "Duration", value: "4 Weeks" },
-//   { icon: <Clock size={14} />, label: "Frequency", value: "2/week" },
-//   { icon: <Timer size={14} />, label: "Session", value: "60 min" },
-// ];
+
 
 export default function JoyfulGurukul({
   clickViewMore,
@@ -60,13 +42,13 @@ export default function JoyfulGurukul({
             <h1 className="mt-5 text-2xl md:text-4xl lg:text-5xl font-bold text-foreground/90 leading-tight hidden md:block">
               🌼 The Joyful{" "}
               <span className=" italic text-foreground/60">
-                Gurukul (Age: 6-12, 13-19)
+                Gurukul <span className="block lg:inline ml-10 lg:ml-0 text-xl md:text-2xl lg:text-3xl">(Age: 6-12, 13-19)</span>
               </span>
             </h1>
 
             <div className=" mt-5 md:0 md:hidden flex">
               <h1 className="mt-5 text-2xl md:text-4xl lg:text-5xl font-bold text-foreground/90 leading-tight">
-                🌼 The Joyful{" "}
+                🌼The Joyful{" "}
                 <span className=" italic text-foreground/60">
                   Gurukul (Age: 6-12, 13-19)
                 </span>
@@ -167,7 +149,7 @@ export default function JoyfulGurukul({
         </div>
 
         {/* ── CURRICULUM ── */}
-        <div>
+        {/* <div>
           <h3 className="text-base font-semibold text-foreground/60 uppercase tracking-widest mb-6">
             Curriculum
           </h3>
@@ -178,9 +160,7 @@ export default function JoyfulGurukul({
                 key={i}
                 className="min-w-[260px] md:min-w-0 flex-1 bg-background border border-muted-foreground rounded-xl shadow-sm hover:shadow-md transition"
               >
-                {/* HEADER */}
                 <div className="flex items-center gap-4 px-5 py-5 border-b border-muted-foreground">
-                  {/* NUMBER */}
                   <div className="text-xs flex flex-col items-center justify-center">
                     <p className="-mb-2 text-foreground/60">Week</p>
                     <span className="text-2xl font-bold text-foreground/60">
@@ -188,7 +168,6 @@ export default function JoyfulGurukul({
                     </span>
                   </div>
 
-                  {/* TEXT */}
                   <div>
                     <p className="font-semibold text-lg text-foreground/80 leading-snug">
                       {week.title}
@@ -199,7 +178,6 @@ export default function JoyfulGurukul({
                   </div>
                 </div>
 
-                {/* DESCRIPTION */}
                 <div className="px-5 py-4">
                   <p className="text-base text-foreground/70 leading-relaxed">
                     {week.desc}
@@ -208,7 +186,7 @@ export default function JoyfulGurukul({
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

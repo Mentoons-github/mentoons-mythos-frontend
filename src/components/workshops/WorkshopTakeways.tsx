@@ -11,8 +11,8 @@ const takeaways = [
 const WorkshopTakeaways = () => {
   return (
     <section className=" md:px-6">
-      <div className="grid lg:grid-cols-2 gap-12 items-center">
-        <div className="max-w-2xl">
+      <div className="grid lg:grid-cols-5 gap-12 items-center">
+        <div className="max-w-2xl col-span-3">
           {/* <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
             What Participants Take Away
           </h2> */}
@@ -40,9 +40,9 @@ const WorkshopTakeaways = () => {
         </div>
 
         {/* RIGHT SIDE (Optional Image / Visual) */}
-        <div className="rounded-xl overflow-hidden ">
+        <div className="rounded-xl overflow-hidden col-span-2">
           <img
-            src="/assets/logo/takeaway.png"
+            src="/assets/logo/take away from website.png"
             alt="Workshop Takeaways"
             className="w-full h-full object-cover"
           />
