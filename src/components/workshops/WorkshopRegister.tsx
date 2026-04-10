@@ -68,7 +68,7 @@ const WorkshopRegister = () => {
     <div className=" mt-12   flex flex-col lg:flex-row items-center lg:p-8 md:gap-10 ">
       <div className="flex-1 text-center md:text-left ">
         <h1 className="text-3xl lg:text-5xl font-bold leading-snug mb-6  lg:max-w-xl">
-          REGISTER FOR OUR WORKSHOP HERE!
+          REGISTER FOR <span className="block">JOYFUL GURUKUL!</span>
         </h1>
         <img
           src="assets/workshops/workshop-registration.png"

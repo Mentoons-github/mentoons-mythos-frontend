@@ -182,7 +182,7 @@ const NewLanding = () => {
 
                 <div className="py-7  transition px-4 bg-foreground rounded-b-2xl border-b">
                   <h2 className="text-lg font-semibold text-background/80">
-                    Know your birth sign <span className="text-sm">(Optional)</span>
+                    Know your birth sign <span className="text-sm text-[#df6d0c]">(Optional)</span>
                   </h2>
                   <p className="text-sm text-muted mt-1">
                     Explore personality insights based on your zodiac.

@@ -1,10 +1,22 @@
-import { useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { plans } from "../constants/workshop/JoyfullGurukulPlans";
+import {
+  CheckCircle2,
+  Clock,
+  Layers,
+  Tag,
+  User,
+  Wifi,
+  MapPin,
+  ShieldCheck,
+  ArrowLeft,
+} from "lucide-react";
 
 interface PaymentState {
   workshop: string;
   planTitle: string;
+  mode: string;
+  age: string;
 }
 
 const options = [
@@ -22,130 +34,367 @@ const options = [
   { title: "The Mystic (Existential Intelligence)", name: "Existential" },
 ];
 
+/* ── Inline SVG payment icons ── */
+// const GPay = () => (
+//   <svg
+//     viewBox="0 0 54 24"
+//     width="54"
+//     height="24"
+//     xmlns="http://www.w3.org/2000/svg"
+//   >
+//     <text
+//       y="18"
+//       fontFamily="'Product Sans',Arial,sans-serif"
+//       fontWeight="700"
+//       fontSize="17"
+//     >
+//       <tspan fill="#4285F4">G</tspan>
+//       <tspan fill="#EA4335">P</tspan>
+//       <tspan fill="#FBBC05">a</tspan>
+//       <tspan fill="#34A853">y</tspan>
+//     </text>
+//   </svg>
+// );
+
+// const PhonePe = () => (
+//   <svg
+//     viewBox="0 0 60 24"
+//     width="60"
+//     height="24"
+//     xmlns="http://www.w3.org/2000/svg"
+//   >
+//     <rect width="60" height="24" rx="4" fill="#5F259F" />
+//     <text
+//       x="7"
+//       y="17"
+//       fontFamily="Arial,sans-serif"
+//       fontWeight="700"
+//       fontSize="11"
+//       fill="#fff"
+//     >
+//       Phone
+//     </text>
+//     <text
+//       x="38"
+//       y="17"
+//       fontFamily="Arial,sans-serif"
+//       fontWeight="700"
+//       fontSize="11"
+//       fill="#CBB4F5"
+//     >
+//       Pe
+//     </text>
+//   </svg>
+// );
+
+// const Paytm = () => (
+//   <svg
+//     viewBox="0 0 56 24"
+//     width="56"
+//     height="24"
+//     xmlns="http://www.w3.org/2000/svg"
+//   >
+//     <rect width="56" height="24" rx="4" fill="#00BAF2" />
+//     <text
+//       x="6"
+//       y="17"
+//       fontFamily="Arial,sans-serif"
+//       fontWeight="800"
+//       fontSize="12"
+//       fill="#fff"
+//     >
+//       Paytm
+//     </text>
+//   </svg>
+// );
+
+// const BHIM = () => (
+//   <svg
+//     viewBox="0 0 52 24"
+//     width="52"
+//     height="24"
+//     xmlns="http://www.w3.org/2000/svg"
+//   >
+//     <rect
+//       width="52"
+//       height="24"
+//       rx="4"
+//       fill="#fff"
+//       stroke="#e5e7eb"
+//       strokeWidth="1"
+//     />
+//     <text
+//       x="4"
+//       y="17"
+//       fontFamily="Arial,sans-serif"
+//       fontWeight="800"
+//       fontSize="13"
+//     >
+//       <tspan fill="#097939">BH</tspan>
+//       <tspan fill="#ED752E">IM</tspan>
+//     </text>
+//     <text
+//       x="31"
+//       y="16"
+//       fontFamily="Arial,sans-serif"
+//       fontWeight="700"
+//       fontSize="9"
+//       fill="#666"
+//     >
+//       UPI
+//     </text>
+//   </svg>
+// );
+
+// const Visa = () => (
+//   <svg
+//     viewBox="0 0 52 24"
+//     width="52"
+//     height="24"
+//     xmlns="http://www.w3.org/2000/svg"
+//   >
+//     <rect width="52" height="24" rx="4" fill="#1A1F71" />
+//     <text
+//       x="5"
+//       y="19"
+//       fontFamily="'Times New Roman',Georgia,serif"
+//       fontWeight="700"
+//       fontSize="17"
+//       fill="#fff"
+//       fontStyle="italic"
+//     >
+//       VISA
+//     </text>
+//   </svg>
+// );
+
+// const Mastercard = () => (
+//   <svg
+//     viewBox="0 0 52 24"
+//     width="52"
+//     height="24"
+//     xmlns="http://www.w3.org/2000/svg"
+//   >
+//     <rect width="52" height="24" rx="4" fill="#252525" />
+//     <circle cx="20" cy="12" r="8" fill="#EB001B" />
+//     <circle cx="32" cy="12" r="8" fill="#F79E1B" />
+//     <path d="M26 6.27a8 8 0 0 1 0 11.46A8 8 0 0 1 26 6.27z" fill="#FF5F00" />
+//   </svg>
+// );
+
+// const RuPay = () => (
+//   <svg
+//     viewBox="0 0 56 24"
+//     width="56"
+//     height="24"
+//     xmlns="http://www.w3.org/2000/svg"
+//   >
+//     <rect
+//       width="56"
+//       height="24"
+//       rx="4"
+//       fill="#fff"
+//       stroke="#e5e7eb"
+//       strokeWidth="1"
+//     />
+//     <text
+//       x="5"
+//       y="17"
+//       fontFamily="Arial,sans-serif"
+//       fontWeight="800"
+//       fontSize="12"
+//     >
+//       <tspan fill="#1A6DB5">Ru</tspan>
+//       <tspan fill="#E7232A">Pay</tspan>
+//     </text>
+//   </svg>
+// );
+
+const paymentMethods = [
+  { label: "Google Pay", src: "/assets/workshops/payments/gpay.png" },
+  { label: "PhonePe", src: "/assets/workshops/payments/phonepe.png" },
+  { label: "Paytm", src: "/assets/workshops/payments/paytm.png" },
+  { label: "BHIM UPI", src: "/assets/workshops/payments/bhim.png" },
+  { label: "Visa", src: "/assets/workshops/payments/visa.png" },
+  { label: "Mastercard", src: "/assets/workshops/payments/mastercard.jpg" },
+  { label: "RuPay", src: "/assets/workshops/payments/rupay.png" },
+];
+
+// const paymentMethods = [
+//   { label: "Google Pay", Icon: GPay },
+//   { label: "PhonePe", Icon: PhonePe },
+//   { label: "Paytm", Icon: Paytm },
+//   { label: "BHIM UPI", Icon: BHIM },
+//   { label: "Visa", Icon: Visa },
+//   { label: "Mastercard", Icon: Mastercard },
+//   { label: "RuPay", Icon: RuPay },
+// ];
+
+/* ─────────────────────────────────────────── */
+
 const WorkshopPayment = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const state = location.state as PaymentState | null;
 
-  const [ageGroup, setAgeGroup] = useState("");
-  const [mode, setMode] = useState("");
-
   if (!state) {
-    return <div className="p-10">Invalid access</div>;
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center space-y-3">
+          <p className="text-muted-foreground text-sm">
+            Invalid access. Please go back and select a plan.
+          </p>
+          <button
+            onClick={() => navigate(-1)}
+            className="text-sm border border-foreground/30 px-4 py-2 rounded-lg hover:bg-foreground/10 transition"
+          >
+            Go Back
+          </button>
+        </div>
+      </div>
+    );
   }
 
-  const { workshop, planTitle } = state;
-
-  const plan = plans.find((plan) => plan.title === planTitle);
-
+  const { workshop, planTitle, mode, age } = state;
+  const plan = plans.find((p) => p.title === planTitle);
   const selected = options.find((ele) =>
     workshop.toLowerCase().includes(ele.name.toLowerCase()),
   );
 
+  const rows = [
+    {
+      icon: <Layers className="w-4 h-4" />,
+      label: "Workshop",
+      value: selected?.title || workshop,
+    },
+    { icon: <Tag className="w-4 h-4" />, label: "Plan", value: plan?.title },
+    {
+      icon: <Clock className="w-4 h-4" />,
+      label: "Duration",
+      value: plan?.duration,
+    },
+    {
+      icon: <CheckCircle2 className="w-4 h-4" />,
+      label: "Sessions",
+      value: plan?.totalSessions,
+    },
+    { icon: <User className="w-4 h-4" />, label: "Age Group", value: age },
+    {
+      icon:
+        mode === "Online" ? (
+          <Wifi className="w-4 h-4" />
+        ) : (
+          <MapPin className="w-4 h-4" />
+        ),
+      label: "Mode",
+      value: mode,
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-background px-6 md:px-12 lg:px-28 py-10 flex justify-center">
-      <div className="w-full max-w-2xl bg-white/5 border rounded-3xl shadow-xl p-6 md:p-10 space-y-8">
-        {/* HEADER */}
-        <div className="text-center">
-          <h2 className="text-3xl font-bold">Complete Your Booking</h2>
-          <p className="text-muted-foreground mt-2 text-sm">
-            Review your details and confirm your slot
+    <div className="min-h-screen bg-background px-4 md:px-8 py-10 flex flex-col items-center">
+      {/* Back */}
+      <div className="w-full max-w-lg mb-6">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back
+        </button>
+      </div>
+
+      <div className="w-full max-w-lg flex flex-col gap-5">
+        {/* Header */}
+        <div>
+          <h1 className="text-3xl font-extrabold tracking-tight text-foreground">
+            Complete your booking
+          </h1>
+          <p className="text-muted-foreground text-sm mt-1">
+            Review your selections before proceeding to payment.
           </p>
         </div>
 
-        {/* WORKSHOP SUMMARY */}
-        <div className="bg-background border rounded-xl p-5 space-y-4">
-          <h3 className="font-semibold text-lg">Workshop Summary</h3>
-
-          <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Workshop</span>
-            <span className="font-medium">{selected?.title || workshop}</span>
+        {/* Summary Card */}
+        <div className="border border-muted-foreground/30 rounded-2xl overflow-hidden">
+          <div className="px-5 py-4 border-b border-muted-foreground/20">
+            <p className="text-xs uppercase tracking-widest text-muted-foreground font-medium">
+              Booking summary
+            </p>
           </div>
-
-          <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Plan</span>
-            <span>{plan?.title}</span>
-          </div>
-
-          <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Duration</span>
-            <span>{plan?.duration}</span>
-          </div>
-
-          <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Sessions</span>
-            <span>{plan?.totalSessions}</span>
-          </div>
-        </div>
-
-        {/* USER SELECTION */}
-        <div className="space-y-6">
-          {/* AGE */}
-          <div>
-            <p className="text-sm font-medium mb-2">Select Age Group</p>
-            <div className="grid grid-cols-2 gap-3">
-              {["6–12", "13–19"].map((age) => (
-                <button
-                  key={age}
-                  onClick={() => setAgeGroup(age)}
-                  className={`py-3 rounded-xl border text-sm font-medium transition
-                ${
-                  ageGroup === age
-                    ? "bg-foreground text-background"
-                    : "hover:bg-muted"
-                }`}
-                >
-                  {age}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* MODE */}
-          <div>
-            <p className="text-sm font-medium mb-2">Select Mode</p>
-            <div className="grid grid-cols-2 gap-3">
-              {["Online", "Offline"].map((item) => (
-                <button
-                  key={item}
-                  onClick={() => setMode(item)}
-                  className={`py-3 rounded-xl border text-sm font-medium transition
-                ${
-                  mode === item
-                    ? "bg-foreground text-background "
-                    : "hover:bg-muted"
-                }`}
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
+          <div className="divide-y divide-muted-foreground/10">
+            {rows.map(({ icon, label, value }, i) => (
+              <div
+                key={i}
+                className="flex items-center justify-between px-5 py-3.5 gap-4"
+              >
+                <div className="flex items-center gap-2.5 text-muted-foreground min-w-0">
+                  {icon}
+                  <span className="text-sm">{label}</span>
+                </div>
+                <span className="text-sm font-medium text-foreground text-right truncate max-w-[55%]">
+                  {value}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* PRICE + CTA */}
-        <div className="border-t pt-6 space-y-4">
-          <div className="flex justify-between items-center">
-            <span className="text-lg font-medium">Total Amount</span>
-            <span className="text-3xl font-extrabold ">
+        {/* Price Card */}
+        <div className="border border-muted-foreground/30 rounded-2xl px-5 py-5 flex items-center justify-between">
+          <div>
+            <p className="text-xs uppercase tracking-widest text-muted-foreground font-medium mb-1">
+              Total amount
+            </p>
+            <p className="text-4xl font-extrabold text-foreground tracking-tight">
               {plan?.price}
-            </span>
+            </p>
           </div>
+          <div className="text-right text-xs text-muted-foreground space-y-0.5">
+            <p>One-time payment</p>
+            <p>No hidden charges</p>
+          </div>
+        </div>
 
-          <button
-            disabled={!ageGroup || !mode}
-            className={`w-full py-3 rounded-xl font-semibold transition
-          ${
-            ageGroup && mode
-              ? "bg-foreground text-background hover:bg-foreground/80"
-              : "bg-gray-300 text-gray-500 cursor-not-allowed"
-          }`}
-          >
-            Proceed to Pay
-          </button>
+        {/* Payment Methods */}
+        <div className="border border-muted-foreground/30 rounded-2xl overflow-hidden">
+          <div className="px-5 py-4 border-b border-muted-foreground/20">
+            <p className="text-xs uppercase tracking-widest text-muted-foreground font-medium">
+              Accepted payment methods
+            </p>
+          </div>
+          <div className="px-4 py-4 flex flex-wrap items-center gap-3">
+            {/* {paymentMethods.map(({ label, Icon }) => (
+              <div
+                key={label}
+                title={label}
+                className="flex items-center justify-center bg-background border border-muted-foreground/20 rounded-lg px-2.5 py-2 hover:border-muted-foreground/50 transition cursor-default"
+              >
+                <Icon />
+              </div>
+            ))} */}
 
-          <p className="text-xs text-muted-foreground text-center">
-            Secure payment • No hidden charges
-          </p>
+            {paymentMethods.map(({ label, src }) => (
+              <div
+                key={label}
+                title={label}
+                className="flex items-center justify-center bg-background border border-muted-foreground/20 rounded-lg px-3 py-2 hover:border-muted-foreground/50 transition"
+              >
+                <img src={src} alt={label} className="h-8 object-contain" />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* CTA */}
+        <button className="w-full py-4 rounded-2xl bg-foreground text-background font-bold text-base tracking-wide hover:bg-foreground/85 active:scale-[0.98] transition-all duration-200">
+          Proceed to Pay
+        </button>
+
+        {/* Trust line */}
+        <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground pb-4">
+          <ShieldCheck className="w-3.5 h-3.5" />
+          <span>Secured by 256-bit encryption</span>
         </div>
       </div>
     </div>
