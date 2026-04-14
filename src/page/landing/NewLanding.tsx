@@ -132,8 +132,8 @@ const NewLanding = () => {
         {/* RIGHT CONTENT */}
         <div className="col-span-1">
           <div ref={videoRef} className="w-full mt-8 lg:mt-0">
-            <div className="relative w-full aspect-video rounded-lg overflow-hidden shadow-2xl">
-              {/* <ReactPlayer
+            {/* <div className="relative w-full aspect-video rounded-lg overflow-hidden shadow-2xl">
+              <ReactPlayer
                 url="assets/about.mp4"
                 className="absolute inset-0"
                 width="100%"
@@ -151,17 +151,20 @@ const NewLanding = () => {
                     },
                   },
                 }}
-              /> */}
+              />
+            </div> */}
+
+            <div className="relative w-full aspect-video rounded-lg overflow-hidden shadow-2xl">
               <video
-                className="absolute inset-0"
-                src="assets/about.mp4"
+                className="absolute inset-0 w-full h-full object-cover"
+                src="/assets/about.mp4"
                 autoPlay
-                loop={false}
                 muted
                 playsInline
-                webkit-playsinline
                 controls
-              />
+              >
+                <source src="/assets/about.mp4" type="video/mp4" />
+              </video>
             </div>
           </div>
           <div className="mt-6">
