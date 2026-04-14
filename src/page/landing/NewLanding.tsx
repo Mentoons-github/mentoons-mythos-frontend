@@ -157,13 +157,13 @@ const NewLanding = () => {
             <div className="relative w-full aspect-video rounded-lg overflow-hidden shadow-2xl">
               <video
                 className="absolute inset-0 w-full h-full object-cover"
-                src="/assets/about.mp4"
+                src="/assets/fixed-final.mp4"
                 autoPlay
                 muted
                 playsInline
                 controls
               >
-                <source src="/assets/about.mp4" type="video/mp4" />
+                <source src="/assets/fixed-final.mp4" type="video/mp4" />
               </video>
             </div>
           </div>
