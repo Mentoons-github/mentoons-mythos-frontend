@@ -135,7 +135,7 @@ const WorkshopDurationCard = ({ handleBook }: Props) => {
                   </div>
 
                   {/* Price */}
-                  <h3 className="text-4xl font-extrabold mb-6">{plan.price}</h3>
+                  <h3 className="text-4xl font-extrabold mb-6">₹{plan.price}</h3>
 
                   {/* Divider */}
                   <div className="border-t border-muted-foreground mb-6"></div>

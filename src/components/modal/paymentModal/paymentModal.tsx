@@ -25,6 +25,9 @@ const PaymentModal = ({
   const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
+  // ✅ Format price (Indian format)
+  const formattedPrice = (price || 0).toLocaleString("en-IN");
+
   useEffect(() => {
     if (paymentDone) {
       setShowSuccess(true);
@@ -34,6 +37,7 @@ const PaymentModal = ({
   const handlePayment = async () => {
     setLoading(true);
     setError(null);
+
     try {
       const response = await initiatePayment({ price, itemType, itemName });
 
@@ -59,218 +63,127 @@ const PaymentModal = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/80 flex justify-center items-center z-50 backdrop-blur-sm">
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex justify-center items-center z-50">
       {paymentDone ? (
+        // ✅ SUCCESS UI
         <div
-          className={`w-full max-w-md mx-4 bg-white border-2 border-gray-200 shadow-2xl rounded-lg overflow-hidden transform transition-all duration-700 ${
+          className={`w-full max-w-md mx-4 bg-white rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-500 ${
             showSuccess ? "scale-100 opacity-100" : "scale-95 opacity-0"
           }`}
         >
-          {/* Success Header with Animation */}
-          <div className="bg-gradient-to-r from-green-500 to-green-600 p-6 text-center border-b relative overflow-hidden">
-            {/* Animated Background Elements */}
-            <div className="absolute inset-0 opacity-20">
-              <div className="absolute top-2 left-4 w-2 h-2 bg-white rounded-full animate-ping"></div>
-              <div className="absolute top-8 right-6 w-1 h-1 bg-white rounded-full animate-ping animation-delay-200"></div>
-              <div className="absolute bottom-4 left-8 w-1.5 h-1.5 bg-white rounded-full animate-ping animation-delay-400"></div>
-              <div className="absolute bottom-2 right-4 w-1 h-1 bg-white rounded-full animate-ping animation-delay-600"></div>
-            </div>
-
-            <div
-              className={`mb-4 transform transition-all duration-1000 ${
-                showSuccess
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-4 opacity-0"
-              }`}
-            >
-              <div className="relative">
-                {/* Success Icon with Bounce Animation */}
-                <div className="mx-auto w-20 h-20 bg-white rounded-full flex items-center justify-center animate-bounce">
-                  <svg
-                    className="w-10 h-10 text-green-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={3}
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                </div>
-                {/* Pulsing Ring */}
-                <div className="absolute inset-0 w-20 h-20 mx-auto border-4 border-white rounded-full animate-ping opacity-50"></div>
+          <div className="bg-gradient-to-r from-green-500 to-green-600 p-6 text-center text-white">
+            <div className="mb-4">
+              <div className="mx-auto w-20 h-20 bg-white rounded-full flex items-center justify-center animate-bounce">
+                <svg
+                  className="w-10 h-10 text-green-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={3}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
               </div>
             </div>
 
-            <h1
-              className={`text-2xl font-bold text-white mb-2 transform transition-all duration-1000 delay-300 ${
-                showSuccess
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-4 opacity-0"
-              }`}
-            >
-              Payment Successful!
-            </h1>
-            <p
-              className={`text-green-100 transform transition-all duration-1000 delay-500 ${
-                showSuccess
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-4 opacity-0"
-              }`}
-            >
-              Your payment has been processed successfully
+            <h1 className="text-2xl font-bold">Payment Successful</h1>
+            <p className="text-green-100 text-sm mt-1">
+              Your payment was completed successfully
             </p>
           </div>
 
-          <div className="p-8 bg-white">
-            <div className="text-center space-y-4">
-              {/* Animated Success Card */}
-              <div
-                className={`bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-6 border-2 border-green-200 transform transition-all duration-1000 delay-700 ${
-                  showSuccess
-                    ? "translate-y-0 opacity-100 scale-100"
-                    : "translate-y-8 opacity-0 scale-95"
-                }`}
-              >
-                <h3 className="text-lg font-semibold text-green-800 mb-2">
-                  Thank you for your payment!
-                </h3>
-                <p className="text-green-700 text-sm mb-4">
-                  Your transaction was successful. We've received your payment.
-                </p>
+          <div className="p-6 text-center space-y-4">
+            <div className="bg-green-50 border border-green-200 rounded-xl p-5">
+              <p className="text-green-800 font-semibold mb-2">
+                Thank you for your payment!
+              </p>
 
-                {/* Animated Price with Counter Effect */}
-                <div
-                  className={`text-3xl font-bold text-green-600 transform transition-all duration-1000 delay-1000 ${
-                    showSuccess ? "scale-100 opacity-100" : "scale-75 opacity-0"
-                  }`}
-                >
-                  <span className="inline-block animate-pulse">₹</span>
-                  <span className="inline-block">{price}</span>
-                  <span className="text-lg ml-2 animate-bounce">Paid ✨</span>
-                </div>
-              </div>
-
-              {/* Item Details with Stagger Animation */}
-              <div
-                className={`space-y-2 text-sm text-gray-600 transform transition-all duration-700 delay-1200 ${
-                  showSuccess
-                    ? "translate-x-0 opacity-100"
-                    : "translate-x-4 opacity-0"
-                }`}
-              >
-                <p className="flex justify-between items-center p-2 bg-gray-50 rounded">
-                  <span className="font-medium text-black">Item:</span>
-                  <span className="font-semibold">{itemName}</span>
-                </p>
-                <p className="flex justify-between items-center p-2 bg-gray-50 rounded">
-                  <span className="font-medium text-black">Type:</span>
-                  <span className="font-semibold">{itemType}</span>
-                </p>
-              </div>
-
-              {/* Celebration Message */}
-              <div
-                className={`bg-gradient-to-r from-green-50 to-blue-50 border-2 border-green-200 rounded-lg p-4 mt-6 transform transition-all duration-1000 delay-1400 ${
-                  showSuccess
-                    ? "translate-y-0 opacity-100 rotate-0"
-                    : "translate-y-4 opacity-0 rotate-1"
-                }`}
-              >
-                <p className="text-green-800 text-sm flex items-center justify-center gap-2">
-                  <span className="text-xl animate-bounce">🎉</span>
-                  You can now continue with your assessment. Thank you for your
-                  payment!
-                  <span className="text-xl animate-bounce animation-delay-200">
-                    🚀
-                  </span>
-                </p>
+              <div className="text-3xl font-bold text-green-600">
+                ₹{formattedPrice}
               </div>
             </div>
 
-            {/* Animated Continue Button */}
-            <div
-              className={`mt-8 transform transition-all duration-1000 delay-1600 ${
-                showSuccess
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-4 opacity-0"
-              }`}
+            <div className="text-sm text-gray-600 space-y-2">
+              <p className="flex justify-between bg-gray-50 p-2 rounded">
+                <span>Item:</span>
+                <span className="font-medium">{itemName}</span>
+              </p>
+              <p className="flex justify-between bg-gray-50 p-2 rounded">
+                <span>Type:</span>
+                <span className="font-medium">{itemType}</span>
+              </p>
+            </div>
+
+            <button
+              onClick={closeModal}
+              className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-semibold transition-all duration-300"
             >
-              <button
-                onClick={closeModal}
-                className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white py-4 px-6 font-semibold border-2 border-green-600 hover:border-green-700 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg rounded-lg relative overflow-hidden group"
-              >
-                <span className="relative z-10">Continue to Assessment</span>
-                {/* Button shine effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 group-hover:animate-pulse"></div>
-              </button>
-            </div>
+              Continue
+            </button>
           </div>
         </div>
       ) : (
-        <div className="w-full max-w-md mx-4 bg-white border-2 border-black shadow-2xl transform transition-all duration-500 scale-100 opacity-100">
+        // ✅ PAYMENT UI
+        <div className="w-full max-w-md mx-4 bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
+          {/* Header */}
           <div
             className={`p-6 text-center ${
-              error ? "bg-red-600" : "bg-black"
-            } text-white transition-colors duration-300`}
+              error ? "bg-red-500" : "bg-gradient-to-r from-black to-gray-800"
+            } text-white`}
           >
             <h1 className="text-2xl font-bold">
-              {error ? "Payment Failed" : "Payment Required"}
+              {error ? "Payment Failed" : "Secure Payment"}
             </h1>
           </div>
 
-          <div className="p-8 space-y-6">
+          {/* Body */}
+          <div className="p-6 space-y-6">
             <div className="text-center">
-              <h2 className="text-xl font-semibold text-black mb-2">
-                {heading}
-              </h2>
-              <p className="text-gray-700 leading-relaxed">{description}</p>
+              <h2 className="text-xl font-semibold mb-2">{heading}</h2>
+              <p className="text-gray-600 text-sm">{description}</p>
             </div>
 
-            <div className="text-center py-4 border-t border-b border-gray-200">
-              <span className="text-3xl font-bold text-black">₹{price}</span>
+            {/* Price */}
+            <div className="text-center py-5 border-y border-gray-200">
+              <span className="text-4xl font-extrabold">₹{formattedPrice}</span>
             </div>
 
+            {/* Error */}
             {error && (
-              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded text-sm text-center animate-shake">
+              <div className="bg-red-100 text-red-700 text-sm p-3 rounded text-center">
                 {error}
               </div>
             )}
 
-            <p className="text-sm text-gray-600 text-center">
+            {/* Info */}
+            <p className="text-sm text-gray-500 text-center">
               {error
-                ? "Please check the error above and try again."
-                : "Complete your payment to continue the assessment seamlessly."}
+                ? "Please try again."
+                : "Complete your payment to continue."}
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3">
+            {/* Buttons */}
+            <div className="flex gap-3">
               <button
                 onClick={handlePayment}
                 disabled={loading}
-                className={`flex-1 py-3 px-6 font-semibold border-2 transition-all duration-300 ease-in-out transform hover:scale-105 ${
-                  loading ? "animate-pulse" : ""
-                } ${
+                className={`flex-1 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
                   error
-                    ? "bg-red-600 text-white hover:bg-white hover:text-red-600 border-red-600"
-                    : "bg-black text-white hover:bg-white hover:text-black border-black"
-                }`}
+                    ? "bg-red-500 hover:bg-red-600 text-white"
+                    : "bg-black hover:bg-gray-900 text-white"
+                } ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
               >
-                {loading ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    Processing...
-                  </span>
-                ) : (
-                  `Pay ₹${price}`
-                )}
+                {loading ? "Processing..." : `Pay ₹${formattedPrice}`}
               </button>
+
               <button
                 onClick={closeModal}
                 disabled={loading}
-                className="flex-1 bg-white text-black py-3 px-6 font-semibold border-2 border-black hover:bg-black hover:text-white transition-all duration-300 ease-in-out transform hover:scale-105 disabled:opacity-50"
+                className="flex-1 py-3 rounded-xl border border-gray-300 hover:bg-gray-100 transition-all duration-300"
               >
                 Cancel
               </button>

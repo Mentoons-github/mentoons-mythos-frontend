@@ -35,8 +35,8 @@ export default function JoyfulGurukul({
   clickViewMore: () => void;
 }) {
   return (
-    <div className="min-h-screen  py-12 px-4">
-      <div className=" mx-auto">
+    <div className="lg:min-h-screen  py-12 px-4 ">
+      <div className=" mx-auto ">
         <div className="mb-10 flex  md:items-center justify-between">
           <div>
             <h1 className="mt-5 text-2xl md:text-4xl lg:text-5xl font-bold text-foreground/90 leading-tight hidden md:block">
@@ -76,7 +76,7 @@ export default function JoyfulGurukul({
         </div>
 
         {/* ── VISION + FEATURES ── */}
-        <div className="grid lg:grid-cols-2 gap-10 mb-14 border-t pt-5 border-stone-200">
+        <div className="grid lg:grid-cols-2 gap-10 mb-14 border-t pt-5 border-stone-200 ">
           {/* VISION */}
           <div>
             <h3 className="text-base font-semibold text-foreground/60 uppercase tracking-widest mb-3">

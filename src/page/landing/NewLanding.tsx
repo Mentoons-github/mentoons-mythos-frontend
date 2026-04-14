@@ -39,7 +39,7 @@ const NewLanding = () => {
     <div>
       <div className="min-h-screen relative grid grid-cols-1 lg:grid-cols-3 px-6 md:px-12 lg:px-24 py-10 lg:py-20 ">
         {/* Logo - centered at top */}
-        <div className="absolute flex flex-col items-center top-4 md:top-6 inset-x-0">
+        <div className="absolute flex flex-col items-center top-4 lg:top-6 inset-x-0">
           <div>
             {/* {user?.intelligenceTypes.map((ele,ind)=>(
               <div>
@@ -58,7 +58,7 @@ const NewLanding = () => {
         </div>
 
         {/* LEFT CONTENT */}
-        <div className="col-span-2 flex flex-col justify-center max-w-3xl pt-24 md:pr-12">
+        <div className="col-span-2 flex flex-col justify-center max-w-3xl pt-28 lg:pt-24 md:pr-12">
           {/* Heading */}
           <h1 className="text-3xl md:text-5xl  lg:text-6xl font-bold leading-tight text-foreground/80 mb-5">
             Discover Yourself Through{" "}
@@ -141,6 +141,7 @@ const NewLanding = () => {
                 controls
                 playing={true}
                 muted={true}
+                playsinline={true}
                 loop={false}
                 config={{
                   file: {
@@ -182,7 +183,8 @@ const NewLanding = () => {
 
                 <div className="py-7  transition px-4 bg-foreground rounded-b-2xl border-b">
                   <h2 className="text-lg font-semibold text-background/80">
-                    Know your birth sign <span className="text-sm text-[#df6d0c]">(Optional)</span>
+                    Know your birth sign{" "}
+                    <span className="text-sm text-[#df6d0c]">(Optional)</span>
                   </h2>
                   <p className="text-sm text-muted mt-1">
                     Explore personality insights based on your zodiac.
@@ -191,7 +193,7 @@ const NewLanding = () => {
                     onClick={() => handlePathClick("astrology")}
                     className="mt-3 bg-background text-foreground text-sm font-medium px-4 py-2 rounded-md hover:bg-background/80 transition"
                   >
-                    Find My Rashi 
+                    Find My Rashi
                   </button>
                 </div>
               </div>
