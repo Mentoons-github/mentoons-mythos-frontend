@@ -19,7 +19,7 @@ const Problems = () => {
     },
   ];
   return (
-    <div className="p-4 md:p-6 pb-12 md:pb-24 bg-[url('/assets/background/section/stars_background.png')] bg-center overflow-hidden">
+    <div className="p-4 md:p-6 pb-12 lg:pb-24 bg-[url('/assets/background/section/stars_background.png')] bg-center overflow-hidden">
       <motion.h2
         className="text-2xl font-semibold tracking-widest md:px-12 pb-8 md:pb-12 md:text-3xl lg:text-5xl"
         initial={{ opacity: 0, y: -30 }}

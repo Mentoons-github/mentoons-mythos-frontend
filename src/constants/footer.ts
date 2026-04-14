@@ -17,7 +17,7 @@ export const ABOUT = [
     url: "/about-us",
   },
   {
-    label: "WORKSHOPS",
+    label: "Workshops",
     url: "/workshops",
   },
   {

@@ -20,7 +20,7 @@ const HelperList = ({ data, label }: { data: object; label: string }) => {
           <img
             src="/assets/background/Frame.png"
             alt="mars-image"
-            className="w-full object-cover"
+            className="w-full object-cover hidden lg:block"
           />
         </motion.div>
       ) : (

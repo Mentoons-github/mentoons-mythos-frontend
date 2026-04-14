@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
-import ReactPlayer from "react-player";
+// import ReactPlayer from "react-player";
 
 const HeroSection = () => {
   return (
-    <div className="bg-[url('/assets/background/section/stars_background.png')] bg-center md:pt-10 p-4 md:p-6 pb-12 md:pb-24 flex flex-col lg:flex-row overflow-hidden">
+    <div className="bg-[url('/assets/background/section/stars_background.png')] bg-center md:pt-10 p-4 md:p-6 pb-12 md:pb-14 lg:pb-24 flex flex-col lg:flex-row overflow-hidden">
       <motion.div
         className="w-full  lg:w-2xl mx-auto"
         initial={{ opacity: 0 }}
@@ -36,21 +36,16 @@ const HeroSection = () => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 0.6 }}
       >
-        <ReactPlayer
-          url="assets/about.mp4"
-          className="absolute inset-0"
-          width="100%"
-          height="100%"
+        <video
+          className="absolute inset-0 w-full h-full object-cover"
+          src="/assets/fixed-final.mp4"
+          autoPlay
+          muted
+          playsInline
           controls
-          config={{
-            file: {
-              attributes: {
-                controlsList: "nodownload",
-                disablePictureInPicture: true,
-              },
-            },
-          }}
-        />
+        >
+          <source src="/assets/fixed-final.mp4" type="video/mp4" />
+        </video>
       </motion.div>
     </div>
   );
