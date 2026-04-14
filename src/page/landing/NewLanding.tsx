@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import ReactPlayer from "react-player";
+// import ReactPlayer from "react-player";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../hooks/reduxHooks";
 import AlreadyCheckModal from "../../components/modal/astro/rashiFindermodal.tsx/AlreadyCheckModal";
@@ -133,7 +133,7 @@ const NewLanding = () => {
         <div className="col-span-1">
           <div ref={videoRef} className="w-full mt-8 lg:mt-0">
             <div className="relative w-full aspect-video rounded-lg overflow-hidden shadow-2xl">
-              <ReactPlayer
+              {/* <ReactPlayer
                 url="assets/about.mp4"
                 className="absolute inset-0"
                 width="100%"
@@ -151,6 +151,16 @@ const NewLanding = () => {
                     },
                   },
                 }}
+              /> */}
+              <video
+                className="absolute inset-0"
+                src="assets/about.mp4"
+                autoPlay
+                loop={false}
+                muted
+                playsInline
+                webkit-playsinline
+                controls
               />
             </div>
           </div>
