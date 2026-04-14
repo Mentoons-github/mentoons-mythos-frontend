@@ -24,39 +24,43 @@ const NewsLetter = () => {
   };
 
   return (
-    <div className="w-full space-y-6 text-center sm:text-left">
-      <h1 className="font-forum text-[18px] sm:text-[20px]  tracking-wide">
-        SIGN-UP FOR OUR NEWSLETTER
-      </h1>
+    <div className="w-full md:flex lg:flex-col space-x-6 space-y-6 text-center sm:text-left">
+      <div>
+        <h1 className="font-forum text-[18px] sm:text-[20px]  tracking-wide">
+          SIGN-UP FOR OUR NEWSLETTER
+        </h1>
 
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col items-center w-full gap-2 sm:items-start"
-      >
-        <div className="flex w-full max-w-xs sm:max-w-sm ">
-          <input
-            value={email}
-            name="email"
-            type="email"
-            placeholder="Your email"
-            required
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-3 border border-foreground outline-none  text-sm rounded-l-sm"
-          />
-          <button
-            type="submit"
-            className="flex items-center gap-2 bg-foreground text-background px-4 py-3  border border-foreground border-l-0 rounded-r-sm"
-          >
-            <span>✦</span>
-            <span className="font-medium font-mulish text-[14px]">
-              {loading ? "SUBMITTING" : "SUBMIT"}
-            </span>
-          </button>
-        </div>
-        <span className="text-xs sm:text-sm">*We promise not to spam you</span>
-      </form>
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col items-center w-full gap-2 sm:items-start"
+        >
+          <div className="flex w-full max-w-2xl sm:max-w-sm ">
+            <input
+              value={email}
+              name="email"
+              type="email"
+              placeholder="Your email"
+              required
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full p-3 border border-foreground outline-none  text-sm rounded-l-sm"
+            />
+            <button
+              type="submit"
+              className="flex items-center gap-2 bg-foreground text-background px-4 py-3  border border-foreground border-l-0 rounded-r-sm"
+            >
+              <span>✦</span>
+              <span className="font-medium font-mulish text-[14px]">
+                {loading ? "SUBMITTING" : "SUBMIT"}
+              </span>
+            </button>
+          </div>
+          <span className="text-xs sm:text-sm">
+            *We promise not to spam you
+          </span>
+        </form>
+      </div>
 
-      <div className="mt-10 md:mt-0">
+      <div className="mt-10 md:mt-0 ">
         <h1 className="font-forum text-[18px] sm:text-[20px] md:text-[24px] tracking-wide">
           SOCIAL MEDIA
         </h1>

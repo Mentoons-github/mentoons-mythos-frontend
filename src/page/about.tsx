@@ -1,5 +1,5 @@
 import HelperList from "../components/helperList/helperList";
-import FAQ from "../components/about/FAQ";
+// import FAQ from "../components/about/FAQ";
 import HeroSection from "../components/about/HeroSection";
 import KnowMoreAboutUs from "../components/about/KnowMoreAboutUs";
 import Problems from "../components/about/Problems";
@@ -19,7 +19,7 @@ const MythosAbout = () => {
       <HelperList data={helps} label="HOW WE HELP YOU" />
       {/* <ProductDisplay /> */}
       <KnowMoreAboutUs />
-      <FAQ />
+      {/* <FAQ /> */}
     </div>
   );
 };
