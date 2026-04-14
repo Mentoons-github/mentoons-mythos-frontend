@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { plans } from "../constants/workshop/JoyfullGurukulPlans";
 import {
   CheckCircle2,
@@ -11,6 +11,8 @@ import {
   ShieldCheck,
   ArrowLeft,
 } from "lucide-react";
+import PaymentModal from "../components/modal/paymentModal/paymentModal";
+import { useEffect, useState } from "react";
 
 interface PaymentState {
   workshop: string;
@@ -236,7 +238,17 @@ const WorkshopPayment = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const state = location.state as PaymentState | null;
+  const [paymentRequired, setPaymentRequired] = useState(false);
+  const [paymentDone, setPaymentDone] = useState(false);
+  const [searchParams] = useSearchParams();
+  const paid = searchParams.get("paid") === "true";
 
+  useEffect(() => {
+    if (paid) {
+      setPaymentDone(true);
+      setPaymentRequired(false);
+    }
+  }, [paid]);
   if (!state) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -347,7 +359,7 @@ const WorkshopPayment = () => {
               Total amount
             </p>
             <p className="text-4xl font-extrabold text-foreground tracking-tight">
-              {plan?.price}
+              ₹{plan?.price}
             </p>
           </div>
           <div className="text-right text-xs text-muted-foreground space-y-0.5">
@@ -387,7 +399,10 @@ const WorkshopPayment = () => {
         </div>
 
         {/* CTA */}
-        <button className="w-full py-4 rounded-2xl bg-foreground text-background font-bold text-base tracking-wide hover:bg-foreground/85 active:scale-[0.98] transition-all duration-200">
+        <button
+          onClick={() => setPaymentRequired(true)}
+          className="w-full py-4 rounded-2xl bg-foreground text-background font-bold text-base tracking-wide hover:bg-foreground/85 active:scale-[0.98] transition-all duration-200"
+        >
           Proceed to Pay
         </button>
 
@@ -397,6 +412,20 @@ const WorkshopPayment = () => {
           <span>Secured by 256-bit encryption</span>
         </div>
       </div>
+
+      {paymentRequired && (
+        <PaymentModal
+          closeModal={() => {
+            setPaymentRequired(false);
+          }}
+          paymentDone={paymentDone}
+          itemType={"workshop"!}
+          itemName={name!}
+          heading="Workshop"
+          price={plan?.price ? Number(plan.price.replace(/[^\d.]/g, "")) : 0}
+          description={`To purchase the workshop, a one-time payment of ${plan?.price} is required. `}
+        />
+      )}
     </div>
   );
 };
