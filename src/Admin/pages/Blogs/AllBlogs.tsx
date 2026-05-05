@@ -3,14 +3,14 @@ import {
   deleteBlogThunk,
   fetcheBlogThunk,
   fetchSinglBlogThunk,
-  getCommentBlogThunk,
+  // getCommentBlogThunk,
 } from "../../../features/blog/blogThunk";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { Eye, Trash2 } from "lucide-react";
 import DeleteModal from "../../components/modals/deleteModal";
 import { toast } from "sonner";
 import { resetBlogSlice } from "../../../features/blog/blogSlice";
-import AdminViewBlogModal from "../../components/modals/Blog/AdminViewBlogModal";
+// import AdminViewBlogModal from "../../components/modals/Blog/AdminViewBlogModal";
 import {
   SearchOptions,
   ShowSort,
@@ -27,9 +27,9 @@ const AllBlogs = () => {
     deleteMessage,
     deleteSuccess,
     error,
-    blog,
-    fetchBlogLoading,
-    comments,
+    // blog,
+    // fetchBlogLoading,
+    // comments,
   } = useAppSelector((state) => state.blog);
 
   const [selectedId, setSelectedId] = useState("");
@@ -44,6 +44,7 @@ const AllBlogs = () => {
 
   // Calculate total pages
   const totalPages = Math.ceil(total / limit);
+  console.log(viewModal);
 
   useEffect(() => {
     if (deleteSuccess) {
@@ -58,7 +59,7 @@ const AllBlogs = () => {
 
   useEffect(() => {
     const skip = (currentPage - 1) * limit;
-    dispatch(fetcheBlogThunk({ skip, limit, sort: sortOrder, search }));
+    dispatch(fetcheBlogThunk({ skip, limit, sort: sortOrder }));
 
     const timer = setTimeout(() => {
       setShowTable(true);
@@ -145,9 +146,9 @@ const AllBlogs = () => {
                       {(currentPage - 1) * limit + index + 1}
                     </td>
                     <td className="px-4 py-4">{blog?._id}</td>
-                    <td className="px-4 py-4">{blog?.writerId}</td>
-                    <td className="px-4 py-4">{blog?.writer}</td>
-                    <td className="px-4 py-4">{blog?.title}</td>
+                    <td className="px-4 py-4">{blog?._id}</td>
+                    <td className="px-4 py-4">{blog?._id}</td>
+                    <td className="px-4 py-4">{blog?._id}</td>
                     <td className="px-4 py-4 flex space-x-3">
                       <button
                         onClick={() => handleView(blog?._id as string)}
@@ -206,7 +207,7 @@ const AllBlogs = () => {
         />
       )}
 
-      {viewModal && (
+      {/* {viewModal && (
         <AdminViewBlogModal
           blog={blog}
           onClose={() => setViewModal(false)}
@@ -214,7 +215,7 @@ const AllBlogs = () => {
           commentShow={() => dispatch(getCommentBlogThunk(selectedId))}
           comments={comments}
         />
-      )}
+      )} */}
     </div>
   );
 };
