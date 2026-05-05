@@ -1,5 +1,5 @@
 export interface ProblemFacedI {
-  text: string;
+  text?: string;
   img: string;
-  color: string;
+  color?: string;
 }

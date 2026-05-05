@@ -69,6 +69,12 @@ const MythosSidebar = ({
     setSidebar(false);
   };
 
+  const handleClose = () => {
+    setSidebar(false);
+    setIsMentorDropdown(false);
+    setIsWorkshopDropdown(false);
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -86,7 +92,7 @@ const MythosSidebar = ({
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="fixed right-0 top-0 h-full w-full md:w-80 bg-background shadow-xl z-50 flex flex-col"
+            className="fixed right-0 top-0 h-full w-72 md:w-80 bg-background border shadow-xl z-50 flex flex-col"
             role="dialog"
             aria-modal="true"
             aria-label="Navigation menu"
@@ -96,14 +102,14 @@ const MythosSidebar = ({
                 whileTap={{ scale: 0.9 }}
                 transition={{ duration: 0.2 }}
                 className="p-2 bg-foreground rounded-full shadow hover:bg-muted-foreground transition focus:outline-none focus:ring-2 focus:ring-gray-400"
-                onClick={() => setSidebar(false)}
+                onClick={handleClose}
                 aria-label="Close menu"
               >
                 <FaTimes size={24} className="text-background" />
               </motion.button>
             </div>
 
-            <nav className="flex-1 flex items-center justify-center">
+            <nav className="flex-1 flex items-start justify-start">
               <ul className="space-y-7 font-semibold text-xl md:text-2xl mulish">
                 {navItems.map((item, index) => {
                   // if (item.toLowerCase() === "assessments") {
@@ -243,7 +249,7 @@ const MythosSidebar = ({
                               initial={{ opacity: 0, y: -10 }}
                               animate={{ opacity: 1, y: 0 }}
                               exit={{ opacity: 0, y: -10 }}
-                              className="absolute left-0 bottom-10 mt-2 bg-background border  shadow-md rounded-md py-2 w-60 z-50"
+                              className="absolute left-0 top-10 mt-2 bg-background border  shadow-md rounded-md py-2 w-60 z-50"
                             >
                               <li className=" hover:bg-">
                                 <div className="py">

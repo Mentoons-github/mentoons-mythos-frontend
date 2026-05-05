@@ -9,7 +9,7 @@ import Register from "./page/auth/Register";
 import Login from "./page/auth/Login";
 import OAuthResult from "./page/auth/OAuth";
 import Otp from "./page/auth/Otp";
-import Blogs from "./page/blogs";
+// import Blogs from "./page/blogs";
 import GroupChat from "./page/GroupChat";
 import AdminLayout from "./Admin/layout/AdminLayout";
 import Dashboard from "./Admin/pages/Dashboard";
@@ -48,6 +48,7 @@ import BecomeMentor from "./page/becomeMentor";
 import AdminEmployeeLeaveManagement from "./Admin/pages/employees/AdminEmployeeLeaveManagement";
 import RashiDetails from "./page/RashiDetails";
 import WorkshopPayment from "./page/WorkshopPayment";
+import BlogsV2 from "./page/blogsV2";
 
 const MythosHome = lazy(() => import("./page/home"));
 const MythosAbout = lazy(() => import("./page/about"));
@@ -156,7 +157,10 @@ const AppRouter = () => {
             {/* <Route path="landing" element={<NewLanding />} /> */}
             <Route index element={<MythosHome />} />
             <Route path="about-us" element={<MythosAbout />} />
-            <Route path="blog" element={<Blogs />} />
+            {/* <Route path="blog" element={<Blogs />} /> */}
+            <Route path="/blog" element={<BlogsV2 />}>
+              <Route path=":postId" element={<BlogsV2 />} />
+            </Route>
             <Route path="groups" element={<MythosGroups />} />
             <Route path="groups/:groupId" element={<Rashi />} />
             <Route path="*" element={<NotFound />} />

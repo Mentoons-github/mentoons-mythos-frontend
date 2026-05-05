@@ -6,7 +6,7 @@ import CommentItem from "./Comment/CommetItem";
 interface CommentsListProps {
   comments: Comments[];
   onClose: () => void;
-  handleReplyComment: (commentId: string, replyText: string) => void;
+  handleReplyComment: (commentId: string, replyText: string, blogId?:string) => void;
 }
 
 const CommentsList: React.FC<CommentsListProps> = ({ 

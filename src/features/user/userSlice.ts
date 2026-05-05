@@ -10,6 +10,7 @@ import {
   fetchAllUserCountThunk,
 } from "./userThunk";
 import { IUser } from "../../types";
+import { Reward } from "../../types/redux/blogInterface";
 
 export interface UserData {
   user: IUser | null;
@@ -28,7 +29,7 @@ export interface UserData {
   totalPage: number;
   userCount: number;
   logoutSuccess: boolean;
-  rewardPoints: number;
+  rewardPoints: Reward | null;
 }
 
 const initialState: UserData = {
@@ -48,7 +49,7 @@ const initialState: UserData = {
   totalPage: 0,
   userCount: 0,
   logoutSuccess: false,
-  rewardPoints: 0,
+  rewardPoints: null,
 };
 
 const userSlice = createSlice({
@@ -66,7 +67,7 @@ const userSlice = createSlice({
       state.singleUser = null;
       state.singleUserLoading = false;
       state.logoutSuccess = false;
-      state.rewardPoints = 0;
+      state.rewardPoints = null;
     },
     updateUserPassword: (state, action) => {
       if (state.user) {
@@ -129,7 +130,7 @@ const userSlice = createSlice({
       .addCase(blockUserThunk.fulfilled, (state, action) => {
         const updatedUser = action.payload.user;
         const index = state.allUsers.findIndex(
-          (u) => u._id === updatedUser._id
+          (u) => u._id === updatedUser._id,
         );
         if (index !== -1) {
           state.allUsers[index].isBlocked = updatedUser.isBlocked;

@@ -20,6 +20,7 @@ import {
   InitialAssessmentDetails,
   singleSubmission,
 } from "../../types/redux/assessmentInterface";
+import { Reward } from "../../types/redux/blogInterface";
 
 interface AssessmentSlice {
   data: Assessment | null;
@@ -41,7 +42,7 @@ interface AssessmentSlice {
   submissionTotalPages: number;
   deleteSuccess: boolean;
   deleteLoading: boolean;
-  rewardPoints: number;
+  rewardPoints: Reward | null;
 }
 
 const initialState: AssessmentSlice = {
@@ -64,7 +65,7 @@ const initialState: AssessmentSlice = {
   submissionTotalPages: 0,
   deleteLoading: false,
   deleteSuccess: false,
-  rewardPoints: 0,
+  rewardPoints: null,
 };
 
 const assessmentSlice = createSlice({
@@ -79,7 +80,7 @@ const assessmentSlice = createSlice({
       state.success = false;
       state.deleteLoading = false;
       state.deleteSuccess = false;
-      state.rewardPoints = 0;
+      state.rewardPoints = null;
     },
   },
   extraReducers: (builder) => {
@@ -95,7 +96,7 @@ const assessmentSlice = createSlice({
         state.error = null;
         state.data = action.payload.assessment;
         state.message = action.payload.message;
-        state.rewardPoints = action.payload.reward.points;
+        state.rewardPoints = action.payload.reward;
         state.success = true;
       })
       .addCase(assessmentSubmitTunk.rejected, (state, action) => {
@@ -198,7 +199,7 @@ const assessmentSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.message = action.payload.message;
-        state.rewardPoints = action.payload.reward.points;
+        state.rewardPoints = action.payload.reward;
         state.success = true;
       })
       .addCase(initialAssessmentSubmitThunk.rejected, (state, action) => {
@@ -220,14 +221,14 @@ const assessmentSlice = createSlice({
           state.initialSubmissions = action.payload.details;
           state.initialPage = action.payload.page;
           state.initialTotalPages = action.payload.totalPages;
-        }
+        },
       )
       .addCase(
         getInitialAssessmentSubmissionsThunk.rejected,
         (state, action) => {
           state.loading = false;
           state.error = action.payload as string;
-        }
+        },
       )
 
       // get single initial assessment details
@@ -241,14 +242,14 @@ const assessmentSlice = createSlice({
           state.singleInitialLoading = false;
           state.error = null;
           state.singleInitialDetails = action.payload;
-        }
+        },
       )
       .addCase(
         getSingleInitialAssessmentSubmissionsThunk.rejected,
         (state, action) => {
           state.singleInitialLoading = false;
           state.error = action.payload as string;
-        }
+        },
       )
 
       //delete assessment
@@ -264,7 +265,7 @@ const assessmentSlice = createSlice({
         state.deleteLoading = false;
         if (action.meta.arg) {
           state.allSubmissions = state.allSubmissions.filter(
-            (assessment) => assessment._id !== action.meta.arg
+            (assessment) => assessment._id !== action.meta.arg,
           );
         }
       })
@@ -289,10 +290,10 @@ const assessmentSlice = createSlice({
           state.deleteLoading = false;
           if (action.meta.arg) {
             state.initialSubmissions = state.initialSubmissions.filter(
-              (assessment) => assessment._id !== action.meta.arg
+              (assessment) => assessment._id !== action.meta.arg,
             );
           }
-        }
+        },
       )
       .addCase(
         deleteInitialAssessmentSubmissionThunk.rejected,
@@ -300,7 +301,7 @@ const assessmentSlice = createSlice({
           state.deleteSuccess = false;
           state.error = action.payload as string;
           state.deleteLoading = false;
-        }
+        },
       );
   },
 });

@@ -7,7 +7,7 @@ import {
   likeBlogThunk,
   replyCommentThunk,
 } from "../../features/blog/blogThunk";
-import { Blog } from "../../types/redux/blogInterface";
+import { Blog, IBlogV2 } from "../../types/redux/blogInterface";
 import ModalHeader from "./BlogModal/ModalHeader";
 import BlogImage from "./BlogModal/BlogImage";
 import BlogMeta from "./BlogModal/BlogMeta";
@@ -17,7 +17,7 @@ import CommentInput from "./BlogModal/CommentInput";
 import BlogActions from "./BlogModal/BlogAction";
 
 interface SinglePostModalProps {
-  post: Blog;
+  post: IBlogV2;
   onClose: () => void;
   userId: string;
 }
@@ -32,7 +32,7 @@ const SinglePostModal: React.FC<SinglePostModalProps> = ({
   const [commentOpen, setCommentOpen] = useState<boolean>(false);
 
   const postFromRedux = useAppSelector((state) =>
-    state.blog.data.find((b) => b._id === post._id)
+    state.blog.data.find((b) => b._id === post._id),
   );
   const { comments } = useAppSelector((state) => state.blog);
 

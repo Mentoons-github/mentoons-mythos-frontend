@@ -12,6 +12,7 @@ import { resetAssessmentSlice } from "../../features/assessment/assessmentSlice"
 import { useLocation, useNavigate } from "react-router-dom";
 import RewardModal from "../../components/modal/RewardModal";
 import { fetchUserData } from "../../features/user/userThunk";
+import { Reward } from "../../types/redux/blogInterface";
 
 const InitialAssessmentQuestions = () => {
   const dispatch = useAppDispatch();
@@ -24,7 +25,7 @@ const InitialAssessmentQuestions = () => {
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
   const [isFinished, setIsFinished] = useState(false);
   const [rewardModalOpen, setRewardModalOpen] = useState(false);
-  const [modalPoints, setModalPoints] = useState(0);
+  const [modalPoints, setModalPoints] = useState<Reward | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from;
@@ -184,6 +185,7 @@ const InitialAssessmentQuestions = () => {
 
       {rewardModalOpen && (
         <RewardModal
+          type="ASSESSMENT"
           points={modalPoints}
           onClose={() => {
             setRewardModalOpen(false);

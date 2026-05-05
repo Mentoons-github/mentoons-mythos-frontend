@@ -13,9 +13,9 @@ const ProblemFaced = ({
   const { ref, isInView } = useInView(0.3, false);
 
   return (
-    <section ref={ref} className="py-5 px-4 md:px-8  overflow-hidden">
+    <section ref={ref} className="overflow-hidden">
       <motion.h1
-        className=" font-bold text-xl sm:text-2xl md:text-[25px] font-montserrat mb-6 tracking-[2px] montserrat"
+        className=" font-bold font-montserrat text-lg montserrat"
         initial={{ opacity: 0, y: -50 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -50 }}
         transition={{ duration: 0.6, ease: "easeOut" }}

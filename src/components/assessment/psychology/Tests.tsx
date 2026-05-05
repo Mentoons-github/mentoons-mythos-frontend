@@ -47,14 +47,14 @@ const Tests = ({ user }: { user?: IUser | null }) => {
   };
   return (
     <motion.div
-      className=" md:py-16 py-2 px-2  md:px-12 bg-[url('/assets/background/section/stars_background.png')] bg-center"
+      className=" lg:py-16 md:py-8 py-2 px-2  md:px-12 bg-[url('/assets/background/section/stars_background.png')] bg-center"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: false, amount: 0.1 }}
       variants={containerVariants}
     >
       <motion.h1
-        className="text-2xl md:text-5xl font-bold text-foreground/80 mb-6 md:mb-12 leading-tight tracking-wider"
+        className="text-2xl md:text-5xl font-bold text-foreground/80 mb-6 md:mb-6 lg:mb-12 leading-tight tracking-wider"
         variants={fadeInUp}
       >
         Take Our Assessment

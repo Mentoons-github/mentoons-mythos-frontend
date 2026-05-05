@@ -3,9 +3,11 @@ import { reportUserThunk } from "../../../../features/user/userThunk";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import { resetUserSlice } from "../../../../features/user/userSlice";
 import { toast } from "sonner";
+import { REPORT_REASONS } from "../../../../constants/blogs/reportResons";
+import { X } from "lucide-react";
 
 interface CommentOptionsProps {
-  from:string;
+  from: string;
   userId?: string;
   Id?: string;
   onClose: () => void;
@@ -19,10 +21,13 @@ const ReportOptions: React.FC<CommentOptionsProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const { reportMessage, reportSuccess, error, loading } = useAppSelector(
-    (state) => state.user
+    (state) => state.user,
   );
 
-  const [reason, setReason] = useState("");
+  const [selectedReason, setSelectedReason] = useState("");
+  const [customReason, setCustomReason] = useState("");
+
+  const isOtherSelected = selectedReason.toLowerCase() === "other reasons";
 
   useEffect(() => {
     if (reportSuccess) {
@@ -32,72 +37,106 @@ const ReportOptions: React.FC<CommentOptionsProps> = ({
     }
 
     if (error) {
-      console.log(error,'error')
       toast.warning(error);
       onClose();
       dispatch(resetUserSlice());
     }
   }, [dispatch, error, onClose, reportMessage, reportSuccess]);
 
-  
+  // handle selecting reason
+  const handleSelect = (reason: string) => {
+    setSelectedReason(reason);
 
+    if (reason.toLowerCase() !== "other") {
+      setCustomReason(""); // clear input if not "Other"
+    }
+  };
+
+  // handle submit
   const handleReport = () => {
-    if (!reason.trim() || !userId) return;
+    if (!userId || !selectedReason) return;
+
+    const finalReason = isOtherSelected ? customReason : selectedReason;
+
+    if (!finalReason.trim()) return;
 
     dispatch(
       reportUserThunk({
-        userId ,
+        userId,
         data: {
-          reason,
-          from: from,
+          reason: finalReason,
+          from,
           fromId: Id,
         },
-      })
+      }),
     );
 
-    setReason("");
+    setSelectedReason("");
+    setCustomReason("");
   };
 
   return (
-    <div className="fixed inset-0  bg-opacity-30 z-50 flex items-center justify-center">
-      <div className="bg-secondary border rounded-md shadow-lg w-80 p-5 text-sm relative">
+    <div
+      className="fixed inset-0 z-[1000] bg-black/20 flex items-center justify-center"
+      onClick={onClose}
+    >
+      <div
+        className="bg-muted rounded-xl shadow-xl w-[500px] p-5 relative"
+        onClick={(e) => e.stopPropagation()}
+      >
         <button
-          className="absolute top-2 right-2 text-gray-500 hover:text-red-600 text-xl"
+          className="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-xl"
           onClick={onClose}
         >
-          &times;
+          <X />
         </button>
 
-        <h3 className="text-base font-semibold  mb-3">
-          Report User for this {from === "comment" ? "Comment": "Blog"}
+        {/* Title */}
+        <h3 className="text-lg font-semibold mb-4">
+          Report {from === "comment" ? "Comment" : "Post"}
         </h3>
 
-        <textarea
-          rows={3}
-          className="w-full text-sm border  rounded-md p-2 mb-3 focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none"
-          placeholder="Reason for reporting..."
-          value={reason}
-          onChange={(e) => setReason(e.target.value)}
-        />
+        {/* Reason list */}
+        <div className="space-y-2 mb-4 ">
+          {REPORT_REASONS.map((r) => (
+            <div
+              key={r}
+              onClick={() => handleSelect(r)}
+              className={`px-3 py-2 rounded-md border-t cursor-pointer text-base transition
+                ${
+                  selectedReason === r
+                    ? "bg-red-50 border-red-400 text-red-600"
+                    : "hover:bg-gray-100"
+                }`}
+            >
+              {r}
+            </div>
+          ))}
+        </div>
 
+        {/* Other reason input */}
+        {isOtherSelected && (
+          <textarea
+            rows={3}
+            className="w-full text-sm border rounded-md p-2 mb-4 focus:outline-none focus:ring-1 focus:ring-red-400 resize-none"
+            placeholder="Tell us more..."
+            value={customReason}
+            onChange={(e) => setCustomReason(e.target.value)}
+          />
+        )}
+
+        {/* Submit button */}
         <button
-          className="w-full px-3 py-1 bg-red-500 text-white disabled:cursor-not-allowed rounded-md hover:bg-red-600 disabled:opacity-50"
           onClick={handleReport}
-          disabled={!reason.trim() || loading}
+          disabled={
+            !selectedReason ||
+            (isOtherSelected && !customReason.trim()) ||
+            loading
+          }
+          className="w-full py-2 rounded-md bg-red-500 text-white font-medium hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition"
         >
-          {loading ? "Reporting..." : "Report"}
+          {loading ? "Reporting..." : "Submit Report"}
         </button>
-
-        {reportSuccess && (
-          <p className="text-green-600 text-xs mt-2 text-center">
-            {reportMessage}
-          </p>
-        )}
-        {error && (
-          <p className="text-red-500 text-xs mt-2 text-center">
-            {reportMessage}
-          </p>
-        )}
       </div>
     </div>
   );

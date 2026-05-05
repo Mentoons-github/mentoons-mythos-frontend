@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Blog } from "../../types/redux/blogInterface";
+import { IBlogV2 } from "../../types/redux/blogInterface";
 import { BookOpen, Sparkles, Stars, Moon } from "lucide-react";
 import ProfileBlogSkelton from "../skeltons/profile/ProfileBlogSkelton";
 
@@ -49,11 +49,10 @@ const ProfileBlogs = ({
   blogsLoading,
   blogError,
 }: {
-  userBlogs: Blog[];
+  userBlogs: IBlogV2[];
   blogsLoading: boolean;
   blogError: string | null | undefined;
 }) => {
-
   return (
     <div className="w-full max-w-4xl mx-auto p-4 md:p-6">
       <div className="flex items-center gap-3 mb-6">
@@ -71,7 +70,7 @@ const ProfileBlogs = ({
       )}
 
       {blogsLoading ? (
-        <ProfileBlogSkelton/>
+        <ProfileBlogSkelton />
       ) : userBlogs.length === 0 ? (
         <motion.div
           className="flex flex-col items-center justify-center py-16 relative overflow-hidden"
@@ -197,7 +196,7 @@ const ProfileBlogs = ({
               animate="visible"
               whileHover="hover"
             >
-              <div className="flex items-start justify-between">
+              {/* <div className="flex items-start justify-between">
                 <div>
                   <h3 className="text-xl font-semibold text-gray-800 mb-2">
                     {blog.title || "Untitled"}
@@ -206,7 +205,7 @@ const ProfileBlogs = ({
                     {blog.description}
                   </p>
                 </div>
-              </div>
+              </div> */}
             </motion.div>
           ))}
         </div>

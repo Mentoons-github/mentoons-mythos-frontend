@@ -7,6 +7,8 @@ import MythosLoginModal from "../../components/modals/mythosLogin";
 import RashiFinderModal from "../../components/modal/astro/rashiFindermodal.tsx";
 import AssignmentAlreadyTakenHome from "../../components/modal/assessment/AssignmentAlreadyTakenHome.tsx";
 import { motion } from "framer-motion";
+import Lottie from "lottie-react";
+import animationData from "../../../public/assets/home/intelligences.json";
 
 const NewLanding = () => {
   const videoRef = useRef<HTMLDivElement>(null);
@@ -37,9 +39,9 @@ const NewLanding = () => {
   };
   return (
     <div>
-      <div className="min-h-screen relative grid grid-cols-1 lg:grid-cols-3 px-6 md:px-12 lg:px-24 py-10 lg:py-20 ">
+      <div className="min-h-screen relative grid grid-cols-1 lg:grid-cols-5 px-6 md:px-12 lg:px-24 py-10 lg:py-20 ">
         {/* Logo - centered at top */}
-        <div className="absolute flex flex-col items-center top-4 lg:top-6 inset-x-0">
+        <div className="absolute flex flex-col items-center lg:mr-40 top-4 lg:top-6 inset-x-0">
           <div>
             {/* {user?.intelligenceTypes.map((ele,ind)=>(
               <div>
@@ -52,17 +54,23 @@ const NewLanding = () => {
             alt="company logo"
             className="w-48 md:w-64 lg:w-80 h-auto object-contain"
           />
-          <p className="uppercase text-sm tracking-widest text-muted-foreground font-semibold ">
-            Learn • Reflect • Grow
+
+          <p className="  italic tracking-widest  font-semibold -skew-x-12">
+            {/* Learn • Reflect • Grow */}
+            Mentoons intiative
           </p>
         </div>
 
         {/* LEFT CONTENT */}
-        <div className="col-span-2 flex flex-col justify-center max-w-3xl pt-28 lg:pt-24 md:pr-12">
+        <div className="col-span-3 flex flex-col justify-center max-w-3xl pt-28 lg:pt-16 md:pr-12">
           {/* Heading */}
           <h1 className="text-3xl md:text-5xl  lg:text-6xl font-bold leading-tight text-foreground/80 mb-5">
-            Discover Yourself Through{" "}
-            <span className="text-[#df6d0c]">Ancient Myths</span>
+            {/* Discover Yourself Through{" "} */}
+            Discover Ancient{" "}
+            <span className="text-[#df6d0c]">
+              {/* Ancient Myths */}
+              Mythology Stories
+            </span>
           </h1>
 
           {/* Intro */}
@@ -130,8 +138,8 @@ const NewLanding = () => {
         </div>
 
         {/* RIGHT CONTENT */}
-        <div className="col-span-1">
-          <div ref={videoRef} className="w-full mt-8 lg:mt-0">
+        <div className="col-span-2">
+          <div ref={videoRef} className="w-full mt-8 lg:pl-10 lg:mt-0">
             {/* <div className="relative w-full aspect-video rounded-lg overflow-hidden shadow-2xl">
               <ReactPlayer
                 url="assets/about.mp4"
@@ -171,15 +179,38 @@ const NewLanding = () => {
             <h2 className="text-2xl font-bold text-center">Get Started</h2>
           </div>
           <div className="mt-6 relative">
-            {/* FREE Badge */}
-            <div className="absolute flex items-center justify-center -top-3 -right-3 h-18 w-18 bg-[#df6d0c] text-white rounded-full shadow-lg z-10 px-4 py-1.5">
-              <p className="text-xl font-extrabold">FREE</p>
+            {/* FREE Badge (outside card) */}
+            <div className="absolute -top-5 -right-3 h-16 w-16 z-10 flex items-center justify-center">
+              {/* <motion.img
+                src="assets/home/badge.png"
+                alt="badge"
+                className="absolute inset-0 w-full h-full object-contain"
+                animate={{ scale: [1.05, 1.12, 1.05] }}
+                transition={{
+                  duration: 1.2,
+                  ease: "easeInOut",
+                  repeat: Infinity,
+                }}
+              /> */}
+              <motion.div
+                className="absolute inset-0 w-full h-full object-contain bg-[#df6d0c] rounded-full flex items-center justify-center"
+                animate={{ scale: [1.05, 1.12, 1.05] }}
+                transition={{
+                  duration: 1.2,
+                  ease: "easeInOut",
+                  repeat: Infinity,
+                }}
+              >
+                <p className="relative text-white text-lg font-extrabold">
+                  FREE
+                </p>
+              </motion.div>
             </div>
 
-            {/* Card */}
-            <div className=" shadow-lg hover:shadow-2xl transition  ">
-              <div className="flex flex-col divide-y divide-gray-800 ">
-                <div className="py-7  transition px-4 bg-background rounded-t-2xl border-t border-x">
+            {/* CARD */}
+            <div className="rounded-2xl border shadow-lg hover:shadow-2xl transition overflow-hidden">
+              <div className="md:grid grid-cols-5 divide-y md:divide-x">
+                <div className="col-span-3 py-5 px-4 bg-background">
                   <h2 className="text-lg font-semibold text-foreground/80">
                     Discover your intelligence type
                   </h2>
@@ -194,7 +225,23 @@ const NewLanding = () => {
                   </button>
                 </div>
 
-                <div className="py-7  transition px-4 bg-foreground rounded-b-2xl border-b">
+                {/* RIGHT (points) */}
+                <div className="col-span-2 py-5 px-4 md:bg-foreground flex flex-col justify-center">
+                  <ul className="text-sm md:text-background/70 space-y-2 ">
+                    <div className="w-36 h-36">
+                      <Lottie animationData={animationData} loop={true} />
+                    </div>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Divider */}
+              <div className="border-t" />
+
+              {/* Section 2 */}
+              <div className="md:grid grid-cols-5 divide-x">
+                {/* LEFT */}
+                <div className="col-span-3 py-5 px-4 bg-foreground">
                   <h2 className="text-lg font-semibold text-background/80">
                     Know your birth sign{" "}
                     <span className="text-sm text-[#df6d0c]">(Optional)</span>
@@ -209,29 +256,59 @@ const NewLanding = () => {
                     Find My Rashi
                   </button>
                 </div>
+
+                <div className="col-span-2 py-5 px-4 bg-foreground md:bg-background flex flex-col justify-center">
+                  <ul className="text-sm text-muted md:text-muted-foreground space-y-2">
+                    <li>• Based on birth details</li>
+                    <li>• Personality insights</li>
+                    <li>• Quick & simple</li>
+                  </ul>
+                </div>
               </div>
             </div>
-            <div className="py-7 mt-5  transition px-4 bg-foreground rounded-2xl border-b relative">
-              <div className="absolute flex flex-col items-center justify-center -top-4 -right-4 h-20 w-20 bg-[#df6d0c] text-white rounded-full shadow-lg z-10 text-center px-2">
+          </div>
+
+          <div className="relative mt-5">
+            {/* Badge (OUTSIDE clipping area) */}
+            <div className="absolute -top-5 -right-4 h-16 w-16 z-10 bg-[#df6d0c] rounded-full flex items-center justify-center">
+              {/* <img
+                src="assets/home/badge.png"
+                alt="badge"
+                className="absolute inset-0 w-full h-full object-contain"
+              /> */}
+
+              <div className="relative flex flex-col items-center justify-center text-white text-center px-2">
                 <span className="text-[10px] uppercase tracking-wide font-bold">
                   Ages
                 </span>
                 <span className="text-xs font-bold leading-tight">6–12</span>
                 <span className="text-xs font-bold leading-tight">13–19</span>
               </div>
+            </div>
 
-              <h2 className="text-lg font-semibold text-background/80">
-                Join our workshop
-              </h2>
-              <p className="text-sm text-muted mt-1">
-                Bring the ancient Gurukul to life in a joyful modern way.
-              </p>
-              <button
-                onClick={() => navigate("workshops")}
-                className="mt-3 bg-background text-foreground text-sm font-medium px-4 py-2 rounded-md hover:bg-background/80 transition"
-              >
-                Join Now
-              </button>
+            <div className="md:grid grid-cols-5 rounded-2xl border overflow-hidden shadow-lg">
+              <div className="py-5 px-4 bg-foreground col-span-3">
+                <h2 className="text-lg font-semibold text-background/80">
+                  Join our workshop
+                </h2>
+                <p className="text-sm text-muted mt-1">
+                  Bring the ancient Gurukul to life in a joyful modern way.
+                </p>
+                <button
+                  onClick={() => navigate("workshops")}
+                  className="mt-3 bg-background text-foreground text-sm font-medium px-4 py-2 rounded-md hover:bg-background/80 transition"
+                >
+                  Join Now
+                </button>
+              </div>
+
+              <div className="py-5 px-4 bg-foreground md:bg-background col-span-2 flex flex-col justify-center">
+                <ul className="text-sm text-muted md:text-muted-foreground space-y-2">
+                  <li>• Interactive sessions</li>
+                  <li>• Myth-based learning</li>
+                  <li>• Fun + self discovery</li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
