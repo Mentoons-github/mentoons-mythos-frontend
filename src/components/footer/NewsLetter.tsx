@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { BiLogoInstagramAlt } from "react-icons/bi";
-import { FaFacebookF, FaLinkedinIn } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
+
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { subscribeNewsletterThunk } from "../../features/about&newsletter/about&newsletterThunk";
 import { toast } from "sonner";
@@ -54,13 +52,13 @@ const NewsLetter = () => {
               </span>
             </button>
           </div>
-          <span className="text-xs sm:text-sm">
+          {/* <span className="text-xs sm:text-sm">
             *We promise not to spam you
-          </span>
+          </span> */}
         </form>
       </div>
 
-      <div className="mt-10 md:mt-0 ">
+      {/* <div className="mt-10 md:mt-0 ">
         <h1 className="font-forum text-[18px] sm:text-[20px] md:text-[24px] tracking-wide">
           SOCIAL MEDIA
         </h1>
@@ -76,7 +74,7 @@ const NewsLetter = () => {
             ),
           )}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -2,42 +2,20 @@ import { motion } from "framer-motion";
 // import Discover from "../home/learnMore";
 import useInView from "../../hooks/useInView";
 
-const HelperList = ({ data, label }: { data: object; label: string }) => {
+const HelperList = ({
+  data,
+  label,
+}: {
+  data: { title: string; description: string }[];
+  label: string;
+}) => {
   const { ref, isInView } = useInView(0.3, false);
 
   return (
     <section
       ref={ref}
-      className="relative flex flex-col justify-start items-start gap-2 md:gap-5 px-5 sm:px-10 lg:px-20 pt-10 lg:py-20 w-full bg-[url('/assets/background/section/stars_background.png')] bg-center overflow-hidden"
+      className="relative flex flex-col justify-start items-start gap-2 md:gap-5 px-5 sm:px-10 lg:px-20  w-full bg-[url('/assets/background/section/stars_background.png')] bg-center overflow-hidden"
     >
-      {label === "HOW WE HELP YOU" ? (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="absolute bottom-0 -right-0 w-[43%] hidden xl:block "
-        >
-          <img
-            src="/assets/background/Frame.png"
-            alt="mars-image"
-            className="w-full object-cover hidden lg:block"
-          />
-        </motion.div>
-      ) : (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="absolute top-5 -right-60 -translate-x-1/2 sm:-translate-x-1/3 md:-translate-x-1/5 w-[43%]"
-        >
-          <img
-            src="/assets/planets/mars.png"
-            alt="mars-image"
-            className="w-full object-cover opacity-50"
-          />
-        </motion.div>
-      )}
-
       <motion.h1
         initial={{ opacity: 0, x: -50 }}
         animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -47,27 +25,46 @@ const HelperList = ({ data, label }: { data: object; label: string }) => {
         {label}
       </motion.h1>
 
-      <ul className="flex flex-col justify-center items-center gap-3 pt-5 lg:pt-10 px-0 md:px-2 lg:px-4">
-        {Object.entries(data).map(([key, value], index) => (
-          <motion.li
-            key={index}
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: index * 0.2 }}
-            className="group flex flex-row justify-between items-center gap-5 font-fredoka w-full max-w-4xl p-2 lg:p-5 rounded-lg"
-          >
-            <div className="w-14 h-14 md:w-16 md:h-16 font-montserrat flex items-center justify-center px-4 py-2 rounded-md text-center text-2xl md:text-3xl lg:text-[42px] font-medium text-[#44464B]">
-              <span className="text-muted-foreground">0{index + 1}</span>
-            </div>
-            <div className="text-left w-full ">
-              <p className="leading-6 text-base md:text-[16px] lg:text-[16px] xl:text-[19px] pt-4 w-full md:w-[500px] lg:w-[600px] font-mulish">
-                <span className="font-extrabold">{key}</span>:{" "}
-                <span className="font-normal">{value}</span>
+      <motion.p
+        initial={{ opacity: 0, y: 20 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, delay: 0.3 }}
+        className="text-sm md:text-base text-muted-foreground max-w-xl leading-relaxed"
+      >
+        Everything you need to understand yourself, explore your potential, and
+        make the right career choices.
+      </motion.p>
+
+      <div className="flex gap-10">
+        <motion.img
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay:  0.2 }}
+          className="rounded-lg"
+          src="assets/about/bg.jpg"
+          alt="help"
+        />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2  gap-6  w-full">
+          {data.map((item, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 40 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: index * 0.2 }}
+              className="group p-6 rounded-2xl bg-foreground/5 backdrop-blur-md border border-foreground/10 hover:scale-[1.02] transition"
+            >
+              {/* Title */}
+              <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
+
+              {/* Description */}
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {item.description}
               </p>
-            </div>
-          </motion.li>
-        ))}
-      </ul>
+            </motion.div>
+          ))}
+        </div>
+      </div>
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}

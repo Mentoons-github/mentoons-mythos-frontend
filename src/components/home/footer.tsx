@@ -1,7 +1,7 @@
 import { CONTACT_INFO } from "../../constants";
 import FooterLinks from "./footerLinks";
-import { ABOUT, QUICKLINKS } from "../../constants/footer";
 import NewsLetter from "../footer/NewsLetter";
+import { EXPLORE, GETSTARTED } from "../../constants/footer";
 
 const MythosFooter = () => {
   return (
@@ -12,7 +12,7 @@ const MythosFooter = () => {
             <NewsLetter />
           </div>
 
-          {[CONTACT_INFO, ABOUT, QUICKLINKS].map((items, index) => (
+          {[CONTACT_INFO, EXPLORE, GETSTARTED].map((items, index) => (
             <FooterLinks
               key={index}
               Links={items}
@@ -20,8 +20,8 @@ const MythosFooter = () => {
                 index === 0
                   ? "CONTACT INFO"
                   : index === 1
-                  ? "ABOUT"
-                  : "QUICK LINKS"
+                  ? "EXPLORE"
+                  : "GET STARTED"
               }
             />
           ))}

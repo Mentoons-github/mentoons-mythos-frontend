@@ -10,7 +10,7 @@ import { resetAuthState } from "../../features/auth/authSlice";
 import AuthLayout from "./AuthLayout";
 import AuthButton from "../../components/ui/AuthButton";
 import { toast } from "sonner";
-import RewardModal from "../../components/modal/RewardModal";
+// import RewardModal from "../../components/modal/RewardModal";
 
 const OTPInputPage = () => {
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
@@ -22,9 +22,10 @@ const OTPInputPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const hasRegistered = useRef(false);
+  console.log(modalPoints);
 
   const { loading, otpSuccess, otpError } = useAppSelector(
-    (state) => state.auth
+    (state) => state.auth,
   );
 
   const location = useLocation();
@@ -71,7 +72,7 @@ const OTPInputPage = () => {
     if (resendCooldown > 0) {
       const timer = setTimeout(
         () => setResendCooldown(resendCooldown - 1),
-        1000
+        1000,
       );
       return () => clearTimeout(timer);
     }
@@ -90,7 +91,7 @@ const OTPInputPage = () => {
 
   const handleKeyDown = (
     index: number,
-    e: React.KeyboardEvent<HTMLInputElement>
+    e: React.KeyboardEvent<HTMLInputElement>,
   ) => {
     if (e.key === "Backspace" && !otp[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
@@ -254,12 +255,13 @@ const OTPInputPage = () => {
       </div>
 
       {rewardModalOpen && (
-        <RewardModal
-          points={modalPoints}
-          onClose={() => {
-            setRewardModalOpen(false);
-          }}
-        />
+        // <RewardModal
+        //   points={modalPoints}
+        //   onClose={() => {
+        //     setRewardModalOpen(false);
+        //   }}
+        // />
+        <div></div>
       )}
     </div>
   );

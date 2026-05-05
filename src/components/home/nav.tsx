@@ -11,6 +11,7 @@ import { fetchUserData, userLogout } from "../../features/user/userThunk";
 import ThemeToggle from "../ThemToggle";
 import { User } from "lucide-react";
 import RewardModal from "../modal/RewardModal";
+import { Reward } from "../../types/redux/blogInterface";
 
 const MythosHeader = () => {
   const dispatch = useAppDispatch();
@@ -63,7 +64,7 @@ const MythosHeader = () => {
     null,
   );
   const [rewardModalOpen, setRewardModalOpen] = useState(false);
-  const [rewardPointShow, setRewardPointShow] = useState(0);
+  const [rewardPointShow, setRewardPointShow] = useState<Reward | null>(null);
 
   // const assessmentItems = [
   //   { name: "Psychology", path: "/assessment/psychology" },
@@ -90,7 +91,7 @@ const MythosHeader = () => {
   ];
 
   useEffect(() => {
-    if (rewardPoints > 0) {
+    if (rewardPoints && rewardPoints?.points > 0) {
       setRewardPointShow(rewardPoints);
       setRewardModalOpen(true);
       console.log();
@@ -735,6 +736,7 @@ const MythosHeader = () => {
 
       {rewardModalOpen && (
         <RewardModal
+          type="DAILYLOGIN"
           points={rewardPointShow}
           onClose={() => {
             setRewardModalOpen(false);

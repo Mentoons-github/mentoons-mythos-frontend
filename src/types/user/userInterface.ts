@@ -1,4 +1,4 @@
-import { Blog } from "../redux/blogInterface";
+import { Blog, Reward } from "../redux/blogInterface";
 
 export interface IUser extends ZodiacDetails {
   _id?: string;
@@ -30,7 +30,7 @@ export interface IAstrologyDetail {
 export interface UserResponse {
   success: boolean;
   user: IUser;
-  reward:number
+  reward:Reward
 }
 
 export interface AllUserResponse {

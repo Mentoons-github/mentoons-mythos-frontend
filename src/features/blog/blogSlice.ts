@@ -14,12 +14,21 @@ import {
   deleteBlogThunk,
   deleteCommentThunk,
   fetcheBlogCountThunk,
+  getReplyCommentBlogThunk,
+  editCommentBlogThunk,
+  commentOffToggleThunk,
 } from "./blogThunk";
-import { Blog, Comments } from "../../types/redux/blogInterface";
+import {
+  Comments,
+  IBlogV2,
+  IReply,
+  Reward,
+} from "../../types/redux/blogInterface";
 
 interface SliceBlog {
-  data: Blog[];
-  adminBlog: Blog[];
+  // data: Blog[];
+  data: IBlogV2[];
+  adminBlog: IBlogV2[];
   error: null | string | undefined;
   createblogSuccess: boolean;
   total: number;
@@ -27,9 +36,12 @@ interface SliceBlog {
   message: string;
   userId: string;
   comments: Comments[];
-  blog: Blog | null;
-  mostReadBlogs: Blog[];
-  searchBlogs: Blog[];
+  replyComments: IReply[];
+  commentSubmitLoading: boolean;
+  commentSubmitSuccess: boolean;
+  blog: IBlogV2 | null;
+  mostReadBlogs: IBlogV2[];
+  searchBlogs: IBlogV2[];
   searchLoading: boolean;
   fetchBlogLoading: boolean;
   success: boolean;
@@ -38,7 +50,12 @@ interface SliceBlog {
   deleteSuccess: boolean;
   deleteMessage: string;
   blogCount: number;
-  rewardPoints: number;
+  rewardPoints: Reward | null;
+  likeSuccess: boolean;
+  commentTotal: number;
+  replyCommentTotal: number;
+  currentPostId: string | null;
+  currentReplyCommentId: string | null;
 }
 
 const initialState: SliceBlog = {
@@ -51,7 +68,10 @@ const initialState: SliceBlog = {
   message: "",
   userId: "",
   comments: [],
-  blog: null as Blog | null,
+  replyComments: [],
+  commentSubmitLoading: false,
+  commentSubmitSuccess: false,
+  blog: null as IBlogV2 | null,
   mostReadBlogs: [],
   searchBlogs: [],
   searchLoading: false,
@@ -62,7 +82,12 @@ const initialState: SliceBlog = {
   deleteMessage: "",
   deleteSuccess: false,
   blogCount: 0,
-  rewardPoints: 0,
+  rewardPoints: null,
+  likeSuccess: false,
+  commentTotal: 0,
+  replyCommentTotal: 0,
+  currentPostId: null,
+  currentReplyCommentId: null,
 };
 
 export const blogSlice = createSlice({
@@ -75,6 +100,8 @@ export const blogSlice = createSlice({
       state.loading = false;
       state.message = "";
       state.createblogSuccess = false;
+      state.commentSubmitLoading = false;
+      state.commentSubmitSuccess = false;
       state.searchBlogs = [];
       state.searchLoading = false;
       state.success = false;
@@ -82,7 +109,10 @@ export const blogSlice = createSlice({
       state.deleteLoading = false;
       state.deleteMessage = "";
       state.deleteSuccess = false;
-      state.rewardPoints = 0;
+      state.rewardPoints = null;
+      state.likeSuccess = false;
+      state.commentTotal = 0;
+      state.replyCommentTotal = 0;
     },
   },
   extraReducers: (builder) => {
@@ -97,7 +127,7 @@ export const blogSlice = createSlice({
         state.message = action.payload.message;
         state.data.unshift(action.payload.blog);
         state.createblogSuccess = true;
-        state.rewardPoints = action.payload.reward.points;
+        state.rewardPoints = action.payload.reward;
       })
       .addCase(createBlogThunk.rejected, (state, action) => {
         state.error = action.payload;
@@ -115,7 +145,7 @@ export const blogSlice = createSlice({
         // state.data = [...state.data,...action.payload.blogs]
         const mergedPosts = [...state.data, ...action.payload.blogs];
         const uniquePosts = Array.from(
-          new Map(mergedPosts.map((item) => [item._id, item])).values()
+          new Map(mergedPosts.map((item) => [item._id, item])).values(),
         );
         state.data = uniquePosts;
         state.adminBlog = action.payload.blogs;
@@ -161,6 +191,7 @@ export const blogSlice = createSlice({
       .addCase(likeBlogThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.likeSuccess = false;
       })
       .addCase(likeBlogThunk.fulfilled, (state, action) => {
         state.loading = false;
@@ -172,25 +203,51 @@ export const blogSlice = createSlice({
         if (blog) {
           blog.likes = likes;
         }
+        state.rewardPoints = action.payload.reward;
+        state.likeSuccess = true;
       })
       .addCase(likeBlogThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+        state.likeSuccess = false;
       })
 
       //post-comment
       .addCase(commentBlogThunk.pending, (state) => {
-        state.loading = true;
+        state.commentSubmitLoading = true;
         state.error = null;
+        state.commentSubmitSuccess = false;
       })
       .addCase(commentBlogThunk.fulfilled, (state, action) => {
-        state.loading = false;
+        state.commentSubmitLoading = false;
         state.error = null;
         state.message = action.payload.message;
+        state.commentSubmitSuccess = true;
+        const blogId = action.meta.arg.blogId;
+        const newComment = action.payload.newComment;
+        console.log(newComment, "newwwww");
+
+        state.rewardPoints = action.payload.reward;
+        state.data = state.data.map((post) =>
+          post._id === blogId
+            ? {
+                ...post,
+                commentCount: (post.commentCount || 0) + 1,
+              }
+            : post,
+        );
+
+        state.comments.unshift(newComment);
+
+        // 🔹 Update single blog (modal)
+        if (state.blog && state.blog._id === blogId) {
+          state.blog.commentCount = (state.blog.commentCount || 0) + 1;
+        }
       })
       .addCase(commentBlogThunk.rejected, (state, action) => {
-        state.loading = false;
+        state.commentSubmitLoading = false;
         state.error = action.payload;
+        state.commentSubmitSuccess = false;
       })
 
       //reply-comment
@@ -202,6 +259,14 @@ export const blogSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.message = action.payload.message;
+        const newReply = action.payload.comment;
+        state.replyComments.push(newReply);
+        const commentId = action.meta.arg.commentId;
+        state.comments = state.comments.map((comment) =>
+          comment._id === commentId
+            ? { ...comment, replyCount: (comment.replyCount || 0) + 1 }
+            : comment,
+        );
       })
       .addCase(replyCommentThunk.rejected, (state, action) => {
         state.loading = false;
@@ -217,9 +282,54 @@ export const blogSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.message = action.payload.message;
-        state.comments = action.payload.comments;
+
+        const postId = action.meta.arg.blogId;
+        state.commentTotal = action.payload.total;
+        if (state.currentPostId !== postId) {
+          state.comments = action.payload.comments;
+          state.currentPostId = postId;
+        } else {
+          const merged = [...state.comments, ...action.payload.comments];
+
+          state.comments = Array.from(
+            new Map(merged.map((c) => [c._id, c])).values(),
+          );
+        }
+
+        state.commentTotal = action.payload.total;
       })
+
       .addCase(getCommentBlogThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      //get reply-comments
+      .addCase(getReplyCommentBlogThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getReplyCommentBlogThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        const commentId = action.meta.arg.commentId;
+
+        if (state.currentReplyCommentId !== commentId) {
+          state.replyComments = action.payload.replyComments;
+          state.currentReplyCommentId = commentId;
+        } else {
+          const merged = [
+            ...state.replyComments,
+            ...action.payload.replyComments,
+          ];
+
+          state.replyComments = Array.from(
+            new Map(merged.map((r) => [r._id, r])).values(),
+          );
+        }
+        state.replyCommentTotal = action.payload.total;
+      })
+      .addCase(getReplyCommentBlogThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
@@ -233,8 +343,22 @@ export const blogSlice = createSlice({
       .addCase(deleteCommentThunk.fulfilled, (state, action) => {
         state.deleteLoading = false;
         state.error = null;
-        state.deleteMessage = action.payload;
+        state.deleteMessage = action.payload.message;
         state.deleteSuccess = true;
+        state.rewardPoints = action.payload.reward;
+        const commentId = action.meta.arg;
+        const { type } = action.payload;
+
+        if (type === "comment") {
+          state.comments = state.comments.filter(
+            (comment) => comment._id !== commentId,
+          );
+        }
+        if (type === "replyComment") {
+          state.replyComments = state.replyComments.filter(
+            (comment) => comment._id !== commentId,
+          );
+        }
       })
       .addCase(deleteCommentThunk.rejected, (state, action) => {
         state.deleteLoading = false;
@@ -317,11 +441,67 @@ export const blogSlice = createSlice({
         if (action.meta.arg) {
           state.data = state.data.filter((job) => job._id !== action.meta.arg);
         }
+        state.rewardPoints = action.payload.reward;
       })
       .addCase(deleteBlogThunk.rejected, (state, action) => {
         state.error = action.payload as string;
         state.deleteLoading = false;
         state.deleteSuccess = true;
+      })
+
+      //edit comment
+      .addCase(editCommentBlogThunk.pending, (state) => {
+        state.commentSubmitLoading = true;
+        state.error = null;
+        state.commentSubmitSuccess = false;
+      })
+      .addCase(editCommentBlogThunk.fulfilled, (state, action) => {
+        state.commentSubmitLoading = false;
+        state.error = null;
+        state.message = action.payload.message;
+        state.commentSubmitSuccess = true;
+        const { updated, type } = action.payload;
+
+        if (type === "comment") {
+          const comment = state.comments.find((c) => c._id === updated._id);
+          if (comment) {
+            comment.comment = (updated as Comments).comment;
+          }
+        }
+
+        if (type === "replyComment") {
+          const reply = state.replyComments.find((r) => r._id === updated._id);
+          if (reply) {
+            reply.replyText = (updated as IReply).replyText;
+          }
+        }
+      })
+      .addCase(editCommentBlogThunk.rejected, (state, action) => {
+        state.commentSubmitLoading = false;
+        state.error = action.payload;
+        state.commentSubmitSuccess = false;
+      })
+
+      //commentoff toggle
+      .addCase(commentOffToggleThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(commentOffToggleThunk.fulfilled, (state, action) => {
+        state.message = action.payload;
+        state.error = null;
+        state.loading = false;
+
+        const blogId = action.meta.arg;
+
+        const post = state.data.find((blog) => blog._id == blogId);
+        if (post) {
+          post.commentsOff = !post.commentsOff;
+        }
+      })
+      .addCase(commentOffToggleThunk.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.loading = false;
       });
   },
 });

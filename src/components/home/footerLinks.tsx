@@ -10,6 +10,7 @@ const FooterLinks = ({
   label: string;
 }) => {
   const navigate = useNavigate();
+
   return (
     <div className="w-full md:w-fit space-y-3 md:space-y-5 text-center md:text-left">
       <h1 className="font-forum text-lg text-start sm:text-xl md:text-2xl tracking-[1.5px] md:tracking-[2.4px]">
@@ -22,7 +23,7 @@ const FooterLinks = ({
             className="flex justify-start md:justify-start items-center gap-2 md:gap-3 font-mulish"
           >
             <div className="flex items-center">
-              {label == "ABOUT" || label == "QUICK LINKS" ? (
+              {label == "EXPLORE" || label == "GET STARTED" ? (
                 <div
                   onClick={() => navigate(item.url as string)}
                   className="cursor-pointer"

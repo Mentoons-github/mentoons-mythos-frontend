@@ -18,7 +18,7 @@ const Jobs = () => {
 
   useEffect(() => {
     dispatch(
-      getJobsThunk({ page: currentPage, limit, sort: "newest", search: "" })
+      getJobsThunk({ page: currentPage, limit, sort: "newest", search: "" }),
     );
   }, [currentPage, dispatch]);
 
@@ -85,6 +85,7 @@ const Jobs = () => {
       <div className="relative py-10 md:py-16 z-10 grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8 px-4 md:px-20">
         {[...jobs]
           .sort((a, b) => a.jobTitle.localeCompare(b.jobTitle))
+          .filter((job) => job.status !== "Pause")
           .map((section, index) => (
             <JobSection
               index={index}

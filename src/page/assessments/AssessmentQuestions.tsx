@@ -12,6 +12,7 @@ import { resetAssessmentSlice } from "../../features/assessment/assessmentSlice"
 import PaymentModal from "../../components/modal/paymentModal/paymentModal";
 import { useNavigate } from "react-router-dom";
 import RewardModal from "../../components/modal/RewardModal";
+import { Reward } from "../../types/redux/blogInterface";
 
 const AssessmentQuestions = () => {
   const dispatch = useAppDispatch();
@@ -25,7 +26,7 @@ const AssessmentQuestions = () => {
   const initialIndex = sessionStorage.getItem(`${name}_currentIndex`);
   const storedAnswers = sessionStorage.getItem(`${name}_selectedAnswers`);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(
-    initialIndex ? parseInt(initialIndex) : 0
+    initialIndex ? parseInt(initialIndex) : 0,
   );
   const [paymentRequired, setPaymentRequired] = useState(false);
   const [paymentDone, setPaymentDone] = useState(false);
@@ -34,7 +35,7 @@ const AssessmentQuestions = () => {
   }>(storedAnswers ? JSON.parse(storedAnswers) : {});
   const [isFinished, setIsFinished] = useState(false);
   const [rewardModalOpen, setRewardModalOpen] = useState(false);
-  const [modalPoints, setModalPoints] = useState(0);
+  const [modalPoints, setModalPoints] = useState<Reward | null>(null);
 
   const currentQuestion = assessmentQusetion?.questions[currentQuestionIndex];
 
@@ -97,7 +98,7 @@ const AssessmentQuestions = () => {
       ([key, value]) => ({
         questionNumber: parseInt(key) + 1,
         answer: value,
-      })
+      }),
     );
     if (!name || !type) {
       return <div>Invalid route: missing parameters</div>;
@@ -107,7 +108,7 @@ const AssessmentQuestions = () => {
         assessmentName: name,
         assessmentType: type,
         submissions: formattedSubmissions,
-      })
+      }),
     );
     setIsFinished(true);
     setCurrentQuestionIndex((prev) => prev + 1);
@@ -120,11 +121,11 @@ const AssessmentQuestions = () => {
     } else {
       sessionStorage.setItem(
         `${name}_currentIndex`,
-        currentQuestionIndex.toString()
+        currentQuestionIndex.toString(),
       );
       sessionStorage.setItem(
         `${name}_selectedAnswers`,
-        JSON.stringify(selectedAnswers)
+        JSON.stringify(selectedAnswers),
       );
     }
   }, [currentQuestionIndex, selectedAnswers, name, isFinished]);
@@ -264,6 +265,7 @@ const AssessmentQuestions = () => {
 
       {rewardModalOpen && (
         <RewardModal
+          type="ASSESSMENT"
           points={modalPoints}
           onClose={() => {
             setRewardModalOpen(false);

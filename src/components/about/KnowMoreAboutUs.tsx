@@ -23,13 +23,13 @@ const KnowMoreAboutUs = () => {
 
   const dispatch = useAppDispatch();
   const { error, loading, success, message } = useAppSelector(
-    (state) => state.about_newsletter
+    (state) => state.about_newsletter,
   );
   const { user } = useAppSelector((state) => state.user);
 
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
+    name: `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim(),
+    email: user?.email ?? "",
     comment: "",
   });
   const [singupModal, setSignupModal] = useState(false);
@@ -71,134 +71,109 @@ const KnowMoreAboutUs = () => {
   };
 
   return (
-    <div className=" bg-[url('/assets/background/section/stars_background.png')] bg-center  md:p-6 md:pt-0 pb-12 lg:pb-24 flex items-center">
-      <div className="w-[90%] mx-auto flex flex-col lg:flex-row items-start justify-start gap-8 md:gap-12 lg:pt-12">
+    <div className="bg-[url('/assets/background/section/stars_background.png')] bg-center py-16 lg:py-24 px-5 sm:px-10 lg:px-20">
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12">
+        {/* LEFT SIDE */}
         <motion.div
-          className="w-full lg:w-[50%] flex flex-col items-start justify-center  lg:px-12"
+          className="w-full lg:w-1/2"
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          <motion.h2
-            className="text-2xl font-semibold text-start self-start md:text-5xl lg:text-6xl py-3 leading-none"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            KNOW MORE ABOUT US
-          </motion.h2>
-          <motion.p
-            className="text-sm py-6 md:py-10"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            Your email address will not be published. Required fields are marked
-            *
-          </motion.p>
-          <motion.form
-            onSubmit={handleSubmit}
-            className="flex flex-col w-full gap-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
+          <h2 className="text-3xl md:text-4xl font-semibold mb-3">
+            Know More About Us
+          </h2>
+
+          <p className="text-muted-foreground leading-relaxed max-w-xl mb-6">
+            Have questions about our assessments or workshops? Drop your message
+            and our team will get back to you with the right guidance.
+          </p>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            {/* TEXTAREA */}
             <textarea
-              placeholder="Your Comment"
-              className="w-full p-4 pr-12 rounded-md active:ring-2 border border-muted-foreground text-foreground focus:ring-1 focus:ring-foreground focus:outline-none"
-              rows={5}
-              required
+              placeholder="Write your message..."
               name="comment"
               value={formData.comment}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+              onChange={(e) =>
                 setFormData({ ...formData, [e.target.name]: e.target.value })
               }
-            ></textarea>
+              className="w-full p-4 rounded-lg bg-foreground/5 border border-foreground/10 focus:ring-1 focus:ring-foreground outline-none"
+              rows={5}
+              required
+            />
 
-            <div className="flex flex-col gap-4 sm:flex-row">
+            {/* INPUT ROW */}
+            <div className="flex flex-col sm:flex-row gap-4">
               <div className="relative w-full">
                 <input
                   type="text"
                   placeholder="Your Name"
                   name="name"
-                  required
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full p-4 pr-12 rounded-md active:ring-2 border border-muted-foreground  text-foreground focus:ring-1 focus:ring-foreground focus:outline-none"
+                  required
+                  className="w-full p-4 rounded-lg bg-foreground/5 border border-foreground/10 focus:ring-1 focus:foreground-white outline-none"
                 />
-                <FaRegUser className="absolute w-6 transform -translate-y-1/2 right-4 top-1/2 text-foreground" />
+                <FaRegUser className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
               </div>
+
               <div className="relative w-full">
                 <input
                   type="email"
                   placeholder="Your Email"
                   name="email"
-                  required
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full p-4 pr-12 rounded-md border border-muted-foreground text-foreground active:ring-2 focus:ring-1 focus:ring-foreground focus:outline-none"
+                  required
+                  className="w-full p-4 rounded-lg bg-foreground/5 border border-foreground/10 focus:ring-1 focus:ring-foreground outline-none"
                 />
-                <FaRegEnvelope className="absolute w-6 transform -translate-y-1/2 right-4 top-1/2 text-foreground" />
+                <FaRegEnvelope className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
               </div>
             </div>
-            {/* <div className="flex items-center gap-4 mt-8 mb-4 md:mt-12">
-              <input
-                type="checkbox"
-                checked={formData.saveData}
-                onChange={handleChange}
-              />
-              <p className="text-sm text-[#ede8e8d3]">
-                Save my name, email, and website in this browser for the next
-                time I comment
-              </p>
-            </div> */}
+
+            {/* BUTTON */}
             <motion.button
-              className="flex items-center justify-center mt-3 gap-4 rounded-md px-4 py-2 text-background bg-foreground md:px- w-fit"
               type="submit"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              className="mt-3 flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-background bg-foreground font-semibold w-fit"
             >
-              <span className="text-2xl">✦</span>
-
-              <p className="text-lg font-semibold">
-                {loading ? "POSTING..." : "POST COMMENT"}
-              </p>
+              ✦ {loading ? "Posting..." : "Send Message"}
             </motion.button>
-          </motion.form>
+          </form>
         </motion.div>
+
+        {/* RIGHT SIDE */}
         <motion.div
-          className="w-full lg:w-[50%] flex flex-col gap-8 md:gap-10 items-center justify-between mt-10 lg:mt-0"
+          className="w-full lg:w-1/2 flex flex-col items-center justify-center text-center gap-6"
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          <motion.div
-            className="w-[80%] md:w-[68%]"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            <img src="/assets/about/mythos-book-call.png" className="w-full" />
-          </motion.div>
-          <motion.p
-            className="text-2xl md:text-3xl font-semibold text-center w-full md:w-[30ch]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-          >
-            Book a one-on-one video call session with us now!
-            <span className=" mt-2 block">(Coming Soon...)</span>
-          </motion.p>
+          <img
+            src="/assets/about/mythos-book-call.png"
+            className="w-[70%] md:w-[60%]"
+            alt="Book call"
+          />
+
+          <h3 className="text-2xl md:text-3xl font-semibold max-w-md">
+            Talk to our experts directly
+          </h3>
+
+          <p className="text-gray-400 max-w-md">
+            Get personalized guidance through a one-on-one video session
+            designed to help you make the right decisions.
+          </p>
+
           <motion.button
-            className="flex items-center justify-center gap-4 rounded-md px-4 py-2 text-background bg-foreground w-fit"
-            type="submit"
+            onClick={handleBookCall}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={handleBookCall}
+            className="px-6 py-3 rounded-lg bg-foreground text-background font-semibold"
           >
-            <span className="text-2xl">✦</span>
-            <p className="text-lg font-semibold">BOOK A CALL NOW</p>
+            ✦ Book a Call
           </motion.button>
+
+          <span className="text-sm text-gray-500">(Coming Soon)</span>
         </motion.div>
       </div>
 

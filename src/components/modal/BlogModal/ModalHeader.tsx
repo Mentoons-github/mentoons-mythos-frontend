@@ -1,64 +1,163 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
+import { FiFlag, FiUserX } from "react-icons/fi";
+import { MdDeleteOutline } from "react-icons/md";
+import { motion, AnimatePresence } from "framer-motion";
 import ReportOptions from "./Comment/ReportOptions";
+import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
+import {
+  commentOffToggleThunk,
+  deleteBlogThunk,
+} from "../../../features/blog/blogThunk";
+import { FaComments, FaCommentSlash } from "react-icons/fa";
 
 interface ModalHeaderProps {
   userId?: string;
   postId?: string;
-  title?: string;
-  onClose: () => void;
+  activeMenuId: string | null;
+  setActiveMenuId: Dispatch<SetStateAction<string | null>>;
+  isCommentOff: boolean | undefined;
 }
 
 const ModalHeader: React.FC<ModalHeaderProps> = ({
-  title,
-  onClose,
   userId,
   postId,
+  activeMenuId,
+  setActiveMenuId,
+  isCommentOff,
 }) => {
-  const [showOption, setShowOption] = useState(false);
   const [reportModal, setReportModal] = useState(false);
-  const handleShowOption = () => {
-    setShowOption((prev) => !prev);
+  const { user } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const isOpen = activeMenuId === postId;
+
+  const handleToggle = () => {
+    setActiveMenuId(isOpen ? null : postId!);
   };
-  const handleReportOption = () => {
-    setShowOption(false);
-    setReportModal(true);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(e.target as Node) // ← exclude the button
+      ) {
+        setActiveMenuId(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleDelete = () => {
+    if (!postId) return;
+    dispatch(deleteBlogThunk(postId));
   };
+
+  const handleCommentOff = () => {
+    if (!postId) return;
+    dispatch(commentOffToggleThunk(postId)).then(() => {
+      setActiveMenuId(null);
+    });
+  };
+
+  const isOwner = user?._id === userId;
+
   return (
-    <div className="flex justify-between items-center mb-4">
-      <h2 className="text-xl font-semibold">{title}</h2>
-      <div className="flex items-center justify-center gap-5 relative">
-        <BsThreeDots className="mt-1 text-2xl" onClick={handleShowOption} />
-        {showOption && (
-          <div className="absolute top-7 right-12 w-32 bg-secondary shadow-md border rounded-md z-50">
-            <div
-              className="p-2 px-4 hover:bg-muted-foreground text-sm  cursor-pointer rounded-t-md transition"
-              onClick={handleReportOption}
-            >
-              Report
-            </div>
-            <div className="p-2 px-4 hover:bg-muted-foreground text-sm text-red-600 cursor-pointer rounded-b-md transition border-t">
-              Block
-            </div>
-          </div>
+    <div className="flex justify-end items-center mb-4 relative">
+      {/* Three dots */}
+      <button
+        ref={buttonRef}
+        onClick={handleToggle}
+        className="p-2 rounded-full hover:bg-muted transition"
+      >
+        <BsThreeDots className="text-xl text-muted-foreground" />
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            ref={dropdownRef}
+            initial={{ opacity: 0, scale: 0.95, y: -5 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: -5 }}
+            transition={{ duration: 0.2 }}
+            className="absolute top-10 right-0 w-52 bg-background shadow-lg border rounded-xl z-50 overflow-hidden"
+          >
+            {isOwner ? (
+              <>
+                <button
+                  className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition"
+                  onClick={handleDelete}
+                >
+                  <MdDeleteOutline className="text-lg" />
+                  Delete Post
+                </button>
+                {isCommentOff ? (
+                  <button
+                    className="w-full flex items-center gap-3 px-4 py-3 text-sm text-foreground hover:bg-muted-foreground transition"
+                    onClick={handleCommentOff}
+                  >
+                    <FaComments className="text-lg" />
+                    Turn on Comment
+                  </button>
+                ) : (
+                  <button
+                    className="w-full flex items-center gap-3 px-4 py-3 text-sm text-foreground hover:bg-muted-foreground transition"
+                    onClick={handleCommentOff}
+                  >
+                    <FaCommentSlash className="text-lg" />
+                    Turn off Comment
+                  </button>
+                )}
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => {
+                    setReportModal(true);
+                  }}
+                  className="w-full flex items-center gap-3 px-4 py-3 text-sm hover:bg-muted-foreground transition"
+                >
+                  <FiFlag className="text-lg" />
+                  Report
+                </button>
+
+                <button className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition border-t">
+                  <FiUserX className="text-lg" />
+                  Block User
+                </button>
+              </>
+            )}
+          </motion.div>
         )}
+      </AnimatePresence>
+
+      {/* Report Modal */}
+      <AnimatePresence>
         {reportModal && (
-          <div className="absolute top-6 right-5 z-50">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="absolute top-12 right-0 z-50"
+          >
             <ReportOptions
               from="blog"
               userId={userId}
               Id={postId}
               onClose={() => setReportModal(false)}
             />
-          </div>
+          </motion.div>
         )}
-        <button
-          className=" hover:text-muted-foreground text-2xl"
-          onClick={onClose}
-        >
-          &times;
-        </button>
-      </div>
+      </AnimatePresence>
     </div>
   );
 };

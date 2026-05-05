@@ -22,10 +22,11 @@ import {
   singleSubmission,
 } from "../../types/redux/assessmentInterface";
 import { AxiosError } from "axios";
+import { Reward } from "../../types/redux/blogInterface";
 
 //assessment submit
 export const assessmentSubmitTunk = createAsyncThunk<
-  { message: string; assessment: Assessment; reward: { points: number } },
+  { message: string; assessment: Assessment; reward: Reward },
   Assessment,
   { rejectValue: string }
 >("assessment/submit", async (details, { rejectWithValue }) => {
@@ -35,7 +36,7 @@ export const assessmentSubmitTunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Assessment submission failed"
+      error?.response?.data?.message || "Assessment submission failed",
     );
   }
 });
@@ -52,7 +53,7 @@ export const assessmentQuestionThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Assessment question create failed"
+      error?.response?.data?.message || "Assessment question create failed",
     );
   }
 });
@@ -69,7 +70,7 @@ export const assessmentFetchThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Assessment Fetch failed"
+      error?.response?.data?.message || "Assessment Fetch failed",
     );
   }
 });
@@ -88,10 +89,10 @@ export const fetchAllSubmissionThunk = createAsyncThunk<
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
       return rejectWithValue(
-        error?.response?.data?.message || "Assessment Fetch failed"
+        error?.response?.data?.message || "Assessment Fetch failed",
       );
     }
-  }
+  },
 );
 
 //fetch single submission
@@ -108,10 +109,10 @@ export const fetchSingleSubmissionThunk = createAsyncThunk<
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
       return rejectWithValue(
-        error?.response?.data?.message || "Assessment Fetch failed"
+        error?.response?.data?.message || "Assessment Fetch failed",
       );
     }
-  }
+  },
 );
 
 //initial question
@@ -126,14 +127,14 @@ export const fetchInitialQuestionsThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Assessment question create failed"
+      error?.response?.data?.message || "Assessment question create failed",
     );
   }
 });
 
 //initial assessment submit
 export const initialAssessmentSubmitThunk = createAsyncThunk<
-  { message: string; assessment: Assessment; reward: { points: number } },
+  { message: string; assessment: Assessment; reward: Reward },
   { details: InitialAssessmentSubmission; userId: string },
   { rejectValue: string }
 >(
@@ -145,10 +146,10 @@ export const initialAssessmentSubmitThunk = createAsyncThunk<
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
       return rejectWithValue(
-        error?.response?.data?.message || "Assessment submission failed"
+        error?.response?.data?.message || "Assessment submission failed",
       );
     }
-  }
+  },
 );
 
 // get initial assessment details
@@ -164,17 +165,17 @@ export const getInitialAssessmentSubmissionsThunk = createAsyncThunk<
         page,
         limit,
         sort,
-        search
+        search,
       );
       return res.data;
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
       return rejectWithValue(
         error?.response?.data?.message ||
-          "Cant fetch initial assessment details"
+          "Cant fetch initial assessment details",
       );
     }
-  }
+  },
 );
 
 // get single initial assessment submissions
@@ -189,7 +190,7 @@ export const getSingleInitialAssessmentSubmissionsThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Cant fetch initial assessment details"
+      error?.response?.data?.message || "Cant fetch initial assessment details",
     );
   }
 });
@@ -206,7 +207,7 @@ export const deleteAssessmentSubmissionThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Cant delete assessment details"
+      error?.response?.data?.message || "Cant delete assessment details",
     );
   }
 });
@@ -223,7 +224,8 @@ export const deleteInitialAssessmentSubmissionThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Cant delete initial assessment details"
+      error?.response?.data?.message ||
+        "Cant delete initial assessment details",
     );
   }
 });

@@ -1,0 +1,15 @@
+export const BABY_DEITIES_IMAGES = [
+  { img: "assets/blog/Baby_deities/001.png" },
+  { img: "assets/blog/Baby_deities/002.png" },
+  { img: "assets/blog/Baby_deities/003.png" },
+  { img: "assets/blog/Baby_deities/004.png" },
+  { img: "assets/blog/Baby_deities/005.png" },
+  { img: "assets/blog/Baby_deities/006.png" },
+  { img: "assets/blog/Baby_deities/007.png" },
+  { img: "assets/blog/Baby_deities/008.png" },
+  { img: "assets/blog/Baby_deities/009.png" },
+  { img: "assets/blog/Baby_deities/010.png" },
+  { img: "assets/blog/Baby_deities/011.png" },
+  { img: "assets/blog/Baby_deities/012.png" },
+  { img: "assets/blog/Baby_deities/013.png" },
+];

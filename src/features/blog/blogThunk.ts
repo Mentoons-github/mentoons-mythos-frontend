@@ -14,21 +14,26 @@ import {
   deleteBlogApi,
   deleteCommentApi,
   fetchBlogCountApi,
+  getReplyCommentBlogApi,
+  editCommentBlogApi,
+  commentOffToggleApi,
 } from "./blogApi";
 
 import { AxiosError } from "axios";
 import {
-  Blog,
   Comments,
   CreateBlogResponse,
   GetBlogResponse,
+  IBlogV2,
+  IReply,
+  Reward,
   SearchBlogResponses,
 } from "../../types/redux/blogInterface";
 
 //create blog
 export const createBlogThunk = createAsyncThunk<
   CreateBlogResponse,
-  Blog,
+  IBlogV2,
   { rejectValue: string }
 >("blog/create", async (data, { rejectWithValue }) => {
   try {
@@ -37,7 +42,7 @@ export const createBlogThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Cant create blog"
+      error?.response?.data?.message || "Cant create blog",
     );
   }
 });
@@ -45,11 +50,11 @@ export const createBlogThunk = createAsyncThunk<
 //fetch blog
 export const fetcheBlogThunk = createAsyncThunk<
   GetBlogResponse,
-  { skip: number; limit: number; sort?: string; search?: string },
+  { skip: number; limit: number; sort?: string },
   { rejectValue: string }
->("blog/fetch", async ({ skip, limit, sort, search }, { rejectWithValue }) => {
+>("blog/fetch", async ({ skip, limit, sort }, { rejectWithValue }) => {
   try {
-    const res = await fetchBlogApi(skip, limit, sort, search);
+    const res = await fetchBlogApi(skip, limit, sort);
     return res.data;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
@@ -68,13 +73,15 @@ export const fetcheBlogCountThunk = createAsyncThunk<
     return res.data.count;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
-    return rejectWithValue(error?.response?.data?.message || "Cant fetch blog count");
+    return rejectWithValue(
+      error?.response?.data?.message || "Cant fetch blog count",
+    );
   }
 });
 
 //fetch single blog
 export const fetchSinglBlogThunk = createAsyncThunk<
-  Blog,
+  IBlogV2,
   string,
   { rejectValue: string }
 >("blog/fetchsingle", async (blogId, { rejectWithValue }) => {
@@ -89,7 +96,12 @@ export const fetchSinglBlogThunk = createAsyncThunk<
 
 //like blog
 export const likeBlogThunk = createAsyncThunk<
-  { message: string; likes: string[]; blogId: string },
+  {
+    message: string;
+    likes: string[];
+    blogId: string;
+    reward: Reward;
+  },
   string,
   { rejectValue: string }
 >("blog/like", async (blogId, { rejectWithValue }) => {
@@ -104,7 +116,7 @@ export const likeBlogThunk = createAsyncThunk<
 
 //comment blog
 export const commentBlogThunk = createAsyncThunk<
-  { message: string },
+  { message: string; reward: Reward; newComment: Comments },
   { blogId: string; comment: string },
   { rejectValue: string }
 >("blog/post-comment", async ({ blogId, comment }, { rejectWithValue }) => {
@@ -114,70 +126,88 @@ export const commentBlogThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Comment posting failed"
+      error?.response?.data?.message || "Comment posting failed",
     );
   }
 });
 
 //reply comment
 export const replyCommentThunk = createAsyncThunk<
-  { message: string },
-  { commentId: string; replyText: string },
+  { message: string; comment: IReply },
+  { commentId: string; replyText: string; replyToUserId: string },
   { rejectValue: string }
 >(
   "blog/reply-comment",
-  async ({ commentId, replyText }, { rejectWithValue }) => {
+  async ({ commentId, replyText, replyToUserId }, { rejectWithValue }) => {
     try {
-      const res = await replyCommentApi(commentId, replyText);
-      console.log(replyText, "rwplyyyyyy");
-      console.log(res, "ressssssssss");
+      const res = await replyCommentApi(commentId, replyText, replyToUserId);
       return res.data;
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
       return rejectWithValue(
-        error?.response?.data?.message || "Comment posting failed"
+        error?.response?.data?.message || "Comment posting failed",
       );
     }
-  }
+  },
 );
 
 //get comment
 export const getCommentBlogThunk = createAsyncThunk<
-  { message: string; comments: Comments[]; blogId: string },
-  string,
+  { message: string; comments: Comments[]; blogId: string; total: number },
+  { blogId: string; skip: number; limit: number },
   { rejectValue: string }
->("blog/get-comment", async (blogId, { rejectWithValue }) => {
+>("blog/get-comment", async ({ blogId, limit, skip }, { rejectWithValue }) => {
   try {
-    const res = await getCommentBlogApi(blogId);
+    const res = await getCommentBlogApi(blogId, skip, limit);
     return res.data;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Cannot get comments now"
+      error?.response?.data?.message || "Cannot get comments now",
     );
   }
 });
 
+//get reply comment
+export const getReplyCommentBlogThunk = createAsyncThunk<
+  { message: string; replyComments: IReply[]; total: number },
+  { commentId: string; skip: number; limit: number },
+  { rejectValue: string }
+>(
+  "blog/get-commentreply",
+  async ({ commentId, skip, limit }, { rejectWithValue }) => {
+    try {
+      const res = await getReplyCommentBlogApi(commentId, skip, limit);
+      return res.data;
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      return rejectWithValue(
+        error?.response?.data?.message || "Cannot get comments now",
+      );
+    }
+  },
+);
+
 //delete comment
 export const deleteCommentThunk = createAsyncThunk<
-  string,
+  { message: string; reward: Reward; type: "comment" | "replyComment" },
   string,
   { rejectValue: string }
 >("blog/delete-comment", async (commentId, { rejectWithValue }) => {
   try {
     const res = await deleteCommentApi(commentId);
-    return res.data.message;
+    return res.data;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Cannot get comments now"
+      error?.response?.data?.message || "Cannot get comments now",
     );
   }
 });
 
 //current user blog
 export const fetchCurrentUserBlog = createAsyncThunk<
-  Blog[],
+  IBlogV2[],
   void,
   { rejectValue: string }
 >("blog/Currentfetch", async (_, { rejectWithValue }) => {
@@ -187,7 +217,7 @@ export const fetchCurrentUserBlog = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Cannot fetch user blog"
+      error?.response?.data?.message || "Cannot fetch user blog",
     );
   }
 });
@@ -204,14 +234,14 @@ export const updateBlogViewThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Views increment failed"
+      error?.response?.data?.message || "Views increment failed",
     );
   }
 });
 
 //fetch by most read blog
 export const fetchByMostReadThunk = createAsyncThunk<
-  Blog[],
+  IBlogV2[],
   void,
   { rejectValue: string }
 >("blog/fetchByMostRead", async (_, { rejectWithValue }) => {
@@ -221,7 +251,7 @@ export const fetchByMostReadThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Feth Blog failed"
+      error?.response?.data?.message || "Feth Blog failed",
     );
   }
 });
@@ -236,14 +266,15 @@ export const searchBlogThunk = createAsyncThunk<SearchBlogResponses, string>(
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
       return rejectWithValue(
-        error?.response?.data?.message || "Feth Blog failed"
+        error?.response?.data?.message || "Feth Blog failed",
       );
     }
-  }
+  },
 );
 
+//delete blog
 export const deleteBlogThunk = createAsyncThunk<
-  { message: string; blogId: string },
+  { message: string; blogId: string; reward: Reward },
   string,
   { rejectValue: string }
 >("blog/deleteblog", async (blogId, { rejectWithValue }) => {
@@ -253,7 +284,48 @@ export const deleteBlogThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Delete Blog failed"
+      error?.response?.data?.message || "Delete Blog failed",
+    );
+  }
+});
+
+//edit blog
+export const editCommentBlogThunk = createAsyncThunk<
+  {
+    message: string;
+    updated: IReply | Comments;
+    type: "comment" | "replyComment";
+  },
+  { commentId: string; newComment: string },
+  { rejectValue: string }
+>(
+  "blog/edit-comment",
+  async ({ commentId, newComment }, { rejectWithValue }) => {
+    try {
+      const res = await editCommentBlogApi(commentId, newComment);
+      return res.data;
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      return rejectWithValue(
+        error?.response?.data?.message || "Comment posting failed",
+      );
+    }
+  },
+);
+
+//comment off toggle
+export const commentOffToggleThunk = createAsyncThunk<
+  string,
+  string,
+  { rejectValue: string }
+>("blog/commentoffToggle", async (blogId, { rejectWithValue }) => {
+  try {
+    const res = await commentOffToggleApi(blogId);
+    return res.data.message;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(
+      error?.response?.data?.message || "Comment posting failed",
     );
   }
 });
