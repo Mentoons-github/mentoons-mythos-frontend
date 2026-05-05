@@ -196,16 +196,14 @@ const ProfileBlogs = ({
               animate="visible"
               whileHover="hover"
             >
-              {/* <div className="flex items-start justify-between">
+              <div className="flex items-start justify-between">
                 <div>
                   <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                    {blog.title || "Untitled"}
+                    {blog._id || "Untitled"}
                   </h3>
-                  <p className="text-gray-600 line-clamp-2">
-                    {blog.description}
-                  </p>
+                  <p className="text-gray-600 line-clamp-2">{blog._id}</p>
                 </div>
-              </div> */}
+              </div>
             </motion.div>
           ))}
         </div>
