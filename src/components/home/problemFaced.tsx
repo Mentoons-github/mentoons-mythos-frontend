@@ -15,7 +15,7 @@ const ProblemFaced = ({
   return (
     <section ref={ref} className="overflow-hidden">
       <motion.h1
-        className=" font-bold font-montserrat text-lg montserrat"
+        className=" font-bold font-montserrat lg:text-lg montserrat"
         initial={{ opacity: 0, y: -50 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -50 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
