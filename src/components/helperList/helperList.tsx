@@ -14,13 +14,13 @@ const HelperList = ({
   return (
     <section
       ref={ref}
-      className="relative flex flex-col justify-start items-start gap-2 md:gap-5 px-5 sm:px-10 lg:px-20  w-full bg-[url('/assets/background/section/stars_background.png')] bg-center overflow-hidden"
+      className="relative flex flex-col justify-start items-start gap-2 md:gap-5 px-5 sm:px-10 lg:px-20 pt-10  w-full bg-[url('/assets/background/section/stars_background.png')] bg-center overflow-hidden"
     >
       <motion.h1
         initial={{ opacity: 0, x: -50 }}
         animate={isInView ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 0.6, delay: 0.2 }}
-        className="font-montserrat font-semibold text-2xl sm:text-4xl tracking-[2.5px] "
+        className="font-montserrat font-semibold text-2xl md:text-4xl tracking-[2.5px] "
       >
         {label}
       </motion.h1>
@@ -35,12 +35,12 @@ const HelperList = ({
         make the right career choices.
       </motion.p>
 
-      <div className="flex gap-10">
+      <div className="lg:flex gap-10 space-y-6 lg:space-y-0">
         <motion.img
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay:  0.2 }}
-          className="rounded-lg"
+          className="rounded-lg w-full"
           src="assets/about/bg.jpg"
           alt="help"
         />

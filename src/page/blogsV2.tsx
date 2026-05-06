@@ -24,8 +24,8 @@ import MythosLoginModal from "../components/modals/mythosLogin";
 import RashiFinderModal from "../components/modal/astro/rashiFindermodal.tsx";
 import AssignmentAlreadyTakenHome from "../components/modal/assessment/AssignmentAlreadyTakenHome.tsx";
 import HiringModal from "../components/modal/HiringModal/HiringModal.tsx";
-import ProblemCard from "../components/home/problemCard.tsx";
-import { BABY_DEITIES_IMAGES } from "../constants/babyDeities/babyDeitiesCard.ts";
+import BlogHiring from "../components/blogsV2/BlogHiring.tsx";
+import BlogRightCol from "../components/blogsV2/BlogRightCol.tsx";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -263,29 +263,7 @@ const BlogsV2 = () => {
       variants={fadeInUp}
     >
       <div className="col-span-2 hidden lg:flex flex-col sticky top-0 h-screen overflow-y-auto pt-16 hide-scrollbar pb-10">
-        <div className="bg-background border rounded-2xl shadow-md p-5 flex flex-col gap-4">
-          <h2 className="text-lg font-semibold leading-snug">
-            Become a Mythology Story Teller
-          </h2>
-
-          <img
-            src="/assets/blog/mythology-story-teller.png"
-            alt="Mythology Story Teller"
-            className="w-full object-cover rounded-xl"
-          />
-
-          <p className="text-sm text-muted-foreground">
-            Share your stories, inspire others, and become part of our
-            storytelling community.
-          </p>
-
-          <button
-            className="w-full bg-foreground/90 text-background py-2 rounded-lg font-medium hover:bg-foreground/80 transition"
-            onClick={() => setApplyJob("Mythology Story Teller")}
-          >
-            Apply Now
-          </button>
-        </div>
+        <BlogHiring setApplyJob={setApplyJob} />
       </div>
 
       {/* CENTER col — scrolls normally with the page */}
@@ -328,56 +306,7 @@ const BlogsV2 = () => {
       </div>
 
       <div className="col-span-2 hidden lg:block sticky top-0 pb-10 h-screen overflow-y-auto pt-16 hide-scrollbar">
-        <div className="flex flex-col gap-6 border rounded-2xl shadow-md p-5">
-          <div className="bg-background shadow-md rounded-2xl p-5 border">
-            <h2 className="text-lg font-semibold mb-2">
-              Didn't test your intelligence yet?
-            </h2>
-            <p className="text-sm text-muted-foreground mb-4">
-              Take a quick test and see where you stand.
-            </p>
-            <button
-              className="w-full bg-foreground/90 text-background py-2 rounded-lg hover:opacity-90 transition"
-              onClick={() => handlePathClick("psychology")}
-            >
-              Take a Test
-            </button>
-          </div>
-
-          <div className="bg-background shadow-md rounded-2xl p-5 border">
-            <h2 className="text-lg font-semibold mb-2">Know your birth sign</h2>
-            <p className="text-sm text-muted-foreground mb-4">
-              Discover insights based on your birth details.
-            </p>
-            <button
-              className="w-full bg-amber-500 text-white py-2 rounded-lg hover:bg-amber-600 transition"
-              onClick={() => handlePathClick("astrology")}
-            >
-              Check Now
-            </button>
-          </div>
-
-          <div className="flex flex-col gap-5">
-            <div>
-              <ProblemCard
-                from="blog"
-                data={BABY_DEITIES_IMAGES.slice(
-                  0,
-                  BABY_DEITIES_IMAGES.length / 2,
-                )}
-              />
-            </div>
-            <div>
-              <ProblemCard
-                from="blog"
-                data={BABY_DEITIES_IMAGES.slice(
-                  BABY_DEITIES_IMAGES.length / 2,
-                  BABY_DEITIES_IMAGES.length,
-                )}
-              />
-            </div>
-          </div>
-        </div>
+        <BlogRightCol handlePathClick={handlePathClick} />
       </div>
 
       {postId && selectedPost && (

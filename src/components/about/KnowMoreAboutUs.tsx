@@ -71,7 +71,7 @@ const KnowMoreAboutUs = () => {
   };
 
   return (
-    <div className="bg-[url('/assets/background/section/stars_background.png')] bg-center py-16 lg:py-24 px-5 sm:px-10 lg:px-20">
+    <div className="bg-[url('/assets/background/section/stars_background.png')] bg-center  lg:py-20 px-5 sm:px-10 lg:px-20">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12">
         {/* LEFT SIDE */}
         <motion.div
