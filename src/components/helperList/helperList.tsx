@@ -14,13 +14,13 @@ const HelperList = ({
   return (
     <section
       ref={ref}
-      className="relative flex flex-col justify-start items-start gap-2 md:gap-5 px-5 sm:px-10 lg:px-20 pt-10  w-full bg-[url('/assets/background/section/stars_background.png')] bg-center overflow-hidden"
+      className="relative flex flex-col justify-start items-start gap-2 md:gap-5 px-5 sm:px-10 lg:px-20 pt-14  w-full bg-[url('/assets/background/section/stars_background.png')] bg-center overflow-hidden"
     >
       <motion.h1
         initial={{ opacity: 0, x: -50 }}
         animate={isInView ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 0.6, delay: 0.2 }}
-        className="font-montserrat font-semibold text-2xl md:text-4xl tracking-[2.5px] "
+        className="font-montserrat font-semibold text-xl md:text-3xl tracking-[2.5px] "
       >
         {label}
       </motion.h1>

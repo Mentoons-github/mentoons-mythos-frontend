@@ -3,7 +3,6 @@ import { lazy, Suspense } from "react";
 import MythosLayout from "./layout/mythos";
 import NotFound from "./components/NotFound";
 import Loader from "./components/loader/Loader";
-import Rashi from "./page/group/Rashi";
 import ScrollToTop from "./components/ScrollToTop";
 import Register from "./page/auth/Register";
 import Login from "./page/auth/Login";
@@ -49,6 +48,10 @@ import AdminEmployeeLeaveManagement from "./Admin/pages/employees/AdminEmployeeL
 import RashiDetails from "./page/RashiDetails";
 import WorkshopPayment from "./page/WorkshopPayment";
 import BlogsV2 from "./page/blogsV2";
+import AdminQuiz from "./Admin/pages/Quiz/AdminQuiz";
+import AdminBadges from "./Admin/pages/Badge/AdminBadges";
+import SingleGroup from "./page/group/SingleGroup";
+import WorkshopPlans from "./Admin/pages/Workshops/WorkshopPlans";
 
 const MythosHome = lazy(() => import("./page/home"));
 const MythosAbout = lazy(() => import("./page/about"));
@@ -162,7 +165,7 @@ const AppRouter = () => {
               <Route path=":postId" element={<BlogsV2 />} />
             </Route>
             <Route path="groups" element={<MythosGroups />} />
-            <Route path="groups/:groupId" element={<Rashi />} />
+            <Route path="groups/:groupId" element={<SingleGroup />} />
             <Route path="*" element={<NotFound />} />
             <Route path="shop" element={<MythosShop />} />
             <Route path="quiz" element={<MythosQuiz />} />
@@ -172,6 +175,7 @@ const AppRouter = () => {
             <Route path="products-details" element={<MythosProductDetail />} />
             <Route path="career" element={<MythosHiring />} />
             <Route path="profile" element={<MythosProfile />} />
+            <Route path="profile/:tab?" element={<MythosProfile />} />
             <Route path="contactUs" element={<MythosContactUs />} />
             {/* <Route path="report" element={<AstrologyReport />} /> */}
             <Route path="book-call" element={<MythosBookCall />} />
@@ -244,6 +248,7 @@ const AppRouter = () => {
             <Route path="career/applications" element={<AdminApplications />} />
             <Route path="workshops/workshops" element={<AllWorkshops />} />
             <Route path="workshops/enquiries" element={<WorkshopEnquiries />} />
+            <Route path="workshops/plans" element={<WorkshopPlans />} />
             <Route path="blogs/blogs" element={<AllBlogs />} />
             <Route path="report&blocks/reports" element={<AdminReport />} />
             {/* <Route path="report&blocks/blocks" element = {<AdminReport/>}/> */}
@@ -262,7 +267,8 @@ const AppRouter = () => {
               path="employee/leave-management"
               element={<AdminEmployeeLeaveManagement />}
             />
-
+            <Route path="quiz" element={<AdminQuiz />} />
+            <Route path="badges" element={<AdminBadges />} />
             <Route path="*" element={<Users />} />
             {/* <Route path="orders" element={<Orders />} />
             <Route path="products" element={<Products />} /> */}

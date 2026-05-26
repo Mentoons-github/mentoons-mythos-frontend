@@ -11,9 +11,9 @@ export const CONTACT_INFO = [
   },
 ];
 
-export const EXPLORE = [
+export const ABOUT = [
   {
-    label: "Mentoons Mythos About",
+    label: "Mentoons Mythos",
     url: "/about-us",
   },
   {
@@ -26,7 +26,7 @@ export const EXPLORE = [
   },
 ];
 
-export const GETSTARTED = [
+export const EXPLORE = [
   //  {
   //   label:"ASTROLGY ASSESSMENTS",
   //   url:"/assessment/planet"

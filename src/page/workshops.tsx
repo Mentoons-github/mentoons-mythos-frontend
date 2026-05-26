@@ -13,10 +13,12 @@ import { FaChevronDown } from "react-icons/fa";
 import MythicArchitypes from "../components/workshops/MythicArchitypes";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { getWorkshopPlansThunk } from "../features/workshop/workshopThunk";
 
 const Workshops = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
+  const { plans } = useAppSelector((state) => state.workshop);
   const [selectedWorkshop, setSelectedWorkshop] = useState<string>("");
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,7 +36,10 @@ const Workshops = () => {
 
   useEffect(() => {
     dispatch(fetchUserData());
+    dispatch(getWorkshopPlansThunk());
   }, [dispatch]);
+
+  console.log(plans, "plannnnnss");
 
   const workshops = [
     {
@@ -71,10 +76,10 @@ const Workshops = () => {
     }
   }, [from]);
 
-  const handleBook = (plan: string, mode: string, age: string) => {
+  const handleBook = (planId: string, mode: string, age: string) => {
     if (selectedWorkshop) {
       navigate("/workshops-payment", {
-        state: { workshop: selectedWorkshop, planTitle: plan, mode, age },
+        state: { workshop: selectedWorkshop, planId, mode, age },
       });
     } else {
       handleNoteSelected();
@@ -126,7 +131,7 @@ const Workshops = () => {
       </div>
 
       <div ref={joyfullGurukulRef}>
-        <JoyfulGurukul clickViewMore={clickViewMore} />
+        <JoyfulGurukul clickViewMore={clickViewMore} plans={plans} />
       </div>
 
       <div className="space-y-4 p-3">
@@ -200,6 +205,7 @@ const Workshops = () => {
 
         <div ref={durationRef}>
           <WorkshopDurationCard
+            plans={plans}
             selectedWorkshop={selectedWorkshop}
             handleBook={handleBook}
           />

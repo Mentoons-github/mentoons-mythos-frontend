@@ -226,7 +226,7 @@ const NewLanding = () => {
                 </div>
 
                 {/* RIGHT (points) */}
-                <div className="col-span-2 py-5 px-4 md:bg-foreground flex flex-col justify-center">
+                <div className="col-span-2 py-5 px-4 md:bg-foreground flex flex-col justify-center items-center">
                   <ul className="text-sm md:text-background/70 space-y-2 ">
                     <div className="w-36 h-36">
                       <Lottie animationData={animationData} loop={true} />

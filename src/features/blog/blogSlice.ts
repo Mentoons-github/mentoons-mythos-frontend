@@ -17,8 +17,10 @@ import {
   getReplyCommentBlogThunk,
   editCommentBlogThunk,
   commentOffToggleThunk,
+  userSavedBlogsThunk,
 } from "./blogThunk";
 import {
+  Badge,
   Comments,
   IBlogV2,
   IReply,
@@ -52,10 +54,14 @@ interface SliceBlog {
   blogCount: number;
   rewardPoints: Reward | null;
   likeSuccess: boolean;
+  saveSuccess: boolean;
   commentTotal: number;
   replyCommentTotal: number;
   currentPostId: string | null;
   currentReplyCommentId: string | null;
+  badge: Badge | null;
+  userBlogs: IBlogV2[];
+  userSavedBlogs: IBlogV2[];
 }
 
 const initialState: SliceBlog = {
@@ -84,10 +90,14 @@ const initialState: SliceBlog = {
   blogCount: 0,
   rewardPoints: null,
   likeSuccess: false,
+  saveSuccess: false,
   commentTotal: 0,
   replyCommentTotal: 0,
   currentPostId: null,
   currentReplyCommentId: null,
+  badge: null,
+  userBlogs: [],
+  userSavedBlogs: [],
 };
 
 export const blogSlice = createSlice({
@@ -111,6 +121,7 @@ export const blogSlice = createSlice({
       state.deleteSuccess = false;
       state.rewardPoints = null;
       state.likeSuccess = false;
+      state.saveSuccess = false;
       state.commentTotal = 0;
       state.replyCommentTotal = 0;
     },
@@ -128,6 +139,7 @@ export const blogSlice = createSlice({
         state.data.unshift(action.payload.blog);
         state.createblogSuccess = true;
         state.rewardPoints = action.payload.reward;
+        state.badge = action.payload.badge;
       })
       .addCase(createBlogThunk.rejected, (state, action) => {
         state.error = action.payload;
@@ -372,7 +384,7 @@ export const blogSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchCurrentUserBlog.fulfilled, (state, action) => {
-        state.data = action.payload;
+        state.userBlogs = action.payload;
         state.error = null;
         state.loading = false;
       })
@@ -439,7 +451,9 @@ export const blogSlice = createSlice({
         state.deleteLoading = false;
         state.deleteSuccess = true;
         if (action.meta.arg) {
-          state.data = state.data.filter((job) => job._id !== action.meta.arg);
+          state.data = state.data.filter(
+            (blog) => blog._id !== action.meta.arg,
+          );
         }
         state.rewardPoints = action.payload.reward;
       })
@@ -500,6 +514,21 @@ export const blogSlice = createSlice({
         }
       })
       .addCase(commentOffToggleThunk.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.loading = false;
+      })
+
+      // user saved blogs
+      .addCase(userSavedBlogsThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(userSavedBlogsThunk.fulfilled, (state, action) => {
+        state.userSavedBlogs = action.payload;
+        state.error = null;
+        state.loading = false;
+      })
+      .addCase(userSavedBlogsThunk.rejected, (state, action) => {
         state.error = action.payload as string;
         state.loading = false;
       });

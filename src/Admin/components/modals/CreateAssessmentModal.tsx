@@ -98,7 +98,7 @@ const CreateAssessmentModal = ({ onClose }: { onClose: () => void }) => {
     dispatch(assessmentQuestionThunk({ type, name, question, options }));
   };
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-40 italic ">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 italic ">
       <div className="bg-secondary rounded-lg shadow-xl p-6 w-full max-w-xs md:max-w-2xl lg:max-w-3xl relative overflow-y-auto hide-scrollbar max-h-[90vh]">
         {/* Close Button */}
         <button

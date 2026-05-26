@@ -123,7 +123,7 @@ const BlogForComment = ({
         className="absolute top-5 right-5 text-gray-700 lg:text-gray-100 cursor-pointer"
       />
       <div
-        className={`bg-background rounded-lg h-[100dvh] lg:h-[90vh] w-full mx-2 sm:mx-4 md:mx-0
+        className={`bg-background dark:bg-muted rounded-lg h-[100dvh] lg:h-[90vh] w-full mx-2 sm:mx-4 md:mx-0
                     flex flex-col ${hasMedia ? "lg:flex-row max-w-5xl" : "max-w-xl"}
                     overflow-hidden
                   `}

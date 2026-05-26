@@ -55,12 +55,10 @@ const floatingVariants = {
 };
 
 interface ChangePasswordProps {
-  setActiveTab: React.Dispatch<
-    React.SetStateAction<"profile" | "blogs" | "edit" | "password">
-  >;
+  backToProfile: () => void;
 }
 
-const ChangePassword = ({ setActiveTab }: ChangePasswordProps) => {
+const ChangePassword = ({ backToProfile }: ChangePasswordProps) => {
   const user = useAppSelector((state) => state.user.user);
 
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -104,7 +102,7 @@ const ChangePassword = ({ setActiveTab }: ChangePasswordProps) => {
             newPassword: values.newPassword,
           },
           userId: user?._id as string,
-        })
+        }),
       );
       console.log("object", values);
     },
@@ -122,7 +120,7 @@ const ChangePassword = ({ setActiveTab }: ChangePasswordProps) => {
         forgotPasswordThunk({
           email: values?.email,
           newPassword: values.newPassword,
-        })
+        }),
       );
     },
   });
@@ -130,7 +128,7 @@ const ChangePassword = ({ setActiveTab }: ChangePasswordProps) => {
   useEffect(() => {
     if (authSuccess) {
       toast.success(message);
-      setActiveTab("profile");
+      backToProfile();
       if (user && userPassword) {
         dispatch(updateUserPassword(userPassword));
       }
@@ -142,7 +140,15 @@ const ChangePassword = ({ setActiveTab }: ChangePasswordProps) => {
       toast.error(error);
       dispatch(resetAuthState());
     }
-  }, [dispatch, error, message, authSuccess, setActiveTab, user, userPassword]);
+  }, [
+    dispatch,
+    error,
+    message,
+    authSuccess,
+    user,
+    userPassword,
+    backToProfile,
+  ]);
 
   if (user?.isGoogleUser && !user.password) {
     return (
@@ -415,10 +421,10 @@ const ChangePassword = ({ setActiveTab }: ChangePasswordProps) => {
                 if (
                   window.confirm("Are you sure you want to discard changes?")
                 ) {
-                  setActiveTab("profile");
+                  backToProfile();
                 }
               } else {
-                setActiveTab("profile");
+                backToProfile();
               }
             }}
           >

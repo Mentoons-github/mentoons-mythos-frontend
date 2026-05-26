@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 // import { CHAT_PEOPLE } from "../../../constants/sunshine";
-import MythosButton from "../../home/button";
 import { Intelligence, Sunshine } from "../../../types/interface";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -36,7 +35,6 @@ const ChatPeople = ({
   isIntelligence: boolean;
   details: Sunshine | Intelligence;
 }) => {
-
   const navigate = useNavigate();
   const handleStartChat = () => {
     const isMember = users.some((user) => user._id === userId);
@@ -53,7 +51,7 @@ const ChatPeople = ({
 
   return (
     <motion.div
-      className="px-6 py-10 md:px-20"
+      className="px-6 py-10 md:px-28 "
       initial="hidden"
       whileInView="visible"
       viewport={{ once: false, amount: 0.1 }}
@@ -61,7 +59,7 @@ const ChatPeople = ({
     >
       <motion.div className="text-center mb-10" variants={fadeInUp}>
         <motion.h1
-          className="text-2xl sm:text-3xl font-bold tracking-wider   max-w-xl mx-auto"
+          className="text-2xl sm:text-3xl font-bold tracking-wider  max-w-xl mx-auto"
           variants={fadeInUp}
         >
           CHAT WITH PEOPLE HAVING THE SAME{" "}
@@ -70,7 +68,7 @@ const ChatPeople = ({
       </motion.div>
 
       <motion.div
-        className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-6"
+        className="grid grid-cols-1 md:grid-cols-4 p-4 gap-6 md:gap-6 border bg-muted rounded-md h-80 overflow-y-auto"
         variants={fadeInUp}
       >
         {users.length === 0 ? (
@@ -81,7 +79,7 @@ const ChatPeople = ({
           users.map((data, ind) => (
             <motion.div
               key={data._id}
-              className="flex items-center gap-4 p-4"
+              className="flex items-center gap-2 p-4 bg-foreground/80 rounded-md h-min"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: ind * 0.2 }}
@@ -94,13 +92,13 @@ const ChatPeople = ({
                   // variants={floatImage}
                 />
               ) : (
-                <div className="w-12 h-12 flex items-center justify-center bg-foreground text-background rounded-full">
+                <div className="w-12 h-12 flex items-center justify-center bg-background text-foreground rounded-full">
                   <FaUser className="text-sm sm:text-lg" />
                 </div>
               )}
-              <div className="max-w-[220px] md:max-w-full">
+              <div className="max-w-[220px] md:max-w-full ">
                 <motion.h3
-                  className="text-lg font-semibold "
+                  className="text-lg font-semibold text-background"
                   // variants={fadeInUp}
                 >
                   {data._id === userId
@@ -113,11 +111,16 @@ const ChatPeople = ({
         )}
       </motion.div>
 
-      <div className="mt-10 flex justify-center ">
-        <MythosButton
-          label="START CHATTING"
+      <div className="mt-10 flex justify-center">
+        <button
           onClick={handleStartChat}
-        />
+          className="flex items-center gap-2 bg-foreground text-background px-4 py-3  border border-foreground  rounded-lg hover:opacity-90 hover:scale-105 shadow-md hover:shadow-lg transition-all duration-200 ease-in-out"
+        >
+          <span>✦</span>
+          <span className="font-medium font-mulish text-[14px]">
+            START CHATTING
+          </span>
+        </button>
       </div>
       {/* <GroupChat groupId={details?.id} groupName = {details.name}/> */}
     </motion.div>

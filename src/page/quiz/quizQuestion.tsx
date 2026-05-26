@@ -1,26 +1,31 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { MYTHOLOGYQUIZ } from "../../constants/Questions/mythosQuiz";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import QuizComplete from "../../components/quiz/QuizComplete";
-import { QuizCategory } from "../../types/redux/mythosQuizType";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { getSingleQuizThunk } from "../../features/quiz/quizThunk";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 
 const OPTION_LABELS = ["A", "B", "C", "D"];
 
 const QuizQuestion = () => {
   const { category } = useParams();
   const navigate = useNavigate();
-  const questions =
-    category && category in MYTHOLOGYQUIZ
-      ? MYTHOLOGYQUIZ[category as QuizCategory]
-      : [];
 
   const [currentQ, setCurrentQ] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
   const [streak, setStreak] = useState(0);
+  const dispatch = useAppDispatch();
+  const { singleQuiz, loading } = useAppSelector((state) => state.quiz);
+  const questions = singleQuiz?.questions || [];
+
+  useEffect(() => {
+    if (category) {
+      dispatch(getSingleQuizThunk(category));
+    }
+  }, [category, dispatch]);
 
   const handleOptionClick = (option: string) => {
     if (selected) return;
@@ -57,6 +62,22 @@ const QuizQuestion = () => {
           <div style={{ fontSize: 48 }}>📜</div>
           <p style={{ fontSize: 20, color: "#64748b", marginTop: 12 }}>
             No questions found for this category.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ fontFamily: "'Georgia', serif" }}
+      >
+        <div className="text-center">
+          <div style={{ fontSize: 48 }}>📜</div>
+          <p style={{ fontSize: 20, color: "#64748b", marginTop: 12 }}>
+            Loading Questions...
           </p>
         </div>
       </div>
@@ -400,7 +421,8 @@ const QuizQuestion = () => {
                   className="text-center mt-5"
                   style={{
                     fontSize: 13,
-                    color: selected === question.answer ? "#0c8f06e9" : "#b61212",
+                    color:
+                      selected === question.answer ? "#0c8f06e9" : "#b61212",
                     fontStyle: "italic",
                     letterSpacing: "0.04em",
                   }}

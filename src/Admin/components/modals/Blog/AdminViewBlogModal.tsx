@@ -1,254 +1,231 @@
-// import { X } from "lucide-react";
-// import { Blog, Comments } from "../../../../types/redux/blogInterface";
-// import { useState } from "react";
-// import { formatToRealDate } from "../../../../utils/DateFormate";
+import { X } from "lucide-react";
+import {
+  Comments,
+  IBlogV2,
+  IReply,
+} from "../../../../types/redux/blogInterface";
+import BlogCommentsLeft from "../../../../components/blogsV2/Comments/BlogCommentsLeft";
+import BlogCommentRightHeader from "../../../../components/blogsV2/Comments/BlogCommentRightHeader";
+import BlogCommentPostContent from "../../../../components/blogsV2/Comments/BlogCommentPostContent";
+import { FaUser } from "react-icons/fa";
+import { formatTime } from "../../../../utils/BlogCommentDate";
+import { FiPlusCircle } from "react-icons/fi";
+import { Dispatch, SetStateAction } from "react";
 
-// const AdminViewBlogModal = ({
-//   onClose,
-//   blog,
-//   loading,
-//   commentShow,
-//   comments,
-// }: {
-//   onClose: () => void;
-//   blog: Blog | null;
-//   loading: boolean;
-//   commentShow: () => void;
-//   comments: Comments[];
-// }) => {
-//   const [showComments, setShowComments] = useState(false);
-//   // const [showReplies, setShowReplies] = useState(false);
+const AdminViewBlogModal = ({
+  onClose,
+  post,
+  comments,
+  replyComments,
+  commentTotal,
+  handleFetchReplies,
+  loading,
+  openReplies,
+  setOpenReplies,
+  fetchComments,
+}: {
+  onClose: () => void;
+  post: IBlogV2 | null;
+  loading: boolean;
+  comments: Comments[];
+  replyComments: IReply[];
+  commentTotal: number;
+  replyCommentTotal: number;
+  openReplies: { [key: string]: boolean };
+  handleFetchReplies: (commentId: string) => void;
+  setOpenReplies: Dispatch<SetStateAction<{ [key: string]: boolean }>>;
+  fetchComments: () => void;
+}) => {
+  const repliesByComment = replyComments.reduce(
+    (acc, r) => {
+      if (!acc[r?.commentId]) acc[r?.commentId] = [];
+      acc[r.commentId].push(r);
+      return acc;
+    },
+    {} as Record<string, IReply[]>,
+  );
 
-//   console.log(comments, "blog");
-//   const handleComment = () => {
-//     setShowComments((pre) => !pre);
-//     commentShow();
-//   };
-//   return (
-//     <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50 ">
-//       <div className="relative w-full max-w-[350px] md:max-w-2xl lg:max-w-4xl max-h-[90vh] overflow-y-auto rounded-xl shadow-lg p-4 md:p-8 bg-secondary hide-scrollbar will-change-scroll transform-gpu">
-//         <button
-//           className="absolute top-4 right-4 hover:text-muted-foreground"
-//           onClick={onClose}
-//         >
-//           <X size={22} />
-//         </button>
+  const media = post?.media?.[0];
+  const hasMedia = !!media;
 
-//         {loading ? (
-//           <div className="flex justify-center items-center py-10">
-//             <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-//             <span className="ml-3 ">Loading blog details...</span>
-//           </div>
-//         ) : blog ? (
-//           <div className="space-y-4 md:space-y-8">
-//             <h2 className="text-xl md:text-2xl font-semibold border-b  pb-3">
-//               Blog Details
-//             </h2>
+  console.log(comments, "blog");
 
-//             <div>
-//               <h3 className="text-lg font-semibold mb-3 text-blue-800">
-//                 Blog Information
-//               </h3>
-//               <div className="grid grid-cols-2 gap-6">
-//                 <div>
-//                   <p className="text-sm text-muted-foreground">Title</p>
-//                   <p className="text-base font-medium">{blog.title}</p>
-//                 </div>
-//                 <div>
-//                   <p className="text-sm text-muted-foreground">Writer</p>
-//                   <p className="text-base font-medium">
-//                     {blog.writer || "N/A"}
-//                   </p>
-//                 </div>
-//                 <div>
-//                   <p className="text-sm text-muted-foreground">Writer ID</p>
-//                   <p className="text-base font-medium">
-//                     {blog.writerId || "N/A"}
-//                   </p>
-//                 </div>
+  return (
+    <div
+      className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center overflow-hidden"
+      onClick={onClose}
+    >
+      <X
+        onClick={onClose}
+        className="absolute top-5 right-5 text-gray-700 lg:text-gray-100 cursor-pointer"
+      />
+      {loading ? (
+        <div></div>
+      ) : (
+        <div
+          className={`bg-background rounded-lg h-[100dvh] lg:h-[90vh] w-full mx-2 sm:mx-4 md:mx-0
+                    flex flex-col ${hasMedia ? "lg:flex-row max-w-5xl" : "max-w-xl"}
+                    overflow-hidden
+                  `}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* LEFT: MEDIA */}
+          {hasMedia && <BlogCommentsLeft media={media} />}
 
-//                 <div className="col-span-2">
-//                   <p className="text-sm text-muted-foreground">Blog Image</p>
-//                   {blog.file ? (
-//                     <img
-//                       src={blog.file}
-//                       alt={blog.title}
-//                       className="mt-2 w-full max-h-60 object-cover rounded-lg border border-gray-700"
-//                     />
-//                   ) : (
-//                     <p className="text-muted-foreground">No Image Uploaded</p>
-//                   )}
-//                 </div>
-//               </div>
-//             </div>
+          {/* RIGHT SIDE */}
+          <div
+            className={`w-full ${
+              hasMedia ? "lg:w-1/2" : "w-full"
+            } flex flex-col min-h-0 h-full`}
+          >
+            <BlogCommentRightHeader post={post} />
 
-//             <div>
-//               <h3 className="text-lg font-semibold mb-3 text-blue-800">Tags</h3>
-//               {blog.tags && blog.tags.length > 0 ? (
-//                 <div className="flex flex-wrap gap-2">
-//                   {blog.tags.map((tag, idx) => (
-//                     <span
-//                       key={idx}
-//                       className="bg-muted-foreground px-3 py-1 rounded-lg text-sm"
-//                     >
-//                       #{tag}
-//                     </span>
-//                   ))}
-//                 </div>
-//               ) : (
-//                 <p className="text-muted-foreground">No tags</p>
-//               )}
-//             </div>
+            <BlogCommentPostContent media={media} post={post} />
 
-//             <div>
-//               <h3 className="text-lg font-semibold mb-3 text-blue-800">
-//                 Description
-//               </h3>
-//               <p className="text-base whitespace-pre-line">
-//                 {blog.description}
-//               </p>
-//             </div>
+            <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-5 hide-scrollbar z-50">
+              {post?.commentsOff ? (
+                <p className="text-muted-foreground text-sm text-center">
+                  Comments are turned off
+                </p>
+              ) : comments?.length ? (
+                comments.map((c) => (
+                  <div key={c._id} className="flex items-start gap-3 group">
+                    <div className="flex-shrink-0 flex justify-end  w-8 h-8 overflow-hidden rounded-full bg-muted-foreground ">
+                      {c.userId?.profilePicture ? (
+                        <img
+                          src={c.userId?.profilePicture}
+                          alt={c.userId.lastName || "User"}
+                          className="object-cover w-full h-full cursor-pointer"
+                        />
+                      ) : (
+                        <FaUser className="w-6 h-6 mx-auto my-auto text-background" />
+                      )}
+                    </div>
 
-//             <div>
-//               <h3 className="text-lg font-semibold mb-3 text-blue-800">
-//                 Engagement
-//               </h3>
-//               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-//                 <div>
-//                   <p className="text-sm text-muted-foreground">Likes</p>
-//                   <p className="text-base font-medium">
-//                     {blog.likes?.length || 0}
-//                   </p>
-//                 </div>
-//                 <div>
-//                   <p className="text-sm text-muted-foreground">Comments</p>
-//                   <p className="text-base font-medium">
-//                     {blog.commentCount || 0}
-//                   </p>
-//                 </div>
-//                 <div>
-//                   <p className="text-sm text-muted-foreground">
-//                     Comments Enabled
-//                   </p>
-//                   <p className="text-base font-medium">
-//                     {blog.commentsOff ? "No" : "Yes"}
-//                   </p>
-//                 </div>
-//                 <div>
-//                   <p className="text-sm text-muted-foreground">Total Reports</p>
-//                   <p className="text-base font-medium">{blog.reportLength}</p>
-//                 </div>
-//               </div>
+                    <div className="flex flex-col space-y-3">
+                      <div>
+                        <div className="text-sm ">
+                          <span className="font-semibold text-primary mr-2">
+                            {c.userId.firstName + " " + c.userId.lastName}
+                          </span>
+                          <span className="text-foreground/80 break-words break-all whitespace-pre-wrap min-w-0 ">
+                            {c.comment}
+                          </span>
+                        </div>
 
-//               {blog.commentCount && blog.commentCount > 0 ? (
-//                 <div className="mt-6">
-//                   <button
-//                     onClick={handleComment}
-//                     className="px-5 py-2 rounded-lg bg-blue-800 text-white font-semibold hover:bg-blue-700 transition-all"
-//                   >
-//                     {showComments ? "Hide Comments" : "Show Comments"}
-//                   </button>
+                        <div className="flex items-center gap-4 mt-1 text-xs text-muted-foreground">
+                          {c.createdAt && (
+                            <span>{formatTime(c.createdAt)}</span>
+                          )}
+                        </div>
+                      </div>
 
-//                   {showComments && (
-//                     <div className="mt-5 space-y-4">
-//                       {comments.length > 0 ? (
-//                         comments.map((cmt, idx) => (
-//                           <div
-//                             key={idx}
-//                             className=" p-4 rounded-lg border  shadow-sm"
-//                           >
-//                             {/* Comment Header */}
-//                             <div className="flex justify-between items-center mb-2">
-//                               <p className="text-sm text-muted-foreground font-medium">
-//                                 {cmt._id || "Anonymous"}
-//                                 <span className="text-muted-foreground ml-2 text-xs">
-//                                   •{" "}
-//                                   {cmt.createdAt
-//                                     ? new Date(
-//                                         cmt.createdAt
-//                                       ).toLocaleDateString()
-//                                     : "N/A"}
-//                                 </span>
-//                               </p>
-//                               <p className="text-xs text-red-500">
-//                                 Reports: {cmt.reportLength || 0}
-//                               </p>
-//                             </div>
+                      {openReplies[c._id] && (
+                        <div className="ml-5 mt-2 border-l pl-3 space-y-3">
+                          {repliesByComment[c._id]?.length ? (
+                            repliesByComment[c._id].map((r) => (
+                              <div
+                                key={r._id}
+                                className="flex items-start gap-2"
+                              >
+                                <div className="flex-shrink-0 flex justify-end  w-6 h-6 overflow-hidden rounded-full bg-muted-foreground ">
+                                  {r.userId?.profilePicture ? (
+                                    <img
+                                      src={r.userId?.profilePicture}
+                                      alt={r.userId?.firstName || "User"}
+                                      className="object-cover w-full h-full cursor-pointer"
+                                    />
+                                  ) : (
+                                    <FaUser className="w-4 h-4 mx-auto my-auto text-background" />
+                                  )}
+                                </div>
 
-//                             {/* Comment Text */}
-//                             <p className="text-base leading-relaxed">
-//                               {cmt.comment}
-//                             </p>
+                                <div className="text-sm">
+                                  <div>
+                                    <span className="font-semibold mr-2">
+                                      {r.userId.firstName} {r.userId.lastName}
+                                    </span>
 
-//                             {/* Replies */}
-//                             {/* {cmt. && cmt.reply.length > 0 && (
-//                               <div className="mt-3">
-//                                 <button
-//                                   onClick={() =>
-//                                     setShowReplies((prev) => !prev)
-//                                   }
-//                                   className="text-sm text-blue-800 hover:underline"
-//                                 >
-//                                   {showReplies
-//                                     ? "Hide Replies"
-//                                     : `View Replies (${cmt.reply.length})`}
-//                                 </button>
+                                    {r.replyToUserId && (
+                                      <span className="text-blue-500 mr-1 font-medium">
+                                        @
+                                        {r.replyToUserId.firstName +
+                                          " " +
+                                          r.replyToUserId.lastName}
+                                      </span>
+                                    )}
 
-//                                 {showReplies && (
-//                                   <div className="mt-3 pl-5 border-l  space-y-3">
-//                                     {cmt.reply.map((reply, rIdx) => (
-//                                       <div
-//                                         key={rIdx}
-//                                         className=" p-3 rounded-lg border "
-//                                       >
-//                                         <div className="flex justify-between items-center mb-1">
-//                                           <p className="text-sm text-muted-foreground font-medium">
-//                                             {reply.username || "Anonymous"}
-//                                             <span className="text-muted-foreground ml-2 text-xs">
-//                                               •{" "}
-//                                               {reply.createdAt
-//                                                 ? new Date(
-//                                                     reply.createdAt
-//                                                   ).toLocaleDateString()
-//                                                 : "N/A"}
-//                                             </span>
-//                                           </p>
-//                                         </div>
-//                                         <p className="text-sm leading-relaxed">
-//                                           {reply.replyText}
-//                                         </p>
-//                                       </div>
-//                                     ))}
-//                                   </div>
-//                                 )}
-//                               </div>
-//                             )} */}
-//                           </div>
-//                         ))
-//                       ) : (
-//                         <p className="text-muted-foreground text-sm">
-//                           No comments available
-//                         </p>
-//                       )}
-//                     </div>
-//                   )}
-//                 </div>
-//               ) : (
-//                 <p className="text-muted-foreground mt-4">No comments available</p>
-//               )}
-//             </div>
+                                    <span className="text-foreground/80 break-words break-all whitespace-pre-wrap min-w-0">
+                                      {r.replyText}
+                                    </span>
+                                  </div>
 
-//             <div className="md:flex justify-between text-sm text-muted-foreground border-t pt-4">
-//               <span >Created On: {formatToRealDate(blog?.createdAt)}</span>
-//               <span className="block md:inline">ID: {blog._id}</span>
-//             </div>
-//           </div>
-//         ) : (
-//           <p className="text-center text-muted-foreground">No blog data available.</p>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
+                                  <div className="text-xs text-muted-foreground mt-1 flex gap-3">
+                                    {r.createdAt && (
+                                      <span>{formatTime(r.createdAt)}</span>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            ))
+                          ) : (
+                            <p className="text-xs text-gray-400">
+                              No replies yet
+                            </p>
+                          )}
+                          {repliesByComment[c._id]?.length < c.replyCount && (
+                            <button
+                              onClick={() => handleFetchReplies(c._id)}
+                              className="text-2xl flex items-center justify-center w-full"
+                            >
+                              <FiPlusCircle />
+                            </button>
+                          )}
+                        </div>
+                      )}
 
-// export default AdminViewBlogModal;
+                      {c.replyCount > 0 && (
+                        <button
+                          className="text-xs ml-5 text-gray-500 hover:text-blue-500 self-start"
+                          onClick={() => {
+                            const isOpening = !openReplies[c._id];
+
+                            setOpenReplies((prev) => ({
+                              ...prev,
+                              [c._id]: isOpening,
+                            }));
+
+                            if (isOpening) {
+                              handleFetchReplies(c._id);
+                            }
+                          }}
+                        >
+                          {openReplies[c._id]
+                            ? "Hide replies"
+                            : `View replies (${c.replyCount})`}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="text-muted-foreground text-sm">No comments yet</p>
+              )}
+
+              {comments.length < commentTotal && (
+                <button
+                  onClick={fetchComments}
+                  className="text-2xl flex items-center justify-center w-full"
+                >
+                  <FiPlusCircle />
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default AdminViewBlogModal;

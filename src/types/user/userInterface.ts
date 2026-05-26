@@ -1,4 +1,4 @@
-import { Blog, Reward } from "../redux/blogInterface";
+import { Badge, Blog, Reward } from "../redux/blogInterface";
 
 export interface IUser extends ZodiacDetails {
   _id?: string;
@@ -19,6 +19,16 @@ export interface IUser extends ZodiacDetails {
   takeInitialAssessment?: boolean;
   intelligenceTypes: string[];
   designation: string;
+  badges?: MyBadge[];
+  savedPosts?: string[];
+}
+
+export interface MyBadge {
+  _id?: string;
+  badge: Badge;
+  earnedAt: string;
+  isCollected: boolean;
+  isDeleted: boolean;
 }
 
 export interface IAstrologyDetail {
@@ -30,7 +40,8 @@ export interface IAstrologyDetail {
 export interface UserResponse {
   success: boolean;
   user: IUser;
-  reward:Reward
+  badge: Badge;
+  reward: Reward;
 }
 
 export interface AllUserResponse {

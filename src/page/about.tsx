@@ -30,7 +30,7 @@ const MythosAbout = () => {
     <div>
       <HeroSection />
       {/* <Problems /> */}
-      <HelperList data={helps} label="HOW WE HELP YOU" />
+      <HelperList data={helps} label="HOW MENTOONS MYTHOS HELP YOU" />
       {/* <ProductDisplay /> */}
       <KnowMoreAboutUs />
       {/* <FAQ /> */}

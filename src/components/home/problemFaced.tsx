@@ -20,7 +20,7 @@ const ProblemFaced = ({
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -50 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        CHALLENGES WE FACE IN OUR {text}
+        {text} CHALLENGES
       </motion.h1>
       <motion.div
         className="w-full"

@@ -75,7 +75,7 @@ const GroupIdtop = ({
             className="text-xl md:text-3xl font-semibold text-red-600"
             variants={fadeInUp}
           >
-            The {details.name} {isIntelligence && "Intelligence"} Group
+            {!isIntelligence && "The"} {details.name} {isIntelligence && "Intelligence"} Group
           </motion.h3>
         </motion.div>
         <motion.p

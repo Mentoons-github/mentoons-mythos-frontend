@@ -1,14 +1,14 @@
-import { Bookmark, MessageCircle, Share2 } from "lucide-react";
+import { MessageCircle, Share2 } from "lucide-react";
 import { IBlogV2 } from "../../types/redux/blogInterface";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { likeBlogThunk } from "../../features/blog/blogThunk";
+import { likeBlogThunk, saveBlogThunk } from "../../features/blog/blogThunk";
 import { FaHeart } from "react-icons/fa6";
-import { FaRegHeart } from "react-icons/fa";
+import { FaBookmark, FaRegBookmark, FaRegHeart } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import RewardModal from "../modal/RewardModal";
 import { resetBlogSlice } from "../../features/blog/blogSlice";
-import { fetchUserData } from "../../features/user/userThunk";
 import ShareOption from "../modal/BlogModal/ShareOption";
+import useSignInSignUp from "../../hooks/useSignInSignUpModal";
 
 const PostActions = ({
   post,
@@ -22,6 +22,7 @@ const PostActions = ({
   const { user } = useAppSelector((state) => state.user);
   const [rewardModalOpen, setRewardModalOpen] = useState(false);
   const [showShareOptions, setShowShareOptions] = useState(false);
+  const { showModal } = useSignInSignUp();
 
   useEffect(() => {
     if (likeSuccess) {
@@ -31,15 +32,29 @@ const PostActions = ({
 
   const handleLike = () => {
     if (!post._id) return;
+    if (!user) {
+      showModal("Blog Interaction");
+      return;
+    }
     dispatch(likeBlogThunk(post?._id));
   };
 
-  useEffect(() => {
-    dispatch(fetchUserData());
-  }, []);
+  const handleSave = () => {
+    if (!post._id) return;
+    if (!user) {
+      showModal("Blog Interaction");
+      return;
+    }
+    dispatch(saveBlogThunk(post?._id));
+  };
+
+  // useEffect(() => {
+  //   dispatch(fetchUserData());
+  // }, []);
 
   const isLiked = post?.likes?.includes(user?._id as string) || false;
   const isMyPostReward = rewardPoints?.postId === post._id;
+  const isSaved = user?.savedPosts?.includes(post._id as string) || false;
 
   return (
     <div className="flex items-center justify-between mt-4 px-1">
@@ -104,8 +119,17 @@ const PostActions = ({
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <button className="flex items-center justify-center w-10 h-10 border border-gray-300 rounded-full hover:border-green-400 hover:bg-green-50 transition">
-          <Bookmark className="w-5 h-5 text-muted-foreground hover:text-green-500" />
+        <button
+          onClick={handleSave}
+          className="flex items-center justify-center transition-all duration-200 cursor-pointer"
+        >
+          {isSaved ? (
+            <FaBookmark
+              className={`w-6 h-6 text-muted-foreground transition-all duration-200 scale-100`}
+            />
+          ) : (
+            <FaRegBookmark className="w-6 h-6 text-muted-foreground hover:text-gray-500 transition-colors duration-200" />
+          )}
         </button>
       </div>
     </div>

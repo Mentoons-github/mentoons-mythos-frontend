@@ -1,7 +1,7 @@
 import { CONTACT_INFO } from "../../constants";
 import FooterLinks from "./footerLinks";
 import NewsLetter from "../footer/NewsLetter";
-import { EXPLORE, GETSTARTED } from "../../constants/footer";
+import { ABOUT, EXPLORE } from "../../constants/footer";
 
 const MythosFooter = () => {
   return (
@@ -12,7 +12,7 @@ const MythosFooter = () => {
             <NewsLetter />
           </div>
 
-          {[CONTACT_INFO, EXPLORE, GETSTARTED].map((items, index) => (
+          {[CONTACT_INFO, ABOUT, EXPLORE].map((items, index) => (
             <FooterLinks
               key={index}
               Links={items}
@@ -20,8 +20,8 @@ const MythosFooter = () => {
                 index === 0
                   ? "CONTACT INFO"
                   : index === 1
-                  ? "EXPLORE"
-                  : "GET STARTED"
+                    ? "ABOUT"
+                    : "EXPLORE"
               }
             />
           ))}
@@ -29,12 +29,13 @@ const MythosFooter = () => {
           <div className="hidden md:block ">
             <NewsLetter />
           </div>
-
         </div>
       </div>
 
       <div className="border-t border-t-muted-foreground px-5 py-4 flex flex-col sm:flex-row justify-center items-center text-xs sm:text-sm ">
-        <p>© {new Date().getFullYear()} Mentoons Mythos. All rights reserved.</p>
+        <p>
+          © {new Date().getFullYear()} Mentoons Mythos. All rights reserved.
+        </p>
         {/* <div className="flex gap-4 mt-2 sm:mt-0">
           <a href="/privacy-policy" className="hover:underline">
             Privacy Policy

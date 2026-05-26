@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import MythosButton from "../../home/button";
 import ShareOption from "../../modal/BlogModal/ShareOption";
 import { useState } from "react";
 
@@ -66,11 +65,15 @@ const ShareIntelligence = ({
           Mentoons Mythos isn’t just about reports; it’s a thriving community of
           individuals seeking purpose, clarity, and cosmic guidance.
         </motion.p>
-        <div className="relative">
-          <MythosButton
-            label="SHARE"
+        <div className="relative" >
+          <button
             onClick={() => setShowShareOptions(!showShareOptions)}
-          />
+            className="flex items-center gap-2 bg-foreground text-background px-4 py-3  border border-foreground  rounded-lg hover:opacity-90 hover:scale-105 shadow-md hover:shadow-lg transition-all duration-200 ease-in-out"
+          >
+            <span>✦</span>
+            <span className="font-medium font-mulish text-[14px]">SHARE</span>
+          </button>
+
           {showShareOptions && (
             <ShareOption
               blogUrl={`${window.location.origin}/groups/${groupId}`}
