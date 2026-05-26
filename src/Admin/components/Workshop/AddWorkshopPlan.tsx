@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import CreateWorkshopPlanModal from "../modals/Workshop/CreateWorkshopPlanModal";
 
 const AddWorkshopPlan = () => {
