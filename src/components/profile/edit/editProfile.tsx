@@ -49,13 +49,11 @@ const floatingVariants = {
 };
 
 interface EditProfileProps {
-  setActiveTab: React.Dispatch<
-    React.SetStateAction<"profile" | "blogs" | "edit" | "password">
-  >;
+  backToProfile: () => void;
   success: () => void;
 }
 
-const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
+const EditProfile = ({ backToProfile, success }: EditProfileProps) => {
   const user = useAppSelector((state) => state.user.user);
   const dispatch = useAppDispatch();
   const [errors, setErrors] = useState<string[]>([]);
@@ -152,7 +150,7 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
       await dispatch(updateUserData({ user: profile })).unwrap();
       await dispatch(fetchUserData()).unwrap();
       setSuccessMessage(
-        "Profile updated successfully! Your changes have been saved."
+        "Profile updated successfully! Your changes have been saved.",
       );
       success();
     } catch (error) {
@@ -183,11 +181,11 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
           </div>
         ),
       })) ?? [],
-    [countries]
+    [countries],
   );
 
   const selectedCountry = countryOptions.find(
-    (option) => option.label === profile.country
+    (option) => option.label === profile.country,
   );
 
   return (
@@ -378,10 +376,10 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
                       styles={{
                         control: (base) => ({
                           ...base,
-                          backgroundColor: "var(--background)", 
+                          backgroundColor: "var(--background)",
                           borderColor: errors.includes("Country is required")
                             ? "#EF4444"
-                            : "var(--border)", 
+                            : "var(--border)",
                           borderRadius: "0.75rem",
                           padding: "0.5rem",
                           boxShadow: "none",
@@ -403,8 +401,8 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
                           backgroundColor: state.isSelected
                             ? "#4B5563"
                             : state.isFocused
-                            ? "#374151"
-                            : "#1F2937",
+                              ? "#374151"
+                              : "#1F2937",
                           color: "#F3F4F6",
                           padding: "0.75rem",
                           "&:hover": { backgroundColor: "#374151" },
@@ -452,9 +450,7 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
                     whileHover={{ scale: 1.02 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <label className=" text-sm font-medium">
-                      About Me
-                    </label>
+                    <label className=" text-sm font-medium">About Me</label>
                     <textarea
                       value={profile.about ?? ""}
                       onChange={handleInputChange("about")}
@@ -476,7 +472,7 @@ const EditProfile = ({ setActiveTab, success }: EditProfileProps) => {
                   className="px-4 md:px-8 py-3  border-2 border-foreground rounded-xl hover:bg-foreground hover:text-background transition-colors font-medium flex items-center gap-2"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => setActiveTab("profile")}
+                  onClick={backToProfile}
                 >
                   <X className="w-4 h-4" />
                   Cancel

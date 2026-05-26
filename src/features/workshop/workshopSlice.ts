@@ -1,10 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   addWorkshopThunk,
+  createNewWorkshopPlanThunk,
   deleteEnquiryThunk,
+  deleteWorkshopPlanThunk,
   deleteWorkshopThunk,
+  editWorkshopPlanThunk,
   fetchEnquiryCountThunk,
   fetchWorkshopCountThunk,
+  getWorkshopPlansThunk,
   getWorkshopsThunk,
   SingleEnquiryThunk,
   SingleWorkshopThunk,
@@ -13,6 +17,7 @@ import {
   workshopRegisterThunk,
 } from "./workshopThunk";
 import { EnquiryI, WorkshopI } from "../../types/redux/workshopInterface";
+import { WorkshopPlan } from "../../types/workshop/workshopPlan";
 
 interface WorkshopState {
   loading: boolean;
@@ -37,6 +42,9 @@ interface WorkshopState {
   singleWorkshop: WorkshopI | null;
   updateLoading: boolean;
   updateSuccess: boolean;
+  plans: WorkshopPlan[];
+  addPlanSuccess: boolean;
+  addPlanLoading: boolean;
 }
 
 const initialState: WorkshopState = {
@@ -62,6 +70,9 @@ const initialState: WorkshopState = {
   singleWorkshop: null,
   updateLoading: false,
   updateSuccess: false,
+  plans: [],
+  addPlanLoading: false,
+  addPlanSuccess: false,
 };
 
 const workshopSlice = createSlice({
@@ -81,6 +92,8 @@ const workshopSlice = createSlice({
       state.addWorkshopSuccess = false;
       state.updateLoading = false;
       state.updateSuccess = false;
+      state.addPlanLoading = false;
+      state.addPlanSuccess = false;
     },
   },
   extraReducers: (builder) => {
@@ -210,7 +223,7 @@ const workshopSlice = createSlice({
         state.deleteSuccess = true;
         if (action.meta.arg) {
           state.workshops = state.workshops.filter(
-            (job) => job._id !== action.meta.arg
+            (job) => job._id !== action.meta.arg,
           );
         }
       })
@@ -235,7 +248,7 @@ const workshopSlice = createSlice({
         const updatedWorkshop = action.payload.editedWorkshop;
         if (updatedWorkshop?._id) {
           state.workshops = state.workshops.map((workshop) =>
-            workshop._id === updatedWorkshop._id ? updatedWorkshop : workshop
+            workshop._id === updatedWorkshop._id ? updatedWorkshop : workshop,
           );
           if (state.singleWorkshop?._id === updatedWorkshop._id) {
             state.singleWorkshop = updatedWorkshop;
@@ -297,7 +310,7 @@ const workshopSlice = createSlice({
         state.deleteSuccess = true;
         if (action.meta.arg) {
           state.enquiries = state.enquiries.filter(
-            (job) => job._id !== action.meta.arg
+            (job) => job._id !== action.meta.arg,
           );
         }
       })
@@ -305,6 +318,79 @@ const workshopSlice = createSlice({
         state.deleteLoading = false;
         state.error = action.payload as string;
         state.deleteSuccess = false;
+      })
+
+      //get workshop plans
+      .addCase(getWorkshopPlansThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getWorkshopPlansThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.plans = action.payload;
+      })
+      .addCase(getWorkshopPlansThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+
+      //create new workshop plan
+      .addCase(createNewWorkshopPlanThunk.pending, (state) => {
+        state.addPlanLoading = true;
+        state.error = null;
+      })
+      .addCase(createNewWorkshopPlanThunk.fulfilled, (state, action) => {
+        state.addPlanLoading = false;
+        state.error = null;
+        state.addPlanSuccess = true;
+        state.message = action.payload.message;
+        const newPlan = action.payload.newPlan;
+        state.plans.unshift(newPlan);
+      })
+      .addCase(createNewWorkshopPlanThunk.rejected, (state, action) => {
+        state.addPlanLoading = false;
+        state.error = action.payload as string;
+      })
+
+      //delete workshop plan
+      .addCase(deleteWorkshopPlanThunk.pending, (state) => {
+        state.deleteLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteWorkshopPlanThunk.fulfilled, (state, action) => {
+        state.deleteLoading = false;
+        state.error = null;
+        state.deleteSuccess = true;
+        state.message = action.payload;
+        const planId = action.meta.arg;
+        state.plans = state.plans.filter((plan) => plan._id !== planId);
+      })
+      .addCase(deleteWorkshopPlanThunk.rejected, (state, action) => {
+        state.deleteLoading = false;
+        state.error = action.payload as string;
+      })
+
+      .addCase(editWorkshopPlanThunk.pending, (state) => {
+        state.updateLoading = true;
+        state.error = null;
+      })
+      .addCase(editWorkshopPlanThunk.fulfilled, (state, action) => {
+        state.updateLoading = false;
+        state.error = null;
+        state.updateSuccess = true;
+        state.message = action.payload.message;
+        const updatedPlan = action.payload.editedPlan;
+        console.log(updatedPlan,'uupssssss')
+        if (updatedPlan?._id) {
+          state.plans = state.plans.map((plan) =>
+            plan._id == updatedPlan._id ? updatedPlan : plan,
+          );
+        }
+      })
+      .addCase(editWorkshopPlanThunk.rejected, (state, action) => {
+        state.updateLoading = false;
+        state.error = action.payload as string;
       });
   },
 });

@@ -1,13 +1,15 @@
 import { ArrowRight, CheckIcon } from "lucide-react";
-import { plans } from "../../constants/workshop/JoyfullGurukulPlans";
+// import { plans } from "../../constants/workshop/JoyfullGurukulPlans";
 import { useState } from "react";
+import { WorkshopPlan } from "../../types/workshop/workshopPlan";
 
 interface Props {
   selectedWorkshop: string;
-  handleBook: (plan: string, mode: string, age: string) => void;
+  handleBook: (planId: string, mode: string, age: string) => void;
+  plans: WorkshopPlan[];
 }
 
-const WorkshopDurationCard = ({ handleBook }: Props) => {
+const WorkshopDurationCard = ({ handleBook, plans }: Props) => {
   const [selection, setSelection] = useState<
     Record<number, { mode?: string; age?: string }>
   >({});
@@ -36,7 +38,8 @@ const WorkshopDurationCard = ({ handleBook }: Props) => {
     setErrors((prev) => ({ ...prev, [index]: "" }));
   };
 
-  const onBook = (index: number, planTitle: string) => {
+  const onBook = (index: number, planId?: string) => {
+    if (!planId) return;
     const s = selection[index] ?? {};
     if (!s.mode || !s.age) {
       setErrors((prev) => ({
@@ -45,7 +48,7 @@ const WorkshopDurationCard = ({ handleBook }: Props) => {
       }));
       return;
     }
-    handleBook(planTitle, s.mode, s.age);
+    handleBook(planId, s.mode, s.age);
   };
 
   return (
@@ -82,10 +85,10 @@ const WorkshopDurationCard = ({ handleBook }: Props) => {
                     </h2>
                     <div className="flex gap-2">
                       <span className="text-xs border bg-foreground/80 text-background border-muted-foreground px-2 py-1 rounded">
-                        {plan.duration}
+                        {plan.duration} Weeks
                       </span>
                       <span className="text-xs border bg-foreground/80 text-background border-muted-foreground px-2 py-1 rounded">
-                        {plan.totalSessions}
+                        {plan.totalSessions} Sessions
                       </span>
                     </div>
                   </div>
@@ -94,7 +97,7 @@ const WorkshopDurationCard = ({ handleBook }: Props) => {
                       Mode
                     </p>
                     <div className="grid grid-cols-2 gap-5">
-                      {["Online", "Offline"].map((mode) => (
+                      {plan.mode.map((mode) => (
                         <button
                           key={mode}
                           onClick={() => selectMode(index, mode)}
@@ -128,14 +131,16 @@ const WorkshopDurationCard = ({ handleBook }: Props) => {
                                 : "bg-transparent text-foreground border-muted-foreground hover:border-foreground"
                             }`}
                         >
-                          {age}
+                          {age} yrs
                         </button>
                       ))}
                     </div>
                   </div>
 
                   {/* Price */}
-                  <h3 className="text-4xl font-extrabold mb-6">₹{plan.price}</h3>
+                  <h3 className="text-4xl font-extrabold mb-6">
+                    ₹{Number(plan.price).toLocaleString("en-IN")}
+                  </h3>
 
                   {/* Divider */}
                   <div className="border-t border-muted-foreground mb-6"></div>
@@ -199,7 +204,7 @@ const WorkshopDurationCard = ({ handleBook }: Props) => {
 
                   {/* CTA */}
                   <button
-                    onClick={() => onBook(index, plan.title)}
+                    onClick={() => onBook(index, plan._id)}
                     className={`w-full py-3 rounded-xl font-semibold transition-all duration-300
                       ${
                         plan.highlight

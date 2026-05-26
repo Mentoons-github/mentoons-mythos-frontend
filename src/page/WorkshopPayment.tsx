@@ -1,5 +1,4 @@
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { plans } from "../constants/workshop/JoyfullGurukulPlans";
 import {
   CheckCircle2,
   Clock,
@@ -13,10 +12,12 @@ import {
 } from "lucide-react";
 import PaymentModal from "../components/modal/paymentModal/paymentModal";
 import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import { getWorkshopPlansThunk } from "../features/workshop/workshopThunk";
 
 interface PaymentState {
   workshop: string;
-  planTitle: string;
+  planId: string;
   mode: string;
   age: string;
 }
@@ -242,6 +243,12 @@ const WorkshopPayment = () => {
   const [paymentDone, setPaymentDone] = useState(false);
   const [searchParams] = useSearchParams();
   const paid = searchParams.get("paid") === "true";
+  const dispatch = useAppDispatch();
+  const { plans } = useAppSelector((state) => state.workshop);
+
+  useEffect(() => {
+    dispatch(getWorkshopPlansThunk());
+  }, []);
 
   useEffect(() => {
     if (paid) {
@@ -267,8 +274,8 @@ const WorkshopPayment = () => {
     );
   }
 
-  const { workshop, planTitle, mode, age } = state;
-  const plan = plans.find((p) => p.title === planTitle);
+  const { workshop, planId, mode, age } = state;
+  const plan = plans.find((p) => p._id === planId);
   const selected = options.find((ele) =>
     workshop.toLowerCase().includes(ele.name.toLowerCase()),
   );

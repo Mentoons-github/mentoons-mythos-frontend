@@ -26,6 +26,7 @@ import AssignmentAlreadyTakenHome from "../components/modal/assessment/Assignmen
 import HiringModal from "../components/modal/HiringModal/HiringModal.tsx";
 import BlogHiring from "../components/blogsV2/BlogHiring.tsx";
 import BlogRightCol from "../components/blogsV2/BlogRightCol.tsx";
+import useSignInSignUp from "../hooks/useSignInSignUpModal.ts";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -59,6 +60,7 @@ const BlogsV2 = () => {
   const [rewardModalOpen, setRewardModalOpen] = useState(false);
   const navigate = useNavigate();
   const { postId } = useParams();
+  const { showModal } = useSignInSignUp();
   const selectedPost = data.find((post) => post._id === postId);
   const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
   const [editCommentId, setEditCommentId] = useState<string | null>(null);
@@ -233,6 +235,10 @@ const BlogsV2 = () => {
   };
 
   const handleOpenPost = (postId: string) => {
+    if (!user) {
+      showModal("Blog");
+      return;
+    }
     navigate(`/blog/${postId}`);
   };
 
@@ -312,7 +318,7 @@ const BlogsV2 = () => {
       {postId && selectedPost && (
         <BlogForComment
           post={selectedPost}
-          onClose={() => navigate("/blog")}
+          onClose={() => navigate(-1)}
           handleCommentSubmit={handleCommentSubmit}
           comments={comments}
           comment={comment}

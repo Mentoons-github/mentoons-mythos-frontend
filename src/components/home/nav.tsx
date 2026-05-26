@@ -12,6 +12,7 @@ import ThemeToggle from "../ThemToggle";
 import { User } from "lucide-react";
 import RewardModal from "../modal/RewardModal";
 import { Reward } from "../../types/redux/blogInterface";
+import BadgeRewardModal from "../modal/badge/BadgeRewardModal";
 
 const MythosHeader = () => {
   const dispatch = useAppDispatch();
@@ -19,6 +20,7 @@ const MythosHeader = () => {
     user,
     loading: userLoading,
     rewardPoints,
+    badge,
   } = useAppSelector((state) => state.user);
   // const { showModal } = useSignInSignUp();
 
@@ -65,6 +67,13 @@ const MythosHeader = () => {
   );
   const [rewardModalOpen, setRewardModalOpen] = useState(false);
   const [rewardPointShow, setRewardPointShow] = useState<Reward | null>(null);
+  const [badgeModalOpen, setBadgeModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (badge?.name) {
+      setBadgeModalOpen(true);
+    }
+  }, [badge]);
 
   // const assessmentItems = [
   //   { name: "Psychology", path: "/assessment/psychology" },
@@ -278,7 +287,7 @@ const MythosHeader = () => {
           <div className="flex justify-center items-center">
             <Link to="/" className="flex justify-center items-center">
               <img
-                src="/assets/logo/Mentoons Mythos.png"
+                src="/assets/logo/MM Logo.png"
                 alt="company logo"
                 className="w-10 md:w-12 lg:w-16 "
               />
@@ -741,6 +750,14 @@ const MythosHeader = () => {
           onClose={() => {
             setRewardModalOpen(false);
           }}
+        />
+      )}
+
+      {badgeModalOpen && (
+        <BadgeRewardModal
+          open={badgeModalOpen}
+          onClose={() => setBadgeModalOpen(false)}
+          badge={badge}
         />
       )}
     </>

@@ -11,7 +11,7 @@ const mentorTypes = ["Spiritual Mentor", "Astrology Mentor"];
 const BusinessForm = () => {
   const dispatch = useAppDispatch();
   const { error, loading, message, success } = useAppSelector(
-    (state) => state.mentor
+    (state) => state.mentor,
   );
   const [mentorType, setMentorType] = useState<string>("");
   const [socialLinks, setSocialLinks] = useState(["", "", ""]);
@@ -54,7 +54,7 @@ const BusinessForm = () => {
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => {
     const target = e.target;
 
@@ -119,7 +119,7 @@ const BusinessForm = () => {
 
     try {
       const result = await dispatch(
-        fileUploadThunk({ file: resume, category: "career" })
+        fileUploadThunk({ file: resume, category: "career" }),
       ).unwrap();
 
       if (typeof result === "string") {
@@ -138,8 +138,8 @@ const BusinessForm = () => {
       ...formData,
       resume: fileUrl,
       age: Number(age),
-      mobileNumber: Number(mobileNumber),
-      whatsappNumber: Number(whatsappNumber),
+      mobileNumber: mobileNumber,
+      whatsappNumber: whatsappNumber,
       mentorType,
       socialLinks: filteredLinks,
     };

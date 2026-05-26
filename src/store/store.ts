@@ -17,7 +17,9 @@ import employeeReduces from "../features/employee/employeeSlice";
 import notificationReduces from "../features/notification/notificationSlice";
 import attendateReduces from "../features/attendance_leave/attendance_leaveSlice";
 import mentorReduces from "../features/mentor/mentorSlice";
-import careerGpsReduces from "../features/careerGps/careerGpsSlice"
+import careerGpsReduces from "../features/careerGps/careerGpsSlice";
+import QuizReduces from "../features/quiz/quizSlice";
+import BadgeReduces from "../features/badge/badgeSlice";
 
 export const store = configureStore({
   reducer: {
@@ -39,7 +41,9 @@ export const store = configureStore({
     notification: notificationReduces,
     attendance_leave: attendateReduces,
     mentor: mentorReduces,
-    careerGps: careerGpsReduces
+    careerGps: careerGpsReduces,
+    quiz: QuizReduces,
+    badge: BadgeReduces,
   },
 });
 

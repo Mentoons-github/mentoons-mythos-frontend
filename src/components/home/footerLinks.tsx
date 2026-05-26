@@ -23,7 +23,7 @@ const FooterLinks = ({
             className="flex justify-start md:justify-start items-center gap-2 md:gap-3 font-mulish"
           >
             <div className="flex items-center">
-              {label == "EXPLORE" || label == "GET STARTED" ? (
+              {label == "ABOUT" || label == "EXPLORE" ? (
                 <div
                   onClick={() => navigate(item.url as string)}
                   className="cursor-pointer"

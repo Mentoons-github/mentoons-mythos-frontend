@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { fetchAllUserCountThunk } from "../../features/user/userThunk";
-import { fetcheBlogCountThunk } from "../../features/blog/blogThunk";
 import {
   fetchJobApplicationCountThunk,
   fetchJobsCountThunk,
@@ -57,7 +56,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(fetchAllUserCountThunk());
-    dispatch(fetcheBlogCountThunk());
+    // dispatch(fetcheBlogCountThunk());
     dispatch(fetchJobsCountThunk());
     dispatch(fetchJobApplicationCountThunk());
     dispatch(fetchEnquiryCountThunk());

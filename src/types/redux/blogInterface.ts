@@ -42,7 +42,7 @@ export interface IBlogV2 {
   likes?: string[];
   commentsOff?: boolean;
   commentCount?: number;
-  createdAt?: Date;
+  createdAt?: string;
 }
 
 export interface Reward {
@@ -51,11 +51,24 @@ export interface Reward {
   postId?: string;
 }
 
+export interface Badge {
+  _id?: string;
+  name: string;
+  description: string;
+  image: string;
+  // animation: Record<string, unknown>;
+  animation: string;
+  criteria?: {
+    action: string;
+  };
+}
+
 export interface CreateBlogResponse {
   message: string;
   // blog: Blog;
   blog: IBlogV2;
   reward: Reward;
+  badge: Badge;
 }
 
 export interface GetBlogResponse {

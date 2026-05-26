@@ -1,4 +1,5 @@
 export interface WorkshopPlan {
+  _id?: string;
   title: string;
   months: string;
   duration: string;
@@ -7,4 +8,6 @@ export interface WorkshopPlan {
   totalSessions: string;
   ageGroups: string[];
   features: string[];
+  materials: string[];
+  mode: string[];
 }

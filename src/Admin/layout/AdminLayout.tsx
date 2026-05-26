@@ -2,7 +2,7 @@ import { Outlet, NavLink, useLocation } from "react-router-dom";
 import { AiFillHome } from "react-icons/ai";
 import { FaUsers } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
-import { MdAssessment } from "react-icons/md";
+import { MdAssessment, MdQuiz } from "react-icons/md";
 import { useState, useEffect } from "react";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { PiStudent, PiBookOpenUser } from "react-icons/pi";
@@ -14,6 +14,7 @@ import { Users, X } from "lucide-react";
 import { joinUser } from "../../socket/events/notificationEvents";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { getUnreadCountThunk } from "../../features/notification/notificationThunk";
+import { LuFileBadge2 } from "react-icons/lu";
 
 const SIDEBARDATA = [
   { name: "Dashboard", url: "dashboard", icon: <AiFillHome /> },
@@ -46,6 +47,7 @@ const SIDEBARDATA = [
     children: [
       { name: "All Workshops", url: "workshops/workshops" },
       { name: "Enquiries", url: "workshops/enquiries" },
+      { name: "Workshop Plans", url: "workshops/plans" },
     ],
   },
   {
@@ -83,6 +85,8 @@ const SIDEBARDATA = [
       { name: "Leave Management", url: "employee/leave-management" },
     ],
   },
+  { name: "Quiz", url: "quiz", icon: <MdQuiz /> },
+  { name: "Badges", url: "badges", icon: <LuFileBadge2 /> },
 ];
 
 const AdminLayout = () => {
@@ -109,7 +113,7 @@ const AdminLayout = () => {
         item.children.forEach((child) => {
           if (location.pathname.includes(child.url)) {
             setOpenDropdowns((prev) =>
-              prev.includes(item.name) ? prev : [...prev, item.name]
+              prev.includes(item.name) ? prev : [...prev, item.name],
             );
           }
         });
@@ -119,7 +123,7 @@ const AdminLayout = () => {
 
   const toggleDropdown = (name: string) => {
     setOpenDropdowns((prev) =>
-      prev.includes(name) ? prev.filter((n) => n !== name) : [...prev, name]
+      prev.includes(name) ? prev.filter((n) => n !== name) : [...prev, name],
     );
   };
 
@@ -138,7 +142,7 @@ const AdminLayout = () => {
           className="lg:hidden absolute top-4 right-4 text-blue-800"
           onClick={() => setSidebarOpen(false)}
         >
-          <X/>
+          <X />
         </button>
 
         <img

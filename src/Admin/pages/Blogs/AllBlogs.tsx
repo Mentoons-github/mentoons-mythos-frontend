@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   deleteBlogThunk,
   fetcheBlogThunk,
   fetchSinglBlogThunk,
-  // getCommentBlogThunk,
+  getCommentBlogThunk,
+  getReplyCommentBlogThunk,
 } from "../../../features/blog/blogThunk";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { Eye, Trash2 } from "lucide-react";
@@ -16,20 +17,25 @@ import {
   ShowSort,
   SortButton,
 } from "../../components/SortDetails";
+import { formatToRealDate } from "../../../utils/DateFormate";
+import AdminViewBlogModal from "../../components/modals/Blog/AdminViewBlogModal";
 
 const AllBlogs = () => {
   const dispatch = useAppDispatch();
   const {
-    adminBlog,
+    data,
     total,
     deleteLoading,
     loading,
     deleteMessage,
     deleteSuccess,
     error,
-    // blog,
-    // fetchBlogLoading,
-    // comments,
+    blog,
+    fetchBlogLoading,
+    comments,
+    replyCommentTotal,
+    replyComments,
+    commentTotal,
   } = useAppSelector((state) => state.blog);
 
   const [selectedId, setSelectedId] = useState("");
@@ -42,9 +48,17 @@ const AllBlogs = () => {
   const [search, setSearch] = useState("");
   const limit = 10;
 
+  const [openReplies, setOpenReplies] = useState<{ [key: string]: boolean }>(
+    {},
+  );
+  const isCommentFetching = useRef(false);
+  const replySkipMap = useRef<{ [key: string]: number }>({});
+  const replyFetchingMap = useRef<{ [key: string]: boolean }>({});
+  const commentSkipRef = useRef(0);
+  const commentLimit = 5;
+
   // Calculate total pages
   const totalPages = Math.ceil(total / limit);
-  console.log(viewModal);
 
   useEffect(() => {
     if (deleteSuccess) {
@@ -79,6 +93,36 @@ const AllBlogs = () => {
     dispatch(fetchSinglBlogThunk(blogId));
   };
 
+  const handleFetchReplies = async (commentId: string) => {
+    if (replyFetchingMap.current[commentId]) return;
+    replyFetchingMap.current[commentId] = true;
+    const skip = replySkipMap.current[commentId] || 0;
+    await dispatch(getReplyCommentBlogThunk({ commentId, skip, limit: 5 }));
+    replySkipMap.current[commentId] = skip + 5;
+    replyFetchingMap.current[commentId] = false;
+  };
+
+  const fetchComments = async () => {
+    if (isCommentFetching.current) return;
+    isCommentFetching.current = true;
+    await dispatch(
+      getCommentBlogThunk({
+        blogId: selectedId as string,
+        skip: commentSkipRef.current,
+        limit: commentLimit,
+      }),
+    );
+    commentSkipRef.current += commentLimit;
+    isCommentFetching.current = false;
+  };
+
+  useEffect(() => {
+    if (!selectedId) return;
+    commentSkipRef.current = 0;
+    dispatch(resetBlogSlice());
+    fetchComments();
+  }, [selectedId]);
+
   return (
     <div className="pt-3 lg:p-4 ">
       <div className="flex mb-4 h-11 items-center space-x-4 justify-between">
@@ -110,7 +154,7 @@ const AllBlogs = () => {
           <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
           <span className="ml-3 ">Loading Blogs...</span>
         </div>
-      ) : adminBlog.length == 0 ? (
+      ) : data.length == 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center ">
           <div className="w-16 h-16 flex items-center justify-center rounded-full  mb-4">
             📭
@@ -128,14 +172,14 @@ const AllBlogs = () => {
                 <tr className="text-white">
                   <th className="px-4 py-4 text-left">No</th>
                   <th className="px-4 py-4 text-left">Blog Id</th>
-                  <th className="px-4 py-4 text-left">Writer Id</th>
-                  <th className="px-4 py-4 text-left">Writer Name</th>
-                  <th className="px-4 py-4 text-left">Title</th>
+                  <th className="px-4 py-4 text-left">Bloger Name</th>
+                  <th className="px-4 py-4 text-left">Post type</th>
+                  <th className="px-4 py-4 text-left">Date</th>
                   <th className="px-4 py-4 text-left">Action</th>
                 </tr>
               </thead>
               <tbody>
-                {adminBlog?.map((blog, index) => (
+                {data?.map((blog, index) => (
                   <tr
                     key={index}
                     className={`border-b ${
@@ -146,9 +190,11 @@ const AllBlogs = () => {
                       {(currentPage - 1) * limit + index + 1}
                     </td>
                     <td className="px-4 py-4">{blog?._id}</td>
-                    <td className="px-4 py-4">{blog?._id}</td>
-                    <td className="px-4 py-4">{blog?._id}</td>
-                    <td className="px-4 py-4">{blog?._id}</td>
+                    <td className="px-4 py-4">{`${blog?.user?.firstName} ${blog.user?.lastName}`}</td>
+                    <td className="px-4 py-4">{blog?.postType}</td>
+                    <td className="px-4 py-4">
+                      {formatToRealDate(blog?.createdAt)}
+                    </td>
                     <td className="px-4 py-4 flex space-x-3">
                       <button
                         onClick={() => handleView(blog?._id as string)}
@@ -207,15 +253,24 @@ const AllBlogs = () => {
         />
       )}
 
-      {/* {viewModal && (
+      {viewModal && (
         <AdminViewBlogModal
-          blog={blog}
-          onClose={() => setViewModal(false)}
+          post={blog}
+          onClose={() => {
+            setViewModal(false);
+            setSelectedId("");
+          }}
           loading={fetchBlogLoading}
-          commentShow={() => dispatch(getCommentBlogThunk(selectedId))}
           comments={comments}
+          replyCommentTotal={replyCommentTotal}
+          replyComments={replyComments}
+          commentTotal={commentTotal}
+          fetchComments={fetchComments}
+          handleFetchReplies={handleFetchReplies}
+          openReplies={openReplies}
+          setOpenReplies={setOpenReplies}
         />
-      )} */}
+      )}
     </div>
   );
 };

@@ -6,7 +6,7 @@ const BlogCommentPostContent = ({
   media,
   post,
 }: {
-  post: IBlogV2;
+  post: IBlogV2 | null;
   media?: MediaItem;
 }) => {
   return (
@@ -15,12 +15,12 @@ const BlogCommentPostContent = ({
         <p className="text-sm text-muted-foreground">{media.caption}</p>
       )}
       {/* TEXT POST */}
-      {post.postType === "text" && (
+      {post?.postType === "text" && (
         <p className="text-sm text-muted-foreground">{post.content}</p>
       )}
 
       {/* ARTICLE */}
-      {post.postType === "article" && (
+      {post?.postType === "article" && (
         <div>
           <h2 className="font-semibold text-lg">{post.article?.title}</h2>
           <p className="text-sm text-muted-foreground mt-1">
@@ -30,7 +30,7 @@ const BlogCommentPostContent = ({
       )}
 
       {/* EVENT */}
-      {post.postType === "event" && (
+      {post?.postType === "event" && (
         <div className="space-y-1">
           <h2 className="text-lg font-semibold text-foreground/80">
             {post.event?.title || "Untitled Event"}
@@ -66,12 +66,12 @@ const BlogCommentPostContent = ({
         </div>
       )}
 
-      {post.content && post.postType !== "text" && (
+      {post?.content && post.postType !== "text" && (
         <p className="text-sm text-muted-foreground">{post.content}</p>
       )}
 
       {/* TAGS */}
-      {post.tags && post?.tags?.length > 0 && (
+      {post?.tags && post?.tags?.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {post?.tags.map((tag: string, i: number) => (
             <span key={i} className="text-xs bg-muted px-2 py-1 rounded-full">

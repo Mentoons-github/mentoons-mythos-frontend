@@ -61,7 +61,7 @@ export const deleteCommentApi = (commentId: string) => {
 };
 
 export const fetchUsersBlogApi = () => {
-  return apiClient.get("/blog");
+  return apiClient.get("/blog/user");
 };
 
 export const updateBlogViewApi = (blogId: string) => {
@@ -87,3 +87,11 @@ export const editCommentBlogApi = (commentId: string, newComment: string) => {
 export const commentOffToggleApi = (blogId: string) => {
   return apiClient.patch(`/blog/commentOffToggle/${blogId}`);
 };
+
+export const saveBlogApi = (blogId: string) => {
+  return apiClient.patch(`/blog/save/${blogId}`);
+};
+
+export const userSavedBlogsApi = () => {
+  return apiClient.get("/blog/user/saved")
+}

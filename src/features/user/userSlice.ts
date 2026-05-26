@@ -10,7 +10,8 @@ import {
   fetchAllUserCountThunk,
 } from "./userThunk";
 import { IUser } from "../../types";
-import { Reward } from "../../types/redux/blogInterface";
+import { Badge, Reward } from "../../types/redux/blogInterface";
+import { saveBlogThunk } from "../blog/blogThunk";
 
 export interface UserData {
   user: IUser | null;
@@ -30,6 +31,7 @@ export interface UserData {
   userCount: number;
   logoutSuccess: boolean;
   rewardPoints: Reward | null;
+  badge: Badge | null;
 }
 
 const initialState: UserData = {
@@ -50,6 +52,7 @@ const initialState: UserData = {
   userCount: 0,
   logoutSuccess: false,
   rewardPoints: null,
+  badge: null,
 };
 
 const userSlice = createSlice({
@@ -85,6 +88,7 @@ const userSlice = createSlice({
         state.user = action.payload.user;
         state.rewardPoints = action.payload.reward;
         state.success = action.payload.success;
+        state.badge = action.payload.badge;
         state.error = null;
         state.loading = false;
       })
@@ -213,6 +217,34 @@ const userSlice = createSlice({
       .addCase(fetchSingleUserThunk.rejected, (state, action) => {
         state.error = action.payload as string;
         state.singleUserLoading = false;
+      })
+
+      //save blog
+      .addCase(saveBlogThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(saveBlogThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        if (!state.user) return;
+
+        const { blogId, saved } = action.payload;
+        
+        if (!state.user.savedPosts) {
+          state.user.savedPosts = [];
+        }
+
+        if (saved) {
+          state?.user?.savedPosts.push(blogId);
+        } else {
+          state.user.savedPosts = state.user.savedPosts.filter(
+            (id) => id !== blogId,
+          );
+        }
+      })
+      .addCase(saveBlogThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });

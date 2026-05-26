@@ -1,5 +1,6 @@
 import apiClient from "../../services/axiosInstance";
 import { EnquiryI, WorkshopI } from "../../types/redux/workshopInterface";
+import { WorkshopPlan } from "../../types/workshop/workshopPlan";
 
 // add workshop
 export const addWorkshopApi = (details: WorkshopI) => {
@@ -11,10 +12,10 @@ export const getAllWorkshopsApi = (
   page: number,
   limit: number,
   sort?: string,
-  search?: string
+  search?: string,
 ) => {
   return apiClient.get(
-    `/workshop/get?page=${page}&limit=${limit}&sort=${sort}&search=${search}`
+    `/workshop/get?page=${page}&limit=${limit}&sort=${sort}&search=${search}`,
   );
 };
 
@@ -28,10 +29,10 @@ export const workshopEnquiriesApi = (
   page: number,
   limit: number,
   sort: string,
-  search?: string
+  search?: string,
 ) => {
   return apiClient.get(
-    `/workshop/enquiries?page=${page}&limit=${limit}&sort=${sort}&search=${search}`
+    `/workshop/enquiries?page=${page}&limit=${limit}&sort=${sort}&search=${search}`,
   );
 };
 
@@ -67,4 +68,24 @@ export const singleEnquiryApi = (enquiryId: string) => {
 //delete enquiry
 export const deleteEnquiryApi = (enquiryId: string) => {
   return apiClient.delete(`/workshop/enquiries/delete/${enquiryId}`);
+};
+
+//get workshop plans
+export const getWorkshopPlansApi = () => {
+  return apiClient.get("/workshop/plans/get");
+};
+
+//create new plan
+export const createNewWorkshopPlanApi = (data: WorkshopPlan) => {
+  return apiClient.post("/workshop/plans/new", data);
+};
+
+// delete workshop plan
+export const deleteWorkshopPlanApi = (planId: string) => {
+  return apiClient.delete(`/workshop/plan/delete/${planId}`);
+};
+
+// edit workshop plan
+export const editWorkshopPlanApi = (planId: string, data: WorkshopPlan) => {
+  return apiClient.patch(`/workshop/plan/edit/${planId}`, data);
 };

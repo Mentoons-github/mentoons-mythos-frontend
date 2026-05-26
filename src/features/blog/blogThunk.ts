@@ -17,6 +17,8 @@ import {
   getReplyCommentBlogApi,
   editCommentBlogApi,
   commentOffToggleApi,
+  saveBlogApi,
+  userSavedBlogsApi,
 } from "./blogApi";
 
 import { AxiosError } from "axios";
@@ -326,6 +328,43 @@ export const commentOffToggleThunk = createAsyncThunk<
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
       error?.response?.data?.message || "Comment posting failed",
+    );
+  }
+});
+
+//like blog
+export const saveBlogThunk = createAsyncThunk<
+  {
+    message: string;
+    saved: boolean;
+    blogId: string;
+    reward: Reward;
+  },
+  string,
+  { rejectValue: string }
+>("blog/save", async (blogId, { rejectWithValue }) => {
+  try {
+    const res = await saveBlogApi(blogId);
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(error?.response?.data?.message || "Save failed");
+  }
+});
+
+// user saved blogs
+export const userSavedBlogsThunk = createAsyncThunk<
+  IBlogV2[],
+  void,
+  { rejectValue: string }
+>("blog/user/saved", async (_, { rejectWithValue }) => {
+  try {
+    const res = await userSavedBlogsApi();
+    return res.data.savedPosts;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(
+      error?.response?.data?.message || "Saved fetch failed",
     );
   }
 });

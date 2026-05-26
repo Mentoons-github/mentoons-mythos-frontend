@@ -1,11 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   addWorkshopApi,
+  createNewWorkshopPlanApi,
   deleteEnquiryApi,
   deleteWorkshopApi,
+  deleteWorkshopPlanApi,
+  editWorkshopPlanApi,
   fetchEnquiryCountApi,
   fetchWorkshopCountApi,
   getAllWorkshopsApi,
+  getWorkshopPlansApi,
   registerWorkshopApi,
   singleEnquiryApi,
   singleWorkshopApi,
@@ -19,6 +23,7 @@ import {
   GetWorkshopResponse,
   WorkshopI,
 } from "../../types/redux/workshopInterface";
+import { WorkshopPlan } from "../../types/workshop/workshopPlan";
 
 //add new workshop
 export const addWorkshopThunk = createAsyncThunk<
@@ -32,7 +37,7 @@ export const addWorkshopThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Workshop registration failed"
+      error?.response?.data?.message || "Workshop registration failed",
     );
   }
 });
@@ -49,7 +54,7 @@ export const updateWorkshopThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Workshop registration failed"
+      error?.response?.data?.message || "Workshop registration failed",
     );
   }
 });
@@ -66,7 +71,7 @@ export const workshopRegisterThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Workshop registration failed"
+      error?.response?.data?.message || "Workshop registration failed",
     );
   }
 });
@@ -85,10 +90,10 @@ export const getWorkshopsThunk = createAsyncThunk<
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
       return rejectWithValue(
-        error?.response?.data?.message || "Workshop Enquiry fetch failed"
+        error?.response?.data?.message || "Workshop fetch failed",
       );
     }
-  }
+  },
 );
 
 //get enquiries
@@ -105,10 +110,10 @@ export const workshopEnquiriesThunk = createAsyncThunk<
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
       return rejectWithValue(
-        error?.response?.data?.message || "Workshop Enquiry fetch failed"
+        error?.response?.data?.message || "Workshop Enquiry fetch failed",
       );
     }
-  }
+  },
 );
 
 // fetch workshop count
@@ -123,7 +128,7 @@ export const fetchWorkshopCountThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Workshop count fetch failed"
+      error?.response?.data?.message || "Workshop count fetch failed",
     );
   }
 });
@@ -140,7 +145,7 @@ export const SingleWorkshopThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Workshop fetch failed"
+      error?.response?.data?.message || "Workshop fetch failed",
     );
   }
 });
@@ -157,7 +162,7 @@ export const deleteWorkshopThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Workshop delete failed"
+      error?.response?.data?.message || "Workshop delete failed",
     );
   }
 });
@@ -174,7 +179,7 @@ export const fetchEnquiryCountThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Workshop Enquiry count fetch failed"
+      error?.response?.data?.message || "Workshop Enquiry count fetch failed",
     );
   }
 });
@@ -191,7 +196,7 @@ export const SingleEnquiryThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Workshop Enquiry fetch failed"
+      error?.response?.data?.message || "Workshop Enquiry fetch failed",
     );
   }
 });
@@ -208,7 +213,75 @@ export const deleteEnquiryThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "Workshop Enquiry delete failed"
+      error?.response?.data?.message || "Workshop Enquiry delete failed",
+    );
+  }
+});
+
+//get workshop plans
+export const getWorkshopPlansThunk = createAsyncThunk<
+  WorkshopPlan[],
+  void,
+  { rejectValue: string }
+>("workshop/plan", async (_, { rejectWithValue }) => {
+  try {
+    const res = await getWorkshopPlansApi();
+    return res.data.plans;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(
+      error?.response?.data?.message || "Workshop Plan fetch failed",
+    );
+  }
+});
+
+//create new workshop plans
+export const createNewWorkshopPlanThunk = createAsyncThunk<
+  { message: string; newPlan: WorkshopPlan },
+  WorkshopPlan,
+  { rejectValue: string }
+>("workshop/plan/new", async (newPlan, { rejectWithValue }) => {
+  try {
+    const res = await createNewWorkshopPlanApi(newPlan);
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(
+      error?.response?.data?.message || "Workshop Plan create failed",
+    );
+  }
+});
+
+//delete workshop plans
+export const deleteWorkshopPlanThunk = createAsyncThunk<
+  string,
+  string,
+  { rejectValue: string }
+>("workshop/plan/delete", async (planId, { rejectWithValue }) => {
+  try {
+    const res = await deleteWorkshopPlanApi(planId);
+    return res.data.message;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(
+      error?.response?.data?.message || "Workshop Plan delete failed",
+    );
+  }
+});
+
+//edit workshop plans
+export const editWorkshopPlanThunk = createAsyncThunk<
+  { message: string; editedPlan: WorkshopPlan },
+  { planId: string; data: WorkshopPlan },
+  { rejectValue: string }
+>("workshop/plan/edit", async ({ planId, data }, { rejectWithValue }) => {
+  try {
+    const res = await editWorkshopPlanApi(planId, data);
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(
+      error?.response?.data?.message || "Workshop Plan edit failed",
     );
   }
 });

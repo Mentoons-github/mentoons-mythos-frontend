@@ -21,7 +21,7 @@ interface JobForm {
 const CreateJobModal = ({ onClose }: { onClose: () => void }) => {
   const { file: uploadedImage } = useAppSelector((state) => state.upload);
   const { newJobMessage, newJobSuccess, error, newJobLoading } = useAppSelector(
-    (state) => state.career
+    (state) => state.career,
   );
   const dispatch = useAppDispatch();
 
@@ -58,7 +58,7 @@ const CreateJobModal = ({ onClose }: { onClose: () => void }) => {
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => {
     const target = e.target;
 
@@ -109,7 +109,7 @@ const CreateJobModal = ({ onClose }: { onClose: () => void }) => {
     setForm((prev) => ({
       ...prev,
       responsibilities: (prev.responsibilities || []).filter(
-        (_, i) => i !== index
+        (_, i) => i !== index,
       ),
     }));
   };
@@ -140,7 +140,7 @@ const CreateJobModal = ({ onClose }: { onClose: () => void }) => {
     if (file) {
       try {
         imageUrl = await dispatch(
-          fileUploadThunk({ file, category: "job" })
+          fileUploadThunk({ file, category: "job" }),
         ).unwrap();
       } catch (err) {
         alert("File upload failed: " + err);
@@ -159,7 +159,7 @@ const CreateJobModal = ({ onClose }: { onClose: () => void }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-40 italic">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 italic">
       <div className="bg-secondary rounded-lg shadow-xl p-3 md:p-6 md:px-10 max-w-[350px] md:max-w-2xl lg:max-w-4xl w-full relative hide-scrollbar overflow-y-auto will-change-scroll transform-gpu max-h-[90vh]">
         <button
           onClick={onClose}
@@ -386,7 +386,7 @@ const CreateJobModal = ({ onClose }: { onClose: () => void }) => {
                         ✕
                       </button>
                     </li>
-                  ) : null
+                  ) : null,
                 )}
               </ul>
             </div>

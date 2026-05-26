@@ -26,35 +26,49 @@ export const fetchUserData = createAsyncThunk<UserResponse, void>(
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
       return rejectWithValue(
-        error?.response?.data?.message || "User profile fetch failed"
+        error?.response?.data?.message || "User profile fetch failed",
       );
     }
-  }
+  },
 );
 
 export const fetchAllUserThunk = createAsyncThunk<
   AllUserResponse,
-  { page: number; limit: number; search?: string; sort?: string, filterBy?:string, filterValue?:string }
+  {
+    page: number;
+    limit: number;
+    search?: string;
+    sort?: string;
+    filterBy?: string;
+    filterValue?: string;
+  }
 >(
   "user/fetch-allusers",
-  async ({ page, limit, sort, search, filterBy, filterValue }, { rejectWithValue }) => {
+  async (
+    { page, limit, sort, search, filterBy, filterValue },
+    { rejectWithValue },
+  ) => {
     try {
-      const response = await fetchAllUsersApi(page, limit, sort, search, filterBy, filterValue);
+      const response = await fetchAllUsersApi(
+        page,
+        limit,
+        sort,
+        search,
+        filterBy,
+        filterValue,
+      );
       return response.data;
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
       return rejectWithValue(
-        error?.response?.data?.message || "Fetching all users failed"
+        error?.response?.data?.message || "Fetching all users failed",
       );
     }
-  }
+  },
 );
 
 //feth all user count
-export const fetchAllUserCountThunk = createAsyncThunk<
-  number,
-  void
->(
+export const fetchAllUserCountThunk = createAsyncThunk<number, void>(
   "user/fetchuser-count",
   async (_, { rejectWithValue }) => {
     try {
@@ -63,10 +77,10 @@ export const fetchAllUserCountThunk = createAsyncThunk<
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
       return rejectWithValue(
-        error?.response?.data?.message || "Fetching all users failed"
+        error?.response?.data?.message || "Fetching all users failed",
       );
     }
-  }
+  },
 );
 
 export const blockUserThunk = createAsyncThunk<
@@ -80,7 +94,7 @@ export const blockUserThunk = createAsyncThunk<
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
-      error?.response?.data?.message || "User profile fetch failed"
+      error?.response?.data?.message || "User profile fetch failed",
     );
   }
 });
@@ -94,7 +108,7 @@ export const userLogout = createAsyncThunk<void, void, { rejectValue: string }>(
       const error = err as AxiosError<{ message: string }>;
       rejectWithValue(error?.response?.data?.message || "Failed to logout");
     }
-  }
+  },
 );
 
 export const reportUserThunk = createAsyncThunk<
@@ -120,10 +134,10 @@ export const updateUserData = createAsyncThunk<IUser, { user: Partial<IUser> }>(
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
       return rejectWithValue(
-        error?.response?.data?.message || "failed update user"
+        error?.response?.data?.message || "failed update user",
       );
     }
-  }
+  },
 );
 
 export const fetchSingleUserThunk = createAsyncThunk<UserResponse, string>(
@@ -135,8 +149,8 @@ export const fetchSingleUserThunk = createAsyncThunk<UserResponse, string>(
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
       return rejectWithValue(
-        error?.response?.data?.message || "User profile fetch failed"
+        error?.response?.data?.message || "User profile fetch failed",
       );
     }
-  }
+  },
 );

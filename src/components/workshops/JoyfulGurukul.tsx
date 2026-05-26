@@ -1,5 +1,3 @@
-
-
 // const weeks = [
 //   {
 //     number: "01",
@@ -27,12 +25,14 @@
 //   },
 // ];
 
-
+import { WorkshopPlan } from "../../types/workshop/workshopPlan";
 
 export default function JoyfulGurukul({
   clickViewMore,
+  plans,
 }: {
   clickViewMore: () => void;
+  plans: WorkshopPlan[];
 }) {
   return (
     <div className="lg:min-h-screen  py-12 px-4 ">
@@ -42,7 +42,10 @@ export default function JoyfulGurukul({
             <h1 className="mt-5 text-2xl md:text-4xl lg:text-5xl font-bold text-foreground/90 leading-tight hidden md:block">
               🌼 The Joyful{" "}
               <span className=" italic text-foreground/60">
-                Gurukul <span className="block lg:inline ml-10 lg:ml-0 text-xl md:text-2xl lg:text-3xl">(Age: 6-12, 13-19)</span>
+                Gurukul{" "}
+                <span className="block lg:inline ml-10 lg:ml-0 text-xl md:text-2xl lg:text-3xl">
+                  (Age: 6-12, 13-19)
+                </span>
               </span>
             </h1>
 
@@ -88,63 +91,54 @@ export default function JoyfulGurukul({
               curiosity, compassion, and confidence.
             </p>
 
-            <div className="mt-6 flex items-center gap-3 bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-xl shadow-sm">
+            {/* <div className="mt-6 flex items-center gap-3 bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-xl shadow-sm">
               <span className="text-xl">🚀</span>
 
               <p className="text-sm md:text-base font-medium">
                 First batch starting on{" "}
                 <span className="font-semibold text-amber-900">April 16th</span>
               </p>
-            </div>
+            </div> */}
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="relative border bg-background/80  rounded-2xl p-6 shadow-sm  transition-all duration-300">
-              <span className="absolute top-3 right-3 text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full font-semibold">
-                Popular
-              </span>
-
-              <h3 className="text-xl font-semibold text-foreground/85 mb-2">
-                1 Month Plan
-              </h3>
-
-              <p className="text-3xl font-bold text-green-500 mb-4">₹2,999</p>
-
-              <div className="space-y-2 text-muted-foreground font-semibold text-base">
-                <p>📅 4 Weeks</p>
-                <p>🎯 10 Sessions</p>
-              </div>
-
-              <button
-                onClick={clickViewMore}
-                className="mt-6 w-full bg-foreground/90 hover:bg-foreground/80 text-background py-2 rounded-lg font-medium transition"
+            {plans.map((plan, ind) => (
+              <div
+                className={`relative border  ${ind % 2 == 0 ? "bg-background/80" : "bg-foreground/90 text-background"}  rounded-2xl p-6 shadow-sm  transition-all duration-300`}
+                key={ind}
               >
-                View More
-              </button>
-            </div>
+                <span
+                  className={`absolute top-3 right-3 text-xs ${ind % 2 == 0 ? "bg-green-100 text-green-600" : "bg-background/20"} px-3 py-1 rounded-full font-semibold`}
+                >
+                  {ind % 2 == 0 ? "Popular" : "Best Value"}
+                </span>
+                <h3
+                  className={`text-xl font-semibold ${ind % 2 == 0 && "text-foreground/85"} mb-2`}
+                >
+                  {plan.months} {plan.months==="1"?"Month":"Months"}
+                </h3>
 
-            {/* 3 Month Plan */}
-            <div className="relative bg-foreground/90 text-background rounded-2xl p-6 shadow-md  transition-all duration-300 scale-[1.02]">
-              <span className="absolute top-3 right-3 text-xs bg-background/20 px-3 py-1 rounded-full font-semibold">
-                Best Value
-              </span>
+                <p
+                  className={`text-3xl font-bold ${ind % 2 == 0 && "text-green-500"} mb-4`}
+                >
+                  ₹{Number(plan.price).toLocaleString("en-IN")}
+                </p>
 
-              <h3 className="text-xl font-semibold mb-2">3 Month Plan</h3>
+                <div
+                  className={`space-y-2 ${ind % 2 == 0 && "text-muted-foreground"} font-semibold text-base`}
+                >
+                  <p>📅 {plan.duration} Weeks</p>
+                  <p>🎯 {plan.totalSessions} Sessions</p>
+                </div>
 
-              <p className="text-3xl font-bold mb-4">₹7,129</p>
-
-              <div className="space-y-2 text-base font-semibold opacity-90">
-                <p>📅 12 Weeks</p>
-                <p>🎯 26 Sessions</p>
+                <button
+                  onClick={clickViewMore}
+                  className={`mt-6 w-full ${ind % 2 == 0 ? "bg-foreground/90 hover:bg-foreground/80 " : "bg-background/90 text-foreground hover:bg-background/80"}  text-background py-2 rounded-lg font-medium transition`}
+                >
+                  View More
+                </button>
               </div>
-
-              <button
-                onClick={clickViewMore}
-                className="mt-6 w-full bg-background/90 text-foreground hover:bg-background/80 py-2 rounded-lg font-medium transition"
-              >
-                View More
-              </button>
-            </div>
+            ))}
           </div>
         </div>
 

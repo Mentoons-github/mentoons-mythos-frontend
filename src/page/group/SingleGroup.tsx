@@ -3,7 +3,6 @@ import { SUNSHINE } from "../../constants";
 import GroupIdtop from "../../components/groups/groupId/GroupIdtop";
 import { Intelligence, Sunshine } from "../../types/interface";
 import ChatPeople from "../../components/groups/groupId/ChatPeople";
-import GroupIdMiddle from "../../components/groups/groupId/GroupIdMiddle";
 import ShareIntelligence from "../../components/groups/groupId/ShareIntelligence";
 import { INTELLIGENCE } from "../../constants/intelligence";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
@@ -17,7 +16,7 @@ const isSunshine = (item: Sunshine | Intelligence): item is Sunshine => {
   return (item as Sunshine).rashi !== undefined;
 };
 
-const Rashi = () => {
+const SingleGroup = () => {
   const { groupId } = useParams();
   const isIntelligence = groupId?.startsWith("int") ?? false;
 
@@ -27,7 +26,7 @@ const Rashi = () => {
 
   const { user } = useAppSelector((state) => state.user);
   const { intelligenceUsers, rashiUsers } = useAppSelector(
-    (state) => state.group
+    (state) => state.group,
   );
   const dispatch = useAppDispatch();
 
@@ -81,7 +80,7 @@ const Rashi = () => {
         details={details}
         userId={user?._id}
       />
-      <GroupIdMiddle isIntelligence={isIntelligence} />
+      {/* <GroupIdMiddle isIntelligence={isIntelligence} /> */}
       <ShareIntelligence
         name={details.name}
         isIntelligence={isIntelligence}
@@ -91,4 +90,4 @@ const Rashi = () => {
   );
 };
 
-export default Rashi;
+export default SingleGroup;

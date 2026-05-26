@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { Image, Video, Calendar, PenSquare } from "lucide-react";
 import PostUploadModal from "../modal/BlogModal/BlogUpload/PostUploadModal";
 import { FaUser } from "react-icons/fa6";
+import BadgeRewardModal from "../modal/badge/BadgeRewardModal";
 
 type PostType = "image" | "video" | "event" | "article" | "text" | null;
 
@@ -42,13 +43,14 @@ const PostBlog = ({ user }: { user: IUser }) => {
   const textInputRef = useRef<HTMLDivElement | null>(null);
   const [isTextInputActive, setIsTextInputActive] = useState(false);
   const [selectedPostType, setSelectedPostType] = useState<PostType>(null);
+  const [badgeModalOpen, setBadgeModalOpen] = useState(false);
 
   const [input, setInput] = useState({
     tags: "",
     description: "",
     commentsOff: false,
   });
-  const { error, loading, message, createblogSuccess, rewardPoints } =
+  const { error, loading, message, createblogSuccess, rewardPoints, badge } =
     useAppSelector((state) => state.blog);
 
   // const wordCount = input.description.trim().split(/\s+/).length;
@@ -76,15 +78,21 @@ const PostBlog = ({ user }: { user: IUser }) => {
     if (createblogSuccess) {
       toast.success(message);
       setRewardModalOpen(true);
-      console.log(rewardPoints, "reeeee");
+      if (badge?.name) {
+        setBadgeModalOpen(true);
+      }
     }
     if (error) {
       toast.error(error);
       dispatch(resetBlogSlice());
     }
-  }, [createblogSuccess, dispatch, error, message, rewardPoints]);
+  }, [badge?.name, createblogSuccess, dispatch, error, message, rewardPoints]);
 
   const handleSelectPostType = (type: PostType) => {
+    if (!user) {
+      showModal("Blog");
+      return;
+    }
     setSelectedPostType(type);
   };
 
@@ -237,163 +245,6 @@ const PostBlog = ({ user }: { user: IUser }) => {
         </div>
       </div>
 
-      {/* <motion.div
-        className="w-full min-h-44 bg-[#E4E4E4] p-3 rounded-md flex flex-col justify-between"
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6, delay: 0.3 }}
-      >
-        <form onSubmit={handleSubmit} className="space-y-4 relative">
-          <div className="flex flex-col md:flex-row md:gap-4 ">
-            <input
-              type="text"
-              name="title"
-              value={input.title}
-              onChange={handleChange}
-              placeholder="Enter blog title"
-              maxLength={60}
-              className="bg-white p-3 rounded w-full border text-black border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
-            />
-
-            <input
-              type="text"
-              name="tags"
-              value={input.tags}
-              onChange={handleChange}
-              placeholder="Enter Tags separate by coma(e.g. tech,react,ui)"
-              className="bg-white p-3 rounded w-full border text-black border-gray-300 focus:outline-none focus:ring-2 focus:ring-black mt-3 md:mt-0"
-            />
-          </div>
-
-          <motion.div className="relative w-full">
-            <div className="relative">
-              <div className="relative ">
-                <textarea
-                  name="description"
-                  rows={5}
-                  className="bg-white p-4 pr-4 pl-4 pb-12 rounded text-black resize-none w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
-                  onChange={handleChange}
-                  placeholder="Start writing your thoughts here..."
-                  onFocus={() => setTouched(true)}
-                  value={input.description}
-                ></textarea>
-                <p className="text-sm text-gray-500 text-right absolute bottom-2 right-2">
-                  {input.description.trim().split(/\s+/).filter(Boolean).length}{" "}
-                  / 500
-                </p>
-              </div>
-
-              {touched && wordCount < 20 && (
-                <p className="text-red-500 text-xs mt-1">
-                  Minimum 20 words required
-                </p>
-              )}
-
-              {wordCount > 500 && (
-                <p className="text-red-500 text-xs mt-1">
-                  Maximum 250 words allowed
-                </p>
-              )}
-            </div>
-
-            <motion.div
-              className="absolute left-4 -bottom-10 flex gap-4 text-gray-500 text-xl"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-            >
-              <input
-                type="file"
-                accept="image/*"
-                className="hidden"
-                id="imageUpload"
-                onChange={(e) => {
-                  const selected = e.target.files?.[0];
-                  if (selected) {
-                    setFile(selected);
-                  }
-                }}
-              />
-              <label htmlFor="imageUpload" className="cursor-pointer">
-                <LuImage className="text-black md:text-2xl" />
-              </label>
-            </motion.div>
-          </motion.div>
-
-          {file && (
-            <div
-              className="absolute mt-4 bottom-0 left-0 overflow-hidden group cursor-pointer"
-              onClick={() => document.getElementById("imageUpload")?.click()}
-            >
-              <img
-                src={URL.createObjectURL(file)}
-                alt="Preview"
-                className="rounded-md max-w-[200px] max-h-[200px] object-cover"
-              />
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setFile(null);
-                }}
-                className="absolute top-1 right-1 bg-white text-black rounded-full p-1 text-sm shadow-md hover:bg-red-500 hover:text-white transition-all"
-              >
-                ❌
-              </button>
-            </div>
-          )}
-
-          <motion.div
-            className="flex flex-col gap-2 md:mt-4 items-end"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-          >
-            {input.description.trim() !== "" &&
-              input.title.trim() !== "" &&
-              wordCount >= 20 &&
-              wordCount <= 250 && (
-                <div className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    id="commentsOff"
-                    name="commentsOff"
-                    checked={input.commentsOff}
-                    onChange={(e) =>
-                      setInput((prev) => ({
-                        ...prev,
-                        commentsOff: e.target.checked,
-                      }))
-                    }
-                    className="accent-[#E39712] w-4 h-4"
-                  />
-                  <label
-                    htmlFor="commentsOff"
-                    className="text-sm text-gray-700"
-                  >
-                    Turn off comments for this blog
-                  </label>
-                </div>
-              )}
-            <div className="flex gap-4">
-              <motion.button
-                disabled={
-                  input.description.trim() === "" ||
-                  input.title.trim() === "" ||
-                  wordCount < 20 ||
-                  wordCount > 250
-                }
-                type="submit"
-                className="bg-black px-6 py-2 disabled:bg-black/80 text-white rounded hover:bg-black/70"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                {loading ? "Loading..." : "Post"}
-              </motion.button>
-            </div>
-          </motion.div>
-        </form>
-      </motion.div> */}
       {rewardModalOpen && (
         <RewardModal
           type="POST"
@@ -409,6 +260,14 @@ const PostBlog = ({ user }: { user: IUser }) => {
         <PostUploadModal
           onClose={() => setSelectedPostType(null)}
           postType={selectedPostType}
+        />
+      )}
+
+      {badgeModalOpen && (
+        <BadgeRewardModal
+          open={badgeModalOpen}
+          onClose={() => setBadgeModalOpen(false)}
+          badge={badge}
         />
       )}
     </motion.div>

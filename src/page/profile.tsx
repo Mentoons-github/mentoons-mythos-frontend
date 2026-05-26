@@ -22,7 +22,10 @@ import { deleteAccountThunk } from "../features/auth/authThunk";
 import AccountDeleteModal from "../components/modal/AccountDeleteModal";
 import { toast } from "sonner";
 import ProfileData from "../components/profile/ProfileData";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { LuFileBadge2 } from "react-icons/lu";
+import { getMyBadgesThunk } from "../features/badge/badgeThunk";
+import MyBadges from "../components/profile/MyBadges";
 // import { getFullCountryName } from "../utils";
 
 const Profile = () => {
@@ -38,14 +41,17 @@ const Profile = () => {
     loading: astroLoading,
   } = useAppSelector((state) => state.astro);
   const {
-    data: userBlogs,
+    userBlogs,
+    userSavedBlogs,
     error: blogError,
     loading: blogsLoading,
   } = useAppSelector((state) => state.blog);
-
-  const [activeTab, setActiveTab] = useState<
-    "profile" | "blogs" | "edit" | "password"
-  >("profile");
+  const {
+    myBadges,
+    loading: badgeLoading,
+    deleteSuccess: badgeDeleteSuccess,
+    message: badgeMessage,
+  } = useAppSelector((state) => state.badge);
   const [isEditing, setIsEditing] = useState(false);
   const [showUpload, setShowUpload] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
@@ -57,6 +63,12 @@ const Profile = () => {
   const intelligenceRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const from = location.state?.from;
+  const navigate = useNavigate();
+
+  const { tab } = useParams();
+
+  const activeTab =
+    (tab as "profile" | "blogs" | "edit" | "badges" | "password") || "profile";
 
   if (from == "homeAssessment") {
     intelligenceRef.current?.scrollIntoView({
@@ -85,6 +97,10 @@ const Profile = () => {
       dispatch(fetchCurrentUserBlog());
     }, 1000),
   ).current;
+
+  useEffect(() => {
+    dispatch(getMyBadgesThunk());
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -197,7 +213,7 @@ const Profile = () => {
     setUploadSuccess(false);
     setShowUpload(false);
     dispatch(fetchUserData());
-    setActiveTab("profile");
+    navigate("/profile");
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -370,7 +386,7 @@ const Profile = () => {
           variants={itemVariants}
         >
           <button
-            onClick={() => setActiveTab("profile")}
+            onClick={() => navigate("/profile")}
             className={`px-2 md:px-3 lg:px-6 py-2 lg:py-3 rounded-lg text-sm md:text-base font-semibold md:font-medium transition-all duration-300 ${
               activeTab === "profile"
                 ? "bg-foreground text-background shadow-lg "
@@ -383,7 +399,7 @@ const Profile = () => {
             </div>
           </button>
           <button
-            onClick={() => setActiveTab("edit")}
+            onClick={() => navigate("/profile/edit")}
             className={`px-2 md:px-3 lg:px-6 py-2 lg:py-3 rounded-lg text-sm md:text-base font-semibold md:font-medium transition-all duration-300 ${
               activeTab === "edit"
                 ? "bg-foreground text-background shadow-lg"
@@ -396,7 +412,7 @@ const Profile = () => {
             </div>
           </button>
           <button
-            onClick={() => setActiveTab("blogs")}
+            onClick={() => navigate("/profile/blogs")}
             className={`px-2 md:px-3 lg:px-6 py-2 lg:py-3 rounded-lg text-sm md:text-base font-semibold md:font-medium transition-all duration-300 ${
               activeTab === "blogs"
                 ? "bg-foreground text-background shadow-lg"
@@ -409,7 +425,7 @@ const Profile = () => {
             </div>
           </button>
           <button
-            onClick={() => setActiveTab("password")}
+            onClick={() => navigate("/profile/password")}
             className={`px-2 md:px-3 lg:px-6 py-2 lg:py-3 rounded-lg text-sm md:text-base font-semibold md:font-medium transition-all duration-300 ${
               activeTab === "password"
                 ? "bg-foreground text-background shadow-lg"
@@ -419,6 +435,19 @@ const Profile = () => {
             <div className="flex items-center space-x-2">
               <CgPassword className="w-4 h-4 md:w-5 md:h-5  lg:w-6 lg:h-6" />
               <span>Change Password</span>
+            </div>
+          </button>
+          <button
+            onClick={() => navigate("/profile/badges")}
+            className={`px-2 md:px-3 lg:px-6 py-2 lg:py-3 rounded-lg text-sm md:text-base font-semibold md:font-medium transition-all duration-300 ${
+              activeTab === "blogs"
+                ? "bg-foreground text-background shadow-lg"
+                : "bg-background text-foreground hover:bg-foreground/80 hover:scale-105 border border-foreground"
+            }`}
+          >
+            <div className="flex items-center space-x-2">
+              <LuFileBadge2 className="w-4 h-4 md:w-5 md:h-5  lg:w-6 lg:h-6" />
+              <span>Badges ({myBadges?.length})</span>
             </div>
           </button>
           <button
@@ -451,6 +480,7 @@ const Profile = () => {
               userBlogs={userBlogs}
               blogsLoading={blogsLoading}
               blogError={blogError}
+              userSavedBlogs={userSavedBlogs}
             />
           )}
           {activeTab === "edit" && (
@@ -458,11 +488,19 @@ const Profile = () => {
               success={() => {
                 setUploadSuccess(true);
               }}
-              setActiveTab={setActiveTab}
+              backToProfile={() => navigate("/profile")}
+            />
+          )}
+          {activeTab === "badges" && (
+            <MyBadges
+              badges={myBadges}
+              loading={badgeLoading}
+              deleteSuccess={badgeDeleteSuccess}
+              message={badgeMessage}
             />
           )}
           {activeTab === "password" && (
-            <ChangePassword setActiveTab={setActiveTab} />
+            <ChangePassword backToProfile={() => navigate("/profile")} />
           )}
         </AnimatePresence>
       </div>
