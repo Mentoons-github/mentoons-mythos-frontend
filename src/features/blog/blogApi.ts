@@ -5,8 +5,17 @@ export const createBlogApi = (data: IBlogV2) => {
   return apiClient.post("/blog/create", data);
 };
 
-export const fetchBlogApi = (skip: number, limit: number, sort?: string) => {
-  return apiClient.get(`/blog/get?skip=${skip}&limit=${limit}&sort=${sort}`);
+export const fetchBlogApi = (
+  skip: number,
+  limit: number,
+  sort?: string,
+  from?: string,
+) => {
+  return apiClient.get(
+    from == "admin"
+      ? `/blog/admin/get?skip=${skip}&limit=${limit}&sort=${sort}`
+      : `/blog/get?skip=${skip}&limit=${limit}&sort=${sort}`,
+  );
 };
 
 export const fetchBlogCountApi = () => {
@@ -93,5 +102,13 @@ export const saveBlogApi = (blogId: string) => {
 };
 
 export const userSavedBlogsApi = () => {
-  return apiClient.get("/blog/user/saved")
-}
+  return apiClient.get("/blog/user/saved");
+};
+
+export const takeBlogActionsApi = (
+  blogId: string,
+  action: string,
+  days?: number,
+) => {
+  return apiClient.patch("/blog/takeAction", { blogId, action, days });
+};

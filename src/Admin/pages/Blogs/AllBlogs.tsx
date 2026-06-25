@@ -73,7 +73,7 @@ const AllBlogs = () => {
 
   useEffect(() => {
     const skip = (currentPage - 1) * limit;
-    dispatch(fetcheBlogThunk({ skip, limit, sort: sortOrder }));
+    dispatch(fetcheBlogThunk({ skip, limit, sort: sortOrder, from: "admin" }));
 
     const timer = setTimeout(() => {
       setShowTable(true);

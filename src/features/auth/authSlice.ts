@@ -20,6 +20,8 @@ interface Auth {
   role: string;
   userPassword: string;
   rewardPoint: number;
+  bannedUntil: string;
+  isBlocked: boolean;
 }
 
 const initialState: Auth = {
@@ -33,6 +35,8 @@ const initialState: Auth = {
   role: "",
   userPassword: "",
   rewardPoint: 0,
+  bannedUntil: "",
+  isBlocked: false,
 };
 
 const authSlice = createSlice({
@@ -84,6 +88,8 @@ const authSlice = createSlice({
         state.role = action.payload.role;
         // state.accessToken = accessToken;
         // state.userId = _id;
+        state.isBlocked = action.payload.isBlocked;
+        state.bannedUntil = action.payload.bannedUntil;
         state.success = true;
       })
       .addCase(loginThunk.rejected, (state, action) => {

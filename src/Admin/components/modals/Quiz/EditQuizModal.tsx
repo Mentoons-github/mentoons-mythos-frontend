@@ -116,7 +116,7 @@ const EditQuizModal = ({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="sticky top-0 z-10 bg-secondary border-b p-6 flex items-center justify-between">
-          <h2 className="text-2xl font-semibold">Create New Quiz</h2>
+          <h2 className="text-2xl font-semibold">Edit Quiz</h2>
 
           <button onClick={onClose} className="text-lg">
             ✕

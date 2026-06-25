@@ -244,10 +244,10 @@ const EditWorkshopPlanModal = ({
         {/* Title */}
         <div className="border-b pb-4 mb-6">
           <h2 className="text-2xl md:text-3xl font-bold">
-            Create Workshop Plan
+            Edit Workshop Plan
           </h2>
           <p className="text-muted-foreground mt-1">
-            Add complete workshop details
+            Edit workshop plan details
           </p>
         </div>
 

@@ -5,9 +5,13 @@ import { resetUserSlice } from "../../../../features/user/userSlice";
 import { toast } from "sonner";
 import { REPORT_REASONS } from "../../../../constants/blogs/reportResons";
 import { X } from "lucide-react";
+import { blockUserFromBlogThunk } from "../../../../features/report-block/report_blockThunk";
+import { resetReportBlockSlice } from "../../../../features/report-block/report_blockSlice";
+import { removeBlogsByUser } from "../../../../features/blog/blogSlice";
 
 interface CommentOptionsProps {
   from: string;
+  forClick?: "report" | "block";
   userId?: string;
   Id?: string;
   onClose: () => void;
@@ -15,6 +19,7 @@ interface CommentOptionsProps {
 
 const ReportOptions: React.FC<CommentOptionsProps> = ({
   from,
+  forClick,
   userId,
   Id,
   onClose,
@@ -23,6 +28,12 @@ const ReportOptions: React.FC<CommentOptionsProps> = ({
   const { reportMessage, reportSuccess, error, loading } = useAppSelector(
     (state) => state.user,
   );
+  const {
+    message,
+    success,
+    loading: blockLoading,
+    error: blockError,
+  } = useAppSelector((state) => state.report_block);
 
   const [selectedReason, setSelectedReason] = useState("");
   const [customReason, setCustomReason] = useState("");
@@ -30,18 +41,39 @@ const ReportOptions: React.FC<CommentOptionsProps> = ({
   const isOtherSelected = selectedReason.toLowerCase() === "other reasons";
 
   useEffect(() => {
-    if (reportSuccess) {
-      toast.success(reportMessage);
+    if (reportSuccess || success) {
+      if (success) {
+        toast.success(message);
+        dispatch(resetReportBlockSlice());
+      }
+      if (reportSuccess) {
+        toast.success(reportMessage);
+        dispatch(resetUserSlice());
+      }
       onClose();
-      dispatch(resetUserSlice());
     }
 
-    if (error) {
-      toast.warning(error);
+    if (error || blockError) {
+      if (error) {
+        toast.warning(error);
+        dispatch(resetUserSlice());
+      }
+      if (blockError) {
+        toast.warning(blockError);
+        dispatch(resetReportBlockSlice());
+      }
       onClose();
-      dispatch(resetUserSlice());
     }
-  }, [dispatch, error, onClose, reportMessage, reportSuccess]);
+  }, [
+    blockError,
+    dispatch,
+    error,
+    message,
+    onClose,
+    reportMessage,
+    reportSuccess,
+    success,
+  ]);
 
   // handle selecting reason
   const handleSelect = (reason: string) => {
@@ -53,23 +85,32 @@ const ReportOptions: React.FC<CommentOptionsProps> = ({
   };
 
   // handle submit
-  const handleReport = () => {
+  const handleReport = async () => {
     if (!userId || !selectedReason) return;
 
     const finalReason = isOtherSelected ? customReason : selectedReason;
 
     if (!finalReason.trim()) return;
 
-    dispatch(
-      reportUserThunk({
-        userId,
-        data: {
-          reason: finalReason,
-          from,
-          fromId: Id,
-        },
-      }),
-    );
+    if (forClick && forClick === "block") {
+      const result = await dispatch(
+        blockUserFromBlogThunk({ blockedUser: userId, reason: finalReason }),
+      );
+      if (blockUserFromBlogThunk.fulfilled.match(result)) {
+        dispatch(removeBlogsByUser(userId));
+      }
+    } else {
+      dispatch(
+        reportUserThunk({
+          userId,
+          data: {
+            reason: finalReason,
+            from,
+            fromId: Id,
+          },
+        }),
+      );
+    }
 
     setSelectedReason("");
     setCustomReason("");
@@ -135,7 +176,13 @@ const ReportOptions: React.FC<CommentOptionsProps> = ({
           }
           className="w-full py-2 rounded-md bg-red-500 text-white font-medium hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition"
         >
-          {loading ? "Reporting..." : "Submit Report"}
+          {loading || blockLoading
+            ? forClick == "block"
+              ? "Blocking..."
+              : "Reporting..."
+            : forClick === "block"
+              ? "Block"
+              : "Submit Report"}
         </button>
       </div>
     </div>

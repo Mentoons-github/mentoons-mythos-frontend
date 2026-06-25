@@ -1,77 +1,70 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import {
-  deleteReportsThunk,
-  getReportsThunk,
-  getSingleReportThunk,
+  allBlockedDeatailsThunk,
+//   deleteReportsThunk,
+//   getReportsThunk,
+//   getSingleReportThunk,
 } from "../../../features/report-block/report_blockThunk";
-import { Eye, Trash2 } from "lucide-react";
-import ViewReportDetailsModal from "../../components/modals/Report&Block/ViewReportDetailsModal";
-import DeleteModal from "../../components/modals/deleteModal";
-import { toast } from "sonner";
-import { resetReportBlockSlice } from "../../../features/report-block/report_blockSlice";
-import { IoFilter } from "react-icons/io5";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import {
-  SearchOptions,
-  ShowSort,
-  SortButton,
-} from "../../components/SortDetails";
+// import { Eye, Trash2 } from "lucide-react";
+// import ViewReportDetailsModal from "../../components/modals/Report&Block/ViewReportDetailsModal";
+// import DeleteModal from "../../components/modals/deleteModal";
+// import { toast } from "sonner";
+// import { resetReportBlockSlice } from "../../../features/report-block/report_blockSlice";
+// import { IoFilter } from "react-icons/io5";
+// import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+// import {
+//   SearchOptions,
+//   ShowSort,
+//   SortButton,
+// } from "../../components/SortDetails";
 
-const AdminReport = () => {
+const AdminBlock = () => {
   const dispatch = useAppDispatch();
   const {
-    reports,
-    reportsLoading,
-    reportPage,
-    reportTotalPage,
-    singleReport,
-    singleLoading,
-    deleteLoading,
-    deleteMessage,
-    deleteSuccess,
-    error,
+    blockedData,
+    loading,
+    // reportPage,
+    // reportTotalPage,
+    // singleReport,
+    // singleLoading,
+    // deleteLoading,
+    // deleteMessage,
+    // deleteSuccess,
+    // error,
   } = useAppSelector((state) => state.report_block);
 
-  const [search, setSearch] = useState("");
-  const [viewModal, setViewModal] = useState(false);
-  const [deleteModal, setDeleteModal] = useState(false);
-  const [selectedId, setSelectedId] = useState("");
+  //   const [search, setSearch] = useState("");
+  //   const [viewModal, setViewModal] = useState(false);
+  //   const [deleteModal, setDeleteModal] = useState(false);
+  //   const [selectedId, setSelectedId] = useState("");
   const [showTable, setShowTable] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [showFilters, setShowFilters] = useState(false);
-  const [showSort, setShowSort] = useState(false);
-  const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
-  const [selectedFilter, setSelectedFilter] = useState<
-    "All" | "comment" | "blog"
-  >("All");
+  //   const [currentPage, setCurrentPage] = useState(1);
+  //   const [showFilters, setShowFilters] = useState(false);
+  //   const [showSort, setShowSort] = useState(false);
+  //   const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
+  //   const [selectedFilter, setSelectedFilter] = useState<
+  //     "All" | "comment" | "blog"
+  //   >("All");
 
-  const limit = 10;
+  //   const limit = 10;
 
-  useEffect(() => {
-    if (deleteSuccess) {
-      toast.success(deleteMessage);
-      dispatch(resetReportBlockSlice());
-      setDeleteModal(false);
-    }
-    if (error) {
-      toast.error(error);
-      dispatch(resetReportBlockSlice());
-    }
-  }, [deleteMessage, deleteSuccess, dispatch, error]);
+  //   useEffect(() => {
+  //     if (deleteSuccess) {
+  //       toast.success(deleteMessage);
+  //       dispatch(resetReportBlockSlice());
+  //       setDeleteModal(false);
+  //     }
+  //     if (error) {
+  //       toast.error(error);
+  //       dispatch(resetReportBlockSlice());
+  //     }
+  //   }, [deleteMessage, deleteSuccess, dispatch, error]);
 
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
-      dispatch(
-        getReportsThunk({
-          page: currentPage,
-          limit,
-          filter: selectedFilter,
-          sort: sortOrder,
-          search,
-        })
-      );
-    }, 500); 
+      dispatch(allBlockedDeatailsThunk());
+    }, 500);
 
     const timer = setTimeout(() => setShowTable(true), 1000);
 
@@ -79,24 +72,26 @@ const AdminReport = () => {
       clearTimeout(delayDebounce);
       clearTimeout(timer);
     };
-  }, [search, currentPage, dispatch, selectedFilter, sortOrder]);
+  }, []);
 
-  const handleView = (reportId: string) => {
-    dispatch(getSingleReportThunk(reportId));
-    setViewModal(true);
-  };
+  console.log(blockedData, "jjjj");
 
-  const handleDelete = (reportId: string) => {
-    setDeleteModal(true);
-    setSelectedId(reportId);
-  };
+  //   const handleView = (reportId: string) => {
+  //     dispatch(getSingleReportThunk(reportId));
+  //     setViewModal(true);
+  //   };
+
+  //   const handleDelete = (reportId: string) => {
+  //     setDeleteModal(true);
+  //     setSelectedId(reportId);
+  //   };
 
   return (
     <div className="pt-3 lg:p-4 ">
       <div className="flex mb-4 h-11 items-center space-x-1 md:space-x-4 justify-between">
         {/* Filter  */}
         <div className="flex h-full gap-1 md:gap-3">
-          <div
+          {/* <div
             className="md:w-40 h-full px-2 md:px-4 flex items-center justify-between 
                border rounded-lg cursor-pointer 
                shadow-md hover:bg-muted transition-all duration-200"
@@ -104,7 +99,9 @@ const AdminReport = () => {
           >
             <div className="flex items-center md:space-x-2">
               <IoFilter size={22} className="text-blue-800" />
-              <h3 className="text-[16px] font-medium hidden md:block">Filter</h3>
+              <h3 className="text-[16px] font-medium hidden md:block">
+                Filter
+              </h3>
             </div>
             <div className="ml-2">
               {showFilters ? (
@@ -116,22 +113,22 @@ const AdminReport = () => {
           </div>
 
           {/* Sort  */}
-          <SortButton
+          {/* <SortButton
             onClick={() => setShowSort((prev) => !prev)}
             showSort={showSort}
-          />
+          /> */}
         </div>
         {/* Search*/}
-        <SearchOptions
+        {/* <SearchOptions
           search={search}
           onChange={(e) => {
             setSearch(e.target.value);
             setCurrentPage(1);
           }}
-        />
+        /> */}
       </div>
 
-      {showSort && (
+      {/* {showSort && (
         <ShowSort
           sortOrder={sortOrder}
           onClick={(sort) => {
@@ -139,9 +136,9 @@ const AdminReport = () => {
             setCurrentPage(1);
           }}
         />
-      )}
+      )} */}
 
-      {showFilters && (
+      {/* {showFilters && (
         <div className="flex gap-4 mb-4">
           {["All", "comment", "blog"].map((filter) => (
             <button
@@ -160,14 +157,14 @@ const AdminReport = () => {
             </button>
           ))}
         </div>
-      )}
+      )} */}
 
-      {!showTable || reportsLoading ? (
+      {!showTable || loading ? (
         <div className="flex justify-center items-center py-10">
           <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
           <span className="ml-3 ">Loading reports...</span>
         </div>
-      ) : reports.length === 0 ? (
+      ) : blockedData.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center ">
           <div className="w-16 h-16 flex items-center justify-center rounded-full  mb-4">
             📭
@@ -183,15 +180,15 @@ const AdminReport = () => {
             <thead className="bg-blue-800 ">
               <tr className="text-white">
                 <th className="px-4 py-4 text-left">No</th>
-                <th className="px-4 py-4 text-left">Report ID</th>
-                <th className="px-4 py-4 text-left">Reporter</th>
-                <th className="px-4 py-4 text-left">Reported User</th>
-                <th className="px-4 py-4 text-left">Reported From</th>
-                <th className="px-4 py-4 text-left">Actions</th>
+                <th className="px-4 py-4 text-left">Block Id</th>
+                <th className="px-4 py-4 text-left">Blocked By</th>
+                <th className="px-4 py-4 text-left">Blocked User</th>
+                <th className="px-4 py-4 text-left">Reason</th>
+                {/* <th className="px-4 py-4 text-left">Actions</th> */}
               </tr>
             </thead>
             <tbody>
-              {reports?.map((report, index) => (
+              {blockedData?.map((blocked, index) => (
                 <tr
                   key={index}
                   className={`border-b ${
@@ -199,35 +196,36 @@ const AdminReport = () => {
                   } border-gray-600`}
                 >
                   <td className="px-4 py-4">{index + 1}</td>
-                  <td className="px-4 py-4">{report?._id}</td>
+                  <td className="px-4 py-4">{blocked?._id}</td>
                   <td className="px-4 py-4 font-semibold">
-                    {report?.reportedBy?.firstName}{" "}
-                    {report?.reportedBy?.lastName}
+                    {blocked?.blockedBy?.firstName}{" "}
+                    {blocked?.blockedBy?.lastName}
                   </td>
                   <td className="px-4 py-4 font-semibold">
-                    {report?.reportedUser?.firstName} {report.reportedUser?.lastName}
+                    {blocked?.blockedUser?.firstName}{" "}
+                    {blocked?.blockedUser?.lastName}
                   </td>
-                  <td className="px-4 py-4 font-semibold">{report?.targetType}</td>
-                  <td className="px-4 py-4 space-x-3">
+                  <td className="px-4 py-4 font-semibold">{blocked?.reason}</td>
+                  {/* <td className="px-4 py-4 space-x-3">
                     <button
-                      onClick={() => handleView(report?._id as string)}
+                      onClick={() => handleView(blocked?._id as string)}
                       className=" font-semibold text-blue-800 rounded-md hover:text-blue-600"
                     >
                       <Eye size={20} />
                     </button>
                     <button
-                      onClick={() => handleDelete(report._id as string)}
+                      onClick={() => handleDelete(blocked._id as string)}
                       className=" font-semibold text-red-600 rounded-md hover:text-red-700"
                     >
                       <Trash2 size={20} />
                     </button>
-                  </td>
+                  </td> */}
                 </tr>
               ))}
             </tbody>
           </table>
 
-          <div className="flex justify-between mt-4 ">
+          {/* <div className="flex justify-between mt-4 ">
             <button
               onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
               disabled={currentPage === 1}
@@ -247,11 +245,11 @@ const AdminReport = () => {
             >
               Next
             </button>
-          </div>
+          </div> */}
         </div>
       )}
 
-      {viewModal && (
+      {/* {viewModal && (
         <ViewReportDetailsModal
           loading={singleLoading}
           onClose={() => setViewModal(false)}
@@ -265,9 +263,9 @@ const AdminReport = () => {
           onConfirm={() => dispatch(deleteReportsThunk(selectedId))}
           loading={deleteLoading}
         />
-      )}
+      )} */}
     </div>
   );
 };
 
-export default AdminReport;
+export default AdminBlock;

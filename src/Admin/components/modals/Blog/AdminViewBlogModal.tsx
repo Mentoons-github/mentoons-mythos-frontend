@@ -10,7 +10,10 @@ import BlogCommentPostContent from "../../../../components/blogsV2/Comments/Blog
 import { FaUser } from "react-icons/fa";
 import { formatTime } from "../../../../utils/BlogCommentDate";
 import { FiPlusCircle } from "react-icons/fi";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
+import { toast } from "sonner";
+import { resetBlogSlice } from "../../../../features/blog/blogSlice";
 
 const AdminViewBlogModal = ({
   onClose,
@@ -36,6 +39,25 @@ const AdminViewBlogModal = ({
   setOpenReplies: Dispatch<SetStateAction<{ [key: string]: boolean }>>;
   fetchComments: () => void;
 }) => {
+  const [viewOption, setViewOption] = useState(false);
+  const dispatch = useAppDispatch();
+  const { actionLoading, actionSuccess, message, error } = useAppSelector(
+    (state) => state.blog,
+  );
+
+  useEffect(() => {
+    if (actionSuccess) {
+      toast.success(message);
+      dispatch(resetBlogSlice());
+      setViewOption(false);
+    }
+    if (error) {
+      toast.error(error);
+      dispatch(resetBlogSlice());
+      setViewOption(false);
+    }
+  }, [actionSuccess, actionLoading, dispatch, error, message, setViewOption]);
+
   const repliesByComment = replyComments.reduce(
     (acc, r) => {
       if (!acc[r?.commentId]) acc[r?.commentId] = [];
@@ -48,7 +70,11 @@ const AdminViewBlogModal = ({
   const media = post?.media?.[0];
   const hasMedia = !!media;
 
-  console.log(comments, "blog");
+  console.log(viewOption, "vieeewwww");
+
+  const handleOptionClick = () => {
+    setViewOption((prev) => !prev);
+  };
 
   return (
     <div
@@ -78,7 +104,12 @@ const AdminViewBlogModal = ({
               hasMedia ? "lg:w-1/2" : "w-full"
             } flex flex-col min-h-0 h-full`}
           >
-            <BlogCommentRightHeader post={post} />
+            <BlogCommentRightHeader
+              post={post}
+              from="admin"
+              handleOptionClick={handleOptionClick}
+              viewOption={viewOption}
+            />
 
             <BlogCommentPostContent media={media} post={post} />
 

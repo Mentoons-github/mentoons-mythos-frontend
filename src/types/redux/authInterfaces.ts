@@ -24,6 +24,8 @@ export interface LoginResponse {
     accessToken: string;
     _id: string;
   };
+  isBlocked: boolean;
+  bannedUntil: string;
 }
 
 export interface LoginPayload {

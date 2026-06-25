@@ -18,6 +18,7 @@ import {
   editCommentBlogThunk,
   commentOffToggleThunk,
   userSavedBlogsThunk,
+  takeBlogActionsthunk,
 } from "./blogThunk";
 import {
   Badge,
@@ -62,6 +63,8 @@ interface SliceBlog {
   badge: Badge | null;
   userBlogs: IBlogV2[];
   userSavedBlogs: IBlogV2[];
+  actionLoading: boolean;
+  actionSuccess: boolean;
 }
 
 const initialState: SliceBlog = {
@@ -98,6 +101,8 @@ const initialState: SliceBlog = {
   badge: null,
   userBlogs: [],
   userSavedBlogs: [],
+  actionLoading: false,
+  actionSuccess: false,
 };
 
 export const blogSlice = createSlice({
@@ -124,6 +129,13 @@ export const blogSlice = createSlice({
       state.saveSuccess = false;
       state.commentTotal = 0;
       state.replyCommentTotal = 0;
+      state.actionLoading = false;
+      state.actionSuccess = false;
+    },
+    removeBlogsByUser: (state, action) => {
+      state.data = state.data.filter(
+        (blog) => blog?.user?._id !== action.payload,
+      );
     },
   },
   extraReducers: (builder) => {
@@ -531,9 +543,27 @@ export const blogSlice = createSlice({
       .addCase(userSavedBlogsThunk.rejected, (state, action) => {
         state.error = action.payload as string;
         state.loading = false;
+      })
+
+      // user saved blogs
+      .addCase(takeBlogActionsthunk.pending, (state) => {
+        state.actionLoading = true;
+        state.error = null;
+      })
+      .addCase(takeBlogActionsthunk.fulfilled, (state, action) => {
+        state.message = action.payload.message;
+        console.log(action.payload.blog, "blllllllsss");
+        state.blog = action.payload.blog;
+        state.actionSuccess = true;
+        state.error = null;
+        state.actionLoading = false;
+      })
+      .addCase(takeBlogActionsthunk.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.actionLoading = false;
       });
   },
 });
 
 export default blogSlice.reducer;
-export const { resetBlogSlice } = blogSlice.actions;
+export const { resetBlogSlice, removeBlogsByUser } = blogSlice.actions;
