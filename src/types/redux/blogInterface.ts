@@ -42,6 +42,7 @@ export interface IBlogV2 {
   likes?: string[];
   commentsOff?: boolean;
   commentCount?: number;
+  moderationStatus?: "active" | "hidden" | "deleted" | "ignore";
   createdAt?: string;
 }
 

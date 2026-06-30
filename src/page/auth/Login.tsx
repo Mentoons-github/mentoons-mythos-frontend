@@ -11,28 +11,32 @@ import { resetAuthState } from "../../features/auth/authSlice";
 import GoogleAuth from "../../components/button/googleAuth";
 import { toast } from "sonner";
 import { Eye, EyeOff } from "lucide-react";
+import BanDetailsModal from "../../components/modal/BanDetailsModal";
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [banModal, setBanModal] = useState(false);
 
-  const { error, loading, message, success, role } = useAppSelector(
-    (state) => state.auth
-  );
+  const { error, loading, message, success, role, isBlocked, bannedUntil } =
+    useAppSelector((state) => state.auth);
 
-  // console.log(accessToken, userId);
   useEffect(() => {
     if (success) {
-      toast.success(message);
-
-      if (role === "admin") {
-        navigate("/admin", { replace: true });
-      } else if (role === "employee") {
-        navigate("/employee", { replace: true });
+      if (isBlocked) {
+        setBanModal(true);
       } else {
-        navigate("/", { replace: true });
+        toast.success(message);
+
+        if (role === "admin") {
+          navigate("/admin", { replace: true });
+        } else if (role === "employee") {
+          navigate("/employee", { replace: true });
+        } else {
+          navigate("/", { replace: true });
+        }
       }
 
       dispatch(resetAuthState());
@@ -140,6 +144,12 @@ const Login = () => {
           </p>
         </form>
       </div>
+      {banModal && (
+        <BanDetailsModal
+          bannedUntil={bannedUntil}
+          onClose={() => setBanModal(false)}
+        />
+      )}
     </div>
   );
 };

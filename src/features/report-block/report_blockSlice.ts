@@ -1,16 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  allBlockedDeatailsThunk,
+  blockUserFromBlogThunk,
   deleteReportsThunk,
   getReportsThunk,
   getSingleReportThunk,
+  takeReportActionThunk,
 } from "./report_blockThunk";
-import { Report } from "../../types/redux/report";
+import { BlockType, Report } from "../../types/redux/report";
 
 interface RepBlo {
   reports: Report[];
   reportsLoading: boolean;
   success: boolean;
   error: null | undefined | string;
+  loading: boolean;
+  message: string;
   reportTotalPage: number;
   reportPage: number;
   reportTotal: number;
@@ -19,6 +24,10 @@ interface RepBlo {
   deleteLoading: boolean;
   deleteMessage: string;
   deleteSuccess: boolean;
+  actionLoading: boolean;
+  actionSuccess: boolean;
+  actionMessage: string;
+  blockedData: BlockType[];
 }
 
 const initialState: RepBlo = {
@@ -26,6 +35,8 @@ const initialState: RepBlo = {
   reportsLoading: false,
   success: false,
   error: null,
+  loading: false,
+  message: "",
   reportPage: 0,
   reportTotal: 0,
   reportTotalPage: 0,
@@ -34,6 +45,10 @@ const initialState: RepBlo = {
   deleteLoading: false,
   deleteMessage: "",
   deleteSuccess: false,
+  actionLoading: false,
+  actionMessage: "",
+  actionSuccess: false,
+  blockedData: [],
 };
 
 const report_blockSlice = createSlice({
@@ -44,10 +59,15 @@ const report_blockSlice = createSlice({
       state.error = null;
       state.reportsLoading = false;
       state.success = false;
+      state.loading = false;
+      state.message = "";
       state.deleteLoading = false;
       state.deleteMessage = "";
       state.singleLoading = false;
       state.deleteSuccess = false;
+      state.actionLoading = false;
+      state.actionMessage = "";
+      state.actionSuccess = false;
     },
   },
   extraReducers: (builder) => {
@@ -103,7 +123,7 @@ const report_blockSlice = createSlice({
         state.deleteSuccess = true;
         if (action.meta.arg) {
           state.reports = state.reports.filter(
-            (job) => job._id !== action.meta.arg
+            (job) => job._id !== action.meta.arg,
           );
         }
       })
@@ -111,6 +131,60 @@ const report_blockSlice = createSlice({
         state.deleteLoading = false;
         state.error = action.payload;
         state.deleteSuccess = false;
+      })
+
+      //take report action
+      .addCase(takeReportActionThunk.pending, (state) => {
+        state.actionLoading = true;
+        state.actionSuccess = false;
+        state.error = null;
+      })
+      .addCase(takeReportActionThunk.fulfilled, (state, action) => {
+        state.actionLoading = false;
+        state.actionSuccess = true;
+        state.error = null;
+        state.actionMessage = action.payload;
+      })
+      .addCase(takeReportActionThunk.rejected, (state, action) => {
+        state.actionLoading = false;
+        state.error = action.payload;
+        state.actionSuccess = false;
+      })
+
+      // block user from block
+      .addCase(blockUserFromBlogThunk.pending, (state) => {
+        state.loading = true;
+        state.success = false;
+        state.error = null;
+      })
+      .addCase(blockUserFromBlogThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        state.error = null;
+        state.message = action.payload;
+      })
+      .addCase(blockUserFromBlogThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.success = false;
+      })
+
+      // block user from block
+      .addCase(allBlockedDeatailsThunk.pending, (state) => {
+        state.loading = true;
+        state.success = false;
+        state.error = null;
+      })
+      .addCase(allBlockedDeatailsThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        state.error = null;
+        state.blockedData = action.payload;
+      })
+      .addCase(allBlockedDeatailsThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.success = false;
       });
   },
 });

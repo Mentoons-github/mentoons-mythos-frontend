@@ -19,6 +19,7 @@ import {
   commentOffToggleApi,
   saveBlogApi,
   userSavedBlogsApi,
+  takeBlogActionsApi,
 } from "./blogApi";
 
 import { AxiosError } from "axios";
@@ -52,11 +53,11 @@ export const createBlogThunk = createAsyncThunk<
 //fetch blog
 export const fetcheBlogThunk = createAsyncThunk<
   GetBlogResponse,
-  { skip: number; limit: number; sort?: string },
+  { skip: number; limit: number; sort?: string; from?: string },
   { rejectValue: string }
->("blog/fetch", async ({ skip, limit, sort }, { rejectWithValue }) => {
+>("blog/fetch", async ({ skip, limit, sort, from }, { rejectWithValue }) => {
   try {
-    const res = await fetchBlogApi(skip, limit, sort);
+    const res = await fetchBlogApi(skip, limit, sort, from);
     return res.data;
   } catch (err) {
     const error = err as AxiosError<{ message: string }>;
@@ -365,6 +366,22 @@ export const userSavedBlogsThunk = createAsyncThunk<
     const error = err as AxiosError<{ message: string }>;
     return rejectWithValue(
       error?.response?.data?.message || "Saved fetch failed",
+    );
+  }
+});
+
+export const takeBlogActionsthunk = createAsyncThunk<
+  { message: string; blog: IBlogV2 },
+  { blogId: string; action: string; days?: number },
+  { rejectValue: string }
+>("blog/action", async ({ blogId, action, days }, { rejectWithValue }) => {
+  try {
+    const res = await takeBlogActionsApi(blogId, action, days);
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return rejectWithValue(
+      error?.response?.data?.message || "Blog action take failed",
     );
   }
 });

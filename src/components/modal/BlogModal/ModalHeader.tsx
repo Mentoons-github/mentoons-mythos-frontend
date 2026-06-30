@@ -10,6 +10,7 @@ import {
   deleteBlogThunk,
 } from "../../../features/blog/blogThunk";
 import { FaComments, FaCommentSlash } from "react-icons/fa";
+import useSignInSignUp from "../../../hooks/useSignInSignUpModal";
 
 interface ModalHeaderProps {
   userId?: string;
@@ -31,8 +32,10 @@ const ModalHeader: React.FC<ModalHeaderProps> = ({
   const dispatch = useAppDispatch();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const [clickedFor, setClickedFor] = useState<"report" | "block">("report");
 
   const isOpen = activeMenuId === postId;
+  const { showModal } = useSignInSignUp();
 
   const handleToggle = () => {
     setActiveMenuId(isOpen ? null : postId!);
@@ -55,6 +58,15 @@ const ModalHeader: React.FC<ModalHeaderProps> = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const handleClickReportOrBlock = (clickedFor: "report" | "block") => {
+    if (!user) {
+      showModal("Blog Action");
+      return;
+    }
+    setReportModal(true);
+    setClickedFor(clickedFor);
+  };
 
   const handleDelete = () => {
     if (!postId) return;
@@ -121,16 +133,17 @@ const ModalHeader: React.FC<ModalHeaderProps> = ({
             ) : (
               <>
                 <button
-                  onClick={() => {
-                    setReportModal(true);
-                  }}
+                  onClick={() => handleClickReportOrBlock("report")}
                   className="w-full flex items-center gap-3 px-4 py-3 text-sm hover:bg-muted-foreground transition"
                 >
                   <FiFlag className="text-lg" />
                   Report
                 </button>
 
-                <button className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition border-t">
+                <button
+                  onClick={() => handleClickReportOrBlock("block")}
+                  className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition border-t"
+                >
                   <FiUserX className="text-lg" />
                   Block User
                 </button>
@@ -151,6 +164,7 @@ const ModalHeader: React.FC<ModalHeaderProps> = ({
           >
             <ReportOptions
               from="blog"
+              forClick={clickedFor}
               userId={userId}
               Id={postId}
               onClose={() => setReportModal(false)}
