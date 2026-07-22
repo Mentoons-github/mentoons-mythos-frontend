@@ -33,6 +33,7 @@ const MythosHeader = () => {
     // "CAREER",
     // "GROUPS",
     "BECOME MENTOR",
+    "PRODUCTS"
   ];
 
   const navigate = useNavigate();

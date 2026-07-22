@@ -20,6 +20,7 @@ import mentorReduces from "../features/mentor/mentorSlice";
 import careerGpsReduces from "../features/careerGps/careerGpsSlice";
 import QuizReduces from "../features/quiz/quizSlice";
 import BadgeReduces from "../features/badge/badgeSlice";
+import ProductReduces from "../features/products/productSlice";
 
 export const store = configureStore({
   reducer: {
@@ -44,6 +45,7 @@ export const store = configureStore({
     careerGps: careerGpsReduces,
     quiz: QuizReduces,
     badge: BadgeReduces,
+    product: ProductReduces,
   },
 });
 
