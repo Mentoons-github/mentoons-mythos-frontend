@@ -53,6 +53,8 @@ import AdminBadges from "./Admin/pages/Badge/AdminBadges";
 import SingleGroup from "./page/group/SingleGroup";
 import WorkshopPlans from "./Admin/pages/Workshops/WorkshopPlans";
 import AdminBlock from "./Admin/pages/Report&Block/AdminBlock";
+import Products from "./page/products";
+import AdminProducts from "./Admin/pages/AdminProducts";
 
 const MythosHome = lazy(() => import("./page/home"));
 const MythosAbout = lazy(() => import("./page/about"));
@@ -170,6 +172,7 @@ const AppRouter = () => {
             <Route path="*" element={<NotFound />} />
             <Route path="shop" element={<MythosShop />} />
             <Route path="quiz" element={<MythosQuiz />} />
+            <Route path="products" element={<Products />} />
 
             <Route path="assessment/planet" element={<MythosAssessments />} />
             <Route path="details" element={<MythosDetails />} />
@@ -271,8 +274,8 @@ const AppRouter = () => {
             <Route path="quiz" element={<AdminQuiz />} />
             <Route path="badges" element={<AdminBadges />} />
             <Route path="*" element={<Users />} />
-            {/* <Route path="orders" element={<Orders />} />
-            <Route path="products" element={<Products />} /> */}
+            {/* <Route path="orders" element={<Orders />} />*/}
+            <Route path="products" element={<AdminProducts />} />
           </Route>
 
           {/*Employee Route*/}

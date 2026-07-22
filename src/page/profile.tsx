@@ -440,7 +440,7 @@ const Profile = () => {
           <button
             onClick={() => navigate("/profile/badges")}
             className={`px-2 md:px-3 lg:px-6 py-2 lg:py-3 rounded-lg text-sm md:text-base font-semibold md:font-medium transition-all duration-300 ${
-              activeTab === "blogs"
+              activeTab === "badges"
                 ? "bg-foreground text-background shadow-lg"
                 : "bg-background text-foreground hover:bg-foreground/80 hover:scale-105 border border-foreground"
             }`}
